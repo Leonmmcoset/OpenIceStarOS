@@ -1,9 +1,9 @@
 .code32
 .section .stage,"ax"
-/* Preserve the original stage until its INIT.X loading call. */
-.incbin "../IceStarOS_x86_32M.vhd", 0xa00, 0x46e
+/* Preserve the original stage through video setup and device discovery. */
+.incbin "../IceStarOS_x86_32M.vhd", 0xa00, 0x391
     jmp stage_bridge
-.incbin "../IceStarOS_x86_32M.vhd", 0xa00 + 0x473, 0x806 - 0x473
+.incbin "../IceStarOS_x86_32M.vhd", 0xa00 + 0x396, 0x806 - 0x396
 
 stage_bridge:
     ljmp $0x40, $stage_flat

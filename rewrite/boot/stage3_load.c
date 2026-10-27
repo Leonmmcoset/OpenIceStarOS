@@ -45,9 +45,26 @@ int stage_load_init(void)
 {
     static const uint8_t name[11] = "INIT    X  ";
     struct fat16_volume volume;
-    uint32_t size;
+    uint32_t size, lba, fat_address, second_fat, root_address;
     uint32_t partition_lba = *(volatile uint32_t *)0x7dc6;
     int result = fat16_mount(&volume, ata_read, 0, partition_lba);
     if (result != FAT16_OK) return result;
+
+    /* INIT.X and the original kernel expect this exact in-memory layout. */
+    if (volume.data_lba - partition_lba > (0x800000 - 0x520000) / 512)
+        return FAT16_FORMAT;
+    if (ata_read(0, partition_lba, (uint8_t *)0x520000)) return FAT16_IO;
+    fat_address = 0x520000 + (volume.fat_lba - partition_lba) * 512;
+    second_fat = fat_address + (uint32_t)volume.fat_sectors * 512;
+    root_address = second_fat + (uint32_t)volume.fat_sectors * 512;
+    for (lba = volume.fat_lba; lba < volume.data_lba; ++lba) {
+        uint8_t *destination = (uint8_t *)(uintptr_t)
+            (0x520000 + (lba - partition_lba) * 512);
+        if (ata_read(0, lba, destination)) return FAT16_IO;
+    }
+    *(volatile uint32_t *)0x1a83a = fat_address;
+    *(volatile uint32_t *)0x1a83e = second_fat;
+    *(volatile uint32_t *)0x1a842 = root_address;
+    *(volatile uint32_t *)0x1a846 = root_address + (uint32_t)volume.root_entries * 32;
     return fat16_read_root_file(&volume, name, (uint8_t *)0x70000, 0x100000, &size);
 }
