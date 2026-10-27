@@ -1965,3 +1965,24 @@ The preview bodies use 127/170 and 31/36 bytes, with fixed-entry/size linker
 assertions. Evidence: `build/startup_state_preview_summary.json`,
 `build/startup_state_calls.h` and `build/startup_state_preview.elf`.
 Production kernels and disks are unchanged at this source checkpoint.
+
+### Startup application caller source checkpoint (2026-10-27)
+
+`kernel/startup_apps.c/.h` recovers `0x810f38..0x810f78`: read the first
+argument pair, invoke original image entry `0x802282`, wait 20 ticks, then
+read and launch the second pair. Each pair retains the original second-then-
+first volatile read order. Neither pair is cached across launch/wait callbacks.
+The image-launching body remains unrecovered; its explicit boundary does not
+claim recovery of executable loading or of the launched applications.
+
+`python3 tests/kernel_startup_apps.py` passes 480 scenarios / 1,440 executions
+of original x86, ordinary C and fixed-address C. Three memory patterns, ten
+full-width parameter seeds and 16 callback mutation modes cover launch/wait
+order, the 20-tick argument, live second parameters, unaligned callback writes,
+all `0x3000` shared-memory bytes, stack canaries/balance and callee-saved
+registers. Only fixture CALL operands are redirected. The compiled body uses
+51/64 bytes, with a fixed-entry/size linker assertion.
+
+Evidence: `build/startup_apps_preview_summary.json`,
+`build/startup_apps_calls.h`, `build/startup_apps_preview.elf`. Production
+images are unchanged at this source checkpoint.
