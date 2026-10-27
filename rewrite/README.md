@@ -766,3 +766,16 @@ all shared buffer bytes written before the fault. These include zero-count
 SSE execution and huge REP/SSE counts; the zero-count SSE cases must produce
 actual writes before faulting. Normal comparisons total 278,304 across the
 two executable variants, plus 192 fault comparisons.
+
+The complete verification suite passed on 2026-10-27 with all 123 replacement
+intervals. Three QEMU boots passed RAM/page/heap-chain checks (128 MiB and
+59 live headers), real TSS switching, PS/2 and CMD input, MOV's four
+pixel-exact frames, close and subsequent `cpuid`, and STARSCR's four phases,
+Esc and task cleanup. All installed kernel intervals matched guest memory.
+MOV's post-close CMD screen was visually inspected. The original
+post-STARSCR mouse stall remains; desktop reuse after that application is
+not verified. Logs: `build/verify_memory_accel.log`,
+`build/memory_accel_smoke.log`, `build/mov_memory_accel_smoke.log`, and
+`build/starscr_memory_accel_smoke.log`; representative evidence is preserved
+in `build/memory_accel_evidence/`. Unrecovered routines continue to use the
+original binary; this is not yet a complete OS build from source.
