@@ -42,6 +42,8 @@ def main():
                         help="exercise the desktop pointer and CMD keyboard input")
     parser.add_argument("--surface-move-check", action="store_true",
                         help="trace recovered moved-layer execution during the PS/2 input check")
+    parser.add_argument("--surface-scale-check", action="store_true",
+                        help="load the test-only scaler X application and trace six service calls")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -63,11 +65,15 @@ def main():
         if arguments.starscr_reference:
             parser.error("--surface-move-check requires the compiled kernel image")
         arguments.input_check = True
-    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check)) > 1:
+    if arguments.surface_scale_check and (arguments.surface_move_check or arguments.starscr_reference):
+        parser.error("--surface-scale-check uses its own compiled-kernel diagnostic image and trace")
+    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check,
+            arguments.surface_scale_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check else
+    default_image = ("IceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
+                     "IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check else
                      "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
     image = (arguments.image.resolve() if arguments.image else
              root.parent / "IceStarOS_x86_32M.vhd" if arguments.starscr_reference else build / default_image)
@@ -83,6 +89,10 @@ def main():
             trace = build / "surface_move_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", "0x8191d8..0x8194e3", "-D", str(trace)])
+        if arguments.surface_scale_check:
+            trace = build / "surface_scale_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x8194e4..0x819c3f", "-D", str(trace)])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -118,8 +128,9 @@ def main():
                             parser.error("--task-check requires the compiled kernel image")
                         from task_smoke import check_task_switch
                         check_task_switch(execute, build)
-                    if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check or arguments.starscr_check:
-                        if arguments.surface_move_check:
+                    if (arguments.input_check or arguments.snake_check or arguments.color_check or
+                            arguments.mov_check or arguments.starscr_check or arguments.surface_scale_check):
+                        if arguments.surface_move_check or arguments.surface_scale_check:
                             # Trace after boot/RAM probing; disabling TB chaining
                             # during early memory initialization distorts timing.
                             execute("log exec,nochain")
@@ -136,6 +147,9 @@ def main():
                         if arguments.starscr_check:
                             from starscr_smoke import check_starscr
                             check_starscr(execute, build, image, cmd_base, arguments.starscr_reference)
+                        if arguments.surface_scale_check:
+                            from surface_scale_smoke import check_surface_scale
+                            check_surface_scale(execute, build, image, cmd_base)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')
@@ -171,6 +185,23 @@ def main():
                     "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))]}
         (build / "surface_move_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
         print(f"Recovered moved-layer entry executed {entry_hits} times; "
+              f"{body_hits} C-body/return block execution events")
+    if arguments.surface_scale_check:
+        pcs = [int(match.group(1), 16) for match in
+               re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+        entry_hits = pcs.count(0x8194e4)
+        body_hits = sum(0x8194e4 < pc < 0x819c40 for pc in pcs)
+        if entry_hits != 6 or not body_hits:
+            raise RuntimeError("expected six recovered scaler entries and executed C body blocks")
+        evidence = {"image": str(image), "diagnostic_only": True,
+                    "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
+                    "entry": "0x8194e4", "entry_execution_events": entry_hits,
+                    "body_execution_events": body_hits,
+                    "installed_intervals_verified": len(json.loads((root / "kernel/patches.json").read_text())),
+                    "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))]}
+        (build / "surface_scale_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
+        print(f"Recovered scaler entry executed {entry_hits} times; "
               f"{body_hits} C-body/return block execution events")
     png_from_ppm(screen, build / f"{capture_prefix}.png")
     print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else

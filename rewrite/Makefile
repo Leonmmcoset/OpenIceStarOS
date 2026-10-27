@@ -666,6 +666,22 @@ run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
 smoke-color: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --color-check
 
+$(BUILD)/surface_scale_guest.o: tests/surface_scale_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/surface_scale_guest.elf: $(BUILD)/surface_scale_guest.o tests/surface_scale_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/surface_scale_guest.ld -Map=$(BUILD)/surface_scale_guest.map -o $@ $<
+
+$(BUILD)/surface_scale_guest.x: $(BUILD)/surface_scale_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/surface_scale_guest.symbols.json
+
+$(BUILD)/IceStarOS_scale_diagnostic.vhd: $(BUILD)/IceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x tools/surface_scale_smoke.py tools/kernel_image.py
+	python3 tools/surface_scale_smoke.py $(BUILD)/IceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x $@
+
+.PHONY: smoke-surface-scale
+smoke-surface-scale: $(BUILD)/IceStarOS_scale_diagnostic.vhd
+	python3 tools/boot_smoke.py --surface-scale-check
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 

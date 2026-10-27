@@ -1580,3 +1580,27 @@ declared boot/kernel/application extents change. Logs and exit markers:
 (all final exits 0). This closes installation and focused verification;
 the previous full-suite and QEMU results still describe the 209-interval
 images until the new integration/regression runs finish.
+
+`make smoke-surface-scale` builds a separate diagnostic-only image,
+`build/IceStarOS_scale_diagnostic.vhd`, by replacing only the existing
+COLOR.X file extents with `tests/surface_scale_guest.c`. The production
+application images retain the recovered Color. The real CMD loads this
+type-0x0a X through the normal loader; 47 absolute relocations and the guest
+instructions/data are verified before inspecting its report. The test borrows
+two zero layer-table entries at the high-water mark under saved/disabled
+interrupts, calls the original shared service slot 163, restores both entries
+and the interrupt flags, then cooperatively yields. It does not modify the
+high-water mark or allocate a visible test window.
+
+The diagnostic passed in QEMU on 2026-10-27: six matching-depth calls cover
+equal, smaller and larger targets for both 8-bit and 32-bit surfaces. An
+independent Python model checks all 2,304 destination/guard bytes, all source
+buffers, six raw returns, slot restoration and enabled-interrupt restoration.
+The address-filtered trace records exactly six entries at `0x8194e4` and
+1,044 C-body/return execution events. All 210 installed intervals also match
+guest memory. This explicitly demonstrates test-app calls, not natural scaler
+use by an original application. Evidence:
+`build/surface_scale_smoke.json`, `build/surface_scale_execution.json`,
+`build/surface_scale_guest_report.memory`, `build/surface_scale_guest.trace`;
+log/exit/timing: `build/surface_scale_diagnostic_smoke.{log,exit}` and
+`build/surface_scale_diagnostic_smoke_summary.json` (exit 0).
