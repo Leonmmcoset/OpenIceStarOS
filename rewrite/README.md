@@ -1641,3 +1641,29 @@ images were unchanged between the segments, and the C-init, Snake and combined
 application SHA-256 hashes match both the recorded QEMU evidence and the
 before/after continuation digests. This is a completed segmented regression,
 not a claim that the interrupted `make verify` process itself exited 0.
+
+`kernel/surface_lifecycle.c/.h` recovers surface-table initialization,
+free-slot search, creation and deletion at `0x8175c0`, `0x8177c4`,
+`0x817626` and `0x81783e` respectively. The C code retains signed high-water,
+capacity and free-count comparisons, wrapped indices/products, unaligned
+descriptors, live caller storage, owner/depth reloads, descriptor aliases,
+allocation-failure cleanup and callback ordering. Deletion passes the original
+descriptor's +44 value unchanged to the still-original `0x8178f0` function,
+then reloads the caller index and table for the final free/clear operations.
+Creation failures deliberately leave interrupts disabled as in the original.
+Small assembly boundaries expose incoming argument storage, capture the free
+callback's failure EFLAGS before stack cleanup, and preserve flags at RET.
+
+The standalone original/C/independent byte-memory oracle passes 175,692 cases
+on 2026-10-27, comparing all 34,816 mapped bytes, raw returns, ordered external
+calls, watched boundary state, outgoing argument mutations and successful
+native POPFL returns. Native failure cases also compare arithmetic flags and
+DF directly against original execution, including failed descriptor/pixel
+allocations and negative slot results. Test CALL sites redirect the two/three
+byte CLI/read-flags leaves without overwriting adjacent routines.
+Log/exit/timing: `build/surface_lifecycle_preview_test.log`,
+`build/surface_lifecycle_preview_test.exit` (0), and
+`build/surface_lifecycle_preview_summary.json` (36.897 seconds).
+Production compilation with the original four-byte i386 stack boundary fits
+the four extents: 66/102, 344/414, 61/122 and 170/178 bytes in address order.
+This source checkpoint precedes installation; the manifest remains at 210.
