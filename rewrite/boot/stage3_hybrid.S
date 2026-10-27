@@ -1,9 +1,9 @@
 .code32
 .section .stage,"ax"
-/* Preserve the original stage through video setup and device discovery. */
-.incbin "../IceStarOS_x86_32M.vhd", 0xa00, 0x391
+/* Preserve the original stage through video setup. */
+.incbin "../IceStarOS_x86_32M.vhd", 0xa00, 0x38c
     jmp stage_bridge
-.incbin "../IceStarOS_x86_32M.vhd", 0xa00 + 0x396, 0x806 - 0x396
+.incbin "../IceStarOS_x86_32M.vhd", 0xa00 + 0x391, 0x806 - 0x391
 
 stage_bridge:
     ljmp $0x40, $stage_flat
@@ -14,6 +14,7 @@ stage_flat:
     movw $0x08, %ax
     movw %ax, %ss
     movl $0x7c00, %esp
+    call stage_scan_pci
     call stage_load_init
     testl %eax, %eax
     jnz stage_failed

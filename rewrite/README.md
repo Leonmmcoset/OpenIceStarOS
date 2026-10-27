@@ -21,13 +21,16 @@ for 32-bit x86 and uses a host sector reader to recover `INIT.X` from the
 original VHD; its SHA-256 is checked against the independently extracted file.
 
 `make run-hybrid` starts a second image that uses the original third stage's
-video setup, descriptor tables, and device discovery. C code loads the BPB,
+video setup and descriptor tables. C code scans PCI configuration space into
+the original low-memory table, loads the BPB,
 FATs and root directory into the original memory layout, loads INIT through the
 FAT16 reader and ATA PIO code, and prepares the INIT header and stack. Assembly
 performs the segment switch and far jump. The menu loads eight sectors for this
 hybrid stage.
 This integration still depends on original boot code and all later programs;
 booting it does not establish that the whole system has been rewritten.
+The PCI scan retains the original unbounded table behavior, which can overwrite
+other low memory if sufficiently many devices are present.
 
 `init/entry.c` recovers the `INIT.X` entry control flow and its helper at
 original addresses `0x70040` and `0x700a2`. Its four directory and file

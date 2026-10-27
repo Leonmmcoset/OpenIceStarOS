@@ -53,8 +53,11 @@ $(BUILD)/stage3_load.o: boot/stage3_load.c boot/fat16.h | $(BUILD)
 $(BUILD)/init_transfer.o: boot/init_transfer.c boot/init_transfer.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -c $< -o $@
 
-$(BUILD)/stage3_hybrid.bin: $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o boot/stage3_hybrid.ld
-	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -o $@ $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o
+$(BUILD)/pci.o: boot/pci.c boot/pci.h | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -c $< -o $@
+
+$(BUILD)/stage3_hybrid.bin: $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o boot/stage3_hybrid.ld
+	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -o $@ $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o
 
 $(BUILD)/IceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin
 	cp $(IMAGE) $@
@@ -74,7 +77,10 @@ $(BUILD)/init_entry_test: tests/init_entry.c init/entry.c init/entry.h | $(BUILD
 $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/init_transfer.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -Iboot tests/init_transfer.c boot/init_transfer.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_entry_test $(BUILD)/init_transfer_test
+$(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
+	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
+
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
@@ -85,6 +91,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat
 	printf '%s  %s\n' 0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007 $(BUILD)/init.x | sha256sum -c -
 	$(BUILD)/init_entry_test
 	$(BUILD)/init_transfer_test
+	$(BUILD)/pci_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
