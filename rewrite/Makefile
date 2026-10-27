@@ -20,7 +20,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_graphics_primitives.o $(BUILD)/kernel_service_optional.o \
                   $(BUILD)/kernel_cpuid.o $(BUILD)/kernel_fpu.o $(BUILD)/kernel_fpu_state.o \
                   $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o $(BUILD)/kernel_interrupt_entries.o \
-                  $(BUILD)/kernel_interrupt_callbacks.o $(BUILD)/kernel_cmos_clock.o
+                  $(BUILD)/kernel_interrupt_callbacks.o $(BUILD)/kernel_cmos_clock.o $(BUILD)/kernel_syscalls.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -74,7 +74,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.pic_init.bin $(BUILD)/kernel.pit_init.bin $(BUILD)/kernel.rtc_init.bin \
                   $(foreach entry,exception_entry spurious_entry exception_fs_entry device_unavailable_entry timer_entry keyboard_entry irq5_entry rtc_entry irq9_entry irq10_entry irq11_entry irq12_entry syscall40_entry syscall41_entry,$(BUILD)/kernel.$(entry).bin) \
                   $(foreach callback,rtc_callback keyboard_callback audio_callback unused_irq_callback mouse_callback,$(BUILD)/kernel.$(callback).bin) \
-                  $(BUILD)/kernel.read_cmos_clock.bin
+                  $(BUILD)/kernel.read_cmos_clock.bin $(BUILD)/kernel.dispatch_syscall40.bin $(BUILD)/kernel.dispatch_syscall41.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -177,6 +177,7 @@ $(BUILD)/kernel_cpuid.o: kernel/cpuid.h
 $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o: kernel/interrupts.h
 $(BUILD)/kernel_interrupt_entries.o: kernel/interrupt_entries.h kernel/interrupt_entries.def
 $(BUILD)/kernel_interrupt_callbacks.o $(BUILD)/kernel_cmos_clock.o: kernel/interrupt_callbacks.h
+$(BUILD)/kernel_syscalls.o: kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -340,6 +341,12 @@ $(BUILD)/kernel_interrupt_callbacks_test: tests/kernel_interrupt_callbacks.c ker
 $(BUILD)/kernel_interrupt_callbacks_linked_test: tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c kernel/interrupt_callbacks.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c -o $@
 
+$(BUILD)/kernel_syscalls_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_syscalls.c kernel/syscalls.c -o $@
+
+$(BUILD)/kernel_syscalls_linked_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_syscalls.c kernel/syscalls.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -433,6 +440,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_interrupt_callbacks_test
 	$(BUILD)/kernel_interrupt_callbacks_linked_test
 	python3 tests/cmos_clock_exact.py --installed
+	$(BUILD)/kernel_syscalls_test
+	$(BUILD)/kernel_syscalls_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
@@ -460,6 +469,7 @@ verify: $(BUILD)/kernel_graphics_primitives_test $(BUILD)/kernel_graphics_primit
 verify: $(BUILD)/kernel_fpu_test $(BUILD)/kernel_fpu_linked_test
 verify: $(BUILD)/kernel_interrupts_test $(BUILD)/kernel_interrupts_linked_test
 verify: $(BUILD)/kernel_interrupt_callbacks_test $(BUILD)/kernel_interrupt_callbacks_linked_test
+verify: $(BUILD)/kernel_syscalls_test $(BUILD)/kernel_syscalls_linked_test
 verify: $(BUILD)/kernel_cpuid_test $(BUILD)/kernel_cpuid_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x

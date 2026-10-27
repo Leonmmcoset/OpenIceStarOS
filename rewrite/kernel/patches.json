@@ -26,6 +26,8 @@
   {"name": "audio IRQ5 callback", "binary": "kernel.audio_callback.bin", "start": "0x813ae6", "end": "0x813b2a"},
   {"name": "unused IRQ callback", "binary": "kernel.unused_irq_callback.bin", "start": "0x813b2a", "end": "0x813b30"},
   {"name": "mouse callback", "binary": "kernel.mouse_callback.bin", "start": "0x813b30", "end": "0x813b70"},
+  {"name": "system call 0x40 dispatcher", "binary": "kernel.dispatch_syscall40.bin", "start": "0x813b70", "end": "0x81406c"},
+  {"name": "system call 0x41 dispatcher", "binary": "kernel.dispatch_syscall41.bin", "start": "0x81406c", "end": "0x814176"},
   {"name": "timer task switch", "binary": "kernel.schedule_task.bin", "start": "0x814176", "end": "0x81434a"},
   {"name": "cooperative task yield", "binary": "kernel.yield_task.bin", "start": "0x81434a", "end": "0x814536"},
   {"name": "task subsystem initialization", "binary": "kernel.tasks_init.bin", "start": "0x814536", "end": "0x814606"},

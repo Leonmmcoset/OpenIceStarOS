@@ -1156,3 +1156,15 @@ reuse after STARSCR is not verified. Logs: `build/verify_interrupt_callbacks.log
 `build/mov_interrupt_callbacks_smoke.log`, `build/starscr_interrupt_callbacks_smoke.log`;
 screenshots/JSON: `build/interrupt_callbacks_evidence/`. This remains a hybrid
 image with unrecovered original kernel, driver and application dependencies.
+
+Both system-call dispatchers are now installed at their original addresses,
+bringing the manifest to 194 intervals. The C-init and application images
+rebuilt successfully. Host-linked and fixed-address tests each pass 12,340
+original/C/oracle cases, 156 ordered-read watchpoint executions and 144
+expected guard-page faults. The installed dispatchers also pass all 3,456
+complete CPL0/CPL3 INT/IRET comparisons. Logs:
+`build/syscalls_install_build.log`, `build/syscalls_host_test.log`,
+`build/syscalls_linked_test.log`, `build/syscalls_qemu_installed_build.log`
+and `build/syscalls_qemu_installed.log`. The service bodies remain original
+in this installation; the five recovered service/TSC functions follow in a
+separate installation step.

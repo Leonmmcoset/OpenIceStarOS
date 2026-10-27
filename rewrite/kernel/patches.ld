@@ -2,6 +2,15 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
+PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
+PROVIDE(kernel_syscall_target_808378 = 0x808378);
+PROVIDE(kernel_syscall_target_81021c = 0x81021c);
+PROVIDE(kernel_syscall_target_81017c = 0x81017c);
+PROVIDE(kernel_syscall_target_81041a = 0x81041a);
+PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
+PROVIDE(kernel_syscall_target_810478 = 0x810478);
+PROVIDE(kernel_syscall_target_810448 = 0x810448);
+PROVIDE(kernel_syscall_target_82a9bb = 0x82a9bb);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -119,6 +128,10 @@ SECTIONS
     ASSERT(kernel_unused_irq_callback == 0x813b2a && ADDR(.unused_irq_callback) + SIZEOF(.unused_irq_callback) <= 0x813b30, "unused IRQ callback overflow")
     .mouse_callback 0x813b30 : { *kernel_interrupt_callbacks.o(.text.kernel_mouse_callback) }
     ASSERT(kernel_mouse_callback == 0x813b30 && ADDR(.mouse_callback) + SIZEOF(.mouse_callback) <= 0x813b70, "mouse callback overflow")
+    .dispatch_syscall40 0x813b70 : { *kernel_syscalls.o(.text.kernel_dispatch_syscall40) }
+    ASSERT(kernel_dispatch_syscall40 == 0x813b70 && ADDR(.dispatch_syscall40) + SIZEOF(.dispatch_syscall40) <= 0x81406c, "syscall 0x40 dispatcher overflow")
+    .dispatch_syscall41 0x81406c : { *kernel_syscalls.o(.text.kernel_dispatch_syscall41) }
+    ASSERT(kernel_dispatch_syscall41 == 0x81406c && ADDR(.dispatch_syscall41) + SIZEOF(.dispatch_syscall41) <= 0x814176, "syscall 0x41 dispatcher overflow")
     .schedule_task 0x814176 : SUBALIGN(1) {
         *kernel_tasks.o(.text.kernel_schedule_task)
         *kernel_tasks.o(.text.timer_tick_body)
