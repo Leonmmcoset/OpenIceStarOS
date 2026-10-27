@@ -692,3 +692,42 @@ post-STARSCR mouse stall remains. Logs: `build/verify_memory_init.log`,
 `build/starscr_memory_init_smoke.log`; representative evidence is preserved
 in `build/memory_init_evidence/`. Other unrecovered kernel, driver and
 application routines still use original code.
+
+`kernel/memory_ops.c` recovers seven memory services: the overlap-safe byte
+move at `0x815a90` (70/114 bytes), byte fill at `0x815b02` (25/42), the
+fixed 1,200-byte copy at `0x815b2c` (31/6,134), blocked DWORD copy at
+`0x817322` (115/184), difference query at `0x817548` (45/72), and the
+allocation/free wrappers at `0x817590` (5/20) and `0x8175a4` (5/28).
+The large original copy unrolls 300 DWORD transfers; the C loop retains
+forward DWORD access order, including propagation through overlapping and
+unaligned ranges. The blocked copy takes a signed DWORD count, splits it
+into 300-element blocks and a remainder, and performs no transfers for
+negative counts. The difference query returns exactly zero or one, rather
+than an ordering result, and does not access memory for nonpositive counts.
+The byte move retains unsigned, wrapping overlap checks and returns the
+original destination; fill truncates its value to the low byte.
+
+The two memory-operation differential executables each pass 5,792 moves,
+69,504 fills, 288 fixed-block copies, 6,592 blocked copies, 2,576 comparison
+queries and 384 cases per allocation/free wrapper (171,040 comparisons
+altogether). Every case compares all 16,384 mapped bytes, defined results,
+and wrapper callback traces. Cases cover all four alignments, 18 valid
+layouts, both overlap directions, identical pointers, exact block and
+remainder boundaries, patterned/zero/high-byte data, low-byte truncation,
+invalid pointers with zero/nonpositive counts, early comparison exit, and
+source/destination boundaries adjoining inaccessible guard pages. Copy and
+comparison helpers are never mocked; wrapper tests stub only their already
+separately verified allocation/free boundaries.
+
+The complete verification suite passed on 2026-10-27 with all 114 replacement
+intervals. Three QEMU boots passed RAM/page/heap-chain checks (128 MiB and
+59 or 60 live headers), real TSS switching, PS/2 and CMD input, MOV's four
+pixel-exact frames, close and subsequent `cpuid`, and STARSCR's four phases,
+Esc and task cleanup. All installed kernel intervals matched guest memory.
+MOV's post-close CMD screen and STARSCR's first phase were visually inspected.
+The original post-STARSCR mouse stall remains; desktop reuse after that
+application is not verified. Logs: `build/verify_memory_ops.log`,
+`build/memory_ops_smoke.log`, `build/mov_memory_ops_smoke.log`, and
+`build/starscr_memory_ops_smoke.log`; representative evidence is preserved
+in `build/memory_ops_evidence/`. Unrecovered routines continue to use the
+original binary; this is not yet a complete OS build from source.

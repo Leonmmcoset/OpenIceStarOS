@@ -144,6 +144,20 @@ SECTIONS
     ASSERT(kernel_allocation_size == 0x815a0a && ADDR(.allocation_size) + SIZEOF(.allocation_size) <= 0x815a42, "allocation size overflow")
     .allocation_total 0x815a42 : { *kernel_memory.o(.text.kernel_task_allocation_total) }
     ASSERT(kernel_task_allocation_total == 0x815a42 && ADDR(.allocation_total) + SIZEOF(.allocation_total) <= 0x815a90, "allocation total overflow")
+    .move_bytes 0x815a90 : { *kernel_memory_ops.o(.text.kernel_move_bytes) }
+    ASSERT(kernel_move_bytes == 0x815a90 && ADDR(.move_bytes) + SIZEOF(.move_bytes) <= 0x815b02, "byte move overflow")
+    .fill_bytes 0x815b02 : { *kernel_memory_ops.o(.text.kernel_fill_bytes) }
+    ASSERT(kernel_fill_bytes == 0x815b02 && ADDR(.fill_bytes) + SIZEOF(.fill_bytes) <= 0x815b2c, "byte fill overflow")
+    .copy_1200 0x815b2c : { *kernel_memory_ops.o(.text.kernel_copy_1200_bytes) }
+    ASSERT(kernel_copy_1200_bytes == 0x815b2c && ADDR(.copy_1200) + SIZEOF(.copy_1200) <= 0x817322, "1200-byte copy overflow")
+    .copy_dwords 0x817322 : { *kernel_memory_ops.o(.text.kernel_copy_dwords) }
+    ASSERT(kernel_copy_dwords == 0x817322 && ADDR(.copy_dwords) + SIZEOF(.copy_dwords) <= 0x8173da, "DWORD copy overflow")
+    .memory_differs 0x817548 : { *kernel_memory_ops.o(.text.kernel_memory_differs) }
+    ASSERT(kernel_memory_differs == 0x817548 && ADDR(.memory_differs) + SIZEOF(.memory_differs) <= 0x817590, "memory comparison overflow")
+    .malloc 0x817590 : { *kernel_memory_ops.o(.text.kernel_malloc) }
+    ASSERT(kernel_malloc == 0x817590 && ADDR(.malloc) + SIZEOF(.malloc) <= 0x8175a4, "allocation wrapper overflow")
+    .free 0x8175a4 : { *kernel_memory_ops.o(.text.kernel_free) }
+    ASSERT(kernel_free == 0x8175a4 && ADDR(.free) + SIZEOF(.free) <= 0x8175c0, "free wrapper overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
