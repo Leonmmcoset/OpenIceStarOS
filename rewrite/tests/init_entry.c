@@ -7,6 +7,7 @@ static int fail_at, calls;
 static uint8_t buffer[128];
 
 void kernel_init_startup_record(void) { }
+void kernel_init_global_state(void) { }
 
 int init_find_root_directory(const char *name)
 {
