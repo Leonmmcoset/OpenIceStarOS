@@ -38,10 +38,13 @@ def main():
     parser.add_argument("image", nargs="?", type=Path)
     parser.add_argument("--input-check", action="store_true",
                         help="exercise the desktop pointer and CMD keyboard input")
+    parser.add_argument("--snake-check", action="store_true",
+                        help="load the C Snake through CMD and exercise movement/restart")
     arguments = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    image = arguments.image.resolve() if arguments.image else build / "IceStarOS_c_init.vhd"
+    default_image = "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd"
+    image = arguments.image.resolve() if arguments.image else build / default_image
     screen = build / "boot_c_init.ppm"
     memory = build / "boot_kernel.memory"
     with tempfile.TemporaryDirectory(prefix="icestar-qemu-") as temporary:
@@ -76,8 +79,11 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
-                    if arguments.input_check:
-                        check_inputs(execute, build, image)
+                    if arguments.input_check or arguments.snake_check:
+                        cmd_base = check_inputs(execute, build, image)
+                        if arguments.snake_check:
+                            from snake_smoke import check_snake
+                            check_snake(execute, build, image, cmd_base)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')
@@ -209,6 +215,7 @@ def check_inputs(execute, build, image):
     print("Input state: " + json.dumps(evidence))
     print("Mouse position, relocated CMD, input text, queue consumption, and prompt return verified")
     print("Inspect input_cpuid.png for the command result; its text is not OCR-checked")
+    return cmd_base
 
 
 if __name__ == "__main__":

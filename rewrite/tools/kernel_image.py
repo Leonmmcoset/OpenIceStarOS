@@ -84,47 +84,52 @@ class Fat16:
         raise ValueError("directory entry not found: " + name.decode("ascii"))
 
     def kernel_extents(self):
-        directory = self.find(self.root, b"ICESTAR    ", True)
-        contents = b"".join(self.data[o:o + self.cluster_bytes]
-                            for o in self.chain(word(directory, 26)))
-        entry = self.find(contents, b"ICESTAR X  ", False)
-        remaining = dword(entry, 28)
-        extents = []
-        for offset in self.chain(word(entry, 26)):
-            length = min(remaining, self.cluster_bytes)
-            if length:
-                extents.append((offset, length))
-                remaining -= length
-        require(remaining == 0 and extents, "truncated or empty kernel")
+        extents = self.file_extents(b"ICESTAR    ", b"ICESTAR X  ")
+        require(bool(extents), "empty kernel")
         return extents
 
     def read_kernel(self):
         return b"".join(self.data[o:o + n] for o, n in self.kernel_extents())
 
-    def read_file(self, *short_names):
-        """Read an explicit path of FAT 8.3 names, each exactly 11 bytes."""
+    def file_extents(self, *short_names):
+        """Locate file bytes without including final-cluster slack or directory data."""
         require(bool(short_names) and all(len(name) == 11 for name in short_names),
                 "expected a nonempty FAT short-name path")
         contents = self.root
         for index, name in enumerate(short_names):
             directory = index < len(short_names) - 1
             entry = self.find(contents, name, directory)
-            contents = b"".join(self.data[o:o + self.cluster_bytes]
-                                for o in self.chain(word(entry, 26)))
-            if not directory:
-                size = dword(entry, 28)
-                require(len(contents) >= size, "truncated file")
-                return contents[:size]
+            if directory:
+                contents = b"".join(self.data[o:o + self.cluster_bytes]
+                                    for o in self.chain(word(entry, 26)))
+            else:
+                remaining = dword(entry, 28)
+                extents = []
+                if remaining:
+                    for offset in self.chain(word(entry, 26)):
+                        length = min(remaining, self.cluster_bytes)
+                        if length:
+                            extents.append((offset, length))
+                            remaining -= length
+                require(remaining == 0, "truncated file")
+                return extents
 
-    def replace_kernel(self, kernel):
-        extents = self.kernel_extents()
-        require(sum(n for _, n in extents) == len(kernel), "kernel size must stay unchanged")
+    def read_file(self, *short_names):
+        """Read an explicit path of FAT 8.3 names, each exactly 11 bytes."""
+        return b"".join(self.data[o:o + n] for o, n in self.file_extents(*short_names))
+
+    def replace_file(self, replacement, *short_names):
+        extents = self.file_extents(*short_names)
+        require(sum(n for _, n in extents) == len(replacement), "file size must stay unchanged")
         result = bytearray(self.data)
         cursor = 0
         for offset, length in extents:
-            result[offset:offset + length] = kernel[cursor:cursor + length]
+            result[offset:offset + length] = replacement[cursor:cursor + length]
             cursor += length
         return result
+
+    def replace_kernel(self, kernel):
+        return self.replace_file(kernel, b"ICESTAR    ", b"ICESTAR X  ")
 
 
 def patched_kernel(original, manifest_path, build_path):

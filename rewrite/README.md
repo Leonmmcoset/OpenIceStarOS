@@ -271,3 +271,21 @@ Tests retain the original unchecked body-array overflow, draw-food-before-clear
 reset order, and missing digits for negative scores. Interrupts use identical
 test callbacks; actual OS loading and rendering require the separate QEMU
 integration check. The complete verification suite passed on 2026-10-27.
+
+`make run-c-snake` boots `build/IceStarOS_c_snake.vhd`, which installs the
+compiled Snake into its existing FAT16 cluster chain. `apps/images.json`
+records the original file hash and explicit short-name path. The installer
+preserves both FAT copies, directory entries, allocation slack, and every byte
+outside the replaced application. `tests/app_image.py` verifies those complete
+disk invariants, multi-cluster replacement, and rejection of invalid inputs.
+
+`make smoke-snake` uses QEMU snapshot mode, opens CMD through real PS/2 mouse
+input, runs `cpuid`, changes to `C:\ICESTAR\GAMES`, and launches `snake.x`.
+It compares the running relocated C instructions and strings with the linked
+image, then verifies wall collision, R restart, Down-arrow movement, and an A
+turn. The original keyboard translator maps E0 arrow scancodes to keypad
+digits when Num Lock is enabled; the test disables that mode through the
+emulated Num Lock key before testing the scan-only arrow path. It changes no
+guest code or game state. Evidence and screenshots are written to
+`build/snake_smoke.json` and `build/snake_*.png`. The game still depends on the
+partially recovered kernel, original window system, desktop, and CMD.

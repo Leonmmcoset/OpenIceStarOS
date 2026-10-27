@@ -1,0 +1,59 @@
+"""Verify exact FAT16 application replacement and preservation of all other bytes."""
+
+from pathlib import Path
+import sys
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from app_image import installed, verify
+from kernel_image import Fat16
+
+SNAKE = (b"ICESTAR    ", b"GAMES      ", b"SNAKE   X  ")
+
+
+class ApplicationImageTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.source = (ROOT / "build/IceStarOS_c_init.vhd").read_bytes()
+        cls.manifest = ROOT / "apps/images.json"
+        cls.build = ROOT / "build"
+        cls.result = installed(cls.source, cls.manifest, cls.build)
+
+    def test_exact_extent_changes(self):
+        expected = (self.build / "snake.x").read_bytes()
+        self.assertEqual(Fat16(self.result).read_file(*SNAKE), expected)
+        verify(self.source, self.result, self.manifest, self.build)
+        restored = Fat16(self.result).replace_file(Fat16(self.source).read_file(*SNAKE), *SNAKE)
+        self.assertEqual(restored, self.source)
+        self.assertNotEqual(self.result, self.source)
+
+    def test_multiple_cluster_file(self):
+        path = (b"ICESTAR    ", b"CMD     X  ")
+        disk = Fat16(self.source)
+        extents = disk.file_extents(*path)
+        self.assertGreater(len(extents), 1)
+        original = disk.read_file(*path)
+        self.assertEqual(sum(size for _, size in extents), len(original))
+        replacement = bytes((i * 37 + 5) % 256 for i in range(len(original)))
+        changed = Fat16(disk.replace_file(replacement, *path))
+        self.assertEqual(changed.read_file(*path), replacement)
+        self.assertEqual(changed.replace_file(original, *path), self.source)
+
+    def test_reject_invalid_installation(self):
+        with self.assertRaises(ValueError):
+            installed(self.result, self.manifest, self.build)
+        for data in (self.result[:-1], b"x" + self.result[1:]):
+            with self.assertRaises(ValueError):
+                verify(self.source, data, self.manifest, self.build)
+        disk = Fat16(self.source)
+        for replacement in (b"", b"x", disk.read_file(*SNAKE) + b"x"):
+            with self.assertRaises(ValueError):
+                disk.replace_file(replacement, *SNAKE)
+        for path in ((), (b"bad",), (b"MISSING X  ",)):
+            with self.assertRaises(ValueError):
+                disk.file_extents(*path)
+
+
+if __name__ == "__main__":
+    unittest.main()
