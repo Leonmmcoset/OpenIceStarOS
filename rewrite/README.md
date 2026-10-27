@@ -950,3 +950,19 @@ CMD screenshot was visually inspected. STARSCR still has the known original
 post-exit mouse stall; desktop reuse after STARSCR is not verified. Logs:
 `build/verify_fpu.log`, `build/fpu_smoke.log`, `build/mov_fpu_smoke.log`,
 `build/starscr_fpu_smoke.log`; screenshots/JSON: `build/fpu_evidence/`.
+
+`kernel/interrupts.c/.h` recovers the interrupt-table initializer at
+`0x813320..0x8135c6`: 265 ordered gate installations, a single captured boot
+code selector, 11 gate overrides and 12 sparse callback stores. It preserves
+vector 255 and all unused callback slots. `kernel/interrupt_hardware.c`
+recovers the gate/LIDT boundary, boot-selector GS access and original PIC,
+PIT and RTC programming at `0x8370d2..0x8371a0`; all five leaves compile to
+identical original bytes (95, 18, 57, 13 and 23 bytes). The original gate
+helper has unchecked 32-bit vector arithmetic and reloads IDTR after every
+installation; RTC setup retains its original register value and mask changes.
+The host preview passes 96 original/C/oracle scenarios (25,440 gate events)
+across full-width selectors, memory patterns and callback mutations. It checks
+the full 20,480-byte shared region and ordered arguments, including selector
+mutation after capture and callback-table mutation during gate installation.
+Log: `build/interrupts_preview_test.log`. Fixed-address installation and
+privileged execution checks are the next step for these six functions.
