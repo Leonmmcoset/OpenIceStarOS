@@ -74,6 +74,12 @@ $(BUILD)/init_entry.o: init/entry.c init/entry.h | $(BUILD)
 $(BUILD)/init_directory.o: init/directory.c init/directory.h init/entry.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
 
+$(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+
+$(BUILD)/init_clusters_test: tests/init_clusters.c init/clusters.c init/directory.c init/clusters.h init/directory.h | $(BUILD)
+	$(CC) -std=c11 -Wall -Wextra -Werror -DINIT_CLUSTERS_HOST_TEST -DINIT_DIRECTORY_HOST_TEST -Iinit tests/init_clusters.c init/clusters.c init/directory.c -o $@
+
 $(BUILD)/init_directory_test: tests/init_directory.c init/directory.c init/directory.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DINIT_DIRECTORY_HOST_TEST -Iinit tests/init_directory.c init/directory.c -o $@
 
@@ -86,7 +92,7 @@ $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/ini
 $(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_directory_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
@@ -97,6 +103,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/fat
 	printf '%s  %s\n' 0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007 $(BUILD)/init.x | sha256sum -c -
 	$(BUILD)/init_entry_test
 	$(BUILD)/init_directory_test $(IMAGE)
+	$(BUILD)/init_clusters_test $(IMAGE) $(BUILD)/dat.bin $(BUILD)/icestar.x
+	printf '%s  %s\n' 01a8f491fefa8563238533936beca1ea7cafe7cbebfb55a9743a436b27b61ea8 $(BUILD)/dat.bin 9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3 $(BUILD)/icestar.x | sha256sum -c -
 	$(BUILD)/init_transfer_test
 	$(BUILD)/pci_test
 

@@ -35,5 +35,6 @@ other low memory if sufficiently many devices are present.
 `init/entry.c` recovers the `INIT.X` entry control flow and its helper at
 original addresses `0x70040` and `0x700a2`. `init/directory.c` recovers the
 root directory and first-cluster file searches at `0x70c70` and `0x70bb0`.
-Directory and file cluster reads remain unresolved, so this code is compiled
-and tested but is not linked into the boot image.
+`init/clusters.c` recovers the cluster-chain reads and primary ATA sector read
+used by those searches. The recovered INIT code is compiled and tested against
+the disk image, but is not yet linked into the boot image.

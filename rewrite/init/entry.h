@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-/* Cluster reads remain to be recovered from INIT.X. */
 int init_find_root_directory(const char *name);
 int init_read_root_directory(int index, uint8_t *destination);
 int init_find_file(const uint8_t *directory, const char *name);
