@@ -414,6 +414,9 @@ $(BUILD)/kernel_surface_draw32_test: tests/kernel_surface_draw32.c kernel/surfac
 $(BUILD)/kernel_surface_draw32_linked_test: tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_draw.h kernel/surface_alpha.c kernel/surface_alpha.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_alpha.c kernel/surface_present.c -o $@
 
+$(BUILD)/kernel_surface_move_test: tests/kernel_surface_move.c kernel/surface_move.c kernel/surface_move.h kernel/surface_composite.h kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_move.c kernel/surface_move.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 

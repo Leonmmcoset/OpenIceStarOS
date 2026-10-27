@@ -1466,3 +1466,24 @@ flags and produced a byte-identical object; log:
 `build/surface_draw32_comment_check.log`. This closes the graphics regression
 checkpoint, not recovery of the whole OS. The unrecovered dependencies and
 STARSCR post-exit mouse/timer limitation above remain.
+
+`kernel/surface_move.c/.h` recovers moved-layer damage selection at
+`0x8191d8..0x8194e4`. It composites the new rectangle, uses the original
+rectangle predicate, redraws the exposed old strips and presents either
+one combined rectangle or the two individual rectangles. The active lower
+layer, displacement and presentation callback are cached, while the seven
+incoming argument words stay live across callbacks. Signed decisions,
+32-bit wrapped endpoints, exact comparison of the predicate return with
+one, separate outgoing arguments and the final callback's raw return are
+preserved.
+
+The standalone original/C/independent-oracle fixture passes 51,200 cases,
+covering all four movement quadrants, zero and signed-boundary dimensions,
+32 curated/generated geometries, four unaligned/wrapped layer layouts,
+five active-layer values and both style branches. Callback variants overwrite
+outgoing arguments, modify the caller's live arguments, corrupt cached
+global/table inputs and force predicate results of 0, 1, 2 or `0xffffffff`.
+All events, caller words including a sentinel, raw returns and four mapped
+memory pages match. Logs: `build/surface_move_preview_build.log` and
+`build/surface_move_preview.log`. The C object occupies 586 bytes against
+780 available; this source checkpoint does not yet install it in the VHDs.
