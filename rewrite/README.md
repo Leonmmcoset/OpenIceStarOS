@@ -832,5 +832,14 @@ pointer after its read and a slot after its first read. They verify one global
 load, two nonempty slot loads, changed callback selection, a real null-call
 fault when a checked slot becomes zero, and no call when an empty slot becomes
 nonzero. Only the external memory changes are supplied by the harness; the
-complete original and rebuilt wrappers execute. Fixed-address installation
-and integration verification follow this source-recovery step.
+complete original and rebuilt wrappers execute.
+
+All 25 wrappers are now installed at their original entry points, bringing
+the manifest to 150 replacement intervals. The slot-32 C function omits its
+frame pointer to fit its 44-byte interval (42 compiled bytes); its real call
+boundary and volatile rereads remain intact. Both host-linked and
+fixed-address tests pass 275,456 ordinary and 100 watched comparisons each
+(550,912 ordinary and 200 watched comparisons altogether). Logs:
+`build/service_optional_build.log`, `build/service_optional_test.log` and
+`build/service_optional_linked_test.log`. Full-image and QEMU integration
+checks follow this fixed-address integration step.

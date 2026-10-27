@@ -12,9 +12,10 @@
 
 /* The original captures the global table once, tests a slot, then loads that
  * same slot again for the call. Both reads remain volatile. A real call also
- * isolates the wrapper caller's argument area from callback writes. */
+ * isolates the wrapper caller's argument area from callback writes. Omitting
+ * the frame pointer keeps slot 32 inside its original 44-byte interval. */
 #define OPTIONAL(suffix, slot, form, empty, start, end) \
-    __attribute__((optimize("no-optimize-sibling-calls"))) \
+    __attribute__((optimize("no-optimize-sibling-calls", "omit-frame-pointer"))) \
     uint32_t kernel_optional_##suffix(OPTIONAL_PARAMETERS_##form) \
     { \
         typedef uint32_t (*function)(OPTIONAL_PARAMETERS_##form); \

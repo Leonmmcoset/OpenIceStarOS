@@ -17,7 +17,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o $(BUILD)/kernel_memory.o \
                   $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o $(BUILD)/kernel_memory_ops.o \
                   $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o \
-                  $(BUILD)/kernel_graphics_primitives.o
+                  $(BUILD)/kernel_graphics_primitives.o $(BUILD)/kernel_service_optional.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -62,7 +62,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.rep_copy_bytes.bin $(BUILD)/kernel.rep_fill_bytes.bin \
                   $(BUILD)/kernel.rep_copy_words.bin $(BUILD)/kernel.rep_fill_words.bin \
                   $(BUILD)/kernel.rep_copy_dwords.bin $(BUILD)/kernel.rep_fill_dwords.bin \
-                  $(BUILD)/kernel.wait_vertical_retrace.bin $(BUILD)/kernel.blend_color.bin
+                  $(BUILD)/kernel.wait_vertical_retrace.bin $(BUILD)/kernel.blend_color.bin \
+                  $(foreach slot,14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c,$(BUILD)/kernel.optional_$(slot).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -148,6 +149,7 @@ $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 
 $(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
+$(BUILD)/kernel_service_optional.o: kernel/service_optional.h kernel/service_optional.def
 $(BUILD)/kernel_runtime.o: kernel/runtime.h
 $(BUILD)/kernel_tasks.o: kernel/runtime.h kernel/service_forward.h kernel/service_forward.def
 $(BUILD)/kernel_task_create.o: kernel/tasks.h kernel/helpers.h kernel/memory.h
@@ -230,6 +232,12 @@ $(BUILD)/kernel_service_forward_test: tests/kernel_service_forward.c kernel/serv
 
 $(BUILD)/kernel_service_forward_linked_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
+
+$(BUILD)/kernel_service_optional_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_service_optional.c kernel/service_optional.c -o $@
+
+$(BUILD)/kernel_service_optional_linked_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_optional.c kernel/service_optional.c -o $@
 
 $(BUILD)/kernel_runtime_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_runtime.c kernel/runtime.c -o $@
@@ -352,6 +360,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_keyboard_linked_test
 	$(BUILD)/kernel_service_forward_test
 	$(BUILD)/kernel_service_forward_linked_test
+	$(BUILD)/kernel_service_optional_test
+	$(BUILD)/kernel_service_optional_linked_test
 	$(BUILD)/kernel_runtime_test
 	$(BUILD)/kernel_runtime_linked_test
 	$(BUILD)/kernel_tasks_test
@@ -385,6 +395,7 @@ verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
 verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
 verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_linked_test
+verify: $(BUILD)/kernel_service_optional_test $(BUILD)/kernel_service_optional_linked_test
 verify: $(BUILD)/kernel_runtime_test $(BUILD)/kernel_runtime_linked_test
 verify: $(BUILD)/kernel_tasks_test $(BUILD)/kernel_tasks_linked_test
 verify: $(BUILD)/kernel_task_create_test $(BUILD)/kernel_task_create_linked_test

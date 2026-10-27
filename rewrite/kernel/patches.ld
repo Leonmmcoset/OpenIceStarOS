@@ -350,6 +350,56 @@ SECTIONS
     ASSERT(kernel_service_12 == 0x83790b && ADDR(.service_12) + SIZEOF(.service_12) <= 0x837939, "service 12 overflow")
     .service_13 0x837939 : { *kernel_service_forward.o(.text.kernel_service_13) }
     ASSERT(kernel_service_13 == 0x837939 && ADDR(.service_13) + SIZEOF(.service_13) <= 0x837967, "service 13 overflow")
+    .optional_14 0x837967 : { *kernel_service_optional.o(.text.kernel_optional_14) }
+    ASSERT(kernel_optional_14 == 0x837967 && ADDR(.optional_14) + SIZEOF(.optional_14) <= 0x83799b, "optional service 14 overflow")
+    .optional_15 0x83799b : { *kernel_service_optional.o(.text.kernel_optional_15) }
+    ASSERT(kernel_optional_15 == 0x83799b && ADDR(.optional_15) + SIZEOF(.optional_15) <= 0x8379dd, "optional service 15 overflow")
+    .optional_16 0x8379dd : { *kernel_service_optional.o(.text.kernel_optional_16) }
+    ASSERT(kernel_optional_16 == 0x8379dd && ADDR(.optional_16) + SIZEOF(.optional_16) <= 0x837a17, "optional service 16 overflow")
+    .optional_17 0x837a17 : { *kernel_service_optional.o(.text.kernel_optional_17) }
+    ASSERT(kernel_optional_17 == 0x837a17 && ADDR(.optional_17) + SIZEOF(.optional_17) <= 0x837a4b, "optional service 17 overflow")
+    .optional_18 0x837a4b : { *kernel_service_optional.o(.text.kernel_optional_18) }
+    ASSERT(kernel_optional_18 == 0x837a4b && ADDR(.optional_18) + SIZEOF(.optional_18) <= 0x837a77, "optional service 18 overflow")
+    .optional_19 0x837a77 : { *kernel_service_optional.o(.text.kernel_optional_19) }
+    ASSERT(kernel_optional_19 == 0x837a77 && ADDR(.optional_19) + SIZEOF(.optional_19) <= 0x837aab, "optional service 19 overflow")
+    .optional_1a 0x837aab : { *kernel_service_optional.o(.text.kernel_optional_1a) }
+    ASSERT(kernel_optional_1a == 0x837aab && ADDR(.optional_1a) + SIZEOF(.optional_1a) <= 0x837aed, "optional service 1a overflow")
+    .optional_1b 0x837aed : { *kernel_service_optional.o(.text.kernel_optional_1b) }
+    ASSERT(kernel_optional_1b == 0x837aed && ADDR(.optional_1b) + SIZEOF(.optional_1b) <= 0x837b1f, "optional service 1b overflow")
+    .optional_1c 0x837b1f : { *kernel_service_optional.o(.text.kernel_optional_1c) }
+    ASSERT(kernel_optional_1c == 0x837b1f && ADDR(.optional_1c) + SIZEOF(.optional_1c) <= 0x837b53, "optional service 1c overflow")
+    .optional_1d 0x837b53 : { *kernel_service_optional.o(.text.kernel_optional_1d) }
+    ASSERT(kernel_optional_1d == 0x837b53 && ADDR(.optional_1d) + SIZEOF(.optional_1d) <= 0x837b87, "optional service 1d overflow")
+    .optional_1e 0x837b87 : { *kernel_service_optional.o(.text.kernel_optional_1e) }
+    ASSERT(kernel_optional_1e == 0x837b87 && ADDR(.optional_1e) + SIZEOF(.optional_1e) <= 0x837bb3, "optional service 1e overflow")
+    .optional_1f 0x837bb3 : { *kernel_service_optional.o(.text.kernel_optional_1f) }
+    ASSERT(kernel_optional_1f == 0x837bb3 && ADDR(.optional_1f) + SIZEOF(.optional_1f) <= 0x837bdf, "optional service 1f overflow")
+    .optional_20 0x837bdf : { *kernel_service_optional.o(.text.kernel_optional_20) }
+    ASSERT(kernel_optional_20 == 0x837bdf && ADDR(.optional_20) + SIZEOF(.optional_20) <= 0x837c0b, "optional service 20 overflow")
+    .optional_21 0x837c0b : { *kernel_service_optional.o(.text.kernel_optional_21) }
+    ASSERT(kernel_optional_21 == 0x837c0b && ADDR(.optional_21) + SIZEOF(.optional_21) <= 0x837c51, "optional service 21 overflow")
+    .optional_22 0x837c51 : { *kernel_service_optional.o(.text.kernel_optional_22) }
+    ASSERT(kernel_optional_22 == 0x837c51 && ADDR(.optional_22) + SIZEOF(.optional_22) <= 0x837c9f, "optional service 22 overflow")
+    .optional_23 0x837c9f : { *kernel_service_optional.o(.text.kernel_optional_23) }
+    ASSERT(kernel_optional_23 == 0x837c9f && ADDR(.optional_23) + SIZEOF(.optional_23) <= 0x837ce5, "optional service 23 overflow")
+    .optional_24 0x837ce5 : { *kernel_service_optional.o(.text.kernel_optional_24) }
+    ASSERT(kernel_optional_24 == 0x837ce5 && ADDR(.optional_24) + SIZEOF(.optional_24) <= 0x837d25, "optional service 24 overflow")
+    .optional_25 0x837d25 : { *kernel_service_optional.o(.text.kernel_optional_25) }
+    ASSERT(kernel_optional_25 == 0x837d25 && ADDR(.optional_25) + SIZEOF(.optional_25) <= 0x837d5d, "optional service 25 overflow")
+    .optional_26 0x837d5d : { *kernel_service_optional.o(.text.kernel_optional_26) }
+    ASSERT(kernel_optional_26 == 0x837d5d && ADDR(.optional_26) + SIZEOF(.optional_26) <= 0x837d9d, "optional service 26 overflow")
+    .optional_27 0x837d9d : { *kernel_service_optional.o(.text.kernel_optional_27) }
+    ASSERT(kernel_optional_27 == 0x837d9d && ADDR(.optional_27) + SIZEOF(.optional_27) <= 0x837ddd, "optional service 27 overflow")
+    .optional_28 0x837ddd : { *kernel_service_optional.o(.text.kernel_optional_28) }
+    ASSERT(kernel_optional_28 == 0x837ddd && ADDR(.optional_28) + SIZEOF(.optional_28) <= 0x837e1d, "optional service 28 overflow")
+    .optional_29 0x837e1d : { *kernel_service_optional.o(.text.kernel_optional_29) }
+    ASSERT(kernel_optional_29 == 0x837e1d && ADDR(.optional_29) + SIZEOF(.optional_29) <= 0x837e63, "optional service 29 overflow")
+    .optional_2a 0x837e63 : { *kernel_service_optional.o(.text.kernel_optional_2a) }
+    ASSERT(kernel_optional_2a == 0x837e63 && ADDR(.optional_2a) + SIZEOF(.optional_2a) <= 0x837ecd, "optional service 2a overflow")
+    .optional_2b 0x837ecd : { *kernel_service_optional.o(.text.kernel_optional_2b) }
+    ASSERT(kernel_optional_2b == 0x837ecd && ADDR(.optional_2b) + SIZEOF(.optional_2b) <= 0x837f0d, "optional service 2b overflow")
+    .optional_2c 0x837f0d : { *kernel_service_optional.o(.text.kernel_optional_2c) }
+    ASSERT(kernel_optional_2c == 0x837f0d && ADDR(.optional_2c) + SIZEOF(.optional_2c) <= 0x837f5f, "optional service 2c overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
