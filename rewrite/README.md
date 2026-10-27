@@ -603,3 +603,47 @@ Logs: `build/verify_helpers.log`, `build/tasks_helpers_smoke.log`,
 `build/mov_helpers_smoke.log`, and `build/starscr_helpers_smoke.log`.
 Representative JSON and image evidence is preserved in
 `build/helpers_evidence/`.
+
+`kernel/memory.c` recovers six heap services at `0x815464..0x815a90`:
+ordinary allocation (230/358 bytes), explicit-owner allocation (225/350),
+aligned allocation (309/592), free (95/146), allocation size (26/56), and
+per-owner allocation total (59/78). Task constructors and deletion now use
+these compiled allocation/free routines. The heap starts at 32 MiB and uses
+16-byte next/previous/used/owner headers.
+
+The recovered code preserves first-fit order, `(size + 0x40f)` rounding with
+DWORD wraparound, the strict `> 0x40f` split threshold, store/reload ordering,
+and the original incomplete previous-link maintenance. Aligned allocation
+retains unsigned size division, signed address division, discarded prefixes,
+and the unconditional write through the previous-header pointer. Null previous
+pointers and invalid divisors are not silently repaired. Free performs the
+original single previous/next merge and does not repair successor back-links.
+Size queries ignore used state; owner totals count headers and require used
+to equal exactly one.
+
+Each memory differential executable passes 7,392 ordinary allocations, 7,392
+explicit-owner allocations, 59,136 aligned allocations, 2,464 frees, 2,640 size
+queries, and 528 owner totals (159,104 comparisons across host-linked and
+fixed-address C). Every case compares return values, all 151,552 mapped data
+bytes, and ordered flag/CLI callback traces. Layouts cover empty/occupied
+tails, exact fits, split boundaries, unaligned and nonmonotonic links,
+header aliasing, unsigned span/size wraparound, non-power-of-two alignment,
+and callback changes to owners, memory limits, and heap state. Additional
+forked comparisons verify SIGFPE for zero alignment and signed quotient
+overflow, and SIGSEGV for a null previous-header pointer. Short trampolines
+keep the tiny flag primitives from overlapping in the test fixture; a second
+mapped arena captures actual 2 GiB-offset split headers from large unsigned
+spans rather than excluding those cases.
+
+The complete verification suite passed on 2026-10-27 with all 102 replacement
+intervals. QEMU passed real TSS switching with 12 advancing timer ticks,
+PS/2 and CMD input, MOV's four pixel-exact frames, close, image/task cleanup
+and subsequent `cpuid`, and STARSCR's four phases, Esc and task cleanup.
+All installed intervals matched guest memory. MOV's post-close CMD screen
+and STARSCR's first phase were visually inspected. The original post-STARSCR
+mouse-input stall remains; desktop reuse after that application is not
+verified. Logs: `build/verify_memory.log`, `build/tasks_memory_smoke.log`,
+`build/mov_memory_smoke.log`, and `build/starscr_memory_smoke.log`.
+Representative JSON and image evidence is preserved in
+`build/memory_evidence/`. Memory probing/heap initialization and other
+unrecovered routines still use original code at this stage.

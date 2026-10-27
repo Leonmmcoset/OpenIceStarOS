@@ -2,9 +2,6 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
-PROVIDE(kernel_allocate = 0x815464);
-PROVIDE(kernel_free_allocation = 0x815978);
-PROVIDE(kernel_allocation_size = 0x815a0a);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -131,6 +128,18 @@ SECTIONS
     ASSERT(kernel_create_thread == 0x815002 && ADDR(.task_create_thread) + SIZEOF(.task_create_thread) <= 0x8150aa, "thread creation overflow")
     .task_active 0x8150aa : { *kernel_task_lifecycle.o(.text.kernel_task_is_active) }
     ASSERT(kernel_task_is_active == 0x8150aa && ADDR(.task_active) + SIZEOF(.task_active) <= 0x815106, "task state query overflow")
+    .allocate 0x815464 : { *kernel_memory.o(.text.kernel_allocate) }
+    ASSERT(kernel_allocate == 0x815464 && ADDR(.allocate) + SIZEOF(.allocate) <= 0x8155ca, "allocation overflow")
+    .allocate_owner 0x8155ca : { *kernel_memory.o(.text.kernel_allocate_for_task) }
+    ASSERT(kernel_allocate_for_task == 0x8155ca && ADDR(.allocate_owner) + SIZEOF(.allocate_owner) <= 0x815728, "owner allocation overflow")
+    .allocate_aligned 0x815728 : { *kernel_memory.o(.text.kernel_allocate_aligned) }
+    ASSERT(kernel_allocate_aligned == 0x815728 && ADDR(.allocate_aligned) + SIZEOF(.allocate_aligned) <= 0x815978, "aligned allocation overflow")
+    .free_allocation 0x815978 : { *kernel_memory.o(.text.kernel_free_allocation) }
+    ASSERT(kernel_free_allocation == 0x815978 && ADDR(.free_allocation) + SIZEOF(.free_allocation) <= 0x815a0a, "allocation free overflow")
+    .allocation_size 0x815a0a : { *kernel_memory.o(.text.kernel_allocation_size) }
+    ASSERT(kernel_allocation_size == 0x815a0a && ADDR(.allocation_size) + SIZEOF(.allocation_size) <= 0x815a42, "allocation size overflow")
+    .allocation_total 0x815a42 : { *kernel_memory.o(.text.kernel_task_allocation_total) }
+    ASSERT(kernel_task_allocation_total == 0x815a42 && ADDR(.allocation_total) + SIZEOF(.allocation_total) <= 0x815a90, "allocation total overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
