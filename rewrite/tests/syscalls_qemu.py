@@ -11,9 +11,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--installed", action="store_true")
     parser.add_argument("--services", action="store_true", help="Use four recovered services inside the installed chains")
+    parser.add_argument("--surfaces", action="store_true", help="Execute the installed refresh/clip/list chain with observed drawing callbacks")
     args = parser.parse_args()
     if args.services and not args.installed:
         parser.error("--services requires --installed")
+    if args.surfaces and not args.installed:
+        parser.error("--surfaces requires --installed")
     subprocess.run(["make", "build/icestar_c.x"], cwd=ROOT, check=True)
     flags = ["-m32", "-march=i386", "-Os", "-ffreestanding", "-fno-pic", "-fno-pie",
              "-fno-stack-protector", "-fno-asynchronous-unwind-tables", "-ffunction-sections",
@@ -22,6 +25,8 @@ def main():
         flags.append("-DKERNEL_LINKED_TEST")
     if args.services:
         flags.append("-DKERNEL_SERVICE_CHAIN_TEST")
+    if args.surfaces:
+        flags.append("-DKERNEL_SURFACE_CHAIN_TEST")
     objects = []
     for source, name, defines in (
         ("tests/syscalls_qemu.c", "syscalls_qemu", []),
@@ -35,19 +40,23 @@ def main():
     elf = BUILD / "syscalls_qemu.elf"
     subprocess.run(["ld", "-m", "elf_i386", "-T", "tests/interrupts_qemu.ld", "-o", str(elf),
                     *objects], cwd=ROOT, check=True)
-    log = BUILD / ("syscalls_qemu_services.log" if args.services else "syscalls_qemu_installed.log" if args.installed else "syscalls_qemu_preview.log")
+    log = BUILD / ("syscalls_qemu_surfaces_services.log" if args.surfaces and args.services else
+                   "syscalls_qemu_surfaces.log" if args.surfaces else
+                   "syscalls_qemu_services.log" if args.services else "syscalls_qemu_installed.log" if args.installed else "syscalls_qemu_preview.log")
     result = subprocess.run(["qemu-system-i386", "-machine", "pc", "-cpu", "max", "-m", "64",
                              "-kernel", str(elf), "-display", "none", "-serial", "none", "-monitor", "none",
                              "-icount", "shift=0,align=off,sleep=off", "-no-reboot", "-no-shutdown",
                              "-debugcon", "file:" + str(log),
                              "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04"],
-                            cwd=ROOT, timeout=45, capture_output=True, text=True)
+                            cwd=ROOT, timeout=135 if args.surfaces else 45, capture_output=True, text=True)
     output = log.read_text()
     print(output, end="")
     if result.returncode != 33 or "PASS: 3456 complete syscall-chain comparisons" not in output:
         raise RuntimeError(f"Syscall fixture failed (QEMU exit {result.returncode}): {result.stderr}")
     if args.services and "PASS: recovered object fields and xorshift services" not in output:
         raise RuntimeError("Recovered service chain checks did not run")
+    if args.surfaces and "PASS: 2048 additional native surface-chain comparisons" not in output:
+        raise RuntimeError("Recovered surface chain checks did not run")
 
 
 if __name__ == "__main__":

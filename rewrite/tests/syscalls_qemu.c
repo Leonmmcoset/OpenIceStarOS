@@ -23,6 +23,15 @@ static uint32_t tss[26],count,ring,vector,operation,pattern,phase,gate_type;
 static uint32_t parameters[8],trace[11],saved_trace[11],saved_result[14];
 static uint8_t saved_memory[0x4040];
 static uint32_t seed_hits;
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+static uint32_t surface_variant,surface_count,surface_total;
+static uint32_t surface_events[8][10];
+static uint8_t surface_memory[0x2000];
+static const uint32_t surface_rectangles[][4]={
+    {0,0,1,1},{0xffffffff,0xffffffff,17,19},{120,90,20,30},
+    {0x7fffffff,0x7fffffff,1,1},{1,2,0xffffffff,0x80000000},
+    {128,96,0,0},{200,300,40,50},{0x80000000,5,0x7fffffff,100}};
+#endif
 uint32_t syscalls_input[8],syscalls_result[14],syscalls_flags,syscalls_segment;
 uint32_t syscalls_stack,syscalls_kernel_stack,syscalls_operation;
 uint32_t syscalls_callback_flags,syscalls_callback_cs,syscalls_callback_ds,syscalls_callback_ss;
@@ -47,6 +56,14 @@ static int real_service(void)
 {
 #ifdef KERNEL_SERVICE_CHAIN_TEST
     return vector==0x40?operation==18:(operation==1||operation==2||operation==4);
+#else
+    return 0;
+#endif
+}
+static int real_surface(void)
+{
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+    return vector==0x40 && operation==16;
 #else
     return 0;
 #endif
@@ -95,6 +112,91 @@ STUB(uint32_t,kernel_syscall_target_82a9bb,0x82a9bb,(uint32_t a0,uint32_t a1))
 STUB(uint32_t,kernel_palette_color,0x81b714,(uint32_t a0))
 STUB(void,kernel_queue_api_request,0x80129e,(uint32_t a0,uint32_t a1))
 STUB(void,kernel_yield_task,0x81434a,(void))
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+__attribute__((used,noinline)) static uint32_t surface_observe(volatile uint32_t *args,uint32_t kind)
+{
+    uint32_t i,*event;uint16_t cs,ds,ss;
+    __asm__ volatile("movw %%cs,%0;movw %%ds,%1;movw %%ss,%2":"=r"(cs),"=r"(ds),"=r"(ss));
+    require(surface_count<8);event=surface_events[surface_count++];event[0]=kind;
+    for(i=0;i<(kind==1?5u:4u);++i){event[i+1]=args[i];args[i]=0xa5a50000|i;}
+    event[6]=syscalls_callback_flags&0x600;event[7]=cs;event[8]=ds;event[9]=ss;
+    if(kind==1 && surface_count==1){
+        if(pattern&1)WORD(0x510000)=0;
+        if(pattern&2){
+            WORD(0x51000c)=0xdecafbad;WORD(0x1b0e4)=0xdeadbeef;
+            WORD(0x500000)=0xdeadbeef;WORD(0x6a001c)=0xdeadbeef;
+        }
+    }
+    WORD(0x1b300)^=kind*0x132457;return 0xcdef0000|kind;
+}
+#define SURFACE_STUB(name,kind) \
+    __attribute__((naked,noinline)) static uint32_t name(void) { \
+        __asm__("pushl %ebp;movl %esp,%ebp;pushfl;popl syscalls_callback_flags;cld;" \
+            "pushl $" #kind ";leal 8(%ebp),%eax;pushl %eax;call surface_observe;addl $8,%esp;leave;" \
+            "pushl syscalls_callback_flags;popfl;ret"); }
+SURFACE_STUB(surface_draw,1)
+SURFACE_STUB(surface_present,2)
+#undef SURFACE_STUB
+static uint32_t requested_order(void)
+{return surface_variant&1?0:(surface_variant&16?6:2);}
+static uint32_t active_layer(void)
+{return surface_variant&2?1:(surface_variant&8?0x80000001:0);}
+static uint32_t active_order(void)
+{return surface_variant&8?1:3;}
+static void surface_setup(void)
+{
+    uint32_t i,a=pattern&3;
+    for(i=0;i<0x1000;++i){((volatile uint8_t *)0x500000)[i]=(uint8_t)(i*31+pattern*59);
+        ((volatile uint8_t *)0x510000)[i]=(uint8_t)(i*17+pattern*23);}
+    parameters[0]=0xc0000007;WORD(0x60000c)=parameters[0];
+    WORD(0x6a001c)=0x610500+a;WORD(0x610500+a+12)=0xc0000005;
+    WORD(0x500000)=0x610100+a;WORD(0x500004)=0x610300+a;
+    WORD(0x500008)=0x610400+a;WORD(0x500014)=0x610200+a;
+    WORD(0x610100+a+12)=128;WORD(0x610100+a+16)=96;
+    for(i=0;i<4;++i)WORD(0x610200+a+4+4*i)=surface_rectangles[pattern&7][i];
+    WORD(0x610200+a+40)=surface_variant&4?0x80000000:0;
+    WORD(0x610200+a+44)=requested_order();WORD(0x610300+a+44)=active_order();
+    WORD(0x610400+a+44)=1;WORD(0x1b138)=active_layer();
+    WORD(0x1b0e4)=0x610601;WORD(0x610601+40)=(uint32_t)surface_draw;
+    WORD(0x610601+44)=(uint32_t)surface_present;
+    WORD(0x510000)=4;for(i=1;i<=4;++i)WORD(0x510000+4*i)=0x11110000+i;
+    surface_count=0;for(i=0;i<80;++i)((uint32_t *)surface_events)[i]=0;
+}
+static void surface_event_check(uint32_t row,uint32_t kind,const uint32_t *args)
+{
+    uint32_t i;require(row<surface_count);require(surface_events[row][0]==kind);
+    for(i=0;i<(kind==1?5u:4u);++i)require(surface_events[row][i+1]==args[i]);
+    if(kind==2)require(surface_events[row][5]==0);
+    require(surface_events[row][6]==(syscalls_flags&0x400));
+    require(surface_events[row][7]==16 && surface_events[row][8]==8 && surface_events[row][9]==8);
+}
+static void surface_check(void)
+{
+    uint32_t i,order,n=0,limit=4,a[5],rect_[4],request=requested_order(),active=active_layer();
+    if(request){
+        order=(int32_t)active>0?active_order():1;
+        if((surface_variant&4) && ((int32_t)active<=0 || request>active_order()))order=request;
+        for(i=0;i<4;++i)rect_[i]=surface_rectangles[pattern&7][i];
+        if(rect_[0]&0x80000000)rect_[0]=0;
+        if(rect_[1]&0x80000000)rect_[1]=0;
+        if((int32_t)(rect_[0]+rect_[2])>128)rect_[2]=128-rect_[0];
+        if((int32_t)(rect_[1]+rect_[3])>96)rect_[3]=96-rect_[1];
+        for(;order<=limit;++order){
+            a[0]=(n && (pattern&2) && order==3)?0xdecafbad:0x11110000+order;
+            for(i=0;i<4;++i)a[i+1]=rect_[i];
+            surface_event_check(n++,1,a);
+            if(pattern&1)limit=0;
+        }
+        for(i=0;i<4;++i)a[i]=surface_rectangles[pattern&7][i];
+        surface_event_check(n++,2,a);
+    }
+    require(surface_count==n);
+    for(i=0;i<sizeof(surface_memory);++i){
+        uint8_t byte=((volatile uint8_t *)(i<0x1000?0x500000:0x510000))[i&0xfff];
+        if(!phase)surface_memory[i]=byte;else require(surface_memory[i]==byte);
+    }
+}
+#endif
 #pragma GCC diagnostic pop
 #define SNAPSHOT \
     "pushfl;pushal;movl %esp,%esi;movl $syscalls_result,%edi;movl $9,%ecx;cld;rep movsl;" \
@@ -136,7 +238,10 @@ static void redirect(uint32_t base)
 #include "../kernel/service_forward.def"
 #undef SERVICE
 #define TARGET(address) jump(base+0x##address-0x800000,(uint32_t)kernel_syscall_target_##address)
-    TARGET(8082c6);TARGET(808378);TARGET(81021c);TARGET(81017c);TARGET(807a0a);
+    TARGET(8082c6);TARGET(808378);TARGET(81021c);TARGET(807a0a);
+#ifndef KERNEL_SURFACE_CHAIN_TEST
+    TARGET(81017c);
+#endif
 #ifndef KERNEL_SERVICE_CHAIN_TEST
     TARGET(81041a);TARGET(810478);TARGET(810448);TARGET(82a9bb);
 #else
@@ -168,6 +273,9 @@ static void setup(void)
         }
         WORD(0x60000c)=parameters[0];WORD(0x600010)=parameters[1];
     }
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+    if(real_surface())surface_setup();
+#endif
     for(i=0;i<COUNT(syscalls_result);++i)syscalls_result[i]=0;
     for(i=0;i<COUNT(trace);++i)trace[i]=0;
     syscalls_callback_flags=syscalls_callback_cs=syscalls_callback_ds=syscalls_callback_ss=0;
@@ -192,10 +300,10 @@ static void setup(void)
 static void check(void)
 {
     const struct route *r=route();uint32_t i;
-    require(trace[0]==(r&&!real_service()?1u:0u));
+    require(trace[0]==(r&&!real_service()&&!real_surface()?1u:0u));
     require(seed_hits==(real_service()&&vector==0x41&&operation==4?1u:0u));
     if(real_service()&&vector==0x40)require(WORD(0x610000+(pattern&3)+0x55f)==parameters[1]);
-    if(r&&!real_service()){
+    if(r&&!real_service()&&!real_surface()){
         require(trace[1]==r->target && trace[2]==r->count);
         require(syscalls_callback_cs==16 && syscalls_callback_ds==8 && syscalls_callback_ss==8);
         require((syscalls_callback_flags&0x600)==((syscalls_flags&0x400)|0x200));
@@ -206,6 +314,9 @@ static void check(void)
             require(trace[3+i]==expected);
         }
     }
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+    if(real_surface())surface_check();
+#endif
     for(i=0;i<8;++i){
         uint32_t expected=i==3?syscalls_stack-4:syscalls_input[i];
         if(i==7 && vector==0x41)expected=real_service()?service_result():(r||operation==5?syscalls_return:0);
@@ -246,6 +357,16 @@ void syscalls_qemu_main(void)
     require(count==3456);put("PASS: 3456 complete syscall-chain comparisons; CPL0/CPL3, PUSHAD, routes, arguments, EAX and IRET\n");
 #ifdef KERNEL_SERVICE_CHAIN_TEST
     put("PASS: recovered object fields and xorshift services used inside real INT/IRET chains\n");
+#endif
+#ifdef KERNEL_SURFACE_CHAIN_TEST
+    vector=0x40;operation=16;
+    for(ring=0;ring<2;++ring)for(gate_type=0;gate_type<2;++gate_type)
+    for(surface_variant=0;surface_variant<32;++surface_variant)for(pattern=0;pattern<16;++pattern){
+        for(phase=0;phase<2;++phase){setup();if(ring)invoke_user();else invoke();check();}
+        ++count;++surface_total;
+    }
+    require(surface_total==2048);
+    put("PASS: 2048 additional native surface-chain comparisons; real CLI/POPFL, clipping, live list and cached callbacks\n");
 #endif
     done(0x10);
 }

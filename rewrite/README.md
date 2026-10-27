@@ -1254,3 +1254,33 @@ order indices, zero/multiple iterations, bound shrink/extension, callback
 capture, incoming/outgoing argument mutations and full mapped-memory checks.
 Log: `build/surface_composite_preview.log`. This source checkpoint does not
 yet install the dispatcher; the per-layer drawing body remains original.
+
+The 201-interval image passed the complete `make verify` suite on
+2026-10-27 (`build/verify_surface_refresh.exit`: 0). Five sequential OS
+snapshot boots checked the desktop, live heap/TSS/input paths and the
+recovered Snake, Color, MOV and STARSCR applications. Every installed
+interval matched guest memory. Fresh relevant screenshots were visually
+checked: desktop `cpuid`, Snake after turning, Color's palette, another
+`cpuid` after closing MOV, and STARSCR's second phase. Logs:
+`build/surface_refresh_{system,snake,color,mov,starscr}_smoke.log`;
+screenshots/JSON: `build/surface_refresh_evidence/`. The archive also contains
+older unrelated artifacts; only each check's own outputs are evidence.
+STARSCR still exhibits the original post-exit mouse stall even though its
+phases, Esc exit and task cleanup pass; desktop reuse after STARSCR remains
+unverified. This is still a hybrid image with original dependencies.
+
+`python3 tests/syscalls_qemu.py --installed --services --surfaces` adds
+2,048 native original/rebuilt/oracle surface-chain comparisons to the
+existing 3,456 complete system-call cases. It executes the installed refresh
+forwarder and selector, followed by the then-original clipping/list
+dispatcher, inside actual CPL0/CPL3 interrupt/trap-gate INT/IRET chains.
+Only drawing and framebuffer presentation are observer callbacks. Checks
+include real CLI/POPFL, preserved DF and restored IF, signed clipping, live
+list mutation, cached callbacks, isolated outgoing argument overwrites,
+full shared-memory effects, registers, segments and flags. Log:
+`build/syscalls_qemu_surfaces_services.log`. The preview, installed and
+recovered-service modes each passed their 3,456 comparisons again after
+adding the surface mode. Logs: `build/surface_chain_preview_regression.log`,
+`build/surface_chain_installed_regression.log`,
+`build/surface_chain_services_regression.log`;
+`build/surface_chain_fixture_regression.exit`: 0.
