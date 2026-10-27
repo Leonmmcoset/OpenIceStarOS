@@ -1123,3 +1123,22 @@ dispatchers, not those remaining original services. The preview invokes the
 newly compiled C dispatchers; `--installed` instead selects their fixed kernel
 addresses. Logs: `build/syscalls_qemu_preview_build.log`,
 `build/syscalls_qemu_preview.log`.
+
+`kernel/syscall_services.c/.h` recovers three direct services at
+`0x81041a..0x8104a0` and the ranged xorshift routine at
+`0x82a9bb..0x82aa0f`. The object services retain the pointer table at
+`0x6a0000`, wrapped indices, unaligned offsets 0x55f/12/4 and the setter's
+raw EAX return. The random routine samples the low TSC once, performs logical
+xorshifts 6/12/14, then applies the original unsigned wrapped-span remainder.
+No checks or normalization are added: a zero span still raises #DE/SIGFPE.
+`kernel/timestamp.c` recovers the five-byte RDTSC leaf at
+`0x83734a..0x83734f`, preserving EDX and flags.
+
+The standalone preview passes 12,420 original/C/oracle cases across patterned
+memory, four index wrap aliases, four object alignments, boundary arguments,
+seed/call-count mutations and full memory comparisons. Another 270 original/C
+executions confirm zero-span SIGFPE. `python3 tests/timestamp_exact.py`
+independently extracts the SHA-verified original kernel from the VHD and
+confirms all five instruction bytes. Logs: `build/syscall_services_preview.log`,
+`build/timestamp_exact_preview.log`. These five functions are not installed
+by this source-recovery step.
