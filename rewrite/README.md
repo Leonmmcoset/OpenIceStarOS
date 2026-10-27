@@ -1418,3 +1418,27 @@ callbacks; it does not by itself prove the real new rasterizer bodies run.
 Log: `build/surface_draw32_native_chain.log`; exit marker:
 `build/surface_draw32_native_chain.exit` (0). Whole-suite and desktop/application
 regression checks are recorded separately when complete.
+
+The 208-interval image was booted in five separate QEMU snapshots on
+2026-10-27. Desktop, PS/2 pointer, CMD keyboard/queue/prompt, 128 MiB RAM,
+59 live heap headers, advancing timer and suspended C scheduler/TSS stacks
+passed. The rebuilt Snake passed movement, wall collision, restart and
+arrow/letter turns; Color passed 600 palette-pixel probes, window close,
+task exit and CMD reuse; MOV passed all four exact animation frames, 16
+relocations, close/cleanup and CMD reuse. STARSCR passed 21 relocations,
+four phases with 10,797 pixel probes each, Esc exit and task cleanup.
+Its post-exit mouse probe still stalls, so desktop reuse after STARSCR is
+not established; this matches the previously recorded original-image
+limitation and is not treated as fixed by the graphics recovery.
+
+Every boot compared all installed kernel slots with guest memory. Fresh
+screenshots and JSON for each run were copied before the next run could
+overwrite shared outputs, under
+`build/surface_draw32_evidence/{system,snake,color,mov,starscr}/`.
+`build/surface_draw32_evidence/results.json` records each image SHA-256,
+exit status (all 0), and fresh artifact list. Logs:
+`build/surface_draw32_{system,snake,color,mov,starscr}_smoke.log`.
+Desktop/CPUID output, Snake turn, Color palette, MOV frame 2 and STARSCR
+phase 2 screenshots were visually inspected. These are bounded integration
+checks; unrecovered kernel, driver and application code is still supplied
+by the original VHD.
