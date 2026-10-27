@@ -1711,3 +1711,26 @@ commands, durations, image and artifact hashes. All archived digests and
 current image digests were rechecked; Snake turn, MOV frame 2 and STARSCR
 phase 2 screenshots were visually inspected. Logs/exit markers:
 `build/surface_lifecycle_{snake,mov,starscr}_smoke.{log,exit}`.
+
+`kernel/surface_order.c/.h` recovers removal, append, front promotion and
+positioned movement at `0x8178f0`, `0x8179d6`, `0x817a3c` and `0x817b32`.
+The C retains the original one-based order list, live count/caller/descriptor
+reloads, wrapped indexing, unsigned gates and signed move-loop conditions.
+Aliased metadata can make both movement directions run in one invocation;
+equal-position movement instead returns before the flags-write callback and
+exposes the original comparison flags. Small assembly adapters preserve that
+exception, incoming argument storage, raw EAX and flags at RET.
+
+The standalone original/C/independent bounded byte-memory oracle passes
+152,591 cases on 2026-10-27 in 27.857 seconds, comparing all 29,696 mapped
+data bytes, raw returns and ordered flag callbacks. It covers twelve alias
+layouts, four descriptor alignments, live target/count mutations and wrapped
+table/list indices; 86,116 cases compare native EFLAGS/DF and 268 execute both
+move directions. All eleven required branch bits are exercised. The oracle
+rejects 35,761 unsafe generated scenarios before either executable runs.
+Production compilation uses `-fwrapv-pointer` and the original four-byte
+stack boundary; the four implementations occupy 156/230, 98/102, 166/246
+and 303/414 bytes. Log/exit/timing:
+`build/surface_order_preview_test.log`, `build/surface_order_preview_test.exit`
+(0), and `build/surface_order_preview_summary.json`. This source checkpoint
+precedes installation; the manifest still declares 214 intervals.
