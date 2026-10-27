@@ -266,6 +266,10 @@ SECTIONS
     ASSERT(kernel_copy_sse16_blocks == 0x828e8f && SIZEOF(.copy_sse16) == 34, "SSE 16-byte copy layout changed")
     .copy_sse64 0x828eb1 : { *kernel_memory_transfers.o(.text.kernel_copy_sse64_blocks) }
     ASSERT(kernel_copy_sse64_blocks == 0x828eb1 && SIZEOF(.copy_sse64) == 58, "SSE 64-byte copy layout changed")
+    .wait_vertical_retrace 0x828f0f : { *kernel_graphics_primitives.o(.text.kernel_wait_vertical_retrace) }
+    ASSERT(kernel_wait_vertical_retrace == 0x828f0f && SIZEOF(.wait_vertical_retrace) == 12, "VGA status polling layout changed")
+    .blend_color 0x828f1b : { *kernel_graphics_primitives.o(.text.kernel_blend_color) }
+    ASSERT(kernel_blend_color == 0x828f1b && ADDR(.blend_color) + SIZEOF(.blend_color) <= 0x829003, "color blending overflow")
     .string_copy 0x82a32b : { *kernel_strings.o(.text.kernel_copy_string) }
     ASSERT(kernel_copy_string == 0x82a32b && ADDR(.string_copy) + SIZEOF(.string_copy) <= 0x82a36d, "string copy overflow")
     .text_prefix 0x82a36d : { *kernel_strings.o(.text.kernel_copy_text_prefix) }

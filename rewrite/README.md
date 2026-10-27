@@ -779,3 +779,21 @@ not verified. Logs: `build/verify_memory_accel.log`,
 `build/starscr_memory_accel_smoke.log`; representative evidence is preserved
 in `build/memory_accel_evidence/`. Unrecovered routines continue to use the
 original binary; this is not yet a complete OS build from source.
+
+`kernel/graphics_primitives.c` recovers color blending at
+`0x828f1b..0x829003` (95/232 bytes) and the 12-byte vertical-retrace wait at
+`0x828f0f..0x828f1b`. Alpha is truncated to eight bits. At depth 32 each
+B/G/R channel uses `(foreground * alpha + background * (256 - alpha)) / 256`,
+with a zero top byte; other depths return the background only when the
+truncated alpha is zero. The VGA leaf waits for bit 3 of port `0x3da` to be
+set without first waiting for it to clear. It retains EAX's top 24 bits,
+EDX, DF, stack behavior and all original instruction bytes.
+
+Each graphics differential executable passes 16,790,528 original/C/oracle
+color comparisons, including every byte-channel/byte-channel/alpha triple,
+full-width alpha inputs and 13 display depths. Another 768 comparisons
+execute the entire original and rebuilt VGA polling functions under ptrace;
+only the privileged `IN` instruction receives deterministic port samples.
+The test checks polling counts, final status, GPRs, stack, defined arithmetic
+flags and both incoming DF states. Both host-linked and fixed-address
+variants pass (33,581,056 color and 1,536 VGA comparisons altogether).

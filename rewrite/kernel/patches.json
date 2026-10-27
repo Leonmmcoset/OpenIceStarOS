@@ -80,6 +80,8 @@
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},
   {"name": "SSE 64-byte block copy", "binary": "kernel.copy_sse64.bin", "start": "0x828eb1", "end": "0x828eeb", "exact": true},
+  {"name": "VGA vertical retrace wait", "binary": "kernel.wait_vertical_retrace.bin", "start": "0x828f0f", "end": "0x828f1b", "exact": true},
+  {"name": "color blending", "binary": "kernel.blend_color.bin", "start": "0x828f1b", "end": "0x829003"},
   {"name": "string copy", "binary": "kernel.string_copy.bin", "start": "0x82a32b", "end": "0x82a36d"},
   {"name": "text prefix copy", "binary": "kernel.text_prefix.bin", "start": "0x82a36d", "end": "0x82a401"},
   {"name": "bounded string copy", "binary": "kernel.string_limit.bin", "start": "0x82a401", "end": "0x82a45d"},
