@@ -492,3 +492,32 @@ post-STARSCR mouse-input limitation remains; task creation/destruction and
 FPU save/restore still use original implementations. Logs are
 `build/verify_timer.log`, `build/tasks_preemption_smoke.log`,
 `build/starscr_timer_smoke.log`, and `build/mov_timer_smoke.log`.
+
+`kernel/task_create.c` recovers task subsystem initialization, free-slot search,
+and nonpaged task creation at `0x814536..0x814a56`. Their compiled sizes are
+156/208, 66/130, and 397/974 bytes. Initialization installs the original task
+table and GDT, constructs the boot task, and loads its task register. Creation
+preserves captured-table timing, signed owner-pointer handling, unchecked name
+copying, linked-list writes, all DWORD TSS stores, descriptor arguments, and
+high-water/hole accounting. `kernel/cpu.c` now provides the LGDT and LTR
+boundaries at `0x8372e8..0x8372fe`; both match the original machine code exactly.
+Descriptor construction, string copying, paged creation, and task deletion
+still use original routines at this checkpoint.
+
+Both construction differential executables pass 108 search, 3,840 creation,
+and 3,840 full-initialization cases each (15,576 comparisons in total). The
+tests execute the actual free-slot search and task/TSS construction, compare
+all 319,488 mapped data bytes and ordered boundary traces, and cover unaligned
+tables, failed creation, reused holes, the real 1,820-slot capacity, full-width
+unsigned search boundaries, signed owner pointers, overlapping metadata/TSS
+storage, unchecked long names, and 64 callback-mutation combinations.
+Only flag/hardware, descriptor, and string boundaries are shared test callbacks.
+
+The full verification suite passed on 2026-10-27. The 84-interval image passed
+real TSS timer-preemption checks (12 ticks between samples), PS/2 and CMD input,
+MOV's four pixel-exact frames, close, image/task cleanup and subsequent `cpuid`,
+plus STARSCR's four phases, Esc and task cleanup. Every installed interval
+matched guest memory. MOV's post-close screen and STARSCR's first phase were
+visually inspected. The known post-STARSCR mouse limitation remains. Logs:
+`build/verify_task_create.log`, `build/task_create_preemption_smoke.log`,
+`build/mov_task_create_smoke.log`, and `build/starscr_task_create_smoke.log`.

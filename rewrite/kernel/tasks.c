@@ -1,5 +1,5 @@
 /* Timer task switch and cooperative task yield, recovered from
- * 0x814176..0x814536. Task creation/destruction remain original code. */
+ * 0x814176..0x814536. Paged creation and destruction remain original code. */
 #include "runtime.h"
 #include "service_forward.h"
 

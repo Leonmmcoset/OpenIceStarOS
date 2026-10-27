@@ -84,6 +84,17 @@ PORT_PRIMITIVE(void, kernel_far_task_jump,
 
 PORT_PRIMITIVE(void, kernel_fpu_reset, (void), "fninit\n\tret")
 
+/* LGDT's six-byte operand overlaps the caller's two DWORD arguments in the
+ * original ABI. Preserve that stack layout at this privileged boundary. */
+PORT_PRIMITIVE(void, kernel_load_gdt,
+               (uint32_t limit __attribute__((unused)), uint32_t base __attribute__((unused))),
+               "movw 4(%esp),%ax\n\tmovw %ax,6(%esp)\n\t"
+               "lgdt 6(%esp)\n\tret")
+
+PORT_PRIMITIVE(void, kernel_load_task_register,
+               (uint32_t selector __attribute__((unused))),
+               "ltr 4(%esp)\n\tret")
+
 #undef PORT_PRIMITIVE
 
 uint32_t kernel_read_cr0(void)

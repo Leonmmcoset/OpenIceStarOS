@@ -2,6 +2,8 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
+PROVIDE(kernel_set_segment_descriptor = 0x8135c6);
+PROVIDE(kernel_copy_string = 0x82a32b);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -112,6 +114,12 @@ SECTIONS
     ASSERT(kernel_schedule_task == 0x814176 && ADDR(.schedule_task) + SIZEOF(.schedule_task) <= 0x81434a, "timer task switch overflow")
     .yield_task 0x81434a : { *kernel_tasks.o(.text.kernel_yield_task) }
     ASSERT(kernel_yield_task == 0x81434a && ADDR(.yield_task) + SIZEOF(.yield_task) <= 0x814536, "task yield overflow")
+    .tasks_init 0x814536 : { *kernel_task_create.o(.text.kernel_init_tasks) }
+    ASSERT(kernel_init_tasks == 0x814536 && ADDR(.tasks_init) + SIZEOF(.tasks_init) <= 0x814606, "task init overflow")
+    .task_find_free 0x814606 : { *kernel_task_create.o(.text.kernel_find_free_task) }
+    ASSERT(kernel_find_free_task == 0x814606 && ADDR(.task_find_free) + SIZEOF(.task_find_free) <= 0x814688, "task free-slot search overflow")
+    .task_create 0x814688 : { *kernel_task_create.o(.text.kernel_create_task) }
+    ASSERT(kernel_create_task == 0x814688 && ADDR(.task_create) + SIZEOF(.task_create) <= 0x814a56, "task creation overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
@@ -204,6 +212,10 @@ SECTIONS
     ASSERT(kernel_far_task_jump == 0x828d2b && SIZEOF(.far_task_jump) == 5, "far task jump layout changed")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
+    .cpu_load_gdt 0x8372e8 : { *kernel_cpu.o(.text.kernel_load_gdt) }
+    ASSERT(kernel_load_gdt == 0x8372e8 && ADDR(.cpu_load_gdt) + SIZEOF(.cpu_load_gdt) <= 0x8372f8, "LGDT boundary overflow")
+    .cpu_load_tr 0x8372f8 : { *kernel_cpu.o(.text.kernel_load_task_register) }
+    ASSERT(kernel_load_task_register == 0x8372f8 && ADDR(.cpu_load_tr) + SIZEOF(.cpu_load_tr) <= 0x8372fe, "LTR boundary overflow")
     .fpu_reset 0x837347 : { *kernel_cpu.o(.text.kernel_fpu_reset) }
     ASSERT(kernel_fpu_reset == 0x837347 && SIZEOF(.fpu_reset) == 3, "FPU initialization layout changed")
     .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
