@@ -1090,3 +1090,22 @@ and the final selected CMOS index. The GS=32 test uses a nonzero segment
 base and verifies temporary selection of the flat GS=8 descriptor. The
 fixture does not boot or modify the OS disk. Logs:
 `build/cmos_clock_qemu_build.log`, `build/cmos_clock_qemu.log`.
+
+`kernel/syscalls.c/.h` recovers both PUSHAD-frame dispatchers at
+`0x813b70..0x814176`. Vector 0x40 selects 20 operations, including queue
+request index 13 and task yield; vector 0x41 selects six result operations
+and returns zero for unknown opcodes. The reconstruction retains the original
+descending volatile DWORD reads, full-width results and the signed low-byte
+arguments on 0x40 operations 6 and 11. Sibling calls are disabled so service
+argument writes cannot corrupt the caller's saved PUSHAD registers. Numeric
+callee names identify nine implementations still supplied by original code.
+
+The standalone preview passes 12,340 original/C/oracle cases, including all
+0x41 unknown operations 6..19, byte boundaries, argument/record mutations,
+no-read paths with invalid pointers, and records against both guard-page
+boundaries. Another 156 hardware-watchpoint executions verify each adjacent
+argument pair is read high-to-low exactly once; poisoning a word immediately
+after its read preserves the captured callback argument. All 144 undersized
+record executions fault as expected, including the signed-byte routes whose
+original code still performs DWORD loads. Log: `build/syscalls_preview.log`.
+These dispatchers are not installed by this source-recovery step.
