@@ -1682,3 +1682,18 @@ and both application-image verifiers exit 0. Evidence:
 `build/surface_lifecycle_install_images.json`. This records installation and
 focused checks; the 210-interval regression/QEMU notes remain historical
 until the new images are tested.
+
+The 214-interval production application image passes
+`make smoke-surface-lifecycle` on 2026-10-27 (exit 0; 29.559 seconds).
+The filtered QEMU trace observes the recovered initialization entry once,
+creation nine times, free-slot search four times and deletion once during
+normal startup, CMD input and the recovered Color application's lifecycle.
+The check also verifies all 214 installed intervals in guest memory,
+128 MiB detected RAM, 59 live heap headers, timer/TSS preemption, PS/2
+input, relocated CMD, 600 palette pixels, Color close/task exit and CMD reuse.
+Desktop, CPUID, Color palette and post-close prompt screenshots were visually
+inspected. Fresh artifacts are archived in
+`build/surface_lifecycle_evidence/color/`, with image/trace/artifact digests
+in `build/surface_lifecycle_evidence/results.json`. This is bounded
+integration evidence for the partial recovery; the complete 214-interval
+regression and the other application checks are recorded separately.

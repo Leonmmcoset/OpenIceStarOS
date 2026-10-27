@@ -699,6 +699,10 @@ $(BUILD)/IceStarOS_scale_diagnostic.vhd: $(BUILD)/IceStarOS_c_apps.vhd $(BUILD)/
 smoke-surface-scale: $(BUILD)/IceStarOS_scale_diagnostic.vhd
 	python3 tools/boot_smoke.py --surface-scale-check
 
+.PHONY: smoke-surface-lifecycle
+smoke-surface-lifecycle: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --surface-lifecycle-check --memory-check --task-check --color-check
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 
