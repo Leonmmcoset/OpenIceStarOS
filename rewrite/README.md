@@ -890,3 +890,36 @@ was visually inspected. The original post-STARSCR mouse stall remains;
 desktop reuse after that application is not verified. Logs:
 `build/verify_cpuid.log`, `build/cpuid_smoke.log`, `build/mov_cpuid_smoke.log`
 and `build/starscr_cpuid_smoke.log`; evidence: `build/cpuid_evidence/`.
+
+`kernel/fpu.c/.h` recovers FPU availability, enablement, task-context restore,
+lazy CR0 marking and fault dispatch at `0x837f5f..0x8380ef`. These retain
+CPUID EDX bit 0, the full-DWORD comparison after a word-sized FNSTSW, CR0
+EM/TS/NE changes, the captured task table/index with unsigned 32-bit address
+wrap, the second context-pointer read, and the post-FNINIT allocation-base
+read. The original context operation is FXRSTOR, not FRSTOR. The lazy-mark
+routine inlines the two CR0 instruction boundaries to fit its 24-byte slot.
+
+`kernel/fpu_state.c` recovers eight hardware leaves at `0x83730a..0x837347`:
+FNSAVE, FRSTOR, FSTENV, FLDENV, FXSAVE, FXRSTOR, XSAVE and XRSTOR. Their bytes
+match the originals exactly. The original XSAVE/XRSTOR ABI uses EAX both as
+the address and the low feature mask, with the incoming EDX as the high mask;
+this behavior is preserved, including its limitations.
+
+The host-linked preview passes 560 probe/enable, 504 lazy-task, 224 hardware
+boundary and 1,512 hardware-watchpoint mutation comparisons against complete
+original routines and an independent event oracle. Ptrace supplies only the
+CPUID, CR0 and FPU instruction boundaries. Tests check event order, all
+20,480 shared data bytes, callee-saved registers, stack balance and DF/ID.
+The watchpoint pass runs with CONT and child-only breakpoints at hardware
+instruction sites observed in the earlier single-step pass; Linux suppresses
+data watchpoints during PTRACE_SINGLESTEP. It mutates captured table/index
+globals, changes the context pointer between its two reads (including to
+zero), and changes the allocation base at FNINIT.
+
+Another 128 native comparisons execute original and rebuilt hardware leaves
+against direct ISA operations, comparing 4,096 data bytes and the resulting
+512-byte x87/SSE state. All eight leaves ran on this host; XSAVE/XRSTOR used
+the original ABI with a zero effective feature mask. These native checks
+skip explicitly if required host capabilities are absent. Log:
+`build/fpu_preview_test.log`. Fixed-address installation and QEMU regression
+remain pending for these 13 routines.
