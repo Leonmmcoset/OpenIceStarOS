@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 214 declared kernel intervals and
+original VHD. The current build installs 218 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1764,3 +1764,16 @@ All three production image SHA-256 values are unchanged before/after the
 suite and match the archived QEMU evidence. Log/exit/timing and image hashes:
 `build/verify_surface_lifecycle.log`, `build/verify_surface_lifecycle.exit`
 (0), and `build/verify_surface_lifecycle_summary.json`.
+
+The four surface order routines are installed at their original entry
+addresses, bringing the manifest to 218 intervals. Linker assertions retain
+all four extents; their production sizes are 156/230, 98/102, 166/246 and
+303/414 bytes. Host and installed-address fixtures each pass 152,591 cases,
+including 86,116 native EFLAGS/DF comparisons and 268 cases traversing both
+movement directions. All previous 214 interval bytes remain unchanged, and
+the kernel file changes only within the four new slots. C-init, Snake and
+combined-application image builds and all three disk verifiers exit 0.
+Logs and timings: `build/surface_order_install_{build,host,linked,disk,snake_image,apps_image}.{log,exit}`,
+`build/surface_order_install_summary.json`; image hashes and interval checks:
+`build/surface_order_install_images.json`. The recorded hashes were rechecked
+against all three current images before this installation checkpoint.

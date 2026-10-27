@@ -6,7 +6,6 @@ PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
-PROVIDE(kernel_surface_order_remove = 0x8178f0);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -220,6 +219,26 @@ SECTIONS
         *kernel_surface_lifecycle.o(.text.surface_delete_body)
     }
     ASSERT(kernel_surface_delete == 0x81783e && ADDR(.surface_delete) + SIZEOF(.surface_delete) <= 0x8178f0, "surface deletion overflow")
+    .surface_order_remove 0x8178f0 : SUBALIGN(1) {
+        *kernel_surface_order.o(.text.kernel_surface_order_remove)
+        *kernel_surface_order.o(.text.surface_order_remove_body)
+    }
+    ASSERT(kernel_surface_order_remove == 0x8178f0 && ADDR(.surface_order_remove) + SIZEOF(.surface_order_remove) <= 0x8179d6, "surface order removal overflow")
+    .surface_order_append 0x8179d6 : SUBALIGN(1) {
+        *kernel_surface_order.o(.text.kernel_surface_order_append)
+        *kernel_surface_order.o(.text.surface_order_append_body)
+    }
+    ASSERT(kernel_surface_order_append == 0x8179d6 && ADDR(.surface_order_append) + SIZEOF(.surface_order_append) <= 0x817a3c, "surface order append overflow")
+    .surface_order_front 0x817a3c : SUBALIGN(1) {
+        *kernel_surface_order.o(.text.kernel_surface_order_front)
+        *kernel_surface_order.o(.text.surface_order_front_body)
+    }
+    ASSERT(kernel_surface_order_front == 0x817a3c && ADDR(.surface_order_front) + SIZEOF(.surface_order_front) <= 0x817b32, "surface order front overflow")
+    .surface_order_move 0x817b32 : SUBALIGN(1) {
+        *kernel_surface_order.o(.text.kernel_surface_order_move)
+        *kernel_surface_order.o(.text.surface_order_move_body)
+    }
+    ASSERT(kernel_surface_order_move == 0x817b32 && ADDR(.surface_order_move) + SIZEOF(.surface_order_move) <= 0x817cd0, "surface order move overflow")
     .surface_composite 0x817cd0 : SUBALIGN(1) {
         *kernel_surface_composite.o(.text.kernel_surface_target_817cd0)
         *kernel_surface_composite.o(.text* .rodata*)
