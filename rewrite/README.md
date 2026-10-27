@@ -1697,3 +1697,17 @@ inspected. Fresh artifacts are archived in
 in `build/surface_lifecycle_evidence/results.json`. This is bounded
 integration evidence for the partial recovery; the complete 214-interval
 regression and the other application checks are recorded separately.
+
+Separate 214-interval QEMU boots also pass Snake movement, collision, restart
+and arrow/letter turns (34.309 seconds); MOV's 16 relocations, four exact
+frames, PS/2 close, cleanup and CMD reuse (32.410 seconds); and STARSCR's
+21 relocations, four phases with 10,797 pixel probes each, Esc exit and task
+cleanup (26.683 seconds). All three commands exit 0 and compare every
+installed interval with guest memory. The screen saver's subsequent mouse
+probe still stalls, as in the original-image baseline; desktop reuse after
+STARSCR is unverified. Fresh evidence is archived under
+`build/surface_lifecycle_evidence/{snake,mov,starscr}/`; `results.json` records
+commands, durations, image and artifact hashes. All archived digests and
+current image digests were rechecked; Snake turn, MOV frame 2 and STARSCR
+phase 2 screenshots were visually inspected. Logs/exit markers:
+`build/surface_lifecycle_{snake,mov,starscr}_smoke.{log,exit}`.
