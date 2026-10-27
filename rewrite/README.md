@@ -208,3 +208,16 @@ register preservation, or port widths. All forty-four installed intervals,
 the full differential suite, and the interactive CMD smoke test passed on
 2026-10-27; the CPU result screenshot was inspected. This is still a hybrid
 image and not a complete C recovery of the OS.
+
+`kernel/physical.c` recovers all six GS-selector physical byte/word/DWORD
+read/write boundaries at `0x83735b..0x8373ee`. They temporarily select the
+flat physical descriptor (selector 8), restore GS and EBX, and retain the
+original flag and partial-EAX behavior. Naked inline assembly is necessary
+for these segment-sensitive hardware operations. `kernel/cpu.c` also recovers
+CR0 read/write at `0x83743c..0x837448`. All eight new entries use exact-byte
+manifest verification and fixed-address/size linker assertions. The previous
+physical-access linker aliases now resolve to the compiled definitions.
+All fifty-two installed intervals passed full disk verification and the
+interactive QEMU input smoke test on 2026-10-27; the CPU output and returned
+CMD prompt were visually inspected. The adjacent RAM probe and paging setup
+are still original code; recovery of these primitives does not recover them.

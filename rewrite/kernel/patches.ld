@@ -1,10 +1,6 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
-PROVIDE(kernel_physical_write_byte = 0x83735b);
-PROVIDE(kernel_physical_read_byte = 0x8373a8);
-PROVIDE(kernel_physical_read_dword = 0x8373d7);
-PROVIDE(kernel_physical_write_dword = 0x83738f);
 PROVIDE(kernel_format_text = 0x81f88a);
 SECTIONS
 {
@@ -193,6 +189,22 @@ SECTIONS
     ASSERT(kernel_write_port_dword == 0x81a296 && SIZEOF(.port_write_dword) == 12, "OUT DWORD layout changed")
     .cpu_boot_jump 0x81a2a2 : { *kernel_cpu.o(.text.kernel_jump_boot_entry) }
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
+    .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
+    ASSERT(kernel_physical_write_byte == 0x83735b && SIZEOF(.physical_write_byte) == 25, "physical byte write layout changed")
+    .physical_write_word 0x837374 : { *kernel_physical.o(.text.kernel_physical_write_word) }
+    ASSERT(kernel_physical_write_word == 0x837374 && SIZEOF(.physical_write_word) == 27, "physical word write layout changed")
+    .physical_write_dword 0x83738f : { *kernel_physical.o(.text.kernel_physical_write_dword) }
+    ASSERT(kernel_physical_write_dword == 0x83738f && SIZEOF(.physical_write_dword) == 25, "physical DWORD write layout changed")
+    .physical_read_byte 0x8373a8 : { *kernel_physical.o(.text.kernel_physical_read_byte) }
+    ASSERT(kernel_physical_read_byte == 0x8373a8 && SIZEOF(.physical_read_byte) == 23, "physical byte read layout changed")
+    .physical_read_word 0x8373bf : { *kernel_physical.o(.text.kernel_physical_read_word) }
+    ASSERT(kernel_physical_read_word == 0x8373bf && SIZEOF(.physical_read_word) == 24, "physical word read layout changed")
+    .physical_read_dword 0x8373d7 : { *kernel_physical.o(.text.kernel_physical_read_dword) }
+    ASSERT(kernel_physical_read_dword == 0x8373d7 && SIZEOF(.physical_read_dword) == 23, "physical DWORD read layout changed")
+    .cpu_cr0_read 0x83743c : { *kernel_cpu.o(.text.kernel_read_cr0) }
+    ASSERT(kernel_read_cr0 == 0x83743c && SIZEOF(.cpu_cr0_read) == 4, "read CR0 layout changed")
+    .cpu_cr0_write 0x837440 : { *kernel_cpu.o(.text.kernel_write_cr0) }
+    ASSERT(kernel_write_cr0 == 0x837440 && SIZEOF(.cpu_cr0_write) == 8, "write CR0 layout changed")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

@@ -77,3 +77,15 @@ PORT_PRIMITIVE(void, kernel_jump_boot_entry, (void),
                "ljmp $0x40,$0x9000\n\tret")
 
 #undef PORT_PRIMITIVE
+
+uint32_t kernel_read_cr0(void)
+{
+    uint32_t value;
+    __asm__ volatile ("movl %%cr0,%0" : "=a" (value));
+    return value;
+}
+
+__attribute__((optimize("omit-frame-pointer"))) void kernel_write_cr0(uint32_t value)
+{
+    __asm__ volatile ("movl %0,%%cr0" : : "a" (value) : "memory");
+}
