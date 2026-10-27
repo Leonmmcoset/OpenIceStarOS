@@ -797,3 +797,26 @@ only the privileged `IN` instruction receives deterministic port samples.
 The test checks polling counts, final status, GPRs, stack, defined arithmetic
 flags and both incoming DF states. Both host-linked and fixed-address
 variants pass (33,581,056 color and 1,536 VGA comparisons altogether).
+
+`kernel/service_optional.c/.h/.def` recovers the 25 optional service-table
+wrappers at `0x837967..0x837f5f` (slots 20 through 44). The global table is
+captured once; the selected slot is tested and, when nonzero, read again for
+the callback. Slots 24, 27, 30, 31, 32, 34, 42, 43 and 44 retain the slot's
+address in EAX when empty; the other optional wrappers return zero. Word
+arguments in slots 34/42/43/44 and the last byte argument in slot 42 are
+zero-extended. Callback results retain their full 32 bits. Real call
+boundaries prevent callback writes from corrupting outer argument slots.
+
+The host-linked optional-service test passes 275,456 original/C comparisons,
+checking all 20,480 mapped data bytes, ordered callback traces, results and
+the outer argument stack. It covers empty/nonempty slots, all four table
+alignments, callback changes to the global table and current slot, full-width
+return values, all 65,536 values of every narrowed word parameter and all
+256 values of the byte parameter with and without nonzero upper bits.
+Another 100 comparisons use ptrace hardware watchpoints to change the global
+pointer after its read and a slot after its first read. They verify one global
+load, two nonempty slot loads, changed callback selection, a real null-call
+fault when a checked slot becomes zero, and no call when an empty slot becomes
+nonzero. Only the external memory changes are supplied by the harness; the
+complete original and rebuilt wrappers execute. Fixed-address installation
+and integration verification follow this source-recovery step.
