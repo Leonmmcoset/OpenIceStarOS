@@ -1284,3 +1284,17 @@ adding the surface mode. Logs: `build/surface_chain_preview_regression.log`,
 `build/surface_chain_installed_regression.log`,
 `build/surface_chain_services_regression.log`;
 `build/surface_chain_fixture_regression.exit`: 0.
+
+The clipping/list dispatcher is now installed at `0x817cd0`, bringing the
+manifest to 202 intervals. Its assembly entry and ordinary C body occupy
+219 of 220 available bytes. C-init, Snake and combined application VHDs
+rebuilt. The host-linked and fixed-address fixtures each pass 82,944
+original/C/oracle cases; the selector and forwarder fixtures also retain
+their 24,576 and 18,433 cases (plus 18 expected guard faults) in both modes.
+The native recovered-service/surface-chain fixture passes its 3,456 base
+and 2,048 focused comparisons with the recovered lower dispatcher too.
+Logs: `build/surface_composite_install_build.log`,
+`build/{surface_composite,surface_refresh,syscall_surface}_installed_regression.log`,
+their `_linked` variants, `build/surface_composite_native_chain.log` and
+`build/surface_composite_native_chain.exit` (0). The per-layer rasterizers
+and framebuffer presentation bodies are still original at this checkpoint.

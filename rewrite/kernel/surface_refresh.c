@@ -1,5 +1,6 @@
-/* Refresh selection at 0x81905e. The lower compositor at 0x817cd0 and the
- * service-table framebuffer callback are separate, still-original bodies. */
+/* Refresh selection at 0x81905e. The lower clipping/list dispatcher at
+ * 0x817cd0 is recovered separately; per-layer drawing and presentation
+ * remain service-table dependencies supplied by original code. */
 #include "surface_refresh.h"
 #define WORD(a) (*(volatile uint32_t *)(uintptr_t)(uint32_t)(a))
 typedef uint32_t (*Refresh)(uint32_t, uint32_t, uint32_t, uint32_t);
