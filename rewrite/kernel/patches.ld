@@ -6,11 +6,7 @@ PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_81017c = 0x81017c);
-PROVIDE(kernel_syscall_target_81041a = 0x81041a);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
-PROVIDE(kernel_syscall_target_810478 = 0x810478);
-PROVIDE(kernel_syscall_target_810448 = 0x810448);
-PROVIDE(kernel_syscall_target_82a9bb = 0x82a9bb);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -82,6 +78,12 @@ SECTIONS
     }
     ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
     ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
+    .syscall_object_set 0x81041a : { *kernel_syscall_services.o(.text.kernel_syscall_target_81041a) }
+    ASSERT(kernel_syscall_target_81041a == 0x81041a && ADDR(.syscall_object_set) + SIZEOF(.syscall_object_set) <= 0x810448, "object setter overflow")
+    .syscall_object_field12 0x810448 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810448) }
+    ASSERT(kernel_syscall_target_810448 == 0x810448 && ADDR(.syscall_object_field12) + SIZEOF(.syscall_object_field12) <= 0x810478, "object field12 overflow")
+    .syscall_object_field4 0x810478 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810478) }
+    ASSERT(kernel_syscall_target_810478 == 0x810478 && ADDR(.syscall_object_field4) + SIZEOF(.syscall_object_field4) <= 0x8104a0, "object field4 overflow")
     .pointer_init 0x812c70 : SUBALIGN(1) {
         *kernel_pointer_init.o(.text.kernel_init_pointer)
     }
@@ -315,6 +317,8 @@ SECTIONS
     ASSERT(kernel_append_character == 0x82a4bb && ADDR(.string_append_character) + SIZEOF(.string_append_character) <= 0x82a4fb, "character append overflow")
     .string_append 0x82a4fb : { *kernel_strings.o(.text.kernel_append_string) }
     ASSERT(kernel_append_string == 0x82a4fb && ADDR(.string_append) + SIZEOF(.string_append) <= 0x82a531, "string append overflow")
+    .random_range 0x82a9bb : { *kernel_syscall_services.o(.text.kernel_syscall_target_82a9bb) }
+    ASSERT(kernel_syscall_target_82a9bb == 0x82a9bb && ADDR(.random_range) + SIZEOF(.random_range) <= 0x82aa0f, "random range overflow")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
     .read_cmos_clock 0x82ae84 : { *kernel_cmos_clock.o(.text.kernel_read_cmos_clock) }
@@ -379,6 +383,8 @@ SECTIONS
     ASSERT(kernel_fpu_restore_xstate == 0x83733f && SIZEOF(.fpu_restore_xstate) == 8, "fpu_restore_xstate layout overflow")
     .fpu_reset 0x837347 : { *kernel_cpu.o(.text.kernel_fpu_reset) }
     ASSERT(kernel_fpu_reset == 0x837347 && SIZEOF(.fpu_reset) == 3, "FPU initialization layout changed")
+    .timestamp_low 0x83734a : { *kernel_timestamp.o(.text.kernel_timestamp_low) }
+    ASSERT(kernel_timestamp_low == 0x83734a && SIZEOF(.timestamp_low) == 5, "low TSC layout changed")
     .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
     ASSERT(kernel_physical_write_byte == 0x83735b && SIZEOF(.physical_write_byte) == 25, "physical byte write layout changed")
     .physical_write_word 0x837374 : { *kernel_physical.o(.text.kernel_physical_write_word) }

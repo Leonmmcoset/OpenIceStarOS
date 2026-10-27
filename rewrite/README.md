@@ -1168,3 +1168,27 @@ complete CPL0/CPL3 INT/IRET comparisons. Logs:
 and `build/syscalls_qemu_installed.log`. The service bodies remain original
 in this installation; the five recovered service/TSC functions follow in a
 separate installation step.
+
+The three object services, ranged xorshift and exact low-TSC primitive are now
+installed at their original addresses, bringing the manifest to 199 intervals.
+Their compiled sizes are 31/46, 23/48, 23/40, 51/84 and 5/5 bytes respectively.
+C-init, Snake and application VHDs rebuilt. Host-linked and fixed-address
+service tests each pass 12,420 original/C/oracle cases and 270 expected
+zero-span SIGFPE executions; both dispatcher test variants still pass their
+12,340 cases, 156 watchpoint executions and 144 expected guard-page faults.
+The installed five-byte timestamp passes the independent byte-exact check.
+Logs: `build/syscall_services_install_build.log`,
+`build/syscall_services_host_test.log`, `build/syscall_services_linked_test.log`,
+`build/syscalls_services_host_test.log`, `build/syscalls_services_linked_test.log`
+and `build/timestamp_exact_installed.log`. Full-suite and OS regression follow
+separately; original code outside recovered intervals is still required.
+
+`python3 tests/syscalls_qemu.py --installed --services` passes another 3,456
+complete original/rebuilt/oracle comparisons. This mode executes the actual
+installed object setter/getters and random routine within CPL0/CPL3 INT/IRET
+chains, retaining observer stubs for the other services. Object fields, index
+wrap aliases, unaligned objects, raw return values, shared-memory changes and
+one seed sample are checked; the TSC boundary uses a controlled identical
+seed for both images. The non-service installed-chain mode also still passes
+3,456 comparisons. Logs: `build/syscalls_services_dispatch_chain_build.log`,
+`build/syscalls_qemu_services_build.log`, `build/syscalls_qemu_services.log`.

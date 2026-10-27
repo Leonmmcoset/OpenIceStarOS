@@ -21,7 +21,8 @@ static const uint32_t values[]={0,1,0x7f,0x80,0xff,0x100,0x80000000,0xffffffff};
 static uint64_t idt[256] __attribute__((aligned(8)));
 static uint32_t tss[26],count,ring,vector,operation,pattern,phase,gate_type;
 static uint32_t parameters[8],trace[11],saved_trace[11],saved_result[14];
-static uint8_t saved_memory[0x1040];
+static uint8_t saved_memory[0x4040];
+static uint32_t seed_hits;
 uint32_t syscalls_input[8],syscalls_result[14],syscalls_flags,syscalls_segment;
 uint32_t syscalls_stack,syscalls_kernel_stack,syscalls_operation;
 uint32_t syscalls_callback_flags,syscalls_callback_cs,syscalls_callback_ds,syscalls_callback_ss;
@@ -42,6 +43,23 @@ static void require_at(int condition,uint32_t line)
 #define require(c) require_at((c),__LINE__)
 static const struct route *route(void)
 {return vector==0x40?(operation<20?routes40+operation:0):(operation<5?routes41+operation:0);}
+static int real_service(void)
+{
+#ifdef KERNEL_SERVICE_CHAIN_TEST
+    return vector==0x40?operation==18:(operation==1||operation==2||operation==4);
+#else
+    return 0;
+#endif
+}
+__attribute__((unused)) static uint32_t random_seed(void)
+{++seed_hits;return values[(pattern+5)%COUNT(values)];}
+static uint32_t service_result(void)
+{
+    if(operation==1)return values[pattern%COUNT(values)];
+    if(operation==2)return values[(pattern+1)%COUNT(values)];
+    uint32_t n=values[(pattern+5)%COUNT(values)];n^=n>>6;n^=n<<12;n^=n>>14;
+    return n%(parameters[1]-parameters[0]+1)+parameters[0];
+}
 
 __attribute__((used,noinline)) static uint32_t observe(volatile uint32_t *args,uint32_t target)
 {
@@ -118,8 +136,12 @@ static void redirect(uint32_t base)
 #include "../kernel/service_forward.def"
 #undef SERVICE
 #define TARGET(address) jump(base+0x##address-0x800000,(uint32_t)kernel_syscall_target_##address)
-    TARGET(8082c6);TARGET(808378);TARGET(81021c);TARGET(81017c);TARGET(81041a);
-    TARGET(807a0a);TARGET(810478);TARGET(810448);TARGET(82a9bb);
+    TARGET(8082c6);TARGET(808378);TARGET(81021c);TARGET(81017c);TARGET(807a0a);
+#ifndef KERNEL_SERVICE_CHAIN_TEST
+    TARGET(81041a);TARGET(810478);TARGET(810448);TARGET(82a9bb);
+#else
+    jump(base+0x3734a,(uint32_t)random_seed);
+#endif
 #undef TARGET
     jump(base+0x1b714,(uint32_t)kernel_palette_color);jump(base+0x129e,(uint32_t)kernel_queue_api_request);
     jump(base+0x1434a,(uint32_t)kernel_yield_task);
@@ -131,13 +153,25 @@ static void setup(void)
     const struct route *r=route();uint32_t i,dispatch;
     for(i=0;i<0x1000;++i)((volatile uint8_t *)0x1b000)[i]=(uint8_t)(i*37+pattern*83);
     for(i=0;i<0x40;++i)((volatile uint8_t *)0x600000)[i]=(uint8_t)(i*17+pattern*59);
+    for(i=0;i<0x1000;++i)((volatile uint8_t *)0x610000)[i]=(uint8_t)(i*23+pattern*31);
+    for(i=0;i<0x2000;++i)((volatile uint8_t *)0x6a0000)[i]=(uint8_t)(i*29+pattern*47);
     for(i=0;i<8;++i){
         syscalls_input[i]=0x10293847u*(i+1)^(pattern*0x10204081u);
         parameters[i]=values[(pattern+i)%COUNT(values)];WORD(0x60000c+4*i)=parameters[i];
     }
+    if(real_service()){
+        if(vector==0x41 && operation==4){parameters[0]=values[pattern%COUNT(values)];parameters[1]=parameters[0]+0x10000;}
+        else {
+            uint32_t object=0x610000+(pattern&3);
+            parameters[0]=0xc0000007;WORD(0x6a001c)=object;
+            WORD(object+4)=values[pattern%COUNT(values)];WORD(object+12)=values[(pattern+1)%COUNT(values)];
+        }
+        WORD(0x60000c)=parameters[0];WORD(0x600010)=parameters[1];
+    }
     for(i=0;i<COUNT(syscalls_result);++i)syscalls_result[i]=0;
     for(i=0;i<COUNT(trace);++i)trace[i]=0;
     syscalls_callback_flags=syscalls_callback_cs=syscalls_callback_ds=syscalls_callback_ss=0;
+    seed_hits=0;
     syscalls_return=values[(pattern+3)%COUNT(values)];WORD(0x1b084)=syscalls_return;
     syscalls_input[4]=r && r->count?0x600000:(pattern&1?0:0xfffffff4);
     syscalls_input[5]=operation;
@@ -158,8 +192,10 @@ static void setup(void)
 static void check(void)
 {
     const struct route *r=route();uint32_t i;
-    require(trace[0]==(r?1u:0u));
-    if(r){
+    require(trace[0]==(r&&!real_service()?1u:0u));
+    require(seed_hits==(real_service()&&vector==0x41&&operation==4?1u:0u));
+    if(real_service()&&vector==0x40)require(WORD(0x610000+(pattern&3)+0x55f)==parameters[1]);
+    if(r&&!real_service()){
         require(trace[1]==r->target && trace[2]==r->count);
         require(syscalls_callback_cs==16 && syscalls_callback_ds==8 && syscalls_callback_ss==8);
         require((syscalls_callback_flags&0x600)==((syscalls_flags&0x400)|0x200));
@@ -172,7 +208,7 @@ static void check(void)
     }
     for(i=0;i<8;++i){
         uint32_t expected=i==3?syscalls_stack-4:syscalls_input[i];
-        if(i==7 && vector==0x41)expected=r||operation==5?syscalls_return:0;
+        if(i==7 && vector==0x41)expected=real_service()?service_result():(r||operation==5?syscalls_return:0);
         require(syscalls_result[i]==expected);
     }
     require(syscalls_result[8]==syscalls_flags);
@@ -180,7 +216,9 @@ static void check(void)
     for(i=0;i<COUNT(syscalls_result);++i){if(!phase)saved_result[i]=syscalls_result[i];else require(saved_result[i]==syscalls_result[i]);}
     for(i=0;i<COUNT(trace);++i){if(!phase)saved_trace[i]=trace[i];else require(saved_trace[i]==trace[i]);}
     for(i=0;i<COUNT(saved_memory);++i){
-        uint8_t byte=i<0x1000?((volatile uint8_t *)0x1b000)[i]:((volatile uint8_t *)0x600000)[i-0x1000];
+        uint8_t byte=i<0x1000?((volatile uint8_t *)0x1b000)[i]:
+            i<0x1040?((volatile uint8_t *)0x600000)[i-0x1000]:
+            i<0x2040?((volatile uint8_t *)0x610000)[i-0x1040]:((volatile uint8_t *)0x6a0000)[i-0x2040];
         if(!phase)saved_memory[i]=byte;else require(saved_memory[i]==byte);
     }
 }
@@ -205,5 +243,9 @@ void syscalls_qemu_main(void)
         for(phase=0;phase<2;++phase){setup();if(ring)invoke_user();else invoke();check();}
         ++count;
     }
-    require(count==3456);put("PASS: 3456 complete syscall-chain comparisons; CPL0/CPL3, PUSHAD, routes, arguments, EAX and IRET\n");done(0x10);
+    require(count==3456);put("PASS: 3456 complete syscall-chain comparisons; CPL0/CPL3, PUSHAD, routes, arguments, EAX and IRET\n");
+#ifdef KERNEL_SERVICE_CHAIN_TEST
+    put("PASS: recovered object fields and xorshift services used inside real INT/IRET chains\n");
+#endif
+    done(0x10);
 }
