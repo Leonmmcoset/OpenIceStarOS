@@ -44,16 +44,24 @@ def main():
                         help="load the C Color, verify its palette, and close its window")
     parser.add_argument("--mov-check", action="store_true",
                         help="load the C MOV, verify its four animation frames, and close it")
+    parser.add_argument("--starscr-check", action="store_true",
+                        help="load the C screen saver, verify four phases, and exit with Esc")
+    parser.add_argument("--starscr-reference", action="store_true",
+                        help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
-    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check)) > 1:
+    if arguments.starscr_reference and not arguments.starscr_check:
+        parser.error("--starscr-reference requires --starscr-check")
+    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check else
+    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check else
                      "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
-    image = arguments.image.resolve() if arguments.image else build / default_image
-    screen = build / "boot_c_init.ppm"
-    memory = build / "boot_kernel.memory"
+    image = (arguments.image.resolve() if arguments.image else
+             root.parent / "IceStarOS_x86_32M.vhd" if arguments.starscr_reference else build / default_image)
+    capture_prefix = "boot_starscr_reference" if arguments.starscr_reference else "boot_c_init"
+    screen = build / f"{capture_prefix}.ppm"
+    memory = build / ("boot_starscr_reference.memory" if arguments.starscr_reference else "boot_kernel.memory")
     with tempfile.TemporaryDirectory(prefix="icestar-qemu-") as temporary:
         monitor = Path(temporary) / "monitor.sock"
         command = ["qemu-system-i386", "-machine", "pc", "-m", "128", "-drive",
@@ -86,7 +94,7 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
-                    if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check:
+                    if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check or arguments.starscr_check:
                         cmd_base = check_inputs(execute, build, image)
                         if arguments.snake_check:
                             from snake_smoke import check_snake
@@ -97,10 +105,14 @@ def main():
                         if arguments.mov_check:
                             from mov_smoke import check_mov
                             check_mov(execute, build, image, cmd_base)
+                        if arguments.starscr_check:
+                            from starscr_smoke import check_starscr
+                            check_starscr(execute, build, image, cmd_base, arguments.starscr_reference)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')
-                    (build / "boot_registers.txt").write_bytes(execute("info registers"))
+                    registers = "boot_starscr_reference_registers.txt" if arguments.starscr_reference else "boot_registers.txt"
+                    (build / registers).write_bytes(execute("info registers"))
                     connection.sendall(b"quit\n")
                     while connection.recv(65536):
                         pass
@@ -110,14 +122,16 @@ def main():
                     process.kill()
                     process.wait()
     loaded = memory.read_bytes()
-    kernel = (build / "icestar_c.x").read_bytes()
+    kernel = (Fat16(image.read_bytes()).read_kernel() if arguments.starscr_reference else
+              (build / "icestar_c.x").read_bytes())
     for patch in json.loads((root / "kernel/patches.json").read_text()):
         start, end = int(patch["start"], 0) - 0x800000, int(patch["end"], 0) - 0x800000
         if loaded[start:end] != kernel[start:end]:
             raise RuntimeError("loaded kernel patch differs: " + patch["name"])
-    png_from_ppm(screen, build / "boot_c_init.png")
-    print("QEMU snapshot boot captured; all fixed-address C patches match guest memory")
-    print("Screenshot: " + str(build / "boot_c_init.png"))
+    png_from_ppm(screen, build / f"{capture_prefix}.png")
+    print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else
+          "all fixed-address C patches") + " match guest memory")
+    print("Screenshot: " + str(build / f"{capture_prefix}.png"))
     print("Desktop appearance still requires visual inspection; this is not a full OS test")
 
 

@@ -16,5 +16,11 @@
     "path": ["ICESTAR    ", "GAMES      ", "MOV        ", "MOV     X  "],
     "original_sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68",
     "binary": "mov.x"
+  },
+  {
+    "name": "StarScr",
+    "path": ["ICESTAR    ", "STARSCR X  "],
+    "original_sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c",
+    "binary": "starscr.x"
   }
 ]

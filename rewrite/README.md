@@ -318,7 +318,7 @@ Only the OS services themselves use shared test callbacks. This checkpoint
 builds and differentially verifies COLOR; guest installation follows separately.
 
 `make run-c-apps` boots `build/IceStarOS_c_apps.vhd` with recovered Snake,
-Color, and MOV installed from `apps/images.json`. The earlier Snake-only image is
+Color, MOV, and StarScr installed from `apps/images.json`. The earlier Snake-only image is
 retained as a separate checkpoint. The five installer tests restore every
 replaced file and require the complete restored disk to match its source;
 FAT entries, directories, allocation slack, and the VHD footer stay unchanged.
@@ -391,3 +391,21 @@ zero and coordinate additions wrap. The original unchecked failure-path record
 dereference is retained. This checkpoint builds and differentially tests the
 screen saver; installation and real guest execution follow separately.
 The full verification suite passed on 2026-10-27.
+
+`make smoke-starscr` installs the compiled screen saver and launches it through
+CMD using real PS/2 input. It verifies relocated instructions/data, all 21
+relocations, both compiled callbacks, the full-screen geometry and window mode,
+then compares 10,797 screen pixels in each of the four animation phases against
+the guest palette. Probes omit a three-pixel band around circle boundaries,
+whose edge rounding belongs to the unrecovered kernel rasterizer. A real Esc
+key must remove the window from its pool and terminate its task. Evidence is
+in `build/starscr_smoke.json` and `build/starscr_*.png`.
+
+Post-exit desktop input is a known limitation, not a successful reuse test:
+mouse movement remains queued and the pointer stays still.
+`make smoke-starscr-reference` repeats the same test on the untouched original
+VHD, in snapshot mode, and records the same limitation separately in
+`build/starscr_reference_smoke.json` and `build/starscr_reference_*.png`.
+No guest memory or code is modified by either smoke test. Animation, Esc, and
+window/task cleanup passed on 2026-10-27; desktop reuse after this application
+is not verified. The original close/scheduling implementation remains in use.
