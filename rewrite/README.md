@@ -1335,3 +1335,19 @@ compiled boot stages changed. Logs: `build/surface_present_install_build.log`,
 `build/surface_present_disk_verify.log`. These focused checks are for the
 205-interval image; the earlier full-suite/OS evidence is not reused as a
 regression result for this image.
+
+`kernel/surface_draw.c/.h` recovers the 8-bit layer rasterizer at
+`0x817dac..0x818134`. It preserves signed clipping, inclusive endpoints,
+the unusual predicate call using screen dimensions, a signed transparency
+key, and forward DWORD groups followed by the signed byte remainder. Live
+layer-table/coordinate/key loads and cached buffers/root dimensions retain
+their distinct original behavior when output aliases metadata.
+
+The standalone original/C/independent-oracle fixture passes 536,000 cases
+with two data patterns, four alignments, six pixel-buffer layouts, six
+additional metadata-output layouts, wrapped table indices, signed/overflow
+rectangles, eight layer geometries, four screen sizes and eight keys. It
+checks raw return values and every byte in all five mapped shared pages.
+It explicitly skips 4,672 generated unsafe ranges before invoking executable
+code. Log: `build/surface_draw_preview.log`. This is a source checkpoint;
+the 8-bit rasterizer is not yet installed into the VHDs here.
