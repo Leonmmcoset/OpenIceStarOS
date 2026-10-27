@@ -13,7 +13,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
-                  $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o
+                  $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o $(BUILD)/kernel_runtime.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -38,7 +38,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.physical_write_dword.bin $(BUILD)/kernel.physical_read_byte.bin \
                   $(BUILD)/kernel.physical_read_word.bin $(BUILD)/kernel.physical_read_dword.bin \
                   $(BUILD)/kernel.cpu_cr0_read.bin $(BUILD)/kernel.cpu_cr0_write.bin \
-                  $(foreach slot,00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13,$(BUILD)/kernel.service_$(slot).bin)
+                  $(foreach slot,00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13,$(BUILD)/kernel.service_$(slot).bin) \
+                  $(BUILD)/kernel.palette_color.bin $(BUILD)/kernel.wait_ticks.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -124,6 +125,7 @@ $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 
 $(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
+$(BUILD)/kernel_runtime.o: kernel/runtime.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -197,6 +199,12 @@ $(BUILD)/kernel_service_forward_test: tests/kernel_service_forward.c kernel/serv
 $(BUILD)/kernel_service_forward_linked_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
 
+$(BUILD)/kernel_runtime_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_runtime.c kernel/runtime.c -o $@
+
+$(BUILD)/kernel_runtime_linked_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_runtime.c kernel/runtime.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -258,6 +266,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_keyboard_linked_test
 	$(BUILD)/kernel_service_forward_test
 	$(BUILD)/kernel_service_forward_linked_test
+	$(BUILD)/kernel_runtime_test
+	$(BUILD)/kernel_runtime_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
@@ -271,6 +281,7 @@ verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
 verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
 verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_linked_test
+verify: $(BUILD)/kernel_runtime_test $(BUILD)/kernel_runtime_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x

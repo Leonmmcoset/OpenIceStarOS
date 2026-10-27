@@ -43,6 +43,8 @@
   {"name": "read DWORD port", "binary": "kernel.port_read_dword.bin", "start": "0x81a289", "end": "0x81a296", "exact": true},
   {"name": "write DWORD port", "binary": "kernel.port_write_dword.bin", "start": "0x81a296", "end": "0x81a2a2", "exact": true},
   {"name": "far jump to boot entry", "binary": "kernel.cpu_boot_jump.bin", "start": "0x81a2a2", "end": "0x81a2aa", "exact": true},
+  {"name": "palette color lookup", "binary": "kernel.palette_color.bin", "start": "0x81b714", "end": "0x81b734"},
+  {"name": "tick wait", "binary": "kernel.wait_ticks.bin", "start": "0x82ad81", "end": "0x82adab"},
   {"name": "physical byte write", "binary": "kernel.physical_write_byte.bin", "start": "0x83735b", "end": "0x837374", "exact": true},
   {"name": "physical word write", "binary": "kernel.physical_write_word.bin", "start": "0x837374", "end": "0x83738f", "exact": true},
   {"name": "physical DWORD write", "binary": "kernel.physical_write_dword.bin", "start": "0x83738f", "end": "0x8373a8", "exact": true},

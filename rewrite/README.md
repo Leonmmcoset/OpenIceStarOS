@@ -409,3 +409,21 @@ VHD, in snapshot mode, and records the same limitation separately in
 No guest memory or code is modified by either smoke test. Animation, Esc, and
 window/task cleanup passed on 2026-10-27; desktop reuse after this application
 is not verified. The original close/scheduling implementation remains in use.
+
+`kernel/runtime.c` recovers palette lookup (shared slot 237) at
+`0x81b714..0x81b734` and tick waiting (slot 113) at
+`0x82ad81..0x82adab`. Palette indexing remains unchecked, including unaligned
+loads and 32-bit address arithmetic. Waiting retains the unsigned absolute
+deadline comparison, its addition-wraparound early-return behavior, and the
+last observed tick as its return value. Task yield at `0x81434a` still calls
+the original scheduler. Both host-linked and fixed-address differential tests
+pass 4,224 palette and 2,304 wait cases each. They compare memory, return
+values, and ordered yield traces, including callbacks that advance, stall, or
+reverse time and mutate shared globals. Only the task-yield boundary is
+stubbed in these tests. The full verification suite passed on 2026-10-27;
+the 74-interval image also passed the STARSCR animation, Esc, and task-cleanup
+checks with every installed interval matching guest memory. The previously
+documented post-STARSCR mouse-input limitation remains reproducible.
+MOV also passed all four pixel-exact frames, PS/2 close, image/task cleanup,
+and a subsequent CMD command on this image; its post-close screenshot was
+visually inspected.

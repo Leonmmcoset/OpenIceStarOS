@@ -2,6 +2,7 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
+PROVIDE(kernel_yield_task = 0x81434a);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -189,6 +190,10 @@ SECTIONS
     ASSERT(kernel_write_port_dword == 0x81a296 && SIZEOF(.port_write_dword) == 12, "OUT DWORD layout changed")
     .cpu_boot_jump 0x81a2a2 : { *kernel_cpu.o(.text.kernel_jump_boot_entry) }
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
+    .palette_color 0x81b714 : { *kernel_runtime.o(.text.kernel_palette_color) }
+    ASSERT(kernel_palette_color == 0x81b714 && ADDR(.palette_color) + SIZEOF(.palette_color) <= 0x81b734, "palette getter overflow")
+    .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
+    ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
     .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
     ASSERT(kernel_physical_write_byte == 0x83735b && SIZEOF(.physical_write_byte) == 25, "physical byte write layout changed")
     .physical_write_word 0x837374 : { *kernel_physical.o(.text.kernel_physical_write_word) }
