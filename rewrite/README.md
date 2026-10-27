@@ -1533,3 +1533,16 @@ screenshots were visually inspected. Logs and exit markers:
 `build/surface_move_{system,snake,color,mov,starscr}_smoke.{log,exit}`.
 These are integration checkpoints for a partial recovery that still depends
 on unrecovered components in the original image.
+
+The complete `make -j4 verify` regression for the 209-interval image also
+passed on 2026-10-27, with exit status 0 in approximately 754 seconds.
+Log: `build/verify_surface_move.log`; exit marker:
+`build/verify_surface_move.exit`; command/status/timing summary:
+`build/verify_surface_move_summary.json`. This reruns all kernel fixtures,
+including 51,200 moved-layer cases and 628,156 32-bit rasterizer cases in
+each host-linked and installed-address mode. The four application
+differential suites, executable-format tests and both entire-disk
+application-image verifiers also pass. The five archived QEMU smoke image
+hashes were rechecked after this regression and still match the built images.
+This closes the 209-interval verification checkpoint; it does not remove
+the remaining original-code dependencies or the STARSCR limitation above.
