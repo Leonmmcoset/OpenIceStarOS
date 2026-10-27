@@ -1080,3 +1080,13 @@ variants pass 30,720 cases each (61,440 total). Installation rebuilt the C-init
 and application VHDs. Logs: `build/interrupt_callbacks_build.log`,
 `build/interrupt_callbacks_test.log`, `build/interrupt_callbacks_linked_test.log`,
 `build/cmos_clock_exact.log`. Full-suite and OS regression follow separately.
+
+`python3 tests/cmos_clock_qemu.py` passes 256 original/rebuilt/oracle cases
+with real CPL0 CMOS IN/OUT. The clock is frozen while raw BCD/binary register
+values vary; checks cover all eight sampled bytes, all surrounding shared
+memory, a separate segment-base guard region, GS selectors 0/8/24/32,
+EAX's century-byte result, other general registers, flags including DF,
+and the final selected CMOS index. The GS=32 test uses a nonzero segment
+base and verifies temporary selection of the flat GS=8 descriptor. The
+fixture does not boot or modify the OS disk. Logs:
+`build/cmos_clock_qemu_build.log`, `build/cmos_clock_qemu.log`.
