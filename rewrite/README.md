@@ -987,3 +987,19 @@ device result comparison; the routine's exact instruction bytes are checked
 separately during image installation. The fixture keeps IF clear and does
 not boot or modify the OS disk. Logs: `build/interrupts_qemu_build.log` and
 `build/interrupts_qemu.log`.
+
+`kernel/interrupt_entries.c/.h/.def` recovers all 14 interrupt-frame entry
+points at `0x8371a0..0x8372e8`: two exception entries, the default PIC
+acknowledgement entry, CLTS/#NM, timer, keyboard, IRQ5, RTC, IRQ9 through
+IRQ12 and software interrupts 0x40/0x41. The symbolic assembly preserves the
+CPU frame, original segment saves, callback addresses, EOI order, RTC status
+read and STI placement. No CLD or exception error-code adjustment is added.
+Only interrupt 0x41 substitutes the callback result for saved EAX. The #NM
+entry executes only CLTS/IRET, as in the original, rather than invoking the
+separate FPU callback. These functions must be entered with an interrupt
+frame, never with an ordinary C call.
+
+`python3 tests/interrupt_entries_exact.py` independently compiles these
+sources and compares all 328 bytes with the SHA-256-verified original
+kernel extracted directly from the VHD. All 14 match exactly. Installation
+and privileged entry/return tests follow this source-recovery step.
