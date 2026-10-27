@@ -941,3 +941,12 @@ task entries, and complete 512-byte x87/SSE state comparisons. The fixture
 enables OSFXSR/OSXSAVE and XCR0=3; XSAVE/XRSTOR retain the original pointer/mask
 ABI and are exercised with a zero effective mask. This fixture does not boot
 or modify the OS disk. Logs: `build/fpu_qemu_build.log`, `build/fpu_qemu.log`.
+
+The complete `make verify` suite passed with all 166 intervals on 2026-10-27.
+Three further OS snapshot boots passed the live 128 MiB memory/heap, real TSS
+switching, PS/2/CMD, MOV frames/close/cleanup/CMD reuse, and STARSCR phases/
+Esc/cleanup checks. All installed intervals matched guest RAM. MOV's post-close
+CMD screenshot was visually inspected. STARSCR still has the known original
+post-exit mouse stall; desktop reuse after STARSCR is not verified. Logs:
+`build/verify_fpu.log`, `build/fpu_smoke.log`, `build/mov_fpu_smoke.log`,
+`build/starscr_fpu_smoke.log`; screenshots/JSON: `build/fpu_evidence/`.
