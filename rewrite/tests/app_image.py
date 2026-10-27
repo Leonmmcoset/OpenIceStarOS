@@ -23,12 +23,25 @@ class ApplicationImageTests(unittest.TestCase):
         cls.result = installed(cls.source, cls.manifest, cls.build)
 
     def test_exact_extent_changes(self):
-        expected = (self.build / "snake.x").read_bytes()
-        self.assertEqual(Fat16(self.result).read_file(*SNAKE), expected)
+        restored = self.result
+        for app in json.loads(self.manifest.read_text()):
+            path = tuple(name.encode("ascii") for name in app["path"])
+            expected = (self.build / app["binary"]).read_bytes()
+            self.assertEqual(Fat16(self.result).read_file(*path), expected)
+            original = Fat16(self.source).read_file(*path)
+            restored = Fat16(restored).replace_file(original, *path)
         verify(self.source, self.result, self.manifest, self.build)
-        restored = Fat16(self.result).replace_file(Fat16(self.source).read_file(*SNAKE), *SNAKE)
         self.assertEqual(restored, self.source)
         self.assertNotEqual(self.result, self.source)
+
+    def test_snake_only_checkpoint(self):
+        manifest = ROOT / "apps/snake_image.json"
+        result = installed(self.source, manifest, self.build)
+        verify(self.source, result, manifest, self.build)
+        self.assertEqual(Fat16(result).read_file(*SNAKE), (self.build / "snake.x").read_bytes())
+        restored = Fat16(result).replace_file(Fat16(self.source).read_file(*SNAKE), *SNAKE)
+        self.assertEqual(restored, self.source)
+        self.assertNotEqual(result, self.result)
 
     def test_multiple_cluster_file(self):
         path = (b"ICESTAR    ", b"CMD     X  ")

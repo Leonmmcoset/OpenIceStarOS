@@ -40,7 +40,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.cpu_cr0_read.bin $(BUILD)/kernel.cpu_cr0_write.bin \
                   $(foreach slot,00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13,$(BUILD)/kernel.service_$(slot).bin)
 
-.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake
+.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color
 all: $(BUILD)/IceStarOS_c_mbr.vhd
 
 $(BUILD):
@@ -262,7 +262,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/snake.py
 	python3 tests/color.py
 	python3 tests/app_image.py
-	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
+	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
+	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_apps.vhd
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
@@ -271,6 +272,7 @@ verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_lin
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/IceStarOS_c_snake.vhd
+verify: $(BUILD)/IceStarOS_c_apps.vhd
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
@@ -293,8 +295,8 @@ $(BUILD)/snake.elf: $(BUILD)/snake.o $(BUILD)/xapi.o apps/snake.ld
 $(BUILD)/snake.x: $(BUILD)/snake.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --file-size 0xb24 --metadata $(BUILD)/snake.symbols.json
 
-$(BUILD)/IceStarOS_c_snake.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x apps/images.json tools/app_image.py tools/kernel_image.py
-	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@
+$(BUILD)/IceStarOS_c_snake.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x apps/snake_image.json tools/app_image.py tools/kernel_image.py
+	python3 tools/app_image.py install $< apps/snake_image.json $(BUILD) $@
 
 run-c-snake: $(BUILD)/IceStarOS_c_snake.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
@@ -313,3 +315,12 @@ $(BUILD)/color.elf: $(BUILD)/color.o $(BUILD)/legacy_api.o apps/color.ld
 
 $(BUILD)/color.x: $(BUILD)/color.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/color.symbols.json
+
+$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x apps/images.json tools/app_image.py tools/kernel_image.py
+	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@
+
+run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
+	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
+
+smoke-color: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --color-check

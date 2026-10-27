@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Snake",
+    "path": ["ICESTAR    ", "GAMES      ", "SNAKE   X  "],
+    "original_sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488",
+    "binary": "snake.x"
+  }
+]

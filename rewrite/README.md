@@ -273,7 +273,7 @@ test callbacks; actual OS loading and rendering require the separate QEMU
 integration check. The complete verification suite passed on 2026-10-27.
 
 `make run-c-snake` boots `build/IceStarOS_c_snake.vhd`, which installs the
-compiled Snake into its existing FAT16 cluster chain. `apps/images.json`
+compiled Snake into its existing FAT16 cluster chain. `apps/snake_image.json`
 records the original file hash and explicit short-name path. The installer
 preserves both FAT copies, directory entries, allocation slack, and every byte
 outside the replaced application. `tests/app_image.py` verifies those complete
@@ -316,3 +316,23 @@ registration and dispatch, service-table switching, palette changes during
 drawing, and callback mutations of the active surface and window record.
 Only the OS services themselves use shared test callbacks. This checkpoint
 builds and differentially verifies COLOR; guest installation follows separately.
+
+`make run-c-apps` boots `build/IceStarOS_c_apps.vhd` with both recovered Snake
+and Color installed from `apps/images.json`. The earlier Snake-only image is
+retained as a separate checkpoint. The five installer tests restore every
+replaced file and require the complete restored disk to match its source;
+FAT entries, directories, allocation slack, and the VHD footer stay unchanged.
+
+`make smoke-color` launches `color.x` through the original CMD using real PS/2
+input. It verifies the relocated C instructions and initialized data, all seven
+relocations, the registered compiled close callback, and one center pixel in
+each of the 600 drawn rectangles against the live guest palette words. The
+original app reads 600 consecutive words, including the mostly black later
+entries; the rewrite preserves that behavior. The test moves the actual guest
+pointer to the rendered close button, clicks it, checks removal from the window
+pool and task termination, and runs `cpuid` again in CMD. It changes no guest
+code or application state. Evidence is in `build/color_smoke.json` and
+`build/color_{launched,closed,cmd_after_close}.png`. The full verification suite
+and Color smoke test passed on 2026-10-27; all three screenshots were inspected.
+These applications still run on the partially recovered kernel and original
+desktop, window system, drivers, and CMD.

@@ -40,10 +40,15 @@ def main():
                         help="exercise the desktop pointer and CMD keyboard input")
     parser.add_argument("--snake-check", action="store_true",
                         help="load the C Snake through CMD and exercise movement/restart")
+    parser.add_argument("--color-check", action="store_true",
+                        help="load the C Color, verify its palette, and close its window")
     arguments = parser.parse_args()
+    if arguments.snake_check and arguments.color_check:
+        parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd"
+    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check else
+                     "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
     image = arguments.image.resolve() if arguments.image else build / default_image
     screen = build / "boot_c_init.ppm"
     memory = build / "boot_kernel.memory"
@@ -79,11 +84,14 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
-                    if arguments.input_check or arguments.snake_check:
+                    if arguments.input_check or arguments.snake_check or arguments.color_check:
                         cmd_base = check_inputs(execute, build, image)
                         if arguments.snake_check:
                             from snake_smoke import check_snake
                             check_snake(execute, build, image, cmd_base)
+                        if arguments.color_check:
+                            from color_smoke import check_color
+                            check_color(execute, build, image, cmd_base)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')
