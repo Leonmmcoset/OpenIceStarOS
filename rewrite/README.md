@@ -50,3 +50,11 @@ The verification suite executes the original x86 initializer and the C version
 against identical patterned memory and compares the entire affected region.
 The kernel function table initializer at `0x8004fa` is also recovered in
 `kernel/api_table.c` and invoked from the original call at `0x800099`.
+
+`kernel/service_table.c` recovers the service table initializer at `0x8005aa`.
+Its display-specific entries distinguish 8-bit and 32-bit modes; bit 25 of the
+CPU feature word selects the accelerated memory operations. Unsupported
+display depths and the original unused slots preserve their previous values.
+The differential test executes the original routine and the C routine for
+six display depths, four feature words, and three memory patterns (72 cases).
+This routine is not yet installed in the boot image.

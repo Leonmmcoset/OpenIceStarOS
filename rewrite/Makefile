@@ -98,7 +98,7 @@ $(BUILD)/kernel_api_table.o: kernel/api_table.c | $(BUILD)
 $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror $^ -o $@
 
-$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/api_table.c | $(BUILD)
+$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/api_table.c kernel/service_table.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o $(BUILD)/kernel_api_table.o init/init.ld
