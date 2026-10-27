@@ -221,3 +221,18 @@ All fifty-two installed intervals passed full disk verification and the
 interactive QEMU input smoke test on 2026-10-27; the CPU output and returned
 CMD prompt were visually inspected. The adjacent RAM probe and paging setup
 are still original code; recovery of these primitives does not recover them.
+
+`kernel/service_forward.c` recovers the first twenty service-table forwarding
+interfaces at `0x8374cf..0x837967`. The shared table pointer remains at
+`0x1b0e4`; each interface copies its original argument list, calls the original
+slot unconditionally, and returns the callback's raw DWORD result. Slots 6 and
+12 sign-extend their final byte argument. Sibling-call optimization is disabled
+so a callback writing its own argument stack cannot modify the outer caller's
+arguments. Slot numbers are used as names until service meanings are established.
+Each of `kernel_service_forward_test` and `kernel_service_forward_linked_test`
+compares 10,112 cases with the original machine code, checking argument order,
+byte truncation, return bits, callback counts, stack isolation, and mutations of
+shared memory, the table pointer, and the active slot. All seventy-two installed
+kernel intervals passed full disk verification and the interactive QEMU input
+smoke test on 2026-10-27. The CPU identification output and fresh CMD prompt
+were visually inspected. Later optional service slots remain original code.

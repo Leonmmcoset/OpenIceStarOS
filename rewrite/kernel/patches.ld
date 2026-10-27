@@ -205,6 +205,46 @@ SECTIONS
     ASSERT(kernel_read_cr0 == 0x83743c && SIZEOF(.cpu_cr0_read) == 4, "read CR0 layout changed")
     .cpu_cr0_write 0x837440 : { *kernel_cpu.o(.text.kernel_write_cr0) }
     ASSERT(kernel_write_cr0 == 0x837440 && SIZEOF(.cpu_cr0_write) == 8, "write CR0 layout changed")
+    .service_00 0x8374cf : { *kernel_service_forward.o(.text.kernel_service_00) }
+    ASSERT(kernel_service_00 == 0x8374cf && ADDR(.service_00) + SIZEOF(.service_00) <= 0x837501, "service 00 overflow")
+    .service_01 0x837501 : { *kernel_service_forward.o(.text.kernel_service_01) }
+    ASSERT(kernel_service_01 == 0x837501 && ADDR(.service_01) + SIZEOF(.service_01) <= 0x837545, "service 01 overflow")
+    .service_02 0x837545 : { *kernel_service_forward.o(.text.kernel_service_02) }
+    ASSERT(kernel_service_02 == 0x837545 && ADDR(.service_02) + SIZEOF(.service_02) <= 0x837589, "service 02 overflow")
+    .service_03 0x837589 : { *kernel_service_forward.o(.text.kernel_service_03) }
+    ASSERT(kernel_service_03 == 0x837589 && ADDR(.service_03) + SIZEOF(.service_03) <= 0x8375cd, "service 03 overflow")
+    .service_04 0x8375cd : { *kernel_service_forward.o(.text.kernel_service_04) }
+    ASSERT(kernel_service_04 == 0x8375cd && ADDR(.service_04) + SIZEOF(.service_04) <= 0x837609, "service 04 overflow")
+    .service_05 0x837609 : { *kernel_service_forward.o(.text.kernel_service_05) }
+    ASSERT(kernel_service_05 == 0x837609 && ADDR(.service_05) + SIZEOF(.service_05) <= 0x837645, "service 05 overflow")
+    .service_06 0x837645 : { *kernel_service_forward.o(.text.kernel_service_06) }
+    ASSERT(kernel_service_06 == 0x837645 && ADDR(.service_06) + SIZEOF(.service_06) <= 0x83768f, "service 06 overflow")
+    .service_07 0x83768f : { *kernel_service_forward.o(.text.kernel_service_07) }
+    ASSERT(kernel_service_07 == 0x83768f && ADDR(.service_07) + SIZEOF(.service_07) <= 0x8376d3, "service 07 overflow")
+    .service_08 0x8376d3 : { *kernel_service_forward.o(.text.kernel_service_08) }
+    ASSERT(kernel_service_08 == 0x8376d3 && ADDR(.service_08) + SIZEOF(.service_08) <= 0x837717, "service 08 overflow")
+    .service_09 0x837717 : { *kernel_service_forward.o(.text.kernel_service_09) }
+    ASSERT(kernel_service_09 == 0x837717 && ADDR(.service_09) + SIZEOF(.service_09) <= 0x837761, "service 09 overflow")
+    .service_0a 0x837761 : { *kernel_service_forward.o(.text.kernel_service_0a) }
+    ASSERT(kernel_service_0a == 0x837761 && ADDR(.service_0a) + SIZEOF(.service_0a) <= 0x83779d, "service 0a overflow")
+    .service_0b 0x83779d : { *kernel_service_forward.o(.text.kernel_service_0b) }
+    ASSERT(kernel_service_0b == 0x83779d && ADDR(.service_0b) + SIZEOF(.service_0b) <= 0x8377d3, "service 0b overflow")
+    .service_0c 0x8377d3 : { *kernel_service_forward.o(.text.kernel_service_0c) }
+    ASSERT(kernel_service_0c == 0x8377d3 && ADDR(.service_0c) + SIZEOF(.service_0c) <= 0x83781d, "service 0c overflow")
+    .service_0d 0x83781d : { *kernel_service_forward.o(.text.kernel_service_0d) }
+    ASSERT(kernel_service_0d == 0x83781d && ADDR(.service_0d) + SIZEOF(.service_0d) <= 0x837861, "service 0d overflow")
+    .service_0e 0x837861 : { *kernel_service_forward.o(.text.kernel_service_0e) }
+    ASSERT(kernel_service_0e == 0x837861 && ADDR(.service_0e) + SIZEOF(.service_0e) <= 0x83789d, "service 0e overflow")
+    .service_0f 0x83789d : { *kernel_service_forward.o(.text.kernel_service_0f) }
+    ASSERT(kernel_service_0f == 0x83789d && ADDR(.service_0f) + SIZEOF(.service_0f) <= 0x8378bd, "service 0f overflow")
+    .service_10 0x8378bd : { *kernel_service_forward.o(.text.kernel_service_10) }
+    ASSERT(kernel_service_10 == 0x8378bd && ADDR(.service_10) + SIZEOF(.service_10) <= 0x8378dd, "service 10 overflow")
+    .service_11 0x8378dd : { *kernel_service_forward.o(.text.kernel_service_11) }
+    ASSERT(kernel_service_11 == 0x8378dd && ADDR(.service_11) + SIZEOF(.service_11) <= 0x83790b, "service 11 overflow")
+    .service_12 0x83790b : { *kernel_service_forward.o(.text.kernel_service_12) }
+    ASSERT(kernel_service_12 == 0x83790b && ADDR(.service_12) + SIZEOF(.service_12) <= 0x837939, "service 12 overflow")
+    .service_13 0x837939 : { *kernel_service_forward.o(.text.kernel_service_13) }
+    ASSERT(kernel_service_13 == 0x837939 && ADDR(.service_13) + SIZEOF(.service_13) <= 0x837967, "service 13 overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

@@ -12,7 +12,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
-                  $(BUILD)/kernel_physical.o
+                  $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -36,7 +36,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.physical_write_byte.bin $(BUILD)/kernel.physical_write_word.bin \
                   $(BUILD)/kernel.physical_write_dword.bin $(BUILD)/kernel.physical_read_byte.bin \
                   $(BUILD)/kernel.physical_read_word.bin $(BUILD)/kernel.physical_read_dword.bin \
-                  $(BUILD)/kernel.cpu_cr0_read.bin $(BUILD)/kernel.cpu_cr0_write.bin
+                  $(BUILD)/kernel.cpu_cr0_read.bin $(BUILD)/kernel.cpu_cr0_write.bin \
+                  $(foreach slot,00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13,$(BUILD)/kernel.service_$(slot).bin)
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -121,6 +122,8 @@ $(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD
 $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 
+$(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
+
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
 
@@ -187,6 +190,12 @@ $(BUILD)/kernel_keyboard_linked_test: tests/kernel_keyboard.c $(BUILD)/icestar_c
 $(BUILD)/kernel_pointer_init_linked_test: tests/kernel_pointer_init.c $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/pointer_init.c -o $@
 
+$(BUILD)/kernel_service_forward_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
+
+$(BUILD)/kernel_service_forward_linked_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -246,10 +255,13 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_keyboard_init_linked_test
 	$(BUILD)/kernel_keyboard_test
 	$(BUILD)/kernel_keyboard_linked_test
+	$(BUILD)/kernel_service_forward_test
+	$(BUILD)/kernel_service_forward_linked_test
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
 verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
+verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_linked_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
