@@ -1192,3 +1192,13 @@ one seed sample are checked; the TSC boundary uses a controlled identical
 seed for both images. The non-service installed-chain mode also still passes
 3,456 comparisons. Logs: `build/syscalls_services_dispatch_chain_build.log`,
 `build/syscalls_qemu_services_build.log`, `build/syscalls_qemu_services.log`.
+
+`kernel/syscall_surface.c/.h` recovers the surface-refresh forwarder at
+`0x81017c..0x81021c`, used by INT 0x40 operation 16 and the service table.
+It retains independent descending DWORD reads, repeated layer/table lookup,
+wrapped indices, unaligned fields and the raw compositor return. The separate
+outgoing argument area prevents a callee from overwriting its caller's input.
+The standalone original/C/oracle fixture passes 18,433 cases plus 18 expected
+guard-page SIGSEGV executions. Log: `build/syscall_surface_preview.log`.
+This source checkpoint does not yet install the forwarder; the compositor
+body at `0x81905e` remains an observation stub in this fixture.
