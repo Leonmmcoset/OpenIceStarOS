@@ -798,6 +798,20 @@ The test checks polling counts, final status, GPRs, stack, defined arithmetic
 flags and both incoming DF states. Both host-linked and fixed-address
 variants pass (33,581,056 color and 1,536 VGA comparisons altogether).
 
+The complete verification suite passed on 2026-10-27 with all 125 replacement
+intervals. Three QEMU boots passed RAM/page/heap-chain checks (128 MiB and
+59 or 60 live headers), real TSS switching, PS/2 and CMD input, MOV's four
+pixel-exact frames, close and subsequent `cpuid`, and STARSCR's four phases,
+Esc and task cleanup. All installed kernel intervals matched guest memory.
+MOV's post-close CMD screen was visually inspected. The original
+post-STARSCR mouse stall remains; desktop reuse after that application is
+not verified. Logs: `build/verify_graphics_primitives.log`,
+`build/graphics_primitives_smoke.log`, `build/mov_graphics_primitives_smoke.log`,
+and `build/starscr_graphics_primitives_smoke.log`; representative evidence
+is preserved in `build/graphics_primitives_evidence/`. Unrecovered routines
+continue to use the original binary; this is not yet a complete OS build
+from source.
+
 `kernel/service_optional.c/.h/.def` recovers the 25 optional service-table
 wrappers at `0x837967..0x837f5f` (slots 20 through 44). The global table is
 captured once; the selected slot is tested and, when nonzero, read again for
