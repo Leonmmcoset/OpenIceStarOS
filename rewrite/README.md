@@ -1755,3 +1755,12 @@ The production object fits the four original slots, including its jump tables:
 `build/cursor_preview_test.log`, `build/cursor_preview_test.exit` (0), and
 `build/cursor_preview_summary.json`. This is another source checkpoint;
 the installed manifest remains at 214 until integration is recorded below.
+
+The complete 214-interval `make -j4 verify` regression exits 0 on 2026-10-27
+in 869.337 seconds. Both variants of every differential fixture, boot/INIT
+checks, exact interrupt/timestamp layouts, application suites and both final
+whole-disk application verifiers pass in one uninterrupted command.
+All three production image SHA-256 values are unchanged before/after the
+suite and match the archived QEMU evidence. Log/exit/timing and image hashes:
+`build/verify_surface_lifecycle.log`, `build/verify_surface_lifecycle.exit`
+(0), and `build/verify_surface_lifecycle_summary.json`.
