@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 222 declared kernel intervals and
+original VHD. The current build installs 224 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2014,3 +2014,18 @@ for the software table including its read-only constants. Entry/size linker
 assertions cover both. Evidence: `build/display_palette_preview_summary.json`,
 `build/display_palette_calls.h` and `build/display_palette_preview.elf`.
 Production images remain unchanged at this source checkpoint.
+
+### Complete 224-interval regression (2026-10-27)
+
+The uninterrupted `make -j4 verify` baseline passes with exit 0 in 950.796
+seconds. It covers both ordinary-C and fixed-address kernel tests, the
+installed firmware QEMU fixture, timestamp checks, four application tests,
+image-tool tests, and complete-disk reconstruction checks. Kernel, init,
+Snake and combined-application image hashes are identical before and after
+the run. The source checkpoints above do not change this baseline.
+
+Evidence: `build/verify_firmware.log`, `build/verify_firmware.exit` and
+`build/verify_firmware_summary.json`. Baseline kernel SHA-256:
+`44ef53e627d5ddd6757e0a89012615de4e912b9b33ddee015676395d4d3baab3`.
+The combined-application image SHA-256 remains
+`20d0c0320627eab6c329d2b9f4ab5c61a773f8f57195938e07cf46673ce23dfc`.
