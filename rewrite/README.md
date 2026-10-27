@@ -1790,3 +1790,17 @@ Fresh artifacts, image/trace hashes and timing are archived in
 `build/surface_order_evidence/results.json`; all 19 artifact hashes and the
 current application-image hash were rechecked. This is bounded integration
 evidence, separate from a complete regression of the new image.
+
+Separate 218-interval QEMU application boots pass Snake's movement, collision,
+restart and turns (33.502 seconds), MOV's 16 relocations and four exact frames
+plus close/cleanup/CMD reuse (32.235 seconds), and STARSCR's 21 relocations,
+four phases with 10,797 pixel probes each, Esc exit and task cleanup
+(26.121 seconds). Each command exits 0 and verifies every installed interval
+in guest memory. STARSCR's post-exit mouse probe still stalls, matching the
+previous original-image baseline; desktop reuse remains unverified.
+Fresh artifacts and image/artifact hashes are archived under
+`build/surface_order_evidence/{snake,mov,starscr}/` and `results.json`.
+All recorded hashes were rechecked, and Snake turn, MOV frame 2 and STARSCR
+phase 2 screenshots were visually inspected. Logs/exit/timing:
+`build/surface_order_{snake,mov,starscr}_smoke.{log,exit}` and corresponding
+`_summary.json` files.
