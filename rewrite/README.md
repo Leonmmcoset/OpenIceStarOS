@@ -1212,3 +1212,19 @@ and 18 expected guard-page faults. Build/test logs:
 `build/syscall_surface_install_build.log`, `build/syscall_surface_host_test.log`,
 `build/syscall_surface_linked_test.log`. The lower compositor remains original
 at this installation checkpoint; full-suite and OS regression follow.
+
+`kernel/surface_refresh.c/.h` recovers refresh selection at
+`0x81905e..0x8191d8`. The C body retains the zero-order early return,
+unsigned layer-order comparison, signed active-index/style tests, fallback
+layer 2, callback capture before interrupt masking, repeated volatile reads
+and original rectangle arguments. The lower compositor at `0x817cd0` and
+the framebuffer callback remain separate dependencies.
+
+An assembly entry/return boundary restores EFLAGS only after C stack cleanup;
+ordinary compiler-generated `ADD ESP` after `POPFL` would corrupt arithmetic
+flags. The standalone fixture passes 24,576 original/C/oracle comparisons
+covering all selection routes, index-wrap aliases, unaligned structures,
+callback/table mutations, outgoing-argument writes and complete shared-memory
+comparisons. Real userspace `POPFL` checks arithmetic flags and DF immediately
+after each enabled-path return. Log: `build/surface_refresh_preview.log`.
+This preview does not yet install the recovered selector into the disk.
