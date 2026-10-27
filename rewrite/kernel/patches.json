@@ -17,5 +17,9 @@
   {"name": "byte queue write", "binary": "kernel.queue_write.bin", "start": "0x812e7e", "end": "0x812f2c"},
   {"name": "byte queue read", "binary": "kernel.queue_read.bin", "start": "0x812f2c", "end": "0x812f72"},
   {"name": "byte queue availability", "binary": "kernel.queue_available.bin", "start": "0x812f72", "end": "0x812f96"},
-  {"name": "pointer packet decode", "binary": "kernel.pointer_decode.bin", "start": "0x812f96", "end": "0x8130cc"}
+  {"name": "pointer packet decode", "binary": "kernel.pointer_decode.bin", "start": "0x812f96", "end": "0x8130cc"},
+  {"name": "keyboard queue write", "binary": "kernel.input_write.bin", "start": "0x819d96", "end": "0x819dfe"},
+  {"name": "keyboard queue read", "binary": "kernel.input_read.bin", "start": "0x819dfe", "end": "0x819e44"},
+  {"name": "keyboard queue availability", "binary": "kernel.input_available.bin", "start": "0x819e44", "end": "0x819e68"},
+  {"name": "ASCII uppercase", "binary": "kernel.ascii_upper.bin", "start": "0x819e68", "end": "0x819e90"}
 ]

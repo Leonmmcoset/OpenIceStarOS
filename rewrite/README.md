@@ -145,3 +145,13 @@ structures, every status byte, delayed readiness, and pointer-global mutation
 from port callbacks. Only port I/O is stubbed in those tests; boot uses the
 real original x86 port helpers. The nineteen-interval image reached the desktop
 on 2026-10-27 and passed all disk and loaded-memory checks.
+
+`kernel/input_queue.c` recovers the separate keyboard byte queue at
+`0x819d96..0x819e68` and ASCII uppercase conversion at `0x819e68..0x819e90`.
+Keyboard overflow rejects the write without changing memory; unlike the mouse
+queue it does not shift stored bytes. Reads retain the original unchecked
+empty-queue underflow. Both input differential executables compare 369,099
+queue cases and 262,144 full-width character cases against original machine
+code, and the shared mouse-queue/decoder tests still pass. All twenty-three
+installed intervals passed disk verification and QEMU loaded-memory checks;
+the desktop was visually inspected on 2026-10-27.

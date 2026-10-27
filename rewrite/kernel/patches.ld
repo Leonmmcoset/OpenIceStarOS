@@ -1,7 +1,6 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
-PROVIDE(kernel_input_available = 0x819e44);
 PROVIDE(kernel_read_flags = 0x81a24a);
 PROVIDE(kernel_disable_interrupts = 0x81a242);
 PROVIDE(kernel_write_flags = 0x81a24d);
@@ -108,6 +107,26 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .input_write 0x819d96 : SUBALIGN(1) {
+        *kernel_input_queue.o(.text.kernel_input_write)
+    }
+    ASSERT(kernel_input_write == 0x819d96, "input write entry moved")
+    ASSERT(ADDR(.input_write) + SIZEOF(.input_write) <= 0x819dfe, "input write slot overflow")
+    .input_read 0x819dfe : SUBALIGN(1) {
+        *kernel_input_queue.o(.text.kernel_input_read)
+    }
+    ASSERT(kernel_input_read == 0x819dfe, "input read entry moved")
+    ASSERT(ADDR(.input_read) + SIZEOF(.input_read) <= 0x819e44, "input read slot overflow")
+    .input_available 0x819e44 : SUBALIGN(1) {
+        *kernel_input_queue.o(.text.kernel_input_available)
+    }
+    ASSERT(kernel_input_available == 0x819e44, "input available entry moved")
+    ASSERT(ADDR(.input_available) + SIZEOF(.input_available) <= 0x819e68, "input available slot overflow")
+    .ascii_upper 0x819e68 : SUBALIGN(1) {
+        *kernel_input_queue.o(.text.kernel_ascii_upper)
+    }
+    ASSERT(kernel_ascii_upper == 0x819e68, "ASCII upper entry moved")
+    ASSERT(ADDR(.ascii_upper) + SIZEOF(.ascii_upper) <= 0x819e90, "ASCII upper slot overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

@@ -10,7 +10,8 @@ KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
                  -ffunction-sections -fdata-sections -Wall -Wextra -Werror
 KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
-                  $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o
+                  $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
+                  $(BUILD)/kernel_input_queue.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -19,7 +20,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.dispatch_slot2.bin $(BUILD)/kernel.dispatch_slot3.bin $(BUILD)/kernel.pointer_input.bin \
                   $(BUILD)/kernel.queue_write.bin $(BUILD)/kernel.queue_read.bin \
                   $(BUILD)/kernel.queue_available.bin $(BUILD)/kernel.pointer_decode.bin \
-                  $(BUILD)/kernel.pointer_init.bin $(BUILD)/kernel.ps2_ready.bin
+                  $(BUILD)/kernel.pointer_init.bin $(BUILD)/kernel.ps2_ready.bin \
+                  $(BUILD)/kernel.input_write.bin $(BUILD)/kernel.input_read.bin \
+                  $(BUILD)/kernel.input_available.bin $(BUILD)/kernel.ascii_upper.bin
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -146,6 +149,12 @@ $(BUILD)/kernel_queue_test: tests/kernel_queue.c kernel/queue.c kernel/pointer_d
 $(BUILD)/kernel_queue_linked_test: tests/kernel_queue.c $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/queue.c kernel/pointer_decode.c -o $@
 
+$(BUILD)/kernel_input_test: tests/kernel_queue.c kernel/input_queue.c | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DQUEUE_INPUT_TEST -Wl,-e,_start $^ -o $@
+
+$(BUILD)/kernel_input_linked_test: tests/kernel_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DQUEUE_INPUT_TEST -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/input_queue.c -o $@
+
 $(BUILD)/kernel_pointer_init_test: tests/kernel_pointer_init.c kernel/pointer_init.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
@@ -203,8 +212,12 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_pointer_linked_test
 	$(BUILD)/kernel_queue_test
 	$(BUILD)/kernel_queue_linked_test
+	$(BUILD)/kernel_input_test
+	$(BUILD)/kernel_input_linked_test
 	$(BUILD)/kernel_pointer_init_test
 	$(BUILD)/kernel_pointer_init_linked_test
+
+verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c

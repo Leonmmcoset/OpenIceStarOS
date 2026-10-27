@@ -1,5 +1,24 @@
 #include <stdint.h>
 
+#ifdef QUEUE_INPUT_TEST
+#define kernel_queue_write kernel_input_write
+#define kernel_queue_read kernel_input_read
+#define kernel_queue_available kernel_input_available
+#define ORIGINAL_WRITE 0x919d96
+#define REPLACEMENT_WRITE 0x819d96
+#define ORIGINAL_READ 0x919dfe
+#define REPLACEMENT_READ 0x819dfe
+#define ORIGINAL_AVAILABLE 0x919e44
+#define REPLACEMENT_AVAILABLE 0x819e44
+#else
+#define ORIGINAL_WRITE 0x912e7e
+#define REPLACEMENT_WRITE 0x812e7e
+#define ORIGINAL_READ 0x912f2c
+#define REPLACEMENT_READ 0x812f2c
+#define ORIGINAL_AVAILABLE 0x912f72
+#define REPLACEMENT_AVAILABLE 0x812f72
+#endif
+
 uint32_t kernel_queue_write(volatile uint32_t *queue, uint32_t byte);
 uint32_t kernel_queue_read(volatile uint32_t *queue);
 uint32_t kernel_queue_available(const volatile uint32_t *queue);
@@ -63,23 +82,23 @@ static int test_queue(void)
                             q1[2] = q2[2] = count;
                             q1[3] = q2[3] = capacity;
                             if (operation == 0) {
-                                a = ((uint32_t (*)(volatile uint32_t *, uint32_t))0x912e7e)(q1, values[pattern]);
+                                a = ((uint32_t (*)(volatile uint32_t *, uint32_t))ORIGINAL_WRITE)(q1, values[pattern]);
 #ifdef KERNEL_LINKED_TEST
-                                b = ((uint32_t (*)(volatile uint32_t *, uint32_t))0x812e7e)(q2, values[pattern]);
+                                b = ((uint32_t (*)(volatile uint32_t *, uint32_t))REPLACEMENT_WRITE)(q2, values[pattern]);
 #else
                                 b = kernel_queue_write(q2, values[pattern]);
 #endif
                             } else if (operation == 1) {
-                                a = ((uint32_t (*)(volatile uint32_t *))0x912f2c)(q1);
+                                a = ((uint32_t (*)(volatile uint32_t *))ORIGINAL_READ)(q1);
 #ifdef KERNEL_LINKED_TEST
-                                b = ((uint32_t (*)(volatile uint32_t *))0x812f2c)(q2);
+                                b = ((uint32_t (*)(volatile uint32_t *))REPLACEMENT_READ)(q2);
 #else
                                 b = kernel_queue_read(q2);
 #endif
                             } else {
-                                a = ((uint32_t (*)(const volatile uint32_t *))0x912f72)(q1);
+                                a = ((uint32_t (*)(const volatile uint32_t *))ORIGINAL_AVAILABLE)(q1);
 #ifdef KERNEL_LINKED_TEST
-                                b = ((uint32_t (*)(const volatile uint32_t *))0x812f72)(q2);
+                                b = ((uint32_t (*)(const volatile uint32_t *))REPLACEMENT_AVAILABLE)(q2);
 #else
                                 b = kernel_queue_available(q2);
 #endif
@@ -90,6 +109,26 @@ static int test_queue(void)
     return 1;
 }
 
+#ifdef QUEUE_INPUT_TEST
+uint32_t kernel_ascii_upper(uint32_t character);
+static int test_ascii(void)
+{
+    unsigned i, j;
+    for (i = 0; i < 65536; ++i)
+        for (j = 0; j < 4; ++j) {
+            static const uint32_t high[] = {0, 0x7fff0000, 0x80000000, 0xffff0000};
+            uint32_t value = i | high[j];
+            uint32_t a = ((uint32_t (*)(uint32_t))0x919e68)(value);
+#ifdef KERNEL_LINKED_TEST
+            uint32_t b = ((uint32_t (*)(uint32_t))0x819e68)(value);
+#else
+            uint32_t b = kernel_ascii_upper(value);
+#endif
+            if (a != b) return 0;
+        }
+    return 1;
+}
+#else
 static int test_decoder(void)
 {
     unsigned pattern, phase, header, value;
@@ -115,6 +154,7 @@ static int test_decoder(void)
                 }
     return 1;
 }
+#endif
 
 static int run_test(void)
 {
@@ -126,7 +166,11 @@ static int run_test(void)
     if (!load_kernel(0x800000, "build/icestar_c.x")) return 1;
 #endif
     if (!test_queue()) return 2;
+#ifdef QUEUE_INPUT_TEST
+    if (!test_ascii()) return 3;
+#else
     if (!test_decoder()) return 3;
+#endif
     return 0;
 }
 
