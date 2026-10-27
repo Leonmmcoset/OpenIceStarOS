@@ -17,7 +17,19 @@ stage_flat:
     call stage_load_init
     testl %eax, %eax
     jnz stage_failed
-    ljmp $0x20, $0x47d
+    pushl $0x70000
+    pushl $0x70000
+    call stage_prepare_init
+    addl $8, %esp
+    movl $0x70000, %edi
+    movw $0x38, %dx
+    movw %dx, %ds
+    movw %dx, %es
+    movw %dx, %fs
+    movw %dx, %gs
+    movw %dx, %ss
+    movl %eax, %esp
+    ljmp *0x10(%edi)
 stage_failed:
     cli
 1:  hlt
