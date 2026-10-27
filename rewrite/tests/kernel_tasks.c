@@ -11,7 +11,7 @@
 static uint8_t expected_low[0x1000], expected_tasks[0x4000], expected_services[0x1000];
 static uint32_t trace[96], expected_trace[96], trace_length, expected_length;
 static uint32_t initial_index, active_index, captured_table, saved_flags, mode;
-static uint32_t cases, seed;
+static uint32_t cases, seed, entry_path;
 static const uint32_t indices[] = {0, 1, 17, 0x7fffffff, 0x80000000, 0xffffffff};
 static const uint32_t deltas[] = {
     0, 1, 2, 17, 0x40000000, 0x80000000, 0xc0000000, 0xffffffff, 0xfffffffd
@@ -24,6 +24,10 @@ static const uint32_t states[][2] = {
 static const uint32_t values[] = {
     0, 1, 2, 0x202, 0x246, 0x7fff, 0x8000, 0x7fffffff,
     0x80000000, 0xfffffffe, 0xffffffff, 0xa55ac33c
+};
+static const uint32_t records[] = {
+    0x1b700, 0x1b701, 0x1b114, 0x1b084, 0x1b0d0, 0x1b040,
+    0x601000, 0x60100c
 };
 
 static int syscall3(int number, unsigned a, unsigned b, unsigned c)
@@ -179,7 +183,7 @@ static void initialize(unsigned alignment, unsigned state, uint32_t delta)
     for (i = 0; i < sizeof(expected_tasks); ++i) tasks[i] = (uint8_t)(i * 29 + seed * 71);
     for (i = 0; i < sizeof(expected_services); ++i) services[i] = (uint8_t)(i * 17 + seed * 59);
     captured_table = 0x601000u + alignment - initial_index * 108u;
-    active_index = initial_index + ((mode & 2) ? 2u : 0u);
+    active_index = initial_index + ((entry_path == 0 && (mode & 2)) ? 2u : 0u);
     for (relative = -8; relative <= 20; ++relative) {
         uint32_t index = initial_index + (uint32_t)relative;
         TASK(index, 0) = (uint32_t)relative % 3u;
@@ -198,6 +202,13 @@ static void initialize(unsigned alignment, unsigned state, uint32_t delta)
     WORD(0x610001 + 16 * 4) = (uint32_t)(uintptr_t)restore_primary;
     WORD(0x610803 + 15 * 4) = (uint32_t)(uintptr_t)save_secondary;
     WORD(0x610803 + 16 * 4) = (uint32_t)(uintptr_t)restore_secondary;
+    WORD(0x1b114) = values[(seed / 3) % COUNT(values)];
+    WORD(0x1b084) = values[(seed / 5) % COUNT(values)];
+    WORD(0x1b0d0) = values[(seed / 7) % COUNT(values)];
+    /* When aliasing a task field, follow that table's alignment. Otherwise
+       a partial flag write can corrupt its next-task link into unmapped RAM. */
+    WORD(0x1b040) = records[(seed / 11) % COUNT(records)] +
+                   (records[(seed / 11) % COUNT(records)] >= 0x600000 ? alignment : 0);
     saved_flags = values[seed % COUNT(values)];
     for (i = 0; i < COUNT(trace); ++i) trace[i] = 0;
     trace_length = 0;
@@ -237,6 +248,25 @@ static void print_count(uint32_t value)
     syscall3(4, 1, (unsigned)(uintptr_t)(digits + 10 - n), n);
 }
 
+static void invoke(int original)
+{
+    if (original) {
+        uint32_t address = entry_path == 0 ? 0x91434a :
+                           entry_path == 1 ? 0x914176 : 0x913a5e;
+        ((void (*)(void))(uintptr_t)address)();
+    } else {
+#ifdef KERNEL_LINKED_TEST
+        uint32_t address = entry_path == 0 ? 0x81434a :
+                           entry_path == 1 ? 0x814176 : 0x813a5e;
+        ((void (*)(void))(uintptr_t)address)();
+#else
+        if (entry_path == 0) kernel_yield_task();
+        else if (entry_path == 1) kernel_schedule_task();
+        else kernel_timer_tick();
+#endif
+    }
+}
+
 static int run_test(void)
 {
     unsigned index, delta, state, alignment;
@@ -247,36 +277,43 @@ static int run_test(void)
         !load_kernel("build/icestar_c.x", 0x800000)) return 2;
     stub_boundaries(0x900000);
     stub_boundaries(0x800000);
-    for (index = 0; index < COUNT(indices); ++index)
-        for (delta = 0; delta < COUNT(deltas); ++delta)
-            for (state = 0; state < COUNT(states); ++state)
-                for (alignment = 0; alignment < 4; ++alignment)
-                    for (mode = 0; mode < 64; ++mode) {
-                        initial_index = indices[index];
-                        seed = cases;
-                        initialize(alignment, state, deltas[delta]);
-                        ((void (*)(void))0x91434a)();
-                        if (trace_length < 24 || trace[0] != 1 || trace[8] != 2 ||
-                            trace[trace_length - 8] != 3 ||
-                            trace[trace_length - 7] != saved_flags) return 10;
-                        compare(1);
-                        initialize(alignment, state, deltas[delta]);
-#ifdef KERNEL_LINKED_TEST
-                        ((void (*)(void))0x81434a)();
-#else
-                        kernel_yield_task();
-#endif
-                        if (!compare(0)) {
-                            syscall3(4, 1, (unsigned)(uintptr_t)"failed task-yield case: ", 24);
-                            print_count(cases);
-                            syscall3(4, 1, (unsigned)(uintptr_t)"\n", 1);
-                            return 11;
+    for (entry_path = 0; entry_path < 3; ++entry_path) {
+        cases = 0;
+        for (index = 0; index < COUNT(indices); ++index)
+            for (delta = 0; delta < COUNT(deltas); ++delta)
+                for (state = 0; state < COUNT(states); ++state)
+                    for (alignment = 0; alignment < 4; ++alignment)
+                        for (mode = 0; mode < 64; ++mode) {
+                            initial_index = indices[index];
+                            seed = cases;
+                            initialize(alignment, state, deltas[delta]);
+                            invoke(1);
+                            if (entry_path == 0 &&
+                                (trace_length < 24 || trace[0] != 1 || trace[8] != 2 ||
+                                 trace[trace_length - 8] != 3 ||
+                                 trace[trace_length - 7] != saved_flags)) return 10;
+                            compare(1);
+                            initialize(alignment, state, deltas[delta]);
+                            invoke(0);
+                            if (!compare(0)) {
+                                syscall3(4, 1, (unsigned)(uintptr_t)"failed scheduler path/case: ", 28);
+                                print_count(entry_path);
+                                syscall3(4, 1, (unsigned)(uintptr_t)"/", 1);
+                                print_count(cases);
+                                syscall3(4, 1, (unsigned)(uintptr_t)"\n", 1);
+                                return 11;
+                            }
+                            ++cases;
                         }
-                        ++cases;
-                    }
-    syscall3(4, 1, (unsigned)(uintptr_t)"task-yield differential cases: ", 31);
-    print_count(cases);
-    syscall3(4, 1, (unsigned)(uintptr_t)"\n", 1);
+        if (entry_path == 0)
+            syscall3(4, 1, (unsigned)(uintptr_t)"task-yield differential cases: ", 31);
+        else if (entry_path == 1)
+            syscall3(4, 1, (unsigned)(uintptr_t)"timer-switch differential cases: ", 33);
+        else
+            syscall3(4, 1, (unsigned)(uintptr_t)"timer-tick differential cases: ", 31);
+        print_count(cases);
+        syscall3(4, 1, (unsigned)(uintptr_t)"\n", 1);
+    }
     return 0;
 }
 

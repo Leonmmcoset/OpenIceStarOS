@@ -38,6 +38,8 @@ def main():
     parser.add_argument("image", nargs="?", type=Path)
     parser.add_argument("--input-check", action="store_true",
                         help="exercise the desktop pointer and CMD keyboard input")
+    parser.add_argument("--task-check", action="store_true",
+                        help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--snake-check", action="store_true",
                         help="load the C Snake through CMD and exercise movement/restart")
     parser.add_argument("--color-check", action="store_true",
@@ -94,6 +96,11 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
+                    if arguments.task_check:
+                        if arguments.starscr_reference:
+                            parser.error("--task-check requires the compiled kernel image")
+                        from task_smoke import check_task_switch
+                        check_task_switch(execute, build)
                     if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check or arguments.starscr_check:
                         cmd_base = check_inputs(execute, build, image)
                         if arguments.snake_check:

@@ -103,6 +103,13 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .timer_tick 0x813a5e : { *kernel_tasks.o(.text.kernel_timer_tick) }
+    ASSERT(kernel_timer_tick == 0x813a5e && ADDR(.timer_tick) + SIZEOF(.timer_tick) <= 0x813a8c, "timer tick overflow")
+    .schedule_task 0x814176 : SUBALIGN(1) {
+        *kernel_tasks.o(.text.kernel_schedule_task)
+        *kernel_tasks.o(.text.timer_tick_body)
+    }
+    ASSERT(kernel_schedule_task == 0x814176 && ADDR(.schedule_task) + SIZEOF(.schedule_task) <= 0x81434a, "timer task switch overflow")
     .yield_task 0x81434a : { *kernel_tasks.o(.text.kernel_yield_task) }
     ASSERT(kernel_yield_task == 0x81434a && ADDR(.yield_task) + SIZEOF(.yield_task) <= 0x814536, "task yield overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {

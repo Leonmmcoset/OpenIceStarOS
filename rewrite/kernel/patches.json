@@ -18,6 +18,8 @@
   {"name": "byte queue read", "binary": "kernel.queue_read.bin", "start": "0x812f2c", "end": "0x812f72"},
   {"name": "byte queue availability", "binary": "kernel.queue_available.bin", "start": "0x812f72", "end": "0x812f96"},
   {"name": "pointer packet decode", "binary": "kernel.pointer_decode.bin", "start": "0x812f96", "end": "0x8130cc"},
+  {"name": "timer tick handler", "binary": "kernel.timer_tick.bin", "start": "0x813a5e", "end": "0x813a8c"},
+  {"name": "timer task switch", "binary": "kernel.schedule_task.bin", "start": "0x814176", "end": "0x81434a"},
   {"name": "cooperative task yield", "binary": "kernel.yield_task.bin", "start": "0x81434a", "end": "0x814536"},
   {"name": "keyboard controller wait", "binary": "kernel.keyboard_ready.bin", "start": "0x819c40", "end": "0x819c60"},
   {"name": "keyboard discard byte", "binary": "kernel.keyboard_discard.bin", "start": "0x819c60", "end": "0x819c7c"},

@@ -456,3 +456,39 @@ MOV on the same image passed all four pixel-exact frames, PS/2 close,
 image/task cleanup, and a subsequent CMD `cpuid` command. Its post-close
 screenshot was visually inspected. Logs are `build/verify_tasks.log`,
 `build/starscr_tasks_smoke.log`, and `build/mov_tasks_smoke.log`.
+
+`kernel/tasks.c` now also recovers the interrupt-driven task switch at
+`0x814176..0x81434a` and timer tick entry at `0x813a5e..0x813a8c`.
+The switch preserves the original captured table/index, FPU branches,
+callback-sensitive next links, counter wrapping, and hardware TSS jump.
+Unlike cooperative yield, this path neither saves/restores flags nor executes
+CLI. The tick increments the IRQ counter, signals the shared event record,
+then increments the tick and schedules only when the unsigned task high-water
+mark exceeds one. Its C body needs 49 bytes, beyond the original 46-byte slot;
+a five-byte C-generated tail-jump remains at the original entry, and the body
+uses spare space in the timer-switch interval. That interval occupies 216 of
+468 bytes, including both functions. Original IRQ register preservation,
+PIC acknowledgement, and IRET remain outside these replacements.
+
+Both task differential executables now test cooperative yield, timer switching,
+and the complete tick entry, with 165,888 cases per path per executable
+(995,328 comparisons altogether). Tick cases include IRQ/tick/high-water
+boundaries, wraparound, unaligned event records, and event records aliasing
+those globals or task fields. Memory and ordered callback traces match the
+original machine code. The complete verification suite passed on 2026-10-27.
+
+`make smoke-tasks` observes live timer preemption without changing guest code,
+registers, or data. Paused TSS records must contain the real far-jump return
+EIP, a saved stack pointing back into compiled C scheduling code, and the
+expected far-pointer argument ABI. The tick must also advance. This passed on
+the 79-interval image: task 0 was suspended inside `kernel_schedule_task`,
+task 2 inside `kernel_yield_task`, and the two recorded samples advanced by
+12 ticks. Evidence is `build/task_smoke.json`; the run also verified real PS/2
+pointer input, CMD text entry, and prompt return.
+The same image passed STARSCR's four phases, Esc and task cleanup, plus MOV's
+four pixel-exact frames, close, image/task cleanup, and subsequent CMD `cpuid`.
+Representative STARSCR and post-MOV screenshots were inspected. The existing
+post-STARSCR mouse-input limitation remains; task creation/destruction and
+FPU save/restore still use original implementations. Logs are
+`build/verify_timer.log`, `build/tasks_preemption_smoke.log`,
+`build/starscr_timer_smoke.log`, and `build/mov_timer_smoke.log`.
