@@ -1202,3 +1202,13 @@ The standalone original/C/oracle fixture passes 18,433 cases plus 18 expected
 guard-page SIGSEGV executions. Log: `build/syscall_surface_preview.log`.
 This source checkpoint does not yet install the forwarder; the compositor
 body at `0x81905e` remains an observation stub in this fixture.
+
+The prior 199-interval image passed the complete `make verify` suite on
+2026-10-27; `build/verify_syscall_services.exit` records exit status zero.
+The surface forwarder is now installed at its original address, bringing
+the manifest to 200 intervals. C-init, Snake and application VHDs rebuilt;
+the host-linked and fixed-address forwarder tests each pass 18,433 cases
+and 18 expected guard-page faults. Build/test logs:
+`build/syscall_surface_install_build.log`, `build/syscall_surface_host_test.log`,
+`build/syscall_surface_linked_test.log`. The lower compositor remains original
+at this installation checkpoint; full-suite and OS regression follow.

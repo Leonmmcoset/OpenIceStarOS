@@ -5,7 +5,7 @@ PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
-PROVIDE(kernel_syscall_target_81017c = 0x81017c);
+PROVIDE(kernel_syscall_target_81905e = 0x81905e);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
 SECTIONS
 {
@@ -78,6 +78,8 @@ SECTIONS
     }
     ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
     ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
+    .syscall_surface 0x81017c : { *kernel_syscall_surface.o(.text.kernel_syscall_target_81017c) }
+    ASSERT(kernel_syscall_target_81017c == 0x81017c && ADDR(.syscall_surface) + SIZEOF(.syscall_surface) <= 0x81021c, "surface forwarder overflow")
     .syscall_object_set 0x81041a : { *kernel_syscall_services.o(.text.kernel_syscall_target_81041a) }
     ASSERT(kernel_syscall_target_81041a == 0x81041a && ADDR(.syscall_object_set) + SIZEOF(.syscall_object_set) <= 0x810448, "object setter overflow")
     .syscall_object_field12 0x810448 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810448) }
