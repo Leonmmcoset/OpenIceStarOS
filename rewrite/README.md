@@ -843,3 +843,24 @@ fixed-address tests pass 275,456 ordinary and 100 watched comparisons each
 `build/service_optional_build.log`, `build/service_optional_test.log` and
 `build/service_optional_linked_test.log`. Full-image and QEMU integration
 checks follow this fixed-address integration step.
+
+`kernel/cpuid.c/.h` recovers the EFLAGS.ID availability probe at
+`0x82b678..0x82b6a0`, leaf-0 vendor query at `0x82b6a0..0x82b6e8`, and
+leaf-1 feature query at `0x82b6e8..0x82b72e`. The availability probe restores
+saved flags, including DF and ID; arithmetic flags are not a C ABI output
+(the original prologue changes them before saving). Leaf 0 writes EAX,
+EBX, EDX, ECX, then a zero byte, requiring 17 bytes. Leaf 1 writes EAX, EBX,
+ECX, EDX, requiring 16 bytes. Ordered volatile unaligned stores retain this
+layout. Observable return EAX values are the output address for leaf 0 and
+output address + 12 for leaf 1.
+
+The host-linked CPUID preview passes 8 availability, 720 leaf-output and
+36 guard-page fault comparisons against the original. Ptrace supplies only
+CPUID register outputs and immutable-ID hardware behavior; the complete
+functions execute. Cases cover both initial ID/DF values, changeable and
+immutable ID, full-width output words, all four byte alignments, page
+boundaries, zero termination, callee-saved registers, stack balance, and all
+8,192 shared output bytes, including writes before faults. The test also
+checks the selected leaf and exactly one CPUID instruction per query. Log:
+`build/cpuid_preview_test.log`. Fixed-address installation and QEMU checks
+follow this source-recovery step.
