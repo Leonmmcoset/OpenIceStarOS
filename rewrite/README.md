@@ -1625,3 +1625,19 @@ visually inspected. Logs/exit markers:
 `build/surface_scale_{system,snake,color,mov,starscr}_smoke.{log,exit}`.
 These checks establish bounded integration of the current partial recovery;
 they do not establish a fully recovered OS or fix the screen-saver limitation.
+
+The 210-interval regression was completed in two segments on 2026-10-27.
+The original `make -j4 verify` process was terminated with status 143 after
+the host-linked 32-bit rasterizer passed, while the installed rasterizer
+was starting; it has no successful whole-command exit marker. Its completed
+prefix is retained in `build/verify_surface_scale.log`. A continuation reran
+the installed rasterizer and every remaining recipe command, including both
+move/scaler fixtures, fault cases, all application suites and both whole-disk
+application verifiers. All 14 continuation commands exited 0 in 138.521 seconds.
+Log/exit/timing: `build/verify_surface_scale_resume.log`,
+`build/verify_surface_scale_resume.exit`, and
+`build/verify_surface_scale_resume_summary.json`. Production sources and
+images were unchanged between the segments, and the C-init, Snake and combined
+application SHA-256 hashes match both the recorded QEMU evidence and the
+before/after continuation digests. This is a completed segmented regression,
+not a claim that the interrupted `make verify` process itself exited 0.
