@@ -25,5 +25,9 @@
   {"name": "keyboard queue write", "binary": "kernel.input_write.bin", "start": "0x819d96", "end": "0x819dfe"},
   {"name": "keyboard queue read", "binary": "kernel.input_read.bin", "start": "0x819dfe", "end": "0x819e44"},
   {"name": "keyboard queue availability", "binary": "kernel.input_available.bin", "start": "0x819e44", "end": "0x819e68"},
-  {"name": "ASCII uppercase", "binary": "kernel.ascii_upper.bin", "start": "0x819e68", "end": "0x819e90"}
+  {"name": "ASCII uppercase", "binary": "kernel.ascii_upper.bin", "start": "0x819e68", "end": "0x819e90"},
+  {"name": "scancode translation", "binary": "kernel.keyboard_translate.bin", "start": "0x819e90", "end": "0x819f9c"},
+  {"name": "keyboard queue drain", "binary": "kernel.keyboard_drain.bin", "start": "0x819f9c", "end": "0x819fde"},
+  {"name": "keyboard modifier state", "binary": "kernel.keyboard_state.bin", "start": "0x819fde", "end": "0x81a1aa"},
+  {"name": "keyboard character API", "binary": "kernel.keyboard_character.bin", "start": "0x81a1aa", "end": "0x81a240"}
 ]

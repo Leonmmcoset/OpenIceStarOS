@@ -8,6 +8,9 @@ PROVIDE(kernel_read_port_byte = 0x81a254);
 PROVIDE(kernel_write_port_byte = 0x81a261);
 PROVIDE(kernel_physical_write_byte = 0x83735b);
 PROVIDE(kernel_physical_read_byte = 0x8373a8);
+PROVIDE(kernel_physical_read_dword = 0x8373d7);
+PROVIDE(kernel_physical_write_dword = 0x83738f);
+PROVIDE(kernel_format_text = 0x81f88a);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -149,6 +152,26 @@ SECTIONS
     }
     ASSERT(kernel_ascii_upper == 0x819e68, "ASCII upper entry moved")
     ASSERT(ADDR(.ascii_upper) + SIZEOF(.ascii_upper) <= 0x819e90, "ASCII upper slot overflow")
+    .keyboard_translate 0x819e90 : SUBALIGN(1) {
+        *kernel_keyboard.o(.text.kernel_translate_scancode)
+    }
+    ASSERT(kernel_translate_scancode == 0x819e90, "keyboard translate entry moved")
+    ASSERT(ADDR(.keyboard_translate) + SIZEOF(.keyboard_translate) <= 0x819f9c, "keyboard translate slot overflow")
+    .keyboard_drain 0x819f9c : SUBALIGN(1) {
+        *kernel_keyboard.o(.text.kernel_drain_keyboard)
+    }
+    ASSERT(kernel_drain_keyboard == 0x819f9c, "keyboard drain entry moved")
+    ASSERT(ADDR(.keyboard_drain) + SIZEOF(.keyboard_drain) <= 0x819fde, "keyboard drain slot overflow")
+    .keyboard_state 0x819fde : SUBALIGN(1) {
+        *kernel_keyboard.o(.text.kernel_update_keyboard_state)
+    }
+    ASSERT(kernel_update_keyboard_state == 0x819fde, "keyboard state entry moved")
+    ASSERT(ADDR(.keyboard_state) + SIZEOF(.keyboard_state) <= 0x81a1aa, "keyboard state slot overflow")
+    .keyboard_character 0x81a1aa : SUBALIGN(1) {
+        *kernel_keyboard.o(.text.kernel_read_draw_character)
+    }
+    ASSERT(kernel_read_draw_character == 0x81a1aa, "keyboard character entry moved")
+    ASSERT(ADDR(.keyboard_character) + SIZEOF(.keyboard_character) <= 0x81a240, "keyboard character slot overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

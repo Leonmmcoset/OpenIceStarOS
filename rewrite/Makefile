@@ -11,7 +11,7 @@ KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
 KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
-                  $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o
+                  $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -24,7 +24,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.input_write.bin $(BUILD)/kernel.input_read.bin \
                   $(BUILD)/kernel.input_available.bin $(BUILD)/kernel.ascii_upper.bin \
                   $(BUILD)/kernel.keyboard_ready.bin $(BUILD)/kernel.keyboard_discard.bin \
-                  $(BUILD)/kernel.keyboard_leds.bin $(BUILD)/kernel.keyboard_init.bin
+                  $(BUILD)/kernel.keyboard_leds.bin $(BUILD)/kernel.keyboard_init.bin \
+                  $(BUILD)/kernel.keyboard_translate.bin $(BUILD)/kernel.keyboard_drain.bin \
+                  $(BUILD)/kernel.keyboard_state.bin $(BUILD)/kernel.keyboard_character.bin
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -166,6 +168,12 @@ $(BUILD)/kernel_keyboard_init_test: tests/kernel_keyboard_init.c kernel/keyboard
 $(BUILD)/kernel_keyboard_init_linked_test: tests/kernel_keyboard_init.c $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/keyboard_init.c -o $@
 
+$(BUILD)/kernel_keyboard_test: tests/kernel_keyboard.c kernel/keyboard.c kernel/input_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start tests/kernel_keyboard.c kernel/keyboard.c kernel/input_queue.c -o $@
+
+$(BUILD)/kernel_keyboard_linked_test: tests/kernel_keyboard.c $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/keyboard.c kernel/input_queue.c -o $@
+
 $(BUILD)/kernel_pointer_init_linked_test: tests/kernel_pointer_init.c $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/pointer_init.c -o $@
 
@@ -226,9 +234,12 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_pointer_init_linked_test
 	$(BUILD)/kernel_keyboard_init_test
 	$(BUILD)/kernel_keyboard_init_linked_test
+	$(BUILD)/kernel_keyboard_test
+	$(BUILD)/kernel_keyboard_linked_test
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
+verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c

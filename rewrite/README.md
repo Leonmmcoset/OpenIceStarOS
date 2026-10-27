@@ -166,3 +166,19 @@ and 256 discard cases, with all byte values, delayed readiness, unaligned
 queues, and global-pointer mutation from I/O and physical-memory callbacks.
 The twenty-seven-interval image passed the full verification suite and QEMU
 loaded-memory checks and rendered the desktop on 2026-10-27.
+
+`kernel/keyboard.c` recovers scancode translation, queue draining, modifier and
+lock updates, and the read/translate/draw-character API at
+`0x819e90..0x81a240`. It retains the original 52/66-pair search lengths,
+left/right Shift selection, unconditional Caps conversion of mapped letters,
+first-match lookup, full-width scancode comparison, and the original nonzero
+guard for E0/E1 prefix state. Physical accesses retain their GS helper calls;
+the five rendering arguments and original `%c` format address are preserved.
+Each differential executable compares 28,704 translation, 60,096 modifier,
+11,648 character-API, and 13,086 drain cases. The tests include every scancode
+byte, 32-bit boundary inputs, all modifier combinations, every LED byte,
+callback mutations, unaligned state, duplicate/NUL mappings, search limits,
+and queue wrapping. Only physical accesses, LED I/O, and text rendering use
+shared test callbacks; the real queue routines and ASCII conversion execute.
+All thirty-one installed intervals passed full disk verification and QEMU
+loaded-memory checks, and the desktop was visually inspected on 2026-10-27.
