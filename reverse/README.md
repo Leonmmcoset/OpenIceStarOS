@@ -1,5 +1,10 @@
 # IceStarOS reverse engineering
 
+This directory documents the initial byte-exact assembly recovery. Continued
+C recovery, fixed-address kernel replacements, application sources and current
+verification results are documented in [`../rewrite/README.md`](../rewrite/README.md).
+The root Makefile and the separate `rewrite/Makefile` produce different images.
+
 The input is a fixed VHD with an MBR and a FAT16 partition starting at LBA 17.
 The first MBR stage reads sectors 2 to 4 using BIOS CHS addressing, then jumps
 through a far pointer at offset 4 in the loaded second stage. The recovered
@@ -12,15 +17,18 @@ assembled sectors, and compare both stages and the complete image against
 the input. Run `make run` to start that copy in QEMU with a temporary disk
 snapshot. NASM, make, and qemu-system-i386 are required.
 
-This is a partial recovery. The subsequent boot stage, kernel, drivers, and applications
-in the rebuilt image still come from the original VHD; they have not been
-decompiled or rebuilt. The image comparison verifies only the recovered stages
-and the copying procedure, not source recovery of the remaining components.
+The image produced by this root Makefile is a partial assembly recovery. Its
+subsequent boot stage, kernel, drivers and applications are copied from the
+original VHD. The image comparison here verifies only the first two recovered
+stages and the copying procedure. The separate `rewrite/` build additionally
+compiles recovered boot/INIT paths, kernel intervals and four applications;
+it still depends on unrecovered components from the original VHD.
 
 The extracted filesystem contains 39 `.x` and `.dx` programs/drivers. Their
 headers are not recognized by `file`; `init.x` and `icestar.x` have 64-byte
-headers followed by x86 instructions. The precise format and loader contract
-still need to be established before those programs can be reconstructed.
+headers followed by x86 instructions. Later work established header and
+relocation contracts used by `rewrite/apps/` and `rewrite/tools/xformat.py`;
+the recovered applications do not establish source recovery of all 39 files.
 
 ## Next stage observations
 

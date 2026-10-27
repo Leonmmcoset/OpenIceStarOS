@@ -1,6 +1,6 @@
-/* Refresh selection at 0x81905e. The lower clipping/list dispatcher at
- * 0x817cd0 is recovered separately; per-layer drawing and presentation
- * remain service-table dependencies supplied by original code. */
+/* Refresh selection at 0x81905e. The clipping/list dispatcher, per-layer
+ * rasterizers and framebuffer presentation are recovered in surface_*.c.
+ * Service-table calls retain the original runtime dispatch contract. */
 #include "surface_refresh.h"
 #define WORD(a) (*(volatile uint32_t *)(uintptr_t)(uint32_t)(a))
 typedef uint32_t (*Refresh)(uint32_t, uint32_t, uint32_t, uint32_t);

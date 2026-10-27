@@ -1,6 +1,17 @@
 # C rewrite
 
-This directory is an incomplete, independent C rewrite. `boot/mbr.c` implements
+This directory is an incomplete C recovery integrated into copies of the
+original VHD. The current build installs 208 declared kernel intervals and
+four rebuilt applications. It still requires unrecovered original components;
+the interval count is not a count of completely recovered operating-system
+modules. The chronological notes below record each source/integration and
+verification checkpoint.
+
+From the repository root, `make -C rewrite verify` builds and checks the C
+images, and `make -C rewrite run-c-apps` starts the combined application image
+in QEMU. Generated images and detailed test evidence are in `rewrite/build/`.
+
+`boot/mbr.c` implements
 the first BIOS boot stage; the small assembly entry establishes real-mode
 segments and the stack and preserves the boot-drive byte at address 0x7c02,
 which the menu accesses directly. The partition table is retained. `boot/menu.c`
@@ -1442,3 +1453,16 @@ Desktop/CPUID output, Snake turn, Color palette, MOV frame 2 and STARSCR
 phase 2 screenshots were visually inspected. These are bounded integration
 checks; unrecovered kernel, driver and application code is still supplied
 by the original VHD.
+
+The complete `make -j4 verify` regression for the 208-interval image also
+completed successfully on 2026-10-27. Log:
+`build/verify_surface_draw32.log`; exit marker:
+`build/verify_surface_draw32.exit` (0). It repeats the host and installed-address
+32-bit rasterizer's 628,156 comparisons each, the remaining kernel fixtures,
+all four application differential tests, executable-format tests and full-disk
+verification of both application images. The documentation-only correction
+in `kernel/surface_refresh.c` was separately compiled with the production
+flags and produced a byte-identical object; log:
+`build/surface_draw32_comment_check.log`. This closes the graphics regression
+checkpoint, not recovery of the whole OS. The unrecovered dependencies and
+STARSCR post-exit mouse/timer limitation above remain.
