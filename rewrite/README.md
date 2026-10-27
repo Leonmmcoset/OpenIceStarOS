@@ -1986,3 +1986,31 @@ registers. Only fixture CALL operands are redirected. The compiled body uses
 Evidence: `build/startup_apps_preview_summary.json`,
 `build/startup_apps_calls.h`, `build/startup_apps_preview.elf`. Production
 images are unchanged at this source checkpoint.
+
+### Display palette source checkpoint (2026-10-27)
+
+`kernel/display_palette.c/.h` recovers VGA palette construction at
+`0x81ae14..0x81afbc` and software color-table initialization at
+`0x81afbc..0x81b26e`. Palette construction retains the initial 0..15 write
+using the captured global pointer, then builds and writes all 216 RGB
+triplets for indices 16..231. The hardware DAC writer at `0x81ad6e` remains
+original code. The software table uses identity entries for depth 8. Depth
+32 uses the original 16 colors and six levels `[0,48,101,153,206,255]`, which
+deliberately differ from the VGA cube's 51-step components. It also writes
+the original unusual `0x07f00000` value at index 232; indices 233..255 are
+untouched. Unsupported depths leave the entire table unchanged.
+
+`python3 tests/kernel_display_palette.py` passes 288 palette scenarios and
+396 table scenarios / 2,052 original-x86, ordinary-C and fixed-address-C
+executions. Cases cover three memory patterns, 12 aligned/unaligned/aliasing
+table/source addresses, 11 full-width depths and eight palette callback
+mutation modes. Tests check all generated RGB bytes, ordered DAC ranges,
+captured pointers even when the pointer global aliases the output, mutable
+temporary palette data, all `0x8000` shared-memory bytes, stack canaries and
+callee-saved registers. Fixture CALL operands alone are redirected.
+
+The preview uses 144/424 bytes for palette construction and 285/690 bytes
+for the software table including its read-only constants. Entry/size linker
+assertions cover both. Evidence: `build/display_palette_preview_summary.json`,
+`build/display_palette_calls.h` and `build/display_palette_preview.elf`.
+Production images remain unchanged at this source checkpoint.
