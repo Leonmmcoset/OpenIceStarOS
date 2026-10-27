@@ -1003,3 +1003,14 @@ frame, never with an ordinary C call.
 sources and compares all 328 bytes with the SHA-256-verified original
 kernel extracted directly from the VHD. All 14 match exactly. Installation
 and privileged entry/return tests follow this source-recovery step.
+
+The complete `make verify` suite passed with all 172 installed intervals
+on 2026-10-27. Three OS snapshot boots verified live 128 MiB RAM/heap, real
+TSS switching, PS/2/CMD, MOV's four exact frames/close/cleanup/CMD reuse, and
+STARSCR's four phases/Esc/task cleanup. Every installed interval matched
+guest RAM. The MOV post-close CMD screen was visually inspected. The known
+original post-STARSCR mouse stall remains; desktop reuse after STARSCR is
+not verified. Logs: `build/verify_interrupts.log`, `build/interrupts_smoke.log`,
+`build/mov_interrupts_smoke.log`, `build/starscr_interrupts_smoke.log`;
+screenshots/JSON: `build/interrupts_evidence/`. This is still a hybrid image
+with unrecovered original kernel, driver and application code.
