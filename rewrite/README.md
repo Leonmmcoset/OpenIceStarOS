@@ -1381,3 +1381,23 @@ declared compiled kernel slots and compiled boot stages changed. Logs:
 `build/surface_alpha_{host,linked}_test.log`, and
 `build/surface_draw_disk_verify.log`. Full-suite and OS regression checks for
 this newer image remain separate from the preceding 202-interval evidence.
+
+`kernel/surface_draw32.c` recovers the main rasterizer at
+`0x81846a..0x818d14`. It converts 8-bit source pixels through a cached
+palette, copies opaque 32-bit rows through cached service slot 68, or blends
+groups of four through slot 72 followed by the original three-entry inline
+tail. Source/destination pitches, transparency key and buffers are captured,
+while selected layer coordinates and the incoming layer word remain live.
+The assembly entry exposes the actual incoming argument words to the C body
+and isolates callback outgoing arguments. Signed clipping, wraparound,
+unsupported-depth return values and the original screen-dimension predicate
+call are preserved.
+
+The standalone original/C/bytewise-oracle fixture passes 628,156 comparisons
+and explicitly skips 5,444 generated unsafe ranges. It covers 8/32-bit and
+unsupported source depths, signed/overflow rectangles, palette/key/alpha
+behavior, overlapping pixel buffers, seven metadata-output aliases, cached
+callback/global mutations, caller layer/rectangle mutation, outgoing argument
+and weight overwrites, raw returns and all six shared memory pages. Log:
+`build/surface_draw32_preview.log`. This source checkpoint precedes installation
+of this rasterizer into the VHDs.
