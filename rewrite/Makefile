@@ -262,6 +262,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/snake.py
 	python3 tests/color.py
 	python3 tests/mov.py
+	python3 tests/starscr.py
 	python3 tests/app_image.py
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_apps.vhd
@@ -273,6 +274,7 @@ verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_lin
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x
+verify: $(BUILD)/starscr.x
 verify: $(BUILD)/IceStarOS_c_snake.vhd
 verify: $(BUILD)/IceStarOS_c_apps.vhd
 
@@ -329,6 +331,18 @@ $(BUILD)/mov.elf: $(BUILD)/mov.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image_api
 
 $(BUILD)/mov.x: $(BUILD)/mov.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x3a54 --metadata $(BUILD)/mov.symbols.json
+
+$(BUILD)/starscr.o: apps/starscr.c apps/starscr.h apps/legacy_api.h apps/legacy_image_api.h apps/legacy_draw_api.h | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/legacy_draw_api.o: apps/legacy_draw_api.c apps/legacy_draw_api.h | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/starscr.elf: $(BUILD)/starscr.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image_api.o $(BUILD)/legacy_draw_api.o apps/starscr.ld
+	$(LD) -m elf_i386 --emit-relocs --gc-sections -T apps/starscr.ld -Map=$(BUILD)/starscr.map -o $@ $(BUILD)/starscr.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image_api.o $(BUILD)/legacy_draw_api.o
+
+$(BUILD)/starscr.x: $(BUILD)/starscr.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x3eb4 --metadata $(BUILD)/starscr.symbols.json
 
 $(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x apps/images.json tools/app_image.py tools/kernel_image.py
 	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@

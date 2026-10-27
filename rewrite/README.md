@@ -368,3 +368,26 @@ prompt. The test changes no guest code or application state. Evidence and
 screenshots are in `build/mov_smoke.json` and `build/mov_*.png`. The smoke test
 passed on 2026-10-27; frame and post-close screenshots were inspected. JPEG
 decoding, window composition, desktop, and CMD still use original code.
+
+`apps/starscr.c` recovers STARSCR.X's entry at `0x40`, keyboard handler at
+`0x160`, close handler at `0x180`, and four-phase drawing routine at `0x198`.
+Its nine reachable SDK calls compile from the three `legacy_*_api.c` files;
+four newly recovered wrappers are in `legacy_draw_api.c`. `make build/starscr.x`
+links only C code, producing the original type-`0x0a`, 16,052-byte file size,
+16-page stack, GBK title at `0x3dd0`, and 16-byte BSS at `0x3ddc`. The compiler
+needs 21 relocations rather than the original 54; their count is generated
+from ELF references, and the loader's memory contract is preserved.
+
+`tests/starscr.py` executes original and compiled X binaries with their real
+SDK wrappers at aligned and unaligned bases. Its 75,520 differential cases
+compare ordered service calls, selected table targets, full BSS, window records,
+display memory, callback registration, and defined return values. Cases cover
+all four phases and out-of-range phases, negative/odd/extreme dimensions,
+signed and wrapping window handles, twelve-frame loops, all byte-valued keys
+and selected full-width keys, full-width press/release values, Esc-triggered
+close dispatch, service-table switching, caller-argument mutations, and
+callbacks changing record/surface/dimensions. Signed division truncates toward
+zero and coordinate additions wrap. The original unchecked failure-path record
+dereference is retained. This checkpoint builds and differentially tests the
+screen saver; installation and real guest execution follow separately.
+The full verification suite passed on 2026-10-27.
