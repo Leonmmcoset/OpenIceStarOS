@@ -46,6 +46,8 @@ def main():
                         help="load the test-only scaler X application and trace six service calls")
     parser.add_argument("--surface-lifecycle-check", action="store_true",
                         help="trace recovered surface initialization/search/create/delete during normal boot and input")
+    parser.add_argument("--surface-order-check", action="store_true",
+                        help="trace recovered surface remove/append/front/move during normal boot and input")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -70,8 +72,13 @@ def main():
     if arguments.surface_scale_check and (arguments.surface_move_check or arguments.starscr_reference):
         parser.error("--surface-scale-check uses its own compiled-kernel diagnostic image and trace")
     if arguments.surface_lifecycle_check:
-        if arguments.starscr_reference or arguments.surface_move_check or arguments.surface_scale_check:
+        if (arguments.starscr_reference or arguments.surface_move_check or arguments.surface_scale_check or
+                arguments.surface_order_check):
             parser.error("--surface-lifecycle-check requires its own compiled-kernel execution trace")
+        arguments.input_check = True
+    if arguments.surface_order_check:
+        if arguments.starscr_reference or arguments.surface_move_check or arguments.surface_scale_check:
+            parser.error("--surface-order-check requires its own compiled-kernel execution trace")
         arguments.input_check = True
     if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check,
             arguments.surface_scale_check)) > 1:
@@ -105,6 +112,10 @@ def main():
             # Keep normal TB chaining during RAM probing. Logging starts at
             # boot so the one-time table initializer is included as well.
             command.extend(["-dfilter", "0x8175c0..0x8178ef", "-D", str(trace), "-d", "exec"])
+        if arguments.surface_order_check:
+            trace = build / "surface_order_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x8178f0..0x817ccf", "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -143,7 +154,7 @@ def main():
                     if (arguments.input_check or arguments.snake_check or arguments.color_check or
                             arguments.mov_check or arguments.starscr_check or arguments.surface_scale_check):
                         if (arguments.surface_move_check or arguments.surface_scale_check or
-                                arguments.surface_lifecycle_check):
+                                arguments.surface_lifecycle_check or arguments.surface_order_check):
                             # Trace after boot/RAM probing; disabling TB chaining
                             # during early memory initialization distorts timing.
                             execute("log exec,nochain")
@@ -238,6 +249,30 @@ def main():
                     "functions": functions}
         (build / "surface_lifecycle_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
         print("Recovered surface lifecycle entries observed: " +
+              ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
+    if arguments.surface_order_check:
+        pcs = [int(match.group(1), 16) for match in
+               re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+        functions = {}
+        for name, start, end in (("remove", 0x8178f0, 0x8179d6),
+                                 ("append", 0x8179d6, 0x817a3c),
+                                 ("front", 0x817a3c, 0x817b32),
+                                 ("move", 0x817b32, 0x817cd0)):
+            entries = pcs.count(start)
+            body_events = sum(start < pc < end for pc in pcs)
+            if not entries or not body_events:
+                raise RuntimeError("recovered surface order entry/body was not observed: " + name)
+            functions[name] = {"entry": hex(start), "entry_execution_events": entries,
+                               "body_execution_events": body_events,
+                               "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))
+                                                            if start <= pc < end]}
+        evidence = {"image": str(image), "diagnostic_only": False,
+                    "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
+                    "installed_intervals_verified": len(json.loads((root / "kernel/patches.json").read_text())),
+                    "functions": functions}
+        (build / "surface_order_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
+        print("Recovered surface order entries observed: " +
               ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
     png_from_ppm(screen, build / f"{capture_prefix}.png")
     print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else

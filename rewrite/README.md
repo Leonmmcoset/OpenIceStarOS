@@ -1777,3 +1777,16 @@ Logs and timings: `build/surface_order_install_{build,host,linked,disk,snake_ima
 `build/surface_order_install_summary.json`; image hashes and interval checks:
 `build/surface_order_install_images.json`. The recorded hashes were rechecked
 against all three current images before this installation checkpoint.
+
+The 218-interval application image also passes the command exposed as
+`make smoke-surface-order` (exit 0; 29.702 seconds). Filtered QEMU execution
+records remove/append/front/move entries 9/14/3/4 times respectively and
+observes compiled body blocks for every function. The boot also verifies all
+218 installed intervals, RAM/heap structure, timer/TSS preemption, PS/2 input,
+CMD/CPUID, the recovered Color palette and close/task-exit/CMD-reuse sequence.
+Desktop, CPUID, palette and post-close screenshots were visually inspected.
+Fresh artifacts, image/trace hashes and timing are archived in
+`build/surface_order_evidence/color/` and
+`build/surface_order_evidence/results.json`; all 19 artifact hashes and the
+current application-image hash were rechecked. This is bounded integration
+evidence, separate from a complete regression of the new image.
