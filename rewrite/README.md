@@ -1142,3 +1142,17 @@ independently extracts the SHA-verified original kernel from the VHD and
 confirms all five instruction bytes. Logs: `build/syscall_services_preview.log`,
 `build/timestamp_exact_preview.log`. These five functions are not installed
 by this source-recovery step.
+
+The complete `make verify` suite passed for the 192-interval IRQ-callback
+image on 2026-10-27. The first verification process was interrupted; its
+partial log is retained separately and the fresh full run exited zero.
+Three OS snapshot boots checked 128 MiB RAM/live heap chains, actual TSS
+switching, PS/2/CMD, MOV frames/close/cleanup/CMD reuse and STARSCR phases/
+Esc/task cleanup, with all installed intervals matching guest memory. The
+post-MOV screenshot was visually checked and shows a second `cpuid` result
+and a returned prompt. The original post-STARSCR mouse stall remains; desktop
+reuse after STARSCR is not verified. Logs: `build/verify_interrupt_callbacks.log`,
+`build/verify_interrupt_callbacks.exit` (0), `build/interrupt_callbacks_smoke.log`,
+`build/mov_interrupt_callbacks_smoke.log`, `build/starscr_interrupt_callbacks_smoke.log`;
+screenshots/JSON: `build/interrupt_callbacks_evidence/`. This remains a hybrid
+image with unrecovered original kernel, driver and application dependencies.
