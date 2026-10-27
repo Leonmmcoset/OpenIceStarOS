@@ -1298,3 +1298,26 @@ Logs: `build/surface_composite_install_build.log`,
 their `_linked` variants, `build/surface_composite_native_chain.log` and
 `build/surface_composite_native_chain.exit` (0). The per-layer rasterizers
 and framebuffer presentation bodies are still original at this checkpoint.
+
+`kernel/surface_present.c/.h` recovers three more graphics routines:
+the rectangle predicate at `0x818d14..0x818d5e`, 8-bit submission at
+`0x818d5e..0x818f22`, and 32-bit submission at `0x818f22..0x81905e`.
+The predicate deliberately retains the original two OR expressions rather
+than substituting a conventional intersection test. Both submission bodies
+capture their buffers and dimensions, clamp/swap the caller's actual x/y
+words, retain wrapped endpoint arithmetic and signed comparisons, and
+return the original early-exit value or final row counter. Eight-bit output
+uses forward DWORD groups followed by a signed byte remainder, preserving
+overlap effects; 32-bit output caches service-table slot 68 once and uses
+isolated outgoing arguments for each row. Zero/negative dimensions retain
+the original endpoint swapping behavior.
+
+The standalone fixture passes 131,072 original/C/oracle predicate cases and
+61,056 submission cases across both depths, four alignments, six buffer
+alias arrangements, signed/overflow boundaries, caller-visible clipping
+stores, cached-buffer/callback mutations, incoming/outgoing argument writes,
+return values and complete mapped-memory comparisons. It explicitly skips
+3,456 generated cases whose pixel ranges would exceed the fixture's mapped
+pages; those cases are not counted as passing. Log:
+`build/surface_present_preview.log`. This source checkpoint does not yet
+install the three functions into the VHDs.
