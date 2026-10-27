@@ -1913,3 +1913,29 @@ Logs, per-boot traces, screenshots and memory evidence are archived in
 image and artifact hashes. Logs are also retained as
 `build/firmware_{boot,snake,mov,starscr}_smoke.log` with exit files (all 0).
 These focused production boots precede the complete regression below.
+
+### Kernel entry source checkpoint (2026-10-27)
+
+`kernel/entry.c/.h` recovers entry `0x800040..0x800070` and bootstrap
+`0x800070..0x800104`. The C preserves the original 28 ordered subsystem
+calls, including enabling interrupts before PIT/RTC/device initialization,
+the two PIC-mask writes (`0x21 <- 0xd8`, `0xa1 <- 0xec`), and their NOP
+delay. Six address-named subsystem bodies remain original machine code;
+their addresses and interfaces are explicit in `kernel/entry_boundaries.def`.
+Recovering their caller does not establish recovery of those bodies.
+
+`python3 tests/kernel_entry.py` compiles a separate preview without changing
+production images. It passes 864 scenarios, with 2,592 executions of original
+x86, ordinary C and fixed-address C. Bootstrap-only and complete-entry cases
+check 22/28 calls, PIC arguments, all `0x3000` shared-memory bytes, stack
+balance/canaries and callee-saved registers. Cases combine three memory
+patterns, 16 callback mutation modes and nine return-value seeds. Original
+and candidate fixture copies have CALL operands redirected to shared boundary
+callbacks; tiny CLI/STI/NOP callees are not overwritten. This isolates the
+orchestration and does not test device initialization itself.
+
+Preview entry/bootstrap bodies occupy 40/48 and 135/148 bytes; linker
+assertions enforce both original entry addresses and slot bounds. Evidence:
+`build/entry_preview_summary.json`, `build/entry_calls.h`,
+`build/entry_preview.elf`. The production manifest remains at 224 intervals
+at this source checkpoint while its existing full regression finishes.
