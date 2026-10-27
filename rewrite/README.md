@@ -841,8 +841,19 @@ boundary and volatile rereads remain intact. Both host-linked and
 fixed-address tests pass 275,456 ordinary and 100 watched comparisons each
 (550,912 ordinary and 200 watched comparisons altogether). Logs:
 `build/service_optional_build.log`, `build/service_optional_test.log` and
-`build/service_optional_linked_test.log`. Full-image and QEMU integration
-checks follow this fixed-address integration step.
+`build/service_optional_linked_test.log`.
+
+The complete verification suite passed on 2026-10-27 with all 150 replacement
+intervals. Three QEMU boots passed RAM/page/heap-chain checks (128 MiB and
+59 live headers), real TSS switching, PS/2 and CMD input, MOV's four exact
+animation frames, close and subsequent `cpuid`, and STARSCR's four phases,
+Esc and task cleanup. All installed intervals matched guest memory. MOV's
+post-close CMD screen was visually inspected. The original post-STARSCR
+mouse stall remains; desktop reuse after that application is not verified.
+Logs: `build/verify_service_optional.log`, `build/service_optional_smoke.log`,
+`build/mov_service_optional_smoke.log` and `build/starscr_service_optional_smoke.log`;
+representative evidence is in `build/service_optional_evidence/`. Other
+unrecovered kernel, driver and application routines still use original code.
 
 `kernel/cpuid.c/.h` recovers the EFLAGS.ID availability probe at
 `0x82b678..0x82b6a0`, leaf-0 vendor query at `0x82b6a0..0x82b6e8`, and
