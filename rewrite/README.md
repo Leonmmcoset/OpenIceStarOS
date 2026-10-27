@@ -1351,3 +1351,20 @@ checks raw return values and every byte in all five mapped shared pages.
 It explicitly skips 4,672 generated unsafe ranges before invoking executable
 code. Log: `build/surface_draw_preview.log`. This is a source checkpoint;
 the 8-bit rasterizer is not yet installed into the VHDs here.
+
+`kernel/surface_alpha.c/.h` recovers the four-pixel blending helper at
+`0x818134..0x81846a`. Signed weights above 127 leave a pixel unchanged;
+weights at or below zero copy the complete source DWORD; positive weights
+up to 127 blend R/G/B in that order with denominator 128 and leave the high
+byte unchanged. Weight words are reread for each channel, and arithmetic
+retains 32-bit wraparound. The return preserves the original final EAX,
+including a weight pointer, destination pointer, or full shifted blend
+result depending on the last pixel's branch.
+
+Its standalone original/C/bytewise-oracle test passes 15,616 cases covering
+four alignments, signed boundary weights, mixed/uniform weights and 61
+source/destination/weight layouts. Cases deliberately overlap weights and
+pixels, including resulting arithmetic overflow and channel-order effects.
+Raw returns and all bytes of three mapped shared pages match. Log:
+`build/surface_alpha_preview.log`. The helper is not installed at this
+source checkpoint.
