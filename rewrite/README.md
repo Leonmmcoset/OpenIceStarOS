@@ -1951,6 +1951,47 @@ QEMU exits 33 (success) after 21.922 seconds. Evidence:
 `build/display_dac_preview.elf`. Installation follows after the running
 231-interval baseline regression, so that baseline is not modified mid-run.
 
+### Identity paging source checkpoint (2026-10-27)
+
+`kernel/paging.c/.h` recovers `0x837448..0x8374b2`. Two C loops construct
+1,024 PDEs at `0x19000` and 1,048,576 PTEs at `0x100000`, with original
+`0x107` flags and wrapped 32-bit physical addresses covering 4 GiB. Stores
+explicitly use GS rather than assuming DS has base zero. A small ISA wrapper
+temporarily sets GS=8, loads CR3=`0x19000`, preserves CR0 while enabling PG,
+returns CR0 in EAX, restores GS and the original register contract, and leaves
+the final OR's flags intact. The compiled routine occupies 102/106 bytes.
+
+`python3 tests/paging_qemu.py` passes 192 scenarios / 576 original-x86,
+ordinary-C and fixed-address-C executions at CPL0. Ninety-six scenarios run
+the privileged routines unhooked, including transitions with paging initially
+off and initially on using an independent fixture map. Another 96 suppress
+only the two control-register stores in fixture copies, allowing byte-exact
+checks of every emitted table entry without CPU-generated accessed/dirty
+bits. Unhooked runs compare every entry excluding those two hardware bits.
+Both paths check table boundary guards, DS=flat/nonflat, GS=null/flat/nonflat,
+CR0 feature preservation, CR3, EAX, all six other general registers, all data
+selectors, stack balance/canaries and defined final flags including IF/DF.
+The fixture lives above 6 MiB so the 1..5 MiB output cannot overwrite it.
+
+QEMU exits 33 (success). Evidence: `build/paging_preview_test.log`,
+`build/paging_preview_qemu.log`, `build/paging_preview_summary.json`,
+`build/paging_cr_patches.h` and `build/paging_preview.elf`. Production images
+remain unchanged while the 231-interval baseline regression runs.
+
+### Additional startup application boots (2026-10-27)
+
+Three sequential snapshot boots of the 231-interval application image pass:
+Snake (34.345 seconds), MOV (32.514 seconds) and STARSCR (26.703 seconds).
+Each verifies the recovered startup's 30 ordered blocks, all 28 external call
+targets and all 231 loaded intervals. Application checks cover Snake movement,
+collision and restart; all four exact MOV frames, closure and CMD reuse; and
+STARSCR's four phases, Esc exit and task cleanup. STARSCR's original post-exit
+mouse/timer stall remains; desktop reuse after it is not verified.
+
+Per-boot evidence and hashes are archived in
+`build/startup_evidence/{color,snake,mov,starscr}/`; `results.json` records the
+three additional runs. Logs: `build/startup_{snake,mov,starscr}_smoke.log`.
+
 Evidence: `build/firmware_scan_install_build.log`,
 `build/firmware_scan_install_test.log`, `build/firmware_scan_installed_qemu.log`,
 `build/firmware_scan_installed_summary.json`. The installed QEMU fixture is
