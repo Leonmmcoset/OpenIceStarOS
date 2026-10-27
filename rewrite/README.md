@@ -12,15 +12,21 @@ table, signature, and unchanged contents after sector 3. `make run` starts the
 test disk in QEMU using a temporary snapshot. GCC with `-m16`, binutils, make,
 and qemu-system-i386 are required.
 
-Only the first two stages are C code so far. The remainder of the disk is copied from
-the original image, including the next boot stage, kernel, drivers, applications,
-and resources. Successful boot is an integration test for this stage, not
-evidence that the rest of the OS has been rewritten or its APIs recovered.
+The normal test image replaces only the first two stages. The remainder of the
+disk is copied from the original image, including the next boot stage, kernel,
+drivers, applications, and resources.
 
-`boot/fat16.c` is a freestanding FAT16 root-file reader intended for the next
-stage. It is not yet connected to the boot image. Verification builds it for
-32-bit x86 and uses a host sector reader to recover `INIT.X` from the original
-VHD; its SHA-256 is checked against the independently extracted file.
+`boot/fat16.c` is a freestanding FAT16 root-file reader. Verification builds it
+for 32-bit x86 and uses a host sector reader to recover `INIT.X` from the
+original VHD; its SHA-256 is checked against the independently extracted file.
+
+`make run-hybrid` starts a second image that uses the original third stage's
+video setup, descriptor tables, disk metadata setup, and INIT transfer, but
+replaces its INIT file loading with the C FAT16 reader and ATA PIO code. The
+menu loads eight sectors for this hybrid stage. The C code switches to a flat
+code and stack segment, then returns to the original stage for the transfer.
+This integration still depends on original boot code and all later programs;
+booting it does not establish that the whole system has been rewritten.
 
 `init/entry.c` recovers the `INIT.X` entry control flow and its helper at
 original addresses `0x70040` and `0x700a2`. Its four directory and file

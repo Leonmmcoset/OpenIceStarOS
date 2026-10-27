@@ -1,6 +1,12 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
 
+#ifndef NEXT_STAGE_SECTORS
+#define NEXT_STAGE_SECTORS 4
+#endif
+#define STRINGIFY_INNER(x) #x
+#define STRINGIFY(x) STRINGIFY_INNER(x)
+
 static void put_cell(u16 index, u8 character, u8 attribute)
 {
     u16 value = (u16)character | ((u16)attribute << 8);
@@ -62,7 +68,7 @@ static u16 clock_ticks(void)
 
 static __attribute__((noreturn)) void boot_next(u8 selected)
 {
-    /* Read the original MBR's boot-drive byte, then four sectors at CHS 0/0/6. */
+    /* Read the original MBR's boot-drive byte, then the stage at CHS 0/0/6. */
     __asm__ volatile (
         "xorw %%ax, %%ax\n\t"
         "movw %%ax, %%es\n\t"
@@ -70,7 +76,7 @@ static __attribute__((noreturn)) void boot_next(u8 selected)
         "movw $0x1a80, %%ax\n\t"
         "movw %%ax, %%es\n\t"
         "xorw %%bx, %%bx\n\t"
-        "movw $0x0204, %%ax\n\t"
+        "movw $(0x0200 + " STRINGIFY(NEXT_STAGE_SECTORS) "), %%ax\n\t"
         "movw $0x0006, %%cx\n\t"
         "xorb %%dh, %%dh\n\t"
         "pushw %%si\n\t"
