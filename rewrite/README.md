@@ -1837,3 +1837,32 @@ failed attempts remain in separately named subdirectories. The application
 image SHA-256 remains
 `1bef08e3b88d858e5bf8b7ee80e3ed9942e0d66a12f2ebe1d33a382ae2f57c79`.
 This is focused integration evidence, not a complete 222-interval regression.
+
+### Firmware scan source checkpoint (2026-10-27)
+
+`kernel/firmware_scan.c/.h` recovers the startup routines at
+`0x815106..0x8152cc` (ACPI-like discovery) and `0x8152cc..0x815320`
+(PMID discovery). The source preserves the original bytewise scan endpoints,
+seven-byte `RSD PTR` comparison, both reads of the root's first entry,
+signed wrapped length calculation, linear four-byte candidate walk, signed
+control byte, unused word read and exact I/O callback order. FACP fields
+are captured before the callbacks. The ACPI scan continues after a match;
+PMID stops at the first match and leaves its global unchanged on a miss.
+These are recovered behaviors, not a standards-compliant ACPI replacement.
+
+`make test-firmware-scan-preview` passes 320 synthetic scenarios, with 640
+executions of original x86 code and standalone C against an independent
+memory and I/O oracle. The multiboot QEMU fixture enables paging so address
+zero, firmware ROM addresses and cross-1-MiB reads can use controlled RAM.
+Cases cover every signed-byte value, signed/wrapped lengths, invalid and
+unaligned signatures, inclusive/exclusive bounds, null and wrapped root
+pointers, linear rather than indirect table traversal, multiple signatures,
+first inner match, port addition overflow and callback mutation of captured
+fields. Each execution checks all `0x110000` mapped bytes and callee-saved
+registers. Only the embedded fixture copies have their I/O entries hooked;
+the production kernel and disks are unchanged at this checkpoint.
+
+Reproduction: `python3 tests/firmware_scan_qemu.py` (QEMU exit 33 means
+success). Evidence: `build/firmware_scan_preview_build.log`,
+`build/firmware_scan_preview_qemu.log`, `build/firmware_scan_preview_summary.json`.
+The installed manifest still contains 222 intervals until integration below.

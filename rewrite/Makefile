@@ -739,6 +739,10 @@ smoke-surface-order: $(BUILD)/IceStarOS_c_apps.vhd
 smoke-cursor: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --cursor-check --memory-check --task-check --color-check
 
+.PHONY: test-firmware-scan-preview
+test-firmware-scan-preview: $(BUILD)/icestar_c.x
+	python3 tests/firmware_scan_qemu.py
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 
