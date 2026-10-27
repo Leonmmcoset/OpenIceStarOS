@@ -931,3 +931,13 @@ Both host-linked and fixed-address tests pass all 2,928 comparisons each,
 including the 128 native x87/SSE state comparisons (5,856 in total). Logs:
 `build/fpu_build.log`, `build/fpu_test.log`, `build/fpu_linked_test.log`.
 Full-suite and QEMU verification of this image follow the installation step.
+
+`python3 tests/fpu_qemu.py` builds an isolated multiboot fixture embedding both
+the original and current kernels, then executes their FPU routines at CPL 0
+under QEMU. It passes 96 real CR0 probe/enable/lazy cases, 576 task-context
+and actual #NM cases, and 128 native hardware-leaf cases (800 total). These
+checks use an independent state oracle, unsigned task-index wrap, unaligned
+task entries, and complete 512-byte x87/SSE state comparisons. The fixture
+enables OSFXSR/OSXSAVE and XCR0=3; XSAVE/XRSTOR retain the original pointer/mask
+ABI and are exercised with a zero effective mask. This fixture does not boot
+or modify the OS disk. Logs: `build/fpu_qemu_build.log`, `build/fpu_qemu.log`.
