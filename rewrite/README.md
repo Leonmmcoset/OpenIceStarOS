@@ -873,5 +873,11 @@ immutable ID, full-width output words, all four byte alignments, page
 boundaries, zero termination, callee-saved registers, stack balance, and all
 8,192 shared output bytes, including writes before faults. The test also
 checks the selected leaf and exactly one CPUID instruction per query. Log:
-`build/cpuid_preview_test.log`. Fixed-address installation and QEMU checks
-follow this source-recovery step.
+`build/cpuid_preview_test.log`.
+
+All three routines are now installed at their original addresses, increasing
+the manifest to 153 intervals. Both the host-linked and fixed-address tests
+pass the same 8 availability, 720 leaf-output and 36 guard-page comparisons
+(1,528 comparisons in total). Logs: `build/cpuid_build.log`,
+`build/cpuid_test.log` and `build/cpuid_linked_test.log`. QEMU regression for
+this image remains pending.

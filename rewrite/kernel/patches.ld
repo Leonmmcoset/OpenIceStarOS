@@ -258,6 +258,12 @@ SECTIONS
     ASSERT(kernel_write_port_dword == 0x81a296 && SIZEOF(.port_write_dword) == 12, "OUT DWORD layout changed")
     .cpu_boot_jump 0x81a2a2 : { *kernel_cpu.o(.text.kernel_jump_boot_entry) }
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
+    .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
+    ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
+    .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }
+    ASSERT(kernel_cpuid_vendor == 0x82b6a0 && ADDR(.cpuid_vendor) + SIZEOF(.cpuid_vendor) <= 0x82b6e8, "cpuid_vendor overflow")
+    .cpuid_features 0x82b6e8 : { *kernel_cpuid.o(.text.kernel_cpuid_features) }
+    ASSERT(kernel_cpuid_features == 0x82b6e8 && ADDR(.cpuid_features) + SIZEOF(.cpuid_features) <= 0x82b72e, "cpuid_features overflow")
     .palette_color 0x81b714 : { *kernel_runtime.o(.text.kernel_palette_color) }
     ASSERT(kernel_palette_color == 0x81b714 && ADDR(.palette_color) + SIZEOF(.palette_color) <= 0x81b734, "palette getter overflow")
     .far_task_jump 0x828d2b : { *kernel_cpu.o(.text.kernel_far_task_jump) }
