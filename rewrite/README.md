@@ -879,5 +879,14 @@ All three routines are now installed at their original addresses, increasing
 the manifest to 153 intervals. Both the host-linked and fixed-address tests
 pass the same 8 availability, 720 leaf-output and 36 guard-page comparisons
 (1,528 comparisons in total). Logs: `build/cpuid_build.log`,
-`build/cpuid_test.log` and `build/cpuid_linked_test.log`. QEMU regression for
-this image remains pending.
+`build/cpuid_test.log` and `build/cpuid_linked_test.log`.
+
+The complete verification suite passed on 2026-10-27 with all 153 replacement
+intervals. Three QEMU snapshot boots verified 128 MiB RAM and the live heap,
+real TSS switching, PS/2 input and CMD, MOV's four exact animation frames,
+close and subsequent `cpuid`, and STARSCR's four phases, Esc and task cleanup.
+Every installed interval matched guest memory. MOV's post-close CMD screen
+was visually inspected. The original post-STARSCR mouse stall remains;
+desktop reuse after that application is not verified. Logs:
+`build/verify_cpuid.log`, `build/cpuid_smoke.log`, `build/mov_cpuid_smoke.log`
+and `build/starscr_cpuid_smoke.log`; evidence: `build/cpuid_evidence/`.
