@@ -304,6 +304,34 @@ SECTIONS
     ASSERT(kernel_init_pit == 0x83717c && ADDR(.pit_init) + SIZEOF(.pit_init) == 0x837189, "pit_init layout mismatch")
     .rtc_init 0x837189 : { *kernel_interrupt_hardware.o(.text.kernel_init_rtc) }
     ASSERT(kernel_init_rtc == 0x837189 && ADDR(.rtc_init) + SIZEOF(.rtc_init) == 0x8371a0, "rtc_init layout mismatch")
+    .exception_entry 0x8371a0 : { *kernel_interrupt_entries.o(.text.kernel_exception_entry) }
+    ASSERT(kernel_exception_entry == 0x8371a0 && ADDR(.exception_entry) + SIZEOF(.exception_entry) == 0x8371bc, "exception_entry layout mismatch")
+    .spurious_entry 0x8371bc : { *kernel_interrupt_entries.o(.text.kernel_spurious_entry) }
+    ASSERT(kernel_spurious_entry == 0x8371bc && ADDR(.spurious_entry) + SIZEOF(.spurious_entry) == 0x8371c6, "spurious_entry layout mismatch")
+    .exception_fs_entry 0x8371c6 : { *kernel_interrupt_entries.o(.text.kernel_exception_fs_entry) }
+    ASSERT(kernel_exception_fs_entry == 0x8371c6 && ADDR(.exception_fs_entry) + SIZEOF(.exception_fs_entry) == 0x8371e6, "exception_fs_entry layout mismatch")
+    .device_unavailable_entry 0x8371e6 : { *kernel_interrupt_entries.o(.text.kernel_device_unavailable_entry) }
+    ASSERT(kernel_device_unavailable_entry == 0x8371e6 && ADDR(.device_unavailable_entry) + SIZEOF(.device_unavailable_entry) == 0x8371e9, "device_unavailable_entry layout mismatch")
+    .timer_entry 0x8371e9 : { *kernel_interrupt_entries.o(.text.kernel_timer_entry) }
+    ASSERT(kernel_timer_entry == 0x8371e9 && ADDR(.timer_entry) + SIZEOF(.timer_entry) == 0x837209, "timer_entry layout mismatch")
+    .keyboard_entry 0x837209 : { *kernel_interrupt_entries.o(.text.kernel_keyboard_entry) }
+    ASSERT(kernel_keyboard_entry == 0x837209 && ADDR(.keyboard_entry) + SIZEOF(.keyboard_entry) == 0x837222, "keyboard_entry layout mismatch")
+    .irq5_entry 0x837222 : { *kernel_interrupt_entries.o(.text.kernel_irq5_entry) }
+    ASSERT(kernel_irq5_entry == 0x837222 && ADDR(.irq5_entry) + SIZEOF(.irq5_entry) == 0x83723b, "irq5_entry layout mismatch")
+    .rtc_entry 0x83723b : { *kernel_interrupt_entries.o(.text.kernel_rtc_entry) }
+    ASSERT(kernel_rtc_entry == 0x83723b && ADDR(.rtc_entry) + SIZEOF(.rtc_entry) == 0x83725a, "rtc_entry layout mismatch")
+    .irq9_entry 0x83725a : { *kernel_interrupt_entries.o(.text.kernel_irq9_entry) }
+    ASSERT(kernel_irq9_entry == 0x83725a && ADDR(.irq9_entry) + SIZEOF(.irq9_entry) == 0x837273, "irq9_entry layout mismatch")
+    .irq10_entry 0x837273 : { *kernel_interrupt_entries.o(.text.kernel_irq10_entry) }
+    ASSERT(kernel_irq10_entry == 0x837273 && ADDR(.irq10_entry) + SIZEOF(.irq10_entry) == 0x83728c, "irq10_entry layout mismatch")
+    .irq11_entry 0x83728c : { *kernel_interrupt_entries.o(.text.kernel_irq11_entry) }
+    ASSERT(kernel_irq11_entry == 0x83728c && ADDR(.irq11_entry) + SIZEOF(.irq11_entry) == 0x8372a5, "irq11_entry layout mismatch")
+    .irq12_entry 0x8372a5 : { *kernel_interrupt_entries.o(.text.kernel_irq12_entry) }
+    ASSERT(kernel_irq12_entry == 0x8372a5 && ADDR(.irq12_entry) + SIZEOF(.irq12_entry) == 0x8372be, "irq12_entry layout mismatch")
+    .syscall40_entry 0x8372be : { *kernel_interrupt_entries.o(.text.kernel_syscall40_entry) }
+    ASSERT(kernel_syscall40_entry == 0x8372be && ADDR(.syscall40_entry) + SIZEOF(.syscall40_entry) == 0x8372d1, "syscall40_entry layout mismatch")
+    .syscall41_entry 0x8372d1 : { *kernel_interrupt_entries.o(.text.kernel_syscall41_entry) }
+    ASSERT(kernel_syscall41_entry == 0x8372d1 && ADDR(.syscall41_entry) + SIZEOF(.syscall41_entry) == 0x8372e8, "syscall41_entry layout mismatch")
     .cpu_load_gdt 0x8372e8 : { *kernel_cpu.o(.text.kernel_load_gdt) }
     ASSERT(kernel_load_gdt == 0x8372e8 && ADDR(.cpu_load_gdt) + SIZEOF(.cpu_load_gdt) <= 0x8372f8, "LGDT boundary overflow")
     .cpu_load_tr 0x8372f8 : { *kernel_cpu.o(.text.kernel_load_task_register) }

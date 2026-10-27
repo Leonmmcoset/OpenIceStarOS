@@ -1014,3 +1014,13 @@ not verified. Logs: `build/verify_interrupts.log`, `build/interrupts_smoke.log`,
 `build/mov_interrupts_smoke.log`, `build/starscr_interrupts_smoke.log`;
 screenshots/JSON: `build/interrupts_evidence/`. This is still a hybrid image
 with unrecovered original kernel, driver and application code.
+
+All 14 interrupt-frame entries are now installed at their original
+addresses, bringing the manifest to 186 intervals. Linker assertions require
+every entry and end address to match, and each manifest entry requires exact
+original bytes. The installed-image check passes for all 328 bytes. The two
+initializer differential variants and all 521 existing native interrupt
+setup checks also pass. `make verify` now runs the entry byte-identity check.
+Logs: `build/interrupt_entries_build.log`, `build/interrupt_entries_exact.log`,
+`build/interrupt_entries_init_test.log`, `build/interrupt_entries_gate_qemu.log`.
+Full-suite and OS regression for this image follow the installation step.

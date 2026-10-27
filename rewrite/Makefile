@@ -19,7 +19,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o \
                   $(BUILD)/kernel_graphics_primitives.o $(BUILD)/kernel_service_optional.o \
                   $(BUILD)/kernel_cpuid.o $(BUILD)/kernel_fpu.o $(BUILD)/kernel_fpu_state.o \
-                  $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o
+                  $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o $(BUILD)/kernel_interrupt_entries.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -70,7 +70,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.fpu_available.bin $(BUILD)/kernel.fpu_enable.bin $(BUILD)/kernel.fpu_restore_task.bin $(BUILD)/kernel.fpu_mark_lazy.bin $(BUILD)/kernel.fpu_fault.bin \
                   $(BUILD)/kernel.fpu_save_legacy.bin $(BUILD)/kernel.fpu_restore_legacy.bin $(BUILD)/kernel.fpu_save_environment.bin $(BUILD)/kernel.fpu_load_environment.bin $(BUILD)/kernel.fpu_save_extended.bin $(BUILD)/kernel.fpu_restore_extended.bin $(BUILD)/kernel.fpu_save_xstate.bin $(BUILD)/kernel.fpu_restore_xstate.bin \
                   $(BUILD)/kernel.interrupts_init.bin $(BUILD)/kernel.interrupt_gate.bin $(BUILD)/kernel.boot_code_selector.bin \
-                  $(BUILD)/kernel.pic_init.bin $(BUILD)/kernel.pit_init.bin $(BUILD)/kernel.rtc_init.bin
+                  $(BUILD)/kernel.pic_init.bin $(BUILD)/kernel.pit_init.bin $(BUILD)/kernel.rtc_init.bin \
+                  $(foreach entry,exception_entry spurious_entry exception_fs_entry device_unavailable_entry timer_entry keyboard_entry irq5_entry rtc_entry irq9_entry irq10_entry irq11_entry irq12_entry syscall40_entry syscall41_entry,$(BUILD)/kernel.$(entry).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -171,6 +172,7 @@ $(BUILD)/kernel_fpu.o: kernel/fpu.h kernel/cpuid.h
 $(BUILD)/kernel_fpu_state.o: kernel/fpu.h
 $(BUILD)/kernel_cpuid.o: kernel/cpuid.h
 $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o: kernel/interrupts.h
+$(BUILD)/kernel_interrupt_entries.o: kernel/interrupt_entries.h kernel/interrupt_entries.def
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -417,6 +419,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_fpu_linked_test
 	$(BUILD)/kernel_interrupts_test
 	$(BUILD)/kernel_interrupts_linked_test
+	python3 tests/interrupt_entries_exact.py --installed
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
