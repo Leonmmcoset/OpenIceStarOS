@@ -13,7 +13,8 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
-                  $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o $(BUILD)/kernel_runtime.o $(BUILD)/kernel_tasks.o $(BUILD)/kernel_task_create.o $(BUILD)/kernel_task_lifecycle.o
+                  $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o $(BUILD)/kernel_runtime.o $(BUILD)/kernel_tasks.o $(BUILD)/kernel_task_create.o $(BUILD)/kernel_task_lifecycle.o \
+                  $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -44,7 +45,10 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.schedule_task.bin $(BUILD)/kernel.timer_tick.bin \
                   $(BUILD)/kernel.tasks_init.bin $(BUILD)/kernel.task_find_free.bin $(BUILD)/kernel.task_create.bin \
                   $(BUILD)/kernel.cpu_load_gdt.bin $(BUILD)/kernel.cpu_load_tr.bin \
-                  $(BUILD)/kernel.task_create_app.bin $(BUILD)/kernel.task_delete.bin $(BUILD)/kernel.task_create_thread.bin $(BUILD)/kernel.task_active.bin
+                  $(BUILD)/kernel.task_create_app.bin $(BUILD)/kernel.task_delete.bin $(BUILD)/kernel.task_create_thread.bin $(BUILD)/kernel.task_active.bin \
+                  $(BUILD)/kernel.segment_descriptor.bin $(BUILD)/kernel.string_copy.bin $(BUILD)/kernel.text_prefix.bin \
+                  $(BUILD)/kernel.string_limit.bin $(BUILD)/kernel.string_length.bin $(BUILD)/kernel.string_equal.bin \
+                  $(BUILD)/kernel.string_append_character.bin $(BUILD)/kernel.string_append.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -132,8 +136,9 @@ $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 $(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
 $(BUILD)/kernel_runtime.o: kernel/runtime.h
 $(BUILD)/kernel_tasks.o: kernel/runtime.h kernel/service_forward.h kernel/service_forward.def
-$(BUILD)/kernel_task_create.o: kernel/tasks.h
-$(BUILD)/kernel_task_lifecycle.o: kernel/tasks.h
+$(BUILD)/kernel_task_create.o: kernel/tasks.h kernel/helpers.h
+$(BUILD)/kernel_task_lifecycle.o: kernel/tasks.h kernel/helpers.h
+$(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o: kernel/helpers.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -231,6 +236,12 @@ $(BUILD)/kernel_task_lifecycle_test: tests/kernel_task_lifecycle.c kernel/task_l
 $(BUILD)/kernel_task_lifecycle_linked_test: tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c kernel/tasks.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c -o $@
 
+$(BUILD)/kernel_helpers_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_helpers.c kernel/segments.c kernel/strings.c -o $@
+
+$(BUILD)/kernel_helpers_linked_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_helpers.c kernel/segments.c kernel/strings.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -300,6 +311,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_task_create_linked_test
 	$(BUILD)/kernel_task_lifecycle_test
 	$(BUILD)/kernel_task_lifecycle_linked_test
+	$(BUILD)/kernel_helpers_test
+	$(BUILD)/kernel_helpers_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
@@ -317,6 +330,7 @@ verify: $(BUILD)/kernel_runtime_test $(BUILD)/kernel_runtime_linked_test
 verify: $(BUILD)/kernel_tasks_test $(BUILD)/kernel_tasks_linked_test
 verify: $(BUILD)/kernel_task_create_test $(BUILD)/kernel_task_create_linked_test
 verify: $(BUILD)/kernel_task_lifecycle_test $(BUILD)/kernel_task_lifecycle_linked_test
+verify: $(BUILD)/kernel_helpers_test $(BUILD)/kernel_helpers_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x

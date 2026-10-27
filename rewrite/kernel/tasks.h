@@ -1,6 +1,7 @@
 #ifndef ICESTAR_KERNEL_TASKS_H
 #define ICESTAR_KERNEL_TASKS_H
 #include <stdint.h>
+#include "helpers.h"
 
 void kernel_init_tasks(void);
 uint32_t kernel_find_free_task(void);
@@ -19,10 +20,6 @@ uint32_t kernel_allocate(uint32_t size);
 void kernel_free_allocation(uint32_t address);
 uint32_t kernel_allocation_size(uint32_t address);
 
-/* Descriptor construction and string copying still use original routines. */
-void kernel_set_segment_descriptor(uint32_t address, uint32_t limit,
-                                   uint32_t base, uint32_t access);
-uint32_t kernel_copy_string(uint32_t destination, uint32_t source);
 void kernel_load_gdt(uint32_t limit, uint32_t base);
 void kernel_load_task_register(uint32_t selector);
 #endif

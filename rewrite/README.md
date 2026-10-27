@@ -562,3 +562,44 @@ Logs: `build/verify_task_lifecycle.log`, `build/tasks_lifecycle_smoke.log`,
 `build/mov_lifecycle_smoke.log`, and `build/starscr_lifecycle_smoke.log`.
 Representative JSON and image evidence is preserved under
 `build/task_lifecycle_evidence/`.
+
+`kernel/segments.c` recovers segment-descriptor emission at
+`0x8135c6..0x81364c` in 84 of the original 134 bytes. It retains the granularity
+threshold, unchecked base/access fields, and two WORD stores followed by four
+BYTE stores. `kernel/strings.c` recovers seven routines at
+`0x82a32b..0x82a531`: string copy (41/66 bytes), text-prefix copy (92/148),
+bounded copy (55/92), length (22/36), equality (44/58), character append
+(47/64), and string append (43/54). Task construction now uses these compiled
+descriptor and string implementations in the disk image.
+
+These APIs differ from libc: ordinary copy returns one byte beyond the copied
+terminator, bounded copy returns the terminator address, equality returns
+boolean 1/0, and character append uses a signed bound comparison. Text-prefix
+copy retains the original rule that exactly one byte above `0x9f` removes the
+last copied byte. Null handling, repeated volatile byte reads, unchecked
+overlap, and DWORD address/bound wraparound remain unchanged.
+
+Each helper differential executable compares original machine code against
+host-linked or fixed-address C in 170,568 cases: 63,648 descriptor emissions,
+1,716 copies, 31,680 text-prefix copies, 30,888 bounded copies, 330 length
+queries, 1,386 equality queries, 38,016 character appends, and 2,904 string
+appends (341,136 comparisons altogether). Every case compares return values
+where defined and all 8,192 mapped data bytes. No helper is mocked. Tests cover
+unaligned descriptors, full-width limits/access fields, ASCII and high bytes,
+null/invalid pointer combinations, signed bounds, forward and same-pointer
+overlap, finite backward overlap in bounded copies, and terminators directly
+before an inaccessible guard page. Inputs that make the original unbounded
+copy run forever are not used.
+
+The complete verification suite passed on 2026-10-27. The 96-interval image
+passed real TSS preemption checks with 12 ticks between samples, PS/2 and CMD
+input, MOV's four pixel-exact frames, close, image/task cleanup and subsequent
+`cpuid`, and STARSCR's four phases, Esc and task cleanup. All installed
+intervals matched guest memory. MOV's post-close screen and STARSCR's first
+phase were visually inspected. The existing post-STARSCR mouse-input
+limitation remains. Allocation/free, memory probing/heap initialization, and
+unrecovered kernel/driver/application routines still use original code.
+Logs: `build/verify_helpers.log`, `build/tasks_helpers_smoke.log`,
+`build/mov_helpers_smoke.log`, and `build/starscr_helpers_smoke.log`.
+Representative JSON and image evidence is preserved in
+`build/helpers_evidence/`.

@@ -2,8 +2,6 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
-PROVIDE(kernel_set_segment_descriptor = 0x8135c6);
-PROVIDE(kernel_copy_string = 0x82a32b);
 PROVIDE(kernel_allocate = 0x815464);
 PROVIDE(kernel_free_allocation = 0x815978);
 PROVIDE(kernel_allocation_size = 0x815a0a);
@@ -108,6 +106,8 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .segment_descriptor 0x8135c6 : { *kernel_segments.o(.text.kernel_set_segment_descriptor) }
+    ASSERT(kernel_set_segment_descriptor == 0x8135c6 && ADDR(.segment_descriptor) + SIZEOF(.segment_descriptor) <= 0x81364c, "segment descriptor overflow")
     .timer_tick 0x813a5e : { *kernel_tasks.o(.text.kernel_timer_tick) }
     ASSERT(kernel_timer_tick == 0x813a5e && ADDR(.timer_tick) + SIZEOF(.timer_tick) <= 0x813a8c, "timer tick overflow")
     .schedule_task 0x814176 : SUBALIGN(1) {
@@ -221,6 +221,20 @@ SECTIONS
     ASSERT(kernel_palette_color == 0x81b714 && ADDR(.palette_color) + SIZEOF(.palette_color) <= 0x81b734, "palette getter overflow")
     .far_task_jump 0x828d2b : { *kernel_cpu.o(.text.kernel_far_task_jump) }
     ASSERT(kernel_far_task_jump == 0x828d2b && SIZEOF(.far_task_jump) == 5, "far task jump layout changed")
+    .string_copy 0x82a32b : { *kernel_strings.o(.text.kernel_copy_string) }
+    ASSERT(kernel_copy_string == 0x82a32b && ADDR(.string_copy) + SIZEOF(.string_copy) <= 0x82a36d, "string copy overflow")
+    .text_prefix 0x82a36d : { *kernel_strings.o(.text.kernel_copy_text_prefix) }
+    ASSERT(kernel_copy_text_prefix == 0x82a36d && ADDR(.text_prefix) + SIZEOF(.text_prefix) <= 0x82a401, "text prefix copy overflow")
+    .string_limit 0x82a401 : { *kernel_strings.o(.text.kernel_copy_string_limit) }
+    ASSERT(kernel_copy_string_limit == 0x82a401 && ADDR(.string_limit) + SIZEOF(.string_limit) <= 0x82a45d, "bounded string copy overflow")
+    .string_length 0x82a45d : { *kernel_strings.o(.text.kernel_string_length) }
+    ASSERT(kernel_string_length == 0x82a45d && ADDR(.string_length) + SIZEOF(.string_length) <= 0x82a481, "string length overflow")
+    .string_equal 0x82a481 : { *kernel_strings.o(.text.kernel_strings_equal) }
+    ASSERT(kernel_strings_equal == 0x82a481 && ADDR(.string_equal) + SIZEOF(.string_equal) <= 0x82a4bb, "string equality overflow")
+    .string_append_character 0x82a4bb : { *kernel_strings.o(.text.kernel_append_character) }
+    ASSERT(kernel_append_character == 0x82a4bb && ADDR(.string_append_character) + SIZEOF(.string_append_character) <= 0x82a4fb, "character append overflow")
+    .string_append 0x82a4fb : { *kernel_strings.o(.text.kernel_append_string) }
+    ASSERT(kernel_append_string == 0x82a4fb && ADDR(.string_append) + SIZEOF(.string_append) <= 0x82a531, "string append overflow")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
     .cpu_load_gdt 0x8372e8 : { *kernel_cpu.o(.text.kernel_load_gdt) }
