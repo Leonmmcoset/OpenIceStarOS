@@ -15,7 +15,8 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
                   $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o $(BUILD)/kernel_runtime.o $(BUILD)/kernel_tasks.o $(BUILD)/kernel_task_create.o $(BUILD)/kernel_task_lifecycle.o \
                   $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o $(BUILD)/kernel_memory.o \
-                  $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o $(BUILD)/kernel_memory_ops.o
+                  $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o $(BUILD)/kernel_memory_ops.o \
+                  $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -55,7 +56,11 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.memory_probe.bin $(BUILD)/kernel.heap_init.bin $(BUILD)/kernel.page_probe.bin \
                   $(BUILD)/kernel.move_bytes.bin $(BUILD)/kernel.fill_bytes.bin $(BUILD)/kernel.copy_1200.bin \
                   $(BUILD)/kernel.copy_dwords.bin $(BUILD)/kernel.memory_differs.bin \
-                  $(BUILD)/kernel.malloc.bin $(BUILD)/kernel.free.bin
+                  $(BUILD)/kernel.malloc.bin $(BUILD)/kernel.free.bin \
+                  $(BUILD)/kernel.copy_dwords_sse.bin $(BUILD)/kernel.copy_sse16.bin $(BUILD)/kernel.copy_sse64.bin \
+                  $(BUILD)/kernel.rep_copy_bytes.bin $(BUILD)/kernel.rep_fill_bytes.bin \
+                  $(BUILD)/kernel.rep_copy_words.bin $(BUILD)/kernel.rep_fill_words.bin \
+                  $(BUILD)/kernel.rep_copy_dwords.bin $(BUILD)/kernel.rep_fill_dwords.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -149,6 +154,7 @@ $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o: kernel/helpers.h
 $(BUILD)/kernel_memory.o: kernel/memory.h
 $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o: kernel/memory_init.h
 $(BUILD)/kernel_memory_ops.o: kernel/memory_ops.h kernel/memory.h
+$(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o: kernel/memory_accel.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -270,6 +276,12 @@ $(BUILD)/kernel_memory_ops_test: tests/kernel_memory_ops.c kernel/memory_ops.c k
 $(BUILD)/kernel_memory_ops_linked_test: tests/kernel_memory_ops.c kernel/memory_ops.c kernel/memory_ops.h kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory_ops.c kernel/memory_ops.c -o $@
 
+$(BUILD)/kernel_memory_accel_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c -o $@
+
+$(BUILD)/kernel_memory_accel_linked_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -347,6 +359,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_memory_init_linked_test
 	$(BUILD)/kernel_memory_ops_test
 	$(BUILD)/kernel_memory_ops_linked_test
+	$(BUILD)/kernel_memory_accel_test
+	$(BUILD)/kernel_memory_accel_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
@@ -368,6 +382,7 @@ verify: $(BUILD)/kernel_helpers_test $(BUILD)/kernel_helpers_linked_test
 verify: $(BUILD)/kernel_memory_test $(BUILD)/kernel_memory_linked_test
 verify: $(BUILD)/kernel_memory_init_test $(BUILD)/kernel_memory_init_linked_test
 verify: $(BUILD)/kernel_memory_ops_test $(BUILD)/kernel_memory_ops_linked_test
+verify: $(BUILD)/kernel_memory_accel_test $(BUILD)/kernel_memory_accel_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x

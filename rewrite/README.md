@@ -731,3 +731,38 @@ application is not verified. Logs: `build/verify_memory_ops.log`,
 `build/starscr_memory_ops_smoke.log`; representative evidence is preserved
 in `build/memory_ops_evidence/`. Unrecovered routines continue to use the
 original binary; this is not yet a complete OS build from source.
+
+`kernel/memory_accel.c` rebuilds the SSE DWORD dispatcher at
+`0x8173da..0x817484` (89/170 bytes). It uses an arithmetic block-count shift,
+a signed remainder, a real call to the 16-byte SSE helper, and forward DWORD
+tail transfers; negative counts perform no accesses. `kernel/memory_transfers.c`
+rebuilds six REP copy/fill leaves at `0x817484..0x817548` and two SSE leaves
+at `0x828e8f..0x828eeb`, with exact-byte assertions for all eight routines.
+The REP leaves clear DF and update the caller's destination/count argument
+slots (and source slot for copies). Word and DWORD counts are elements.
+Byte/word fills retain truncation and the original arithmetic flag effects.
+The explicit REP prefix before the word instructions preserves the original
+`F3 66` order, which GAS otherwise reverses.
+
+SSE copies retain unaligned, forward 16-byte access order, XMM register
+clobbers, saved GPRs, and incoming DF. Their loops execute before decrementing
+ECX: a zero block count is not a no-op. The 64-byte helper interleaves four
+loads/stores rather than reading a whole block first, so overlapping ranges
+can propagate data within each block. These behaviors are preserved.
+
+Each accelerated-memory differential executable passes 139,152 normal cases:
+15,936 dispatcher, 11,904 per REP copy, 12,528 per REP fill, and 24,960 per
+SSE leaf. Host-linked and fixed-address tests execute the actual original
+and rebuilt transfer helpers. A fixed-stack assembly harness compares all
+16,384 data bytes, the leaf GPRs, defined arithmetic flags and DF, caller
+argument slots, and all eight XMM registers. The dispatcher is checked for
+memory, callee-saved GPRs, stack balance, DF and XMM state; caller-volatile
+GPRs, arithmetic flags and argument slots are not C ABI outputs. Cases cover
+both DF inputs, patterned/zero/high-byte buffers, word/DWORD unaligned
+pointers, all 16 SSE alignments, 21 overlap offsets, signed dispatcher
+boundaries, zero counts, and inaccessible source/destination guard pages.
+Each executable also passes 96 forked fault cases, comparing SIGSEGV and
+all shared buffer bytes written before the fault. These include zero-count
+SSE execution and huge REP/SSE counts; the zero-count SSE cases must produce
+actual writes before faulting. Normal comparisons total 278,304 across the
+two executable variants, plus 192 fault comparisons.

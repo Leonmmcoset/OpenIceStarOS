@@ -152,6 +152,20 @@ SECTIONS
     ASSERT(kernel_copy_1200_bytes == 0x815b2c && ADDR(.copy_1200) + SIZEOF(.copy_1200) <= 0x817322, "1200-byte copy overflow")
     .copy_dwords 0x817322 : { *kernel_memory_ops.o(.text.kernel_copy_dwords) }
     ASSERT(kernel_copy_dwords == 0x817322 && ADDR(.copy_dwords) + SIZEOF(.copy_dwords) <= 0x8173da, "DWORD copy overflow")
+    .copy_dwords_sse 0x8173da : { *kernel_memory_accel.o(.text.kernel_copy_dwords_sse) }
+    ASSERT(kernel_copy_dwords_sse == 0x8173da && ADDR(.copy_dwords_sse) + SIZEOF(.copy_dwords_sse) <= 0x817484, "SSE DWORD dispatcher overflow")
+    .rep_copy_bytes 0x817484 : { *kernel_memory_transfers.o(.text.kernel_rep_copy_bytes) }
+    ASSERT(kernel_rep_copy_bytes == 0x817484 && SIZEOF(.rep_copy_bytes) == 30, "REP byte copy layout changed")
+    .rep_fill_bytes 0x8174a2 : { *kernel_memory_transfers.o(.text.kernel_rep_fill_bytes) }
+    ASSERT(kernel_rep_fill_bytes == 0x8174a2 && SIZEOF(.rep_fill_bytes) == 38, "REP byte fill layout changed")
+    .rep_copy_words 0x8174c8 : { *kernel_memory_transfers.o(.text.kernel_rep_copy_words) }
+    ASSERT(kernel_rep_copy_words == 0x8174c8 && SIZEOF(.rep_copy_words) == 32, "REP word copy layout changed")
+    .rep_fill_words 0x8174e8 : { *kernel_memory_transfers.o(.text.kernel_rep_fill_words) }
+    ASSERT(kernel_rep_fill_words == 0x8174e8 && SIZEOF(.rep_fill_words) == 40, "REP word fill layout changed")
+    .rep_copy_dwords 0x817510 : { *kernel_memory_transfers.o(.text.kernel_rep_copy_dwords) }
+    ASSERT(kernel_rep_copy_dwords == 0x817510 && SIZEOF(.rep_copy_dwords) == 30, "REP DWORD copy layout changed")
+    .rep_fill_dwords 0x81752e : { *kernel_memory_transfers.o(.text.kernel_rep_fill_dwords) }
+    ASSERT(kernel_rep_fill_dwords == 0x81752e && SIZEOF(.rep_fill_dwords) == 26, "REP DWORD fill layout changed")
     .memory_differs 0x817548 : { *kernel_memory_ops.o(.text.kernel_memory_differs) }
     ASSERT(kernel_memory_differs == 0x817548 && ADDR(.memory_differs) + SIZEOF(.memory_differs) <= 0x817590, "memory comparison overflow")
     .malloc 0x817590 : { *kernel_memory_ops.o(.text.kernel_malloc) }
@@ -248,6 +262,10 @@ SECTIONS
     ASSERT(kernel_palette_color == 0x81b714 && ADDR(.palette_color) + SIZEOF(.palette_color) <= 0x81b734, "palette getter overflow")
     .far_task_jump 0x828d2b : { *kernel_cpu.o(.text.kernel_far_task_jump) }
     ASSERT(kernel_far_task_jump == 0x828d2b && SIZEOF(.far_task_jump) == 5, "far task jump layout changed")
+    .copy_sse16 0x828e8f : { *kernel_memory_transfers.o(.text.kernel_copy_sse16_blocks) }
+    ASSERT(kernel_copy_sse16_blocks == 0x828e8f && SIZEOF(.copy_sse16) == 34, "SSE 16-byte copy layout changed")
+    .copy_sse64 0x828eb1 : { *kernel_memory_transfers.o(.text.kernel_copy_sse64_blocks) }
+    ASSERT(kernel_copy_sse64_blocks == 0x828eb1 && SIZEOF(.copy_sse64) == 58, "SSE 64-byte copy layout changed")
     .string_copy 0x82a32b : { *kernel_strings.o(.text.kernel_copy_string) }
     ASSERT(kernel_copy_string == 0x82a32b && ADDR(.string_copy) + SIZEOF(.string_copy) <= 0x82a36d, "string copy overflow")
     .text_prefix 0x82a36d : { *kernel_strings.o(.text.kernel_copy_text_prefix) }
