@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 208 declared kernel intervals and
+original VHD. The current build installs 209 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1487,3 +1487,15 @@ All events, caller words including a sentinel, raw returns and four mapped
 memory pages match. Logs: `build/surface_move_preview_build.log` and
 `build/surface_move_preview.log`. The C object occupies 586 bytes against
 780 available; this source checkpoint does not yet install it in the VHDs.
+
+The moved-layer selector is now installed at `0x8191d8`, using 586/780 bytes
+and bringing the replacement manifest to 209 intervals. All three C-init,
+Snake and combined-application VHDs rebuild. Both host-linked and
+installed-address fixtures pass the same 51,200 cases; the full-disk kernel
+verifier and both application-image verifiers pass without FAT, directory
+or slack changes. Logs: `build/surface_move_install_build.log`,
+`build/surface_move_{host,linked}_test.log`,
+`build/surface_move_disk_verify.log`; exit marker:
+`build/surface_move_install.exit` (0). These focused checks precede the
+209-interval image's QEMU integration checks; the earlier full-suite result
+is specifically for the 208-interval image.

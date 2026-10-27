@@ -237,6 +237,11 @@ SECTIONS
         *kernel_surface_refresh.o(.text* .rodata*)
     }
     ASSERT(kernel_syscall_target_81905e == 0x81905e && ADDR(.surface_refresh) + SIZEOF(.surface_refresh) <= 0x8191d8, "surface refresh selector overflow")
+    .surface_move 0x8191d8 : SUBALIGN(1) {
+        *kernel_surface_move.o(.text.kernel_surface_move_refresh)
+        *kernel_surface_move.o(.text* .rodata*)
+    }
+    ASSERT(kernel_surface_move_refresh == 0x8191d8 && ADDR(.surface_move) + SIZEOF(.surface_move) <= 0x8194e4, "moved-layer damage selector overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
