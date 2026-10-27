@@ -427,3 +427,32 @@ documented post-STARSCR mouse-input limitation remains reproducible.
 MOV also passed all four pixel-exact frames, PS/2 close, image/task cleanup,
 and a subsequent CMD command on this image; its post-close screenshot was
 visually inspected.
+
+`kernel/tasks.c` recovers cooperative task yield (shared slot 108) at
+`0x81434a..0x814536`. It preserves the 108-byte task records, captured task
+table, flags/interrupt ordering, FPU save/initialize/restore branches,
+callback-sensitive next links, scheduling-counter wraparound, and TSS selector
+arithmetic. The compiled routine occupies 196 of the original 492 bytes.
+`kernel/cpu.c` also recovers the five-byte far TSS jump at `0x828d2b` and
+three-byte `fninit` boundary at `0x837347`; both match the original bytes.
+On a real task switch the old C stack is saved by the processor, and the
+routine restores its saved flags when that task resumes. Timer scheduling,
+task creation/destruction, and the FPU save/restore implementations remain
+original code.
+
+`kernel_tasks_test` and `kernel_tasks_linked_test` each pass 165,888 original/C
+differential cases. They compare the full task, service-table, and low-memory
+regions plus ordered boundary traces across wrapped full-width indices,
+aligned/unaligned tables, all state branches, counter boundaries, flags, and
+64 callback-mutation combinations. Both binaries execute their real service
+forwarders; only privileged flags, FPU reset, and far jump use common host
+callbacks. Test-only trampolines never enter the disk image. The complete
+verification suite passed on 2026-10-27. The resulting 77-interval image also
+passed STARSCR's four pixel-probed phases, Esc exit, and window/task cleanup
+in QEMU, with all installed intervals matching guest memory. Its first-phase
+screenshot was inspected; the existing post-STARSCR mouse-input limitation
+remains.
+MOV on the same image passed all four pixel-exact frames, PS/2 close,
+image/task cleanup, and a subsequent CMD `cpuid` command. Its post-close
+screenshot was visually inspected. Logs are `build/verify_tasks.log`,
+`build/starscr_tasks_smoke.log`, and `build/mov_tasks_smoke.log`.

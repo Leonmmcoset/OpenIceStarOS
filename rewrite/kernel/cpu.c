@@ -76,6 +76,14 @@ PORT_PRIMITIVE(void, kernel_write_port_dword,
 PORT_PRIMITIVE(void, kernel_jump_boot_entry, (void),
                "ljmp $0x40,$0x9000\n\tret")
 
+/* A six-byte far pointer occupies the two original DWORD stack arguments.
+ * On a TSS switch this instruction returns only when this task resumes. */
+PORT_PRIMITIVE(void, kernel_far_task_jump,
+               (uint32_t offset __attribute__((unused)), uint32_t selector __attribute__((unused))),
+               "ljmp *4(%esp)\n\tret")
+
+PORT_PRIMITIVE(void, kernel_fpu_reset, (void), "fninit\n\tret")
+
 #undef PORT_PRIMITIVE
 
 uint32_t kernel_read_cr0(void)

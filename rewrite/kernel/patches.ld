@@ -2,7 +2,6 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
-PROVIDE(kernel_yield_task = 0x81434a);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -104,6 +103,8 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .yield_task 0x81434a : { *kernel_tasks.o(.text.kernel_yield_task) }
+    ASSERT(kernel_yield_task == 0x81434a && ADDR(.yield_task) + SIZEOF(.yield_task) <= 0x814536, "task yield overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
@@ -192,8 +193,12 @@ SECTIONS
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
     .palette_color 0x81b714 : { *kernel_runtime.o(.text.kernel_palette_color) }
     ASSERT(kernel_palette_color == 0x81b714 && ADDR(.palette_color) + SIZEOF(.palette_color) <= 0x81b734, "palette getter overflow")
+    .far_task_jump 0x828d2b : { *kernel_cpu.o(.text.kernel_far_task_jump) }
+    ASSERT(kernel_far_task_jump == 0x828d2b && SIZEOF(.far_task_jump) == 5, "far task jump layout changed")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
+    .fpu_reset 0x837347 : { *kernel_cpu.o(.text.kernel_fpu_reset) }
+    ASSERT(kernel_fpu_reset == 0x837347 && SIZEOF(.fpu_reset) == 3, "FPU initialization layout changed")
     .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
     ASSERT(kernel_physical_write_byte == 0x83735b && SIZEOF(.physical_write_byte) == 25, "physical byte write layout changed")
     .physical_write_word 0x837374 : { *kernel_physical.o(.text.kernel_physical_write_word) }
