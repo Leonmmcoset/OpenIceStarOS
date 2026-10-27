@@ -1939,3 +1939,29 @@ assertions enforce both original entry addresses and slot bounds. Evidence:
 `build/entry_preview_summary.json`, `build/entry_calls.h`,
 `build/entry_preview.elf`. The production manifest remains at 224 intervals
 at this source checkpoint while its existing full regression finishes.
+
+### Additional startup state source checkpoint (2026-10-27)
+
+`kernel/startup_state.c/.h` recovers display-record initialization at
+`0x81acc4..0x81ad6e` and object-table counter initialization at
+`0x82aa0f..0x82aa33`. Display setup captures the record pointer once, retains
+the original sequence of boot-parameter reads and stores, preserves offsets
+28/32, calls palette initialization only for depth 8, then re-reads the
+captured record's depth before selecting display dispatch. The two palette
+and dispatch subsystem bodies remain original code. Object-table setup
+writes exactly `0x4000`, 0 and 0 to its three original globals.
+
+`python3 tests/kernel_startup_state.py` passes 6,864 display cases and 33
+counter cases: 20,691 original-x86, ordinary-C and fixed-address-C executions.
+Display scenarios combine three memory patterns, 13 aligned/unaligned/aliasing
+record addresses, 11 full-width depth values and 16 callback mutation modes.
+Aliases include boot parameters, the pointer global, object-table globals
+and a page boundary. The bytewise oracle models sequential reads/writes
+independently and checks all `0x5000` mapped bytes. Tests also verify callback
+order/arguments, live depth after palette mutation, stack canaries/balance
+and callee-saved registers. Only fixture CALL operands are redirected.
+
+The preview bodies use 127/170 and 31/36 bytes, with fixed-entry/size linker
+assertions. Evidence: `build/startup_state_preview_summary.json`,
+`build/startup_state_calls.h` and `build/startup_state_preview.elf`.
+Production kernels and disks are unchanged at this source checkpoint.
