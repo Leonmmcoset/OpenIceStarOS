@@ -37,3 +37,12 @@ bytes (`0x800`). The last six bytes, at disk offset `0x1200`, therefore lie
 outside that read. The original image still reaches the desktop in the tested
 QEMU configuration, but this discrepancy needs investigation before changing
 or claiming full recovery of the stage.
+
+At offset `0x47d`, the stage sets `INIT.X` header fields at offsets `0x08`,
+`0x14` and `0x18` to selectors `0x38`, `0x40` and `0x38`, respectively.
+It sets the stack pointer to load address + file size (header offset `0x04`)
++ 4096 * stack pages (offset `0x0c`) + offset `0x2c` - 1, and far-jumps via
+the offset and selector at header offset `0x10`. `INIT.X` starts at `0x70040`.
+It clears `0x1b108`, loads `ICESTAR/DAT.BIN` to `0x1b000` and
+`ICESTAR/ICESTAR.X` to `0x800000`, then calls the address at `0x800010` only
+if both loads succeeded. It loops forever if either fails or the call returns.

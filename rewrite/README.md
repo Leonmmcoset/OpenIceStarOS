@@ -21,3 +21,8 @@ evidence that the rest of the OS has been rewritten or its APIs recovered.
 stage. It is not yet connected to the boot image. Verification builds it for
 32-bit x86 and uses a host sector reader to recover `INIT.X` from the original
 VHD; its SHA-256 is checked against the independently extracted file.
+
+`init/entry.c` recovers the `INIT.X` entry control flow and its helper at
+original addresses `0x70040` and `0x700a2`. Its four directory and file
+operations are still unresolved, so this source is compiled and tested with
+host mocks but is not linked into the boot image.
