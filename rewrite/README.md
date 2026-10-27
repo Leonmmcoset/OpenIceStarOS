@@ -41,3 +41,5 @@ these C routines from sectors 13 through 16 at physical address `0x60000` and
 redirects INIT's entry there. This image still loads the original INIT binary
 at `0x70000`, as well as the original kernel, drivers, and applications. It is
 an integration test of the rewritten startup path, not a standalone rewrite.
+The same image redirects the original kernel's call at `0x800085` to the C
+startup-record initialization in `kernel/reset.c` (original at `0x80049a`).

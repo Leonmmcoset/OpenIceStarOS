@@ -6,6 +6,8 @@
 static int fail_at, calls;
 static uint8_t buffer[128];
 
+void kernel_init_startup_record(void) { }
+
 int init_find_root_directory(const char *name)
 {
     assert(!strcmp(name, "ICESTAR"));

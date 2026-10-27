@@ -86,8 +86,14 @@ $(BUILD)/init_directory.o: init/directory.c init/directory.h init/entry.h | $(BU
 $(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
 
-$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
-	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
+$(BUILD)/kernel_reset.o: kernel/reset.c | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+
+$(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
+	$(CC) -std=c11 -Wall -Wextra -Werror $^ -o $@
+
+$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o init/init.ld
+	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o
 
 $(BUILD)/IceStarOS_c_init.vhd: $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin
 	cp $(BUILD)/IceStarOS_c_fat16.vhd $@
@@ -109,7 +115,7 @@ $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/ini
 $(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
@@ -126,6 +132,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	printf '%s  %s\n' 01a8f491fefa8563238533936beca1ea7cafe7cbebfb55a9743a436b27b61ea8 $(BUILD)/dat.bin 9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3 $(BUILD)/icestar.x | sha256sum -c -
 	$(BUILD)/init_transfer_test
 	$(BUILD)/pci_test
+	$(BUILD)/kernel_reset_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
