@@ -115,6 +115,26 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .cursor_show 0x8130cc : SUBALIGN(1) {
+        *kernel_cursor.o(.text.kernel_cursor_show)
+    }
+    ASSERT(kernel_cursor_show == 0x8130cc && ADDR(.cursor_show) + SIZEOF(.cursor_show) <= 0x81313e, "cursor show overflow")
+    .cursor_hide 0x81313e : SUBALIGN(1) {
+        *kernel_cursor.o(.text.kernel_cursor_hide)
+    }
+    ASSERT(kernel_cursor_hide == 0x81313e && ADDR(.cursor_hide) + SIZEOF(.cursor_hide) <= 0x8131b0, "cursor hide overflow")
+    .cursor_select 0x8131b0 : SUBALIGN(1) {
+        *kernel_cursor.o(.text.kernel_cursor_select)
+        *kernel_cursor.o(.text.cursor_select_body)
+        *kernel_cursor.o(.rodata.cursor_select_body)
+    }
+    ASSERT(kernel_cursor_select == 0x8131b0 && ADDR(.cursor_select) + SIZEOF(.cursor_select) <= 0x81325c, "cursor select overflow")
+    .cursor_move 0x81325c : SUBALIGN(1) {
+        *kernel_cursor.o(.text.kernel_cursor_move)
+        *kernel_cursor.o(.text.cursor_move_body)
+        *kernel_cursor.o(.rodata.cursor_move_body)
+    }
+    ASSERT(kernel_cursor_move == 0x81325c && ADDR(.cursor_move) + SIZEOF(.cursor_move) <= 0x813320, "cursor move overflow")
     .interrupts_init 0x813320 : { *kernel_interrupts.o(.text.kernel_init_interrupts) }
     ASSERT(kernel_init_interrupts == 0x813320 && ADDR(.interrupts_init) + SIZEOF(.interrupts_init) <= 0x8135c6, "interrupts_init layout overflow")
     .segment_descriptor 0x8135c6 : { *kernel_segments.o(.text.kernel_set_segment_descriptor) }

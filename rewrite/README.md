@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 218 declared kernel intervals and
+original VHD. The current build installs 222 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1804,3 +1804,18 @@ All recorded hashes were rechecked, and Snake turn, MOV frame 2 and STARSCR
 phase 2 screenshots were visually inspected. Logs/exit/timing:
 `build/surface_order_{snake,mov,starscr}_smoke.{log,exit}` and corresponding
 `_summary.json` files.
+
+The four cursor helpers are now installed at `0x8130cc`, `0x81313e`,
+`0x8131b0` and `0x81325c`, bringing the manifest to 222 intervals.
+Their production extents, including both shape jump tables, occupy
+75/114, 75/114, 136/172 and 148/196 bytes. Explicit linker assertions
+retain each entry and boundary. Host and installed-address fixtures each
+pass all 86,400 original/C/oracle cases; all prior 218 interval bytes remain
+unchanged, and the kernel file changes only within the four cursor slots.
+C-init, Snake and combined-application builds and all three complete disk
+verifiers exit 0. Logs/exit/timing:
+`build/cursor_install_{build,host,linked,disk,snake_image,apps_image}.{log,exit}`,
+`build/cursor_install_summary.json`; interval checks and image hashes:
+`build/cursor_install_images.json`. An initial application-verifier invocation
+used an unsupported test option; its failed log is retained separately and
+the documented successful checks use `tools/app_image.py verify` directly.

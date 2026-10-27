@@ -26,7 +26,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_surface_present.o $(BUILD)/kernel_surface_draw.o \
                   $(BUILD)/kernel_surface_alpha.o $(BUILD)/kernel_surface_draw32.o \
                   $(BUILD)/kernel_surface_move.o $(BUILD)/kernel_surface_scale.o \
-                  $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o
+                  $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -91,7 +91,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.surfaces_init.bin $(BUILD)/kernel.surface_create.bin \
                   $(BUILD)/kernel.surface_find_free.bin $(BUILD)/kernel.surface_delete.bin \
                   $(BUILD)/kernel.surface_order_remove.bin $(BUILD)/kernel.surface_order_append.bin \
-                  $(BUILD)/kernel.surface_order_front.bin $(BUILD)/kernel.surface_order_move.bin
+                  $(BUILD)/kernel.surface_order_front.bin $(BUILD)/kernel.surface_order_move.bin \
+                  $(BUILD)/kernel.cursor_show.bin $(BUILD)/kernel.cursor_hide.bin \
+                  $(BUILD)/kernel.cursor_select.bin $(BUILD)/kernel.cursor_move.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -213,6 +215,9 @@ $(BUILD)/kernel_surface_lifecycle.o: kernel/surface_lifecycle.c kernel/surface_l
 
 $(BUILD)/kernel_surface_order.o: kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fwrapv-pointer -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_cursor.o: kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -454,6 +459,12 @@ $(BUILD)/kernel_surface_order_test: tests/kernel_surface_order.c kernel/surface_
 $(BUILD)/kernel_surface_order_linked_test: tests/kernel_surface_order.c kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fwrapv-pointer -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_order.c kernel/surface_order.c -o $@
 
+$(BUILD)/kernel_cursor_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_cursor.c kernel/cursor.c -o $@
+
+$(BUILD)/kernel_cursor_linked_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_cursor.c kernel/cursor.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -573,6 +584,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_surface_lifecycle_linked_test
 	$(BUILD)/kernel_surface_order_test
 	$(BUILD)/kernel_surface_order_linked_test
+	$(BUILD)/kernel_cursor_test
+	$(BUILD)/kernel_cursor_linked_test
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
 	python3 tests/snake.py
@@ -614,6 +627,7 @@ verify: $(BUILD)/kernel_surface_move_test $(BUILD)/kernel_surface_move_linked_te
 verify: $(BUILD)/kernel_surface_scale_test $(BUILD)/kernel_surface_scale_linked_test
 verify: $(BUILD)/kernel_surface_lifecycle_test $(BUILD)/kernel_surface_lifecycle_linked_test
 verify: $(BUILD)/kernel_surface_order_test $(BUILD)/kernel_surface_order_linked_test
+verify: $(BUILD)/kernel_cursor_test $(BUILD)/kernel_cursor_linked_test
 verify: $(BUILD)/kernel_cpuid_test $(BUILD)/kernel_cpuid_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
