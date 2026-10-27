@@ -205,6 +205,14 @@ SECTIONS
         *kernel_surface_composite.o(.text* .rodata*)
     }
     ASSERT(kernel_surface_target_817cd0 == 0x817cd0 && ADDR(.surface_composite) + SIZEOF(.surface_composite) <= 0x817dac, "surface clipping/list dispatcher overflow")
+    .surface_draw8 0x817dac : SUBALIGN(1) {
+        *kernel_surface_draw.o(.text.kernel_surface_draw8)
+    }
+    ASSERT(kernel_surface_draw8 == 0x817dac && ADDR(.surface_draw8) + SIZEOF(.surface_draw8) <= 0x818134, "8-bit layer rasterizer overflow")
+    .surface_blend4 0x818134 : SUBALIGN(1) {
+        *kernel_surface_alpha.o(.text.kernel_surface_blend4)
+    }
+    ASSERT(kernel_surface_blend4 == 0x818134 && ADDR(.surface_blend4) + SIZEOF(.surface_blend4) <= 0x81846a, "four-pixel blend overflow")
     .surface_regions 0x818d14 : SUBALIGN(1) {
         *kernel_surface_present.o(.text.kernel_surface_regions_test)
     }

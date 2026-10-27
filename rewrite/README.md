@@ -1368,3 +1368,16 @@ pixels, including resulting arithmetic overflow and channel-order effects.
 Raw returns and all bytes of three mapped shared pages match. Log:
 `build/surface_alpha_preview.log`. The helper is not installed at this
 source checkpoint.
+
+The 8-bit layer rasterizer and four-pixel blending helper are now installed
+at their original addresses, bringing the manifest to 207 intervals. Their
+compiled sizes are 538/904 and 147/822 bytes respectively. C-init, Snake and
+combined application VHDs rebuilt successfully. Host-linked and installed
+fixtures each pass all 536,000 rasterizer cases (4,672 unsafe ranges explicitly
+skipped) and 15,616 blending cases. The full-disk verifier confirms that only
+declared compiled kernel slots and compiled boot stages changed. Logs:
+`build/surface_draw_install_build.log`,
+`build/surface_draw_{host,linked}_test.log`,
+`build/surface_alpha_{host,linked}_test.log`, and
+`build/surface_draw_disk_verify.log`. Full-suite and OS regression checks for
+this newer image remain separate from the preceding 202-interval evidence.
