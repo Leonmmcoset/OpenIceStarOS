@@ -10,5 +10,11 @@
     "path": ["ICESTAR    ", "COLOR   X  "],
     "original_sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3",
     "binary": "color.x"
+  },
+  {
+    "name": "Mov",
+    "path": ["ICESTAR    ", "GAMES      ", "MOV        ", "MOV     X  "],
+    "original_sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68",
+    "binary": "mov.x"
   }
 ]

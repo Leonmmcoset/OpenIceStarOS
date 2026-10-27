@@ -317,8 +317,8 @@ drawing, and callback mutations of the active surface and window record.
 Only the OS services themselves use shared test callbacks. This checkpoint
 builds and differentially verifies COLOR; guest installation follows separately.
 
-`make run-c-apps` boots `build/IceStarOS_c_apps.vhd` with both recovered Snake
-and Color installed from `apps/images.json`. The earlier Snake-only image is
+`make run-c-apps` boots `build/IceStarOS_c_apps.vhd` with recovered Snake,
+Color, and MOV installed from `apps/images.json`. The earlier Snake-only image is
 retained as a separate checkpoint. The five installer tests restore every
 replaced file and require the complete restored disk to match its source;
 FAT entries, directories, allocation slack, and the VHD footer stay unchanged.
@@ -356,3 +356,15 @@ frames/ticks/window records/service tables, and close dispatch during polling.
 The original behavior of entering the animation loop after window-creation
 failure is preserved. This checkpoint builds and differentially tests MOV;
 installation and real guest execution are a separate integration step.
+
+`make smoke-mov` launches the compiled MOV through CMD with real PS/2 input.
+It verifies all 16 runtime relocations and the compiled close callback, reads
+the four decoded image buffers from the guest, and compares every pixel of
+each displayed 380-by-240 frame with those buffers. Image slot zero is valid
+in the original allocator. All four distinct frames must appear before the
+test clicks the close button and checks the window slot, four image slots,
+and task are released. A subsequent `cpuid` command must return to a fresh CMD
+prompt. The test changes no guest code or application state. Evidence and
+screenshots are in `build/mov_smoke.json` and `build/mov_*.png`. The smoke test
+passed on 2026-10-27; frame and post-close screenshots were inspected. JPEG
+decoding, window composition, desktop, and CMD still use original code.

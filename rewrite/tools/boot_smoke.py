@@ -42,12 +42,14 @@ def main():
                         help="load the C Snake through CMD and exercise movement/restart")
     parser.add_argument("--color-check", action="store_true",
                         help="load the C Color, verify its palette, and close its window")
+    parser.add_argument("--mov-check", action="store_true",
+                        help="load the C MOV, verify its four animation frames, and close it")
     arguments = parser.parse_args()
-    if arguments.snake_check and arguments.color_check:
+    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check else
+    default_image = ("IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check else
                      "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
     image = arguments.image.resolve() if arguments.image else build / default_image
     screen = build / "boot_c_init.ppm"
@@ -84,7 +86,7 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
-                    if arguments.input_check or arguments.snake_check or arguments.color_check:
+                    if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check:
                         cmd_base = check_inputs(execute, build, image)
                         if arguments.snake_check:
                             from snake_smoke import check_snake
@@ -92,6 +94,9 @@ def main():
                         if arguments.color_check:
                             from color_smoke import check_color
                             check_color(execute, build, image, cmd_base)
+                        if arguments.mov_check:
+                            from mov_smoke import check_mov
+                            check_mov(execute, build, image, cmd_base)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')

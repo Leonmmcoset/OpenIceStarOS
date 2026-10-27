@@ -40,7 +40,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.cpu_cr0_read.bin $(BUILD)/kernel.cpu_cr0_write.bin \
                   $(foreach slot,00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13,$(BUILD)/kernel.service_$(slot).bin)
 
-.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color
+.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov
 all: $(BUILD)/IceStarOS_c_mbr.vhd
 
 $(BUILD):
@@ -330,7 +330,7 @@ $(BUILD)/mov.elf: $(BUILD)/mov.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image_api
 $(BUILD)/mov.x: $(BUILD)/mov.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x3a54 --metadata $(BUILD)/mov.symbols.json
 
-$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x apps/images.json tools/app_image.py tools/kernel_image.py
+$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x apps/images.json tools/app_image.py tools/kernel_image.py
 	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@
 
 run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
@@ -338,3 +338,6 @@ run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
 
 smoke-color: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --color-check
+
+smoke-mov: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --mov-check
