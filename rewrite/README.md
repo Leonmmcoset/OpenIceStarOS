@@ -1238,3 +1238,19 @@ Logs: `build/surface_refresh_install_build.log`,
 `build/surface_refresh_host_test.log`, `build/surface_refresh_linked_test.log`.
 The lower compositor and framebuffer callback still use original code;
 complete-suite and OS boot regression follow as a separate checkpoint.
+
+`kernel/surface_composite.c/.h` recovers the layer-list dispatcher and signed
+rectangle clipping at `0x817cd0..0x817dac`. It captures service-table slot 40
+once, clips the caller's actual stack argument words, then dispatches from
+the surface's unsigned order through the live list bound at `0x510000`.
+The arithmetic retains 32-bit wraparound and signed comparisons; negative
+dimensions are not normalized. The return is the final order counter,
+including counter wraparound, rather than the drawing callback's result.
+A small assembly entry exposes the real incoming words to the C helper.
+
+The standalone preview passes 82,944 original/C/oracle cases covering all
+clipping paths, caller-visible stores, unaligned objects, wrapped layer and
+order indices, zero/multiple iterations, bound shrink/extension, callback
+capture, incoming/outgoing argument mutations and full mapped-memory checks.
+Log: `build/surface_composite_preview.log`. This source checkpoint does not
+yet install the dispatcher; the per-layer drawing body remains original.
