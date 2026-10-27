@@ -103,6 +103,8 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .interrupts_init 0x813320 : { *kernel_interrupts.o(.text.kernel_init_interrupts) }
+    ASSERT(kernel_init_interrupts == 0x813320 && ADDR(.interrupts_init) + SIZEOF(.interrupts_init) <= 0x8135c6, "interrupts_init layout overflow")
     .segment_descriptor 0x8135c6 : { *kernel_segments.o(.text.kernel_set_segment_descriptor) }
     ASSERT(kernel_set_segment_descriptor == 0x8135c6 && ADDR(.segment_descriptor) + SIZEOF(.segment_descriptor) <= 0x81364c, "segment descriptor overflow")
     .timer_tick 0x813a5e : { *kernel_tasks.o(.text.kernel_timer_tick) }
@@ -292,6 +294,16 @@ SECTIONS
     ASSERT(kernel_append_string == 0x82a4fb && ADDR(.string_append) + SIZEOF(.string_append) <= 0x82a531, "string append overflow")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
+    .interrupt_gate 0x8370d2 : { *kernel_interrupt_hardware.o(.text.kernel_install_interrupt_gate) }
+    ASSERT(kernel_install_interrupt_gate == 0x8370d2 && ADDR(.interrupt_gate) + SIZEOF(.interrupt_gate) == 0x837131, "interrupt_gate layout mismatch")
+    .boot_code_selector 0x837131 : { *kernel_interrupt_hardware.o(.text.kernel_boot_code_selector) }
+    ASSERT(kernel_boot_code_selector == 0x837131 && ADDR(.boot_code_selector) + SIZEOF(.boot_code_selector) == 0x837143, "boot_code_selector layout mismatch")
+    .pic_init 0x837143 : { *kernel_interrupt_hardware.o(.text.kernel_init_pic) }
+    ASSERT(kernel_init_pic == 0x837143 && ADDR(.pic_init) + SIZEOF(.pic_init) == 0x83717c, "pic_init layout mismatch")
+    .pit_init 0x83717c : { *kernel_interrupt_hardware.o(.text.kernel_init_pit) }
+    ASSERT(kernel_init_pit == 0x83717c && ADDR(.pit_init) + SIZEOF(.pit_init) == 0x837189, "pit_init layout mismatch")
+    .rtc_init 0x837189 : { *kernel_interrupt_hardware.o(.text.kernel_init_rtc) }
+    ASSERT(kernel_init_rtc == 0x837189 && ADDR(.rtc_init) + SIZEOF(.rtc_init) == 0x8371a0, "rtc_init layout mismatch")
     .cpu_load_gdt 0x8372e8 : { *kernel_cpu.o(.text.kernel_load_gdt) }
     ASSERT(kernel_load_gdt == 0x8372e8 && ADDR(.cpu_load_gdt) + SIZEOF(.cpu_load_gdt) <= 0x8372f8, "LGDT boundary overflow")
     .cpu_load_tr 0x8372f8 : { *kernel_cpu.o(.text.kernel_load_task_register) }

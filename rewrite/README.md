@@ -966,3 +966,11 @@ the full 20,480-byte shared region and ordered arguments, including selector
 mutation after capture and callback-table mutation during gate installation.
 Log: `build/interrupts_preview_test.log`. Fixed-address installation and
 privileged execution checks are the next step for these six functions.
+
+These six functions are installed at their original addresses, bringing the
+manifest to 172 intervals. The C initializer occupies 440 of 678 bytes; all
+five hardware leaves remain byte exact. Both host-linked and fixed-address
+tests pass 96 scenarios each (192 scenarios and 50,880 gate events total).
+Logs: `build/interrupts_build.log`, `build/interrupts_test.log`,
+`build/interrupts_linked_test.log`, `build/interrupts_images.log`. Full-suite,
+dedicated CPL0 tests and OS QEMU regression follow this installation step.
