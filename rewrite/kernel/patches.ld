@@ -213,6 +213,11 @@ SECTIONS
         *kernel_surface_alpha.o(.text.kernel_surface_blend4)
     }
     ASSERT(kernel_surface_blend4 == 0x818134 && ADDR(.surface_blend4) + SIZEOF(.surface_blend4) <= 0x81846a, "four-pixel blend overflow")
+    .surface_draw32 0x81846a : SUBALIGN(1) {
+        *kernel_surface_draw32.o(.text.kernel_surface_draw32)
+        *kernel_surface_draw32.o(.text.surface_draw32_body)
+    }
+    ASSERT(kernel_surface_draw32 == 0x81846a && ADDR(.surface_draw32) + SIZEOF(.surface_draw32) <= 0x818d14, "32-bit output rasterizer overflow")
     .surface_regions 0x818d14 : SUBALIGN(1) {
         *kernel_surface_present.o(.text.kernel_surface_regions_test)
     }

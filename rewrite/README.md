@@ -1401,3 +1401,20 @@ callback/global mutations, caller layer/rectangle mutation, outgoing argument
 and weight overwrites, raw returns and all six shared memory pages. Log:
 `build/surface_draw32_preview.log`. This source checkpoint precedes installation
 of this rasterizer into the VHDs.
+
+The 32-bit output rasterizer is now installed at `0x81846a`; its entry/body
+occupy 1,158 of 2,218 available bytes. The manifest contains 208 intervals,
+and C-init, Snake and combined application VHDs rebuilt. The installed-address
+fixture repeats all 628,156 original/rebuilt/oracle comparisons with the same
+5,444 explicit unsafe-range skips. The full-disk verifier passes. Logs:
+`build/surface_draw32_install_build.log`,
+`build/surface_draw32_linked_test.log`, and
+`build/surface_draw32_disk_verify.log`.
+
+`python3 tests/syscalls_qemu.py --installed --services --surfaces` also passes
+3,456 complete native INT/IRET comparisons and 2,048 focused surface-chain
+comparisons on this image. The surface-chain fixture uses observed drawing
+callbacks; it does not by itself prove the real new rasterizer bodies run.
+Log: `build/surface_draw32_native_chain.log`; exit marker:
+`build/surface_draw32_native_chain.exit` (0). Whole-suite and desktop/application
+regression checks are recorded separately when complete.
