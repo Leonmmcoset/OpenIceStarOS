@@ -5,7 +5,7 @@ PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
-PROVIDE(kernel_syscall_target_81905e = 0x81905e);
+PROVIDE(kernel_surface_target_817cd0 = 0x817cd0);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
 SECTIONS
 {
@@ -201,6 +201,11 @@ SECTIONS
     ASSERT(kernel_malloc == 0x817590 && ADDR(.malloc) + SIZEOF(.malloc) <= 0x8175a4, "allocation wrapper overflow")
     .free 0x8175a4 : { *kernel_memory_ops.o(.text.kernel_free) }
     ASSERT(kernel_free == 0x8175a4 && ADDR(.free) + SIZEOF(.free) <= 0x8175c0, "free wrapper overflow")
+    .surface_refresh 0x81905e : SUBALIGN(1) {
+        *kernel_surface_refresh.o(.text.kernel_syscall_target_81905e)
+        *kernel_surface_refresh.o(.text* .rodata*)
+    }
+    ASSERT(kernel_syscall_target_81905e == 0x81905e && ADDR(.surface_refresh) + SIZEOF(.surface_refresh) <= 0x8191d8, "surface refresh selector overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }

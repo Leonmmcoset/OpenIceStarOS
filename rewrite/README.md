@@ -1228,3 +1228,13 @@ callback/table mutations, outgoing-argument writes and complete shared-memory
 comparisons. Real userspace `POPFL` checks arithmetic flags and DF immediately
 after each enabled-path return. Log: `build/surface_refresh_preview.log`.
 This preview does not yet install the recovered selector into the disk.
+
+The selector is now installed at its original address, bringing the manifest
+to 201 intervals. Its compiled entry and C body occupy 259 of the available
+378 bytes. C-init, Snake and combined application VHDs rebuilt successfully.
+Both host-linked and fixed-address tests pass 24,576 original/C/oracle cases,
+including real arithmetic-flag and DF restoration at the return boundary.
+Logs: `build/surface_refresh_install_build.log`,
+`build/surface_refresh_host_test.log`, `build/surface_refresh_linked_test.log`.
+The lower compositor and framebuffer callback still use original code;
+complete-suite and OS boot regression follow as a separate checkpoint.

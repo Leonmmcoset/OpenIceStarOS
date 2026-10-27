@@ -63,6 +63,7 @@
   {"name": "memory difference query", "binary": "kernel.memory_differs.bin", "start": "0x817548", "end": "0x817590"},
   {"name": "allocation wrapper", "binary": "kernel.malloc.bin", "start": "0x817590", "end": "0x8175a4"},
   {"name": "free wrapper", "binary": "kernel.free.bin", "start": "0x8175a4", "end": "0x8175c0"},
+  {"name": "surface refresh selector", "binary": "kernel.surface_refresh.bin", "start": "0x81905e", "end": "0x8191d8"},
   {"name": "keyboard controller wait", "binary": "kernel.keyboard_ready.bin", "start": "0x819c40", "end": "0x819c60"},
   {"name": "keyboard discard byte", "binary": "kernel.keyboard_discard.bin", "start": "0x819c60", "end": "0x819c7c"},
   {"name": "keyboard LED control", "binary": "kernel.keyboard_leds.bin", "start": "0x819c7c", "end": "0x819cf8"},

@@ -21,7 +21,8 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_cpuid.o $(BUILD)/kernel_fpu.o $(BUILD)/kernel_fpu_state.o \
                   $(BUILD)/kernel_interrupts.o $(BUILD)/kernel_interrupt_hardware.o $(BUILD)/kernel_interrupt_entries.o \
                   $(BUILD)/kernel_interrupt_callbacks.o $(BUILD)/kernel_cmos_clock.o $(BUILD)/kernel_syscalls.o \
-                  $(BUILD)/kernel_syscall_services.o $(BUILD)/kernel_timestamp.o $(BUILD)/kernel_syscall_surface.o
+                  $(BUILD)/kernel_syscall_services.o $(BUILD)/kernel_timestamp.o $(BUILD)/kernel_syscall_surface.o \
+                  $(BUILD)/kernel_surface_refresh.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -78,7 +79,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.read_cmos_clock.bin $(BUILD)/kernel.dispatch_syscall40.bin $(BUILD)/kernel.dispatch_syscall41.bin \
                   $(BUILD)/kernel.syscall_object_set.bin $(BUILD)/kernel.syscall_object_field12.bin \
                   $(BUILD)/kernel.syscall_object_field4.bin $(BUILD)/kernel.random_range.bin $(BUILD)/kernel.timestamp_low.bin \
-                  $(BUILD)/kernel.syscall_surface.bin
+                  $(BUILD)/kernel.syscall_surface.bin $(BUILD)/kernel.surface_refresh.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -184,6 +185,7 @@ $(BUILD)/kernel_interrupt_callbacks.o $(BUILD)/kernel_cmos_clock.o: kernel/inter
 $(BUILD)/kernel_syscalls.o: kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h
 $(BUILD)/kernel_syscall_services.o $(BUILD)/kernel_timestamp.o: kernel/syscall_services.h kernel/syscalls.h
 $(BUILD)/kernel_syscall_surface.o: kernel/syscall_surface.h kernel/syscalls.h
+$(BUILD)/kernel_surface_refresh.o: kernel/surface_refresh.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -365,6 +367,12 @@ $(BUILD)/kernel_syscall_surface_test: tests/kernel_syscall_surface.c kernel/sysc
 $(BUILD)/kernel_syscall_surface_linked_test: tests/kernel_syscall_surface.c kernel/syscall_surface.c kernel/syscall_surface.h kernel/syscalls.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_syscall_surface.c kernel/syscall_surface.c -o $@
 
+$(BUILD)/kernel_surface_refresh_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_refresh.c kernel/surface_refresh.c -o $@
+
+$(BUILD)/kernel_surface_refresh_linked_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_refresh.c kernel/surface_refresh.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -464,6 +472,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_syscall_services_linked_test
 	$(BUILD)/kernel_syscall_surface_test
 	$(BUILD)/kernel_syscall_surface_linked_test
+	$(BUILD)/kernel_surface_refresh_test
+	$(BUILD)/kernel_surface_refresh_linked_test
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
 	python3 tests/snake.py
@@ -495,6 +505,7 @@ verify: $(BUILD)/kernel_interrupt_callbacks_test $(BUILD)/kernel_interrupt_callb
 verify: $(BUILD)/kernel_syscalls_test $(BUILD)/kernel_syscalls_linked_test
 verify: $(BUILD)/kernel_syscall_services_test $(BUILD)/kernel_syscall_services_linked_test
 verify: $(BUILD)/kernel_syscall_surface_test $(BUILD)/kernel_syscall_surface_linked_test
+verify: $(BUILD)/kernel_surface_refresh_test $(BUILD)/kernel_surface_refresh_linked_test
 verify: $(BUILD)/kernel_cpuid_test $(BUILD)/kernel_cpuid_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
