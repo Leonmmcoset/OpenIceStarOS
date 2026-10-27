@@ -9,7 +9,7 @@ KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
                  -fno-stack-protector -fno-asynchronous-unwind-tables \
                  -ffunction-sections -fdata-sections -Wall -Wextra -Werror
 APP_CFLAGS := $(KERNEL_CFLAGS) -fno-optimize-sibling-calls
-KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
+KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
@@ -27,8 +27,12 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_surface_alpha.o $(BUILD)/kernel_surface_draw32.o \
                   $(BUILD)/kernel_surface_move.o $(BUILD)/kernel_surface_scale.o \
                   $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o \
-                  $(BUILD)/kernel_firmware_scan.o
-KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
+                  $(BUILD)/kernel_firmware_scan.o \
+                  $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o
+KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
+                  $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
+                  $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
+                  $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
                   $(BUILD)/kernel.poll_events.bin $(BUILD)/kernel.dispatch_event.bin \
@@ -179,6 +183,21 @@ $(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD
 
 $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+
+$(BUILD)/kernel_entry.o: kernel/entry.c kernel/entry.h kernel/entry_boundaries.def Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_startup_state.o: kernel/startup_state.c kernel/startup_state.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_startup_apps.o: kernel/startup_apps.c kernel/startup_apps.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_display_palette.o: kernel/display_palette.c kernel/display_palette.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_startup_apps.o: kernel/runtime.h
+$(BUILD)/kernel_startup_state.o: kernel/display_palette.h
 
 $(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
 $(BUILD)/kernel_service_optional.o: kernel/service_optional.h kernel/service_optional.def
@@ -591,6 +610,10 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_surface_order_linked_test
 	$(BUILD)/kernel_cursor_test
 	$(BUILD)/kernel_cursor_linked_test
+	python3 tests/kernel_entry.py --installed
+	python3 tests/kernel_startup_state.py --installed
+	python3 tests/kernel_startup_apps.py --installed
+	python3 tests/kernel_display_palette.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -757,6 +780,16 @@ test-firmware-scan: $(BUILD)/icestar_c.x
 smoke-firmware: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --firmware-check --memory-check --task-check --input-check --color-check
 
+.PHONY: test-kernel-entry-preview test-kernel-entry smoke-kernel-entry
+test-kernel-entry-preview:
+	python3 tests/kernel_entry.py
+
+test-kernel-entry: $(BUILD)/icestar_c.x
+	python3 tests/kernel_entry.py --installed
+
+smoke-kernel-entry: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --entry-check --memory-check --task-check --input-check --color-check
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 
@@ -771,3 +804,13 @@ smoke-starscr: $(BUILD)/IceStarOS_c_apps.vhd
 
 smoke-starscr-reference:
 	python3 tools/boot_smoke.py --starscr-check --starscr-reference
+
+.PHONY: test-startup-state test-startup-apps test-display-palette
+test-startup-state: $(BUILD)/icestar_c.x
+	python3 tests/kernel_startup_state.py --installed
+
+test-startup-apps: $(BUILD)/icestar_c.x
+	python3 tests/kernel_startup_apps.py --installed
+
+test-display-palette: $(BUILD)/icestar_c.x
+	python3 tests/kernel_display_palette.py --installed

@@ -1,14 +1,11 @@
 /* Startup display record (0x81acc4) and object-table counters (0x82aa0f).
  * Read the boot parameters at each original access: the captured record may
- * alias those parameters or the pointer global. Palette setup and display
- * dispatch selection remain original code at the declared boundaries. */
+ * alias those parameters or the pointer global. Palette and software color-table setup are separate recovered routines. */
 #include <stdint.h>
 #include "startup_state.h"
+#include "display_palette.h"
 
 #define DWORD(address) (*(volatile uint32_t *)(uintptr_t)(address))
-
-void kernel_display_init_palette(void);
-void kernel_display_select_depth(uint32_t depth);
 
 void kernel_init_display_state(void)
 {

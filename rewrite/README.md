@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 224 declared kernel intervals and
+original VHD. The current build installs 231 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1883,6 +1883,43 @@ intervals remain byte-identical; all 521 changed kernel bytes are confined
 to `0x815106..0x815320`. Image hashes and slot sizes are recorded in
 `build/firmware_scan_install_images.json`. The application image SHA-256 is
 `20d0c0320627eab6c329d2b9f4ab5c61a773f8f57195938e07cf46673ce23dfc`.
+
+### Startup installation and production boot (2026-10-27)
+
+Seven recovered intervals are now installed: kernel entry/bootstrap, display
+and object-table startup state, the startup application caller, VGA palette
+construction and software color tables. The manifest contains 231 intervals.
+The entry calls the three recovered startup routines by their C names; identity
+paging, startup UI and background/window setup remain explicit original-code
+boundaries, as do the image launcher and hardware DAC writer.
+
+All four installed differential suites pass (entry: 864 scenarios, startup
+state: 6,897, startup applications: 480, palette/tables: 684). Complete-disk
+reconstruction passes for the init, Snake and combined-application images.
+Every previous 224 interval is byte-identical, and all 1,499 changed kernel
+bytes lie within the seven new slots. Evidence:
+`build/startup_install_images.json`, `build/startup_install_build.log`,
+`build/startup_install_disk_verify.log` and the four
+`build/*_installed_summary.json` files. The 231-interval kernel SHA-256 is
+`0f28ad0eeafa9a97fe368cc84d2ca09afa1d1584c1e758c6c1df712af9cb6382`;
+combined-application image SHA-256 is
+`fd413dfa25246c1e6867ff0336e61c2aedb094728859d8dfb77af95912eb2b95`.
+
+`make smoke-kernel-entry` passes a real QEMU snapshot boot. The new
+`tools/entry_smoke.py` compares all 28 external CALL targets against the
+original entry/bootstrap and verifies 30 ordered executed blocks through entry
+into the event loop. All 231 compiled intervals match loaded guest memory.
+The boot also verifies 128 MiB RAM, 59 heap headers, timer/TSS switching, PS/2
+input, CMD/CPUID, 600 Color pixel probes, closing the Color window, task exit
+and CMD reuse. Desktop, CPUID and Color screenshots were visually inspected.
+This normal 32-bit display boot does not execute the 8-bit palette-construction
+path; that path is covered by the differential fixtures above.
+
+Evidence: `build/startup_boot_smoke.log`, `build/entry_execution.json`,
+`build/entry_guest.trace`, `build/boot_c_init.png`, `build/input_cpuid.png`,
+`build/color_launched.png` and `build/color_closed.png`. These are focused
+installation and boot checks; the complete 224-interval regression recorded
+above is not a full regression of the new 231-interval image.
 
 Evidence: `build/firmware_scan_install_build.log`,
 `build/firmware_scan_install_test.log`, `build/firmware_scan_installed_qemu.log`,

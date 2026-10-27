@@ -52,6 +52,8 @@ def main():
                         help="trace recovered cursor show/hide/select/move during normal boot and input")
     parser.add_argument("--firmware-check", action="store_true",
                         help="trace both recovered firmware scans during unmodified production boot")
+    parser.add_argument("--entry-check", action="store_true",
+                        help="verify all ordered startup blocks and original subsystem call targets")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -67,6 +69,11 @@ def main():
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.entry_check and any((arguments.starscr_reference, arguments.surface_move_check,
+                                      arguments.surface_scale_check, arguments.surface_lifecycle_check,
+                                      arguments.surface_order_check, arguments.cursor_check,
+                                      arguments.firmware_check)):
+        parser.error("--entry-check requires its own compiled-kernel execution trace")
     if arguments.firmware_check and any((arguments.starscr_reference, arguments.surface_move_check,
                                          arguments.surface_scale_check, arguments.surface_lifecycle_check,
                                          arguments.surface_order_check, arguments.cursor_check)):
@@ -137,6 +144,10 @@ def main():
             trace = build / "firmware_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", "0x815106..0x81531f", "-D", str(trace), "-d", "exec"])
+        if arguments.entry_check:
+            trace = build / "entry_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x800040..0x800103", "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -219,6 +230,9 @@ def main():
         start, end = int(patch["start"], 0) - 0x800000, int(patch["end"], 0) - 0x800000
         if loaded[start:end] != kernel[start:end]:
             raise RuntimeError("loaded kernel patch differs: " + patch["name"])
+    if arguments.entry_check:
+        from entry_smoke import check_entry_execution
+        check_entry_execution(root, image, trace)
     if arguments.surface_move_check:
         pcs = [int(match.group(1), 16) for match in
                re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]

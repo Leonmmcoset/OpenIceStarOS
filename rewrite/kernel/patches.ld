@@ -1,13 +1,23 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(kernel_init_global_state)
+ENTRY(kernel_entry)
+/* Startup callees whose bodies are not recovered yet. */
+PROVIDE(kernel_startup_step_837448 = 0x837448);
+PROVIDE(kernel_startup_step_81067a = 0x81067a);
+PROVIDE(kernel_startup_step_810d4a = 0x810d4a);
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
+PROVIDE(kernel_startup_launch_image = 0x802282);
+PROVIDE(kernel_display_write_palette = 0x81ad6e);
 SECTIONS
 {
+    .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
+    ASSERT(kernel_entry == 0x800040 && ADDR(.entry) + SIZEOF(.entry) <= 0x800070, "kernel entry slot overflow")
+    .bootstrap 0x800070 : { *kernel_entry.o(.text.kernel_bootstrap) }
+    ASSERT(kernel_bootstrap == 0x800070 && ADDR(.bootstrap) + SIZEOF(.bootstrap) <= 0x800104, "bootstrap slot overflow")
     .state 0x800104 : SUBALIGN(1) {
         *kernel_state.o(.text.kernel_init_global_state)
         *kernel_state.o(.text* .rodata*)
@@ -85,6 +95,8 @@ SECTIONS
     ASSERT(kernel_syscall_target_810448 == 0x810448 && ADDR(.syscall_object_field12) + SIZEOF(.syscall_object_field12) <= 0x810478, "object field12 overflow")
     .syscall_object_field4 0x810478 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810478) }
     ASSERT(kernel_syscall_target_810478 == 0x810478 && ADDR(.syscall_object_field4) + SIZEOF(.syscall_object_field4) <= 0x8104a0, "object field4 overflow")
+    .startup_apps 0x810f38 : SUBALIGN(1) { *kernel_startup_apps.o(.text.kernel_startup_applications) }
+    ASSERT(kernel_startup_applications == 0x810f38 && ADDR(.startup_apps) + SIZEOF(.startup_apps) <= 0x810f78, "startup_apps slot overflow")
     .pointer_init 0x812c70 : SUBALIGN(1) {
         *kernel_pointer_init.o(.text.kernel_init_pointer)
     }
@@ -396,6 +408,14 @@ SECTIONS
     ASSERT(kernel_write_port_dword == 0x81a296 && SIZEOF(.port_write_dword) == 12, "OUT DWORD layout changed")
     .cpu_boot_jump 0x81a2a2 : { *kernel_cpu.o(.text.kernel_jump_boot_entry) }
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
+    .display_state 0x81acc4 : SUBALIGN(1) { *kernel_startup_state.o(.text.kernel_init_display_state) }
+    ASSERT(kernel_init_display_state == 0x81acc4 && ADDR(.display_state) + SIZEOF(.display_state) <= 0x81ad6e, "display_state slot overflow")
+    .display_palette 0x81ae14 : SUBALIGN(1) { *kernel_display_palette.o(.text.kernel_display_init_palette) }
+    ASSERT(kernel_display_init_palette == 0x81ae14 && ADDR(.display_palette) + SIZEOF(.display_palette) <= 0x81afbc, "display_palette slot overflow")
+    .display_colors 0x81afbc : SUBALIGN(1) { *kernel_display_palette.o(.text.kernel_display_select_depth) *kernel_display_palette.o(.rodata*) }
+    ASSERT(kernel_display_select_depth == 0x81afbc && ADDR(.display_colors) + SIZEOF(.display_colors) <= 0x81b26e, "display_colors slot overflow")
+    .object_table_state 0x82aa0f : SUBALIGN(1) { *kernel_startup_state.o(.text.kernel_init_object_table_state) }
+    ASSERT(kernel_init_object_table_state == 0x82aa0f && ADDR(.object_table_state) + SIZEOF(.object_table_state) <= 0x82aa33, "object_table_state slot overflow")
     .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
     ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
     .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }

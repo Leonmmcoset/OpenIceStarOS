@@ -1,6 +1,6 @@
 /* Kernel entry 0x800040..0x800070 and bootstrap 0x800070..0x800104.
  * Keep every call and PIC-mask write in the original order, including STI
- * before PIT/RTC/device initialization. The six address-named callees below
+ * before PIT/RTC/device initialization. The three address-named callees below
  * remain original code; recovering this orchestration does not recover them. */
 #include <stdint.h>
 #include "entry.h"
@@ -14,11 +14,11 @@ __attribute__((noinline)) void kernel_bootstrap(void)
 {
     kernel_disable_interrupts();
     kernel_init_global_state();
-    kernel_startup_step_81acc4();
+    kernel_init_display_state();
     kernel_init_startup_record();
     kernel_init_heap();
     kernel_startup_step_837448();
-    kernel_startup_step_82aa0f();
+    kernel_init_object_table_state();
     kernel_init_api_table();
     kernel_init_service_table();
     kernel_init_interrupts();
@@ -43,7 +43,7 @@ void kernel_entry(void)
     kernel_startup_step_81067a();
     kernel_startup_step_810d4a();
     (void)kernel_cursor_show();
-    kernel_startup_step_810f38();
+    kernel_startup_applications();
     /* The production callee never returns. Keeping the call/return here
      * also preserves the original orchestration if a test callee returns. */
     kernel_event_loop();
