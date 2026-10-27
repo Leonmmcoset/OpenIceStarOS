@@ -29,5 +29,18 @@
   {"name": "scancode translation", "binary": "kernel.keyboard_translate.bin", "start": "0x819e90", "end": "0x819f9c"},
   {"name": "keyboard queue drain", "binary": "kernel.keyboard_drain.bin", "start": "0x819f9c", "end": "0x819fde"},
   {"name": "keyboard modifier state", "binary": "kernel.keyboard_state.bin", "start": "0x819fde", "end": "0x81a1aa"},
-  {"name": "keyboard character API", "binary": "kernel.keyboard_character.bin", "start": "0x81a1aa", "end": "0x81a240"}
+  {"name": "keyboard character API", "binary": "kernel.keyboard_character.bin", "start": "0x81a1aa", "end": "0x81a240"},
+  {"name": "CPU halt", "binary": "kernel.cpu_halt.bin", "start": "0x81a240", "end": "0x81a242", "exact": true},
+  {"name": "disable interrupts", "binary": "kernel.cpu_cli.bin", "start": "0x81a242", "end": "0x81a244", "exact": true},
+  {"name": "enable interrupts", "binary": "kernel.cpu_sti.bin", "start": "0x81a244", "end": "0x81a246", "exact": true},
+  {"name": "three NOP delay", "binary": "kernel.cpu_delay.bin", "start": "0x81a246", "end": "0x81a24a", "exact": true},
+  {"name": "read CPU flags", "binary": "kernel.cpu_flags_read.bin", "start": "0x81a24a", "end": "0x81a24d", "exact": true},
+  {"name": "write CPU flags", "binary": "kernel.cpu_flags_write.bin", "start": "0x81a24d", "end": "0x81a254", "exact": true},
+  {"name": "read byte port", "binary": "kernel.port_read_byte.bin", "start": "0x81a254", "end": "0x81a261", "exact": true},
+  {"name": "write byte port", "binary": "kernel.port_write_byte.bin", "start": "0x81a261", "end": "0x81a26d", "exact": true},
+  {"name": "read word port", "binary": "kernel.port_read_word.bin", "start": "0x81a26d", "end": "0x81a27b", "exact": true},
+  {"name": "write word port", "binary": "kernel.port_write_word.bin", "start": "0x81a27b", "end": "0x81a289", "exact": true},
+  {"name": "read DWORD port", "binary": "kernel.port_read_dword.bin", "start": "0x81a289", "end": "0x81a296", "exact": true},
+  {"name": "write DWORD port", "binary": "kernel.port_write_dword.bin", "start": "0x81a296", "end": "0x81a2a2", "exact": true},
+  {"name": "far jump to boot entry", "binary": "kernel.cpu_boot_jump.bin", "start": "0x81a2a2", "end": "0x81a2aa", "exact": true}
 ]

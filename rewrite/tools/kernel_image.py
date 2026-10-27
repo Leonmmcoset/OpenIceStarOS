@@ -138,6 +138,9 @@ def patched_kernel(original, manifest_path, build_path):
         require(start >= previous_end, "overlapping or unordered patches")
         binary = (Path(build_path) / patch["binary"]).read_bytes()
         require(0 < len(binary) <= end - start, "empty or oversized patch")
+        if patch.get("exact"):
+            require(binary == original[start - BASE:end - BASE],
+                    "hardware primitive must retain exact original instructions: " + patch["name"])
         result[start - BASE:end - BASE] = binary + b"\x90" * (end - start - len(binary))
         previous_end = end
         print(f'{patch["name"]}: {len(binary)}/{end - start} bytes at {start:#x}')

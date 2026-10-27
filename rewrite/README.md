@@ -195,3 +195,16 @@ The result text still requires visual inspection. On 2026-10-27 the test passed
 and the final screenshot showed the CPU identification result and a new prompt.
 This exercises the recovered keyboard/pointer path with the original desktop
 and CMD application; those applications have not yet been rewritten.
+
+`kernel/cpu.c` supplies the thirteen ISA primitives at `0x81a240..0x81a2aa`:
+halt, interrupt enable/disable, three NOPs, EFLAGS read/write, byte/word/DWORD
+port I/O, and the original far transfer to `0x40:0x9000`. These hardware
+operations require inline assembly. Ordinary C functions implement the small
+instruction boundaries where possible; naked port definitions preserve EDX
+and the original partial-EAX write behavior. Manifest `exact` entries require
+every compiled instruction byte to match the original, as well as enforcing
+fixed addresses and sizes. Thus compiler changes cannot silently alter flags,
+register preservation, or port widths. All forty-four installed intervals,
+the full differential suite, and the interactive CMD smoke test passed on
+2026-10-27; the CPU result screenshot was inspected. This is still a hybrid
+image and not a complete C recovery of the OS.

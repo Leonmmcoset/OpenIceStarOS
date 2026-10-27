@@ -1,11 +1,6 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
-PROVIDE(kernel_read_flags = 0x81a24a);
-PROVIDE(kernel_disable_interrupts = 0x81a242);
-PROVIDE(kernel_write_flags = 0x81a24d);
-PROVIDE(kernel_read_port_byte = 0x81a254);
-PROVIDE(kernel_write_port_byte = 0x81a261);
 PROVIDE(kernel_physical_write_byte = 0x83735b);
 PROVIDE(kernel_physical_read_byte = 0x8373a8);
 PROVIDE(kernel_physical_read_dword = 0x8373d7);
@@ -172,6 +167,32 @@ SECTIONS
     }
     ASSERT(kernel_read_draw_character == 0x81a1aa, "keyboard character entry moved")
     ASSERT(ADDR(.keyboard_character) + SIZEOF(.keyboard_character) <= 0x81a240, "keyboard character slot overflow")
+    .cpu_halt 0x81a240 : { *kernel_cpu.o(.text.kernel_halt) }
+    ASSERT(kernel_halt == 0x81a240 && SIZEOF(.cpu_halt) == 2, "halt layout changed")
+    .cpu_cli 0x81a242 : { *kernel_cpu.o(.text.kernel_disable_interrupts) }
+    ASSERT(kernel_disable_interrupts == 0x81a242 && SIZEOF(.cpu_cli) == 2, "CLI layout changed")
+    .cpu_sti 0x81a244 : { *kernel_cpu.o(.text.kernel_enable_interrupts) }
+    ASSERT(kernel_enable_interrupts == 0x81a244 && SIZEOF(.cpu_sti) == 2, "STI layout changed")
+    .cpu_delay 0x81a246 : { *kernel_cpu.o(.text.kernel_delay_three_nops) }
+    ASSERT(kernel_delay_three_nops == 0x81a246 && SIZEOF(.cpu_delay) == 4, "NOP layout changed")
+    .cpu_flags_read 0x81a24a : { *kernel_cpu.o(.text.kernel_read_flags) }
+    ASSERT(kernel_read_flags == 0x81a24a && SIZEOF(.cpu_flags_read) == 3, "read flags layout changed")
+    .cpu_flags_write 0x81a24d : { *kernel_cpu.o(.text.kernel_write_flags) }
+    ASSERT(kernel_write_flags == 0x81a24d && SIZEOF(.cpu_flags_write) == 7, "write flags layout changed")
+    .port_read_byte 0x81a254 : { *kernel_cpu.o(.text.kernel_read_port_byte) }
+    ASSERT(kernel_read_port_byte == 0x81a254 && SIZEOF(.port_read_byte) == 13, "IN byte layout changed")
+    .port_write_byte 0x81a261 : { *kernel_cpu.o(.text.kernel_write_port_byte) }
+    ASSERT(kernel_write_port_byte == 0x81a261 && SIZEOF(.port_write_byte) == 12, "OUT byte layout changed")
+    .port_read_word 0x81a26d : { *kernel_cpu.o(.text.kernel_read_port_word) }
+    ASSERT(kernel_read_port_word == 0x81a26d && SIZEOF(.port_read_word) == 14, "IN word layout changed")
+    .port_write_word 0x81a27b : { *kernel_cpu.o(.text.kernel_write_port_word) }
+    ASSERT(kernel_write_port_word == 0x81a27b && SIZEOF(.port_write_word) == 14, "OUT word layout changed")
+    .port_read_dword 0x81a289 : { *kernel_cpu.o(.text.kernel_read_port_dword) }
+    ASSERT(kernel_read_port_dword == 0x81a289 && SIZEOF(.port_read_dword) == 13, "IN DWORD layout changed")
+    .port_write_dword 0x81a296 : { *kernel_cpu.o(.text.kernel_write_port_dword) }
+    ASSERT(kernel_write_port_dword == 0x81a296 && SIZEOF(.port_write_dword) == 12, "OUT DWORD layout changed")
+    .cpu_boot_jump 0x81a2a2 : { *kernel_cpu.o(.text.kernel_jump_boot_entry) }
+    ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

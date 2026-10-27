@@ -11,7 +11,7 @@ KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
 KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
-                  $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o
+                  $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -26,7 +26,12 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.keyboard_ready.bin $(BUILD)/kernel.keyboard_discard.bin \
                   $(BUILD)/kernel.keyboard_leds.bin $(BUILD)/kernel.keyboard_init.bin \
                   $(BUILD)/kernel.keyboard_translate.bin $(BUILD)/kernel.keyboard_drain.bin \
-                  $(BUILD)/kernel.keyboard_state.bin $(BUILD)/kernel.keyboard_character.bin
+                  $(BUILD)/kernel.keyboard_state.bin $(BUILD)/kernel.keyboard_character.bin \
+                  $(BUILD)/kernel.cpu_halt.bin $(BUILD)/kernel.cpu_cli.bin $(BUILD)/kernel.cpu_sti.bin \
+                  $(BUILD)/kernel.cpu_delay.bin $(BUILD)/kernel.cpu_flags_read.bin $(BUILD)/kernel.cpu_flags_write.bin \
+                  $(BUILD)/kernel.port_read_byte.bin $(BUILD)/kernel.port_write_byte.bin \
+                  $(BUILD)/kernel.port_read_word.bin $(BUILD)/kernel.port_write_word.bin \
+                  $(BUILD)/kernel.port_read_dword.bin $(BUILD)/kernel.port_write_dword.bin $(BUILD)/kernel.cpu_boot_jump.bin
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
