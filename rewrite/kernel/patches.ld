@@ -1,10 +1,7 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
-PROVIDE(kernel_queue_available = 0x812f72);
 PROVIDE(kernel_input_available = 0x819e44);
-PROVIDE(kernel_queue_read = 0x812f2c);
-PROVIDE(kernel_decode_pointer = 0x812f96);
 PROVIDE(kernel_read_flags = 0x81a24a);
 PROVIDE(kernel_disable_interrupts = 0x81a242);
 PROVIDE(kernel_write_flags = 0x81a24d);
@@ -79,6 +76,26 @@ SECTIONS
     }
     ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
     ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
+    .queue_write 0x812e7e : SUBALIGN(1) {
+        *kernel_queue.o(.text.kernel_queue_write)
+    }
+    ASSERT(kernel_queue_write == 0x812e7e, "queue write entry moved")
+    ASSERT(ADDR(.queue_write) + SIZEOF(.queue_write) <= 0x812f2c, "queue write slot overflow")
+    .queue_read 0x812f2c : SUBALIGN(1) {
+        *kernel_queue.o(.text.kernel_queue_read)
+    }
+    ASSERT(kernel_queue_read == 0x812f2c, "queue read entry moved")
+    ASSERT(ADDR(.queue_read) + SIZEOF(.queue_read) <= 0x812f72, "queue read slot overflow")
+    .queue_available 0x812f72 : SUBALIGN(1) {
+        *kernel_queue.o(.text.kernel_queue_available)
+    }
+    ASSERT(kernel_queue_available == 0x812f72, "queue available entry moved")
+    ASSERT(ADDR(.queue_available) + SIZEOF(.queue_available) <= 0x812f96, "queue available slot overflow")
+    .pointer_decode 0x812f96 : SUBALIGN(1) {
+        *kernel_pointer_decode.o(.text.kernel_decode_pointer)
+    }
+    ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
+    ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

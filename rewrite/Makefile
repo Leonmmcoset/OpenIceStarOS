@@ -9,13 +9,16 @@ KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
                  -fno-stack-protector -fno-asynchronous-unwind-tables \
                  -ffunction-sections -fdata-sections -Wall -Wextra -Werror
 KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
-                  $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o
+                  $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
+                  $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
                   $(BUILD)/kernel.poll_events.bin $(BUILD)/kernel.dispatch_event.bin \
                   $(BUILD)/kernel.dispatch_request.bin $(BUILD)/kernel.dispatch_slot1.bin \
-                  $(BUILD)/kernel.dispatch_slot2.bin $(BUILD)/kernel.dispatch_slot3.bin $(BUILD)/kernel.pointer_input.bin
+                  $(BUILD)/kernel.dispatch_slot2.bin $(BUILD)/kernel.dispatch_slot3.bin $(BUILD)/kernel.pointer_input.bin \
+                  $(BUILD)/kernel.queue_write.bin $(BUILD)/kernel.queue_read.bin \
+                  $(BUILD)/kernel.queue_available.bin $(BUILD)/kernel.pointer_decode.bin
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -136,6 +139,12 @@ $(BUILD)/kernel_pointer_test: tests/kernel_pointer.c kernel/pointer.c | $(BUILD)
 $(BUILD)/kernel_pointer_linked_test: tests/kernel_pointer.c $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/pointer.c -o $@
 
+$(BUILD)/kernel_queue_test: tests/kernel_queue.c kernel/queue.c kernel/pointer_decode.c | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
+
+$(BUILD)/kernel_queue_linked_test: tests/kernel_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/queue.c kernel/pointer_decode.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -159,7 +168,7 @@ $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/ini
 $(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test $(BUILD)/kernel_linked_test $(BUILD)/kernel_events_test $(BUILD)/kernel_events_linked_test $(BUILD)/kernel_poll_test $(BUILD)/kernel_poll_linked_test $(BUILD)/kernel_pointer_test $(BUILD)/kernel_pointer_linked_test
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test $(BUILD)/kernel_linked_test $(BUILD)/kernel_events_test $(BUILD)/kernel_events_linked_test $(BUILD)/kernel_poll_test $(BUILD)/kernel_poll_linked_test $(BUILD)/kernel_pointer_test $(BUILD)/kernel_pointer_linked_test $(BUILD)/kernel_queue_test $(BUILD)/kernel_queue_linked_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
@@ -185,6 +194,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_poll_linked_test
 	$(BUILD)/kernel_pointer_test
 	$(BUILD)/kernel_pointer_linked_test
+	$(BUILD)/kernel_queue_test
+	$(BUILD)/kernel_queue_linked_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c

@@ -121,3 +121,16 @@ boundaries, cursor enablement, and callback mutations. Only interrupt flag
 helpers use identical test stubs; the original queue and decoder execute.
 The thirteen-interval image reached the desktop on 2026-10-27, and every
 compiled interval matched the guest memory dump.
+
+`kernel/queue.c` recovers byte queue write/read/availability at `0x812e7e`,
+`0x812f2c`, and `0x812f72`. Full queues shift the physical byte array rather
+than adjusting ring indices, matching the original overflow behavior. Reads
+retain the unchecked empty-queue count underflow. `kernel/pointer_decode.c`
+recovers the four-phase PS/2 packet decoder at `0x812f96`, including ACK
+synchronization, header validation, signed deltas, and inverted vertical motion.
+Both queue test executables compare 369,099 queue cases and 1,179,648 decoder
+cases against original leaf machine code. Cases cover all read/write indices
+for six capacities, empty/full/overfull counts, byte truncation, all 256 packet
+headers and input bytes, valid and invalid phases, and unaligned state storage.
+The seventeen-interval image reached the desktop on 2026-10-27, with all
+installed C intervals matching guest memory.
