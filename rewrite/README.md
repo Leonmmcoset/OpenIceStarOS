@@ -1546,3 +1546,25 @@ application-image verifiers also pass. The five archived QEMU smoke image
 hashes were rechecked after this regression and still match the built images.
 This closes the 209-interval verification checkpoint; it does not remove
 the remaining original-code dependencies or the STARSCR limitation above.
+
+`kernel/surface_scale.c/.h` recovers the next interval, the same-depth scaler
+at `0x8194e4..0x819c40`. It copies matching 8-bit and 32-bit surfaces using
+the original integer threshold algorithm, including the single vertical
+repeat adjustment, 32-bit high-byte masking, live caller words and descriptor
+reloads, cached row bases, forward overlapping copies and raw return values.
+Ratios are calculated before depth rejection; zero divisors and signed
+quotient overflow retain the original x86 divide fault. The only assembly
+is the incoming-storage adapter and the explicit hardware divide boundary.
+
+The standalone original/C/byte-addressed-oracle fixture passes 50,252 cases,
+including 536 metadata-alias and 204 caller-word-alias cases, four descriptor
+alignments, wrapped layer indices, signed-boundary dimensions, all depth
+branches and exact mapped-data/return comparisons. Each modeled access and
+loop is bounded before either executable runs. It explicitly skips 1,732
+unsafe generated scenarios and separately classifies 2,784 divide-fault
+scenarios; 192 forked original/C executions confirm horizontal/vertical
+divide-by-zero and quotient-overflow SIGFPE, including unsupported depths.
+Logs: `build/surface_scale_preview_build.log`, `build/surface_scale_preview.log`;
+exit marker: `build/surface_scale_preview.exit` (0). Production compilation
+occupies 1,097 bytes against 1,884 available. This source checkpoint precedes
+installation in the VHDs; the installed manifest remains at 209 intervals.
