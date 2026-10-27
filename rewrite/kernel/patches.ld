@@ -109,6 +109,16 @@ SECTIONS
     ASSERT(kernel_set_segment_descriptor == 0x8135c6 && ADDR(.segment_descriptor) + SIZEOF(.segment_descriptor) <= 0x81364c, "segment descriptor overflow")
     .timer_tick 0x813a5e : { *kernel_tasks.o(.text.kernel_timer_tick) }
     ASSERT(kernel_timer_tick == 0x813a5e && ADDR(.timer_tick) + SIZEOF(.timer_tick) <= 0x813a8c, "timer tick overflow")
+    .rtc_callback 0x813a8c : { *kernel_interrupt_callbacks.o(.text.kernel_rtc_callback) }
+    ASSERT(kernel_rtc_callback == 0x813a8c && ADDR(.rtc_callback) + SIZEOF(.rtc_callback) <= 0x813aa6, "RTC callback overflow")
+    .keyboard_callback 0x813aa6 : { *kernel_interrupt_callbacks.o(.text.kernel_keyboard_callback) }
+    ASSERT(kernel_keyboard_callback == 0x813aa6 && ADDR(.keyboard_callback) + SIZEOF(.keyboard_callback) <= 0x813ae6, "keyboard callback overflow")
+    .audio_callback 0x813ae6 : { *kernel_interrupt_callbacks.o(.text.kernel_audio_callback) }
+    ASSERT(kernel_audio_callback == 0x813ae6 && ADDR(.audio_callback) + SIZEOF(.audio_callback) <= 0x813b2a, "audio callback overflow")
+    .unused_irq_callback 0x813b2a : { *kernel_interrupt_callbacks.o(.text.kernel_unused_irq_callback) }
+    ASSERT(kernel_unused_irq_callback == 0x813b2a && ADDR(.unused_irq_callback) + SIZEOF(.unused_irq_callback) <= 0x813b30, "unused IRQ callback overflow")
+    .mouse_callback 0x813b30 : { *kernel_interrupt_callbacks.o(.text.kernel_mouse_callback) }
+    ASSERT(kernel_mouse_callback == 0x813b30 && ADDR(.mouse_callback) + SIZEOF(.mouse_callback) <= 0x813b70, "mouse callback overflow")
     .schedule_task 0x814176 : SUBALIGN(1) {
         *kernel_tasks.o(.text.kernel_schedule_task)
         *kernel_tasks.o(.text.timer_tick_body)
@@ -294,6 +304,8 @@ SECTIONS
     ASSERT(kernel_append_string == 0x82a4fb && ADDR(.string_append) + SIZEOF(.string_append) <= 0x82a531, "string append overflow")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }
     ASSERT(kernel_wait_ticks == 0x82ad81 && ADDR(.wait_ticks) + SIZEOF(.wait_ticks) <= 0x82adab, "tick wait overflow")
+    .read_cmos_clock 0x82ae84 : { *kernel_cmos_clock.o(.text.kernel_read_cmos_clock) }
+    ASSERT(kernel_read_cmos_clock == 0x82ae84 && ADDR(.read_cmos_clock) + SIZEOF(.read_cmos_clock) == 0x82af08, "CMOS clock layout mismatch")
     .interrupt_gate 0x8370d2 : { *kernel_interrupt_hardware.o(.text.kernel_install_interrupt_gate) }
     ASSERT(kernel_install_interrupt_gate == 0x8370d2 && ADDR(.interrupt_gate) + SIZEOF(.interrupt_gate) == 0x837131, "interrupt_gate layout mismatch")
     .boot_code_selector 0x837131 : { *kernel_interrupt_hardware.o(.text.kernel_boot_code_selector) }

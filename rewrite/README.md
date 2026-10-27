@@ -1071,3 +1071,12 @@ Logs: `build/verify_interrupt_entries.log`, `build/interrupt_entries_smoke.log`,
 `build/mov_interrupt_entries_smoke.log`, `build/starscr_interrupt_entries_smoke.log`;
 screenshots/JSON: `build/interrupt_entries_evidence/`. This remains a hybrid
 image containing original code outside the recovered intervals.
+
+The five IRQ callbacks and CMOS sampler are now installed at their original
+addresses, bringing the manifest to 192 intervals. The callbacks occupy
+25/26, 56/64, 54/68, 1/6 and 56/64 bytes respectively; the 132-byte CMOS leaf
+is required to remain byte exact. Both host-linked and fixed-address callback
+variants pass 30,720 cases each (61,440 total). Installation rebuilt the C-init
+and application VHDs. Logs: `build/interrupt_callbacks_build.log`,
+`build/interrupt_callbacks_test.log`, `build/interrupt_callbacks_linked_test.log`,
+`build/cmos_clock_exact.log`. Full-suite and OS regression follow separately.
