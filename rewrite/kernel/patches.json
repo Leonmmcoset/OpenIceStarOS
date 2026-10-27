@@ -12,6 +12,8 @@
   {"name": "dispatch slot 2", "binary": "kernel.dispatch_slot2.bin", "start": "0x801414", "end": "0x801434"},
   {"name": "dispatch slot 3", "binary": "kernel.dispatch_slot3.bin", "start": "0x801434", "end": "0x801454"},
   {"name": "pointer input", "binary": "kernel.pointer_input.bin", "start": "0x801454", "end": "0x801632"},
+  {"name": "pointer initialization", "binary": "kernel.pointer_init.bin", "start": "0x812c70", "end": "0x812e5e"},
+  {"name": "PS2 controller wait", "binary": "kernel.ps2_ready.bin", "start": "0x812e5e", "end": "0x812e7e"},
   {"name": "byte queue write", "binary": "kernel.queue_write.bin", "start": "0x812e7e", "end": "0x812f2c"},
   {"name": "byte queue read", "binary": "kernel.queue_read.bin", "start": "0x812f2c", "end": "0x812f72"},
   {"name": "byte queue availability", "binary": "kernel.queue_available.bin", "start": "0x812f72", "end": "0x812f96"},

@@ -5,6 +5,8 @@ PROVIDE(kernel_input_available = 0x819e44);
 PROVIDE(kernel_read_flags = 0x81a24a);
 PROVIDE(kernel_disable_interrupts = 0x81a242);
 PROVIDE(kernel_write_flags = 0x81a24d);
+PROVIDE(kernel_read_port_byte = 0x81a254);
+PROVIDE(kernel_write_port_byte = 0x81a261);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -76,6 +78,16 @@ SECTIONS
     }
     ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
     ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
+    .pointer_init 0x812c70 : SUBALIGN(1) {
+        *kernel_pointer_init.o(.text.kernel_init_pointer)
+    }
+    ASSERT(kernel_init_pointer == 0x812c70, "pointer init entry moved")
+    ASSERT(ADDR(.pointer_init) + SIZEOF(.pointer_init) <= 0x812e5e, "pointer init slot overflow")
+    .ps2_ready 0x812e5e : SUBALIGN(1) {
+        *kernel_pointer_init.o(.text.kernel_wait_ps2_ready)
+    }
+    ASSERT(kernel_wait_ps2_ready == 0x812e5e, "PS2 ready entry moved")
+    ASSERT(ADDR(.ps2_ready) + SIZEOF(.ps2_ready) <= 0x812e7e, "PS2 ready slot overflow")
     .queue_write 0x812e7e : SUBALIGN(1) {
         *kernel_queue.o(.text.kernel_queue_write)
     }

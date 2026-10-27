@@ -134,3 +134,14 @@ for six capacities, empty/full/overfull counts, byte truncation, all 256 packet
 headers and input bytes, valid and invalid phases, and unaligned state storage.
 The seventeen-interval image reached the desktop on 2026-10-27, with all
 installed C intervals matching guest memory.
+
+`kernel/pointer_init.c` recovers pointer initialization at `0x812c70` and
+the PS/2 controller wait at `0x812e5e`. It preserves untouched cursor fields,
+signed truncation of half-screen positions, byte-wise packet clearing, queue
+capacity, click threshold, and the five original controller/device writes.
+Both initialization test executables compare 4,704 initialization cases and
+1,024 wait cases, including negative/odd/extreme screen dimensions, unaligned
+structures, every status byte, delayed readiness, and pointer-global mutation
+from port callbacks. Only port I/O is stubbed in those tests; boot uses the
+real original x86 port helpers. The nineteen-interval image reached the desktop
+on 2026-10-27 and passed all disk and loaded-memory checks.
