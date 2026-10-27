@@ -298,3 +298,21 @@ startup path. Both types are compared with independent ELF links at three
 load bases. The original COLOR.X header, seven relocation entries, and
 unrelocated palette-pointer address are checked directly. Installation now
 requires preserving application type in addition to BSS size and stack pages.
+
+`apps/color.c` recovers all three COLOR.X application routines: entry at
+`0x40`, close callback at `0xe6`, and the 30-by-20 palette drawing loop at
+`0xfe`. `apps/legacy_api.c` recovers its six reachable shared-service-table
+wrappers. No original application instruction bytes are linked. The old
+program's unused SDK functions are omitted. The compiled file retains type
+`0x0a`, 14,516-byte file size, seven relocations, original GBK title at `0x3890`,
+16-byte BSS at `0x3898`, and 16 stack pages. `make build/color.x` builds it.
+
+`tests/color.py` executes original and recovered binaries at aligned and
+unaligned bases with the real SDK forwarding code. Its 2,304 cases compare
+ordered service arguments, complete BSS, window records, palette memory,
+global table pointers, and close return bits. Cases include success/failure
+handles, wrapped window-pool indices, all 600 drawing operations, callback
+registration and dispatch, service-table switching, palette changes during
+drawing, and callback mutations of the active surface and window record.
+Only the OS services themselves use shared test callbacks. This checkpoint
+builds and differentially verifies COLOR; guest installation follows separately.

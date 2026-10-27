@@ -260,6 +260,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_service_forward_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
+	python3 tests/color.py
 	python3 tests/app_image.py
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
 
@@ -268,6 +269,7 @@ verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_
 verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
 verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_linked_test
 verify: $(BUILD)/snake.x
+verify: $(BUILD)/color.x
 verify: $(BUILD)/IceStarOS_c_snake.vhd
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -299,3 +301,15 @@ run-c-snake: $(BUILD)/IceStarOS_c_snake.vhd
 
 smoke-snake: $(BUILD)/IceStarOS_c_snake.vhd
 	python3 tools/boot_smoke.py --snake-check
+
+$(BUILD)/color.o: apps/color.c apps/color.h apps/legacy_api.h | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/legacy_api.o: apps/legacy_api.c apps/legacy_api.h | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/color.elf: $(BUILD)/color.o $(BUILD)/legacy_api.o apps/color.ld
+	$(LD) -m elf_i386 --emit-relocs -T apps/color.ld -Map=$(BUILD)/color.map -o $@ $(BUILD)/color.o $(BUILD)/legacy_api.o
+
+$(BUILD)/color.x: $(BUILD)/color.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/color.symbols.json
