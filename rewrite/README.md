@@ -1499,3 +1499,37 @@ or slack changes. Logs: `build/surface_move_install_build.log`,
 `build/surface_move_install.exit` (0). These focused checks precede the
 209-interval image's QEMU integration checks; the earlier full-suite result
 is specifically for the 208-interval image.
+
+The 209-interval images passed five fresh QEMU snapshot checks on 2026-10-27.
+`python3 tools/boot_smoke.py --surface-move-check --task-check --memory-check`
+checks the desktop, PS/2 pointer, relocated CMD, keyboard queue/prompt,
+128 MiB RAM, 59 live heap headers, advancing timer and suspended recovered
+C scheduler/TSS stacks. Its optional address-filtered execution trace is
+enabled after startup and RAM/task probing, immediately before input events.
+It observed five entries at `0x8191d8` and 67 C-body/return block execution
+events, in addition to comparing all 209 installed intervals with guest
+memory. `build/surface_move_execution.json` records image/trace SHA-256
+digests, counts and executed block addresses. Enabling `exec,nochain` at
+process startup first delayed boot beyond the fixed startup wait; that
+tooling failure is preserved in
+`build/surface_move_system_early_trace_failure.log`. The corrected check
+starts tracing only after normal startup.
+
+Separate boots repeat Snake movement, wall collision, restart and arrow/letter
+turns; Color's 600 palette probes, close, task exit and CMD reuse; MOV's four
+exact frames, 16 relocations, close/cleanup and CMD reuse; and STARSCR's
+21 relocations, four phases with 10,797 pixel probes each, Esc exit and task
+cleanup. STARSCR's post-exit mouse probe still stalls; desktop reuse after
+that application is not verified. All five smoke processes exited 0; this
+does not mean the known screen-saver limitation has been fixed.
+
+Fresh screenshots and small evidence files were archived before subsequent
+boots under `build/surface_move_evidence/{system,snake,color,mov,starscr}/`.
+`build/surface_move_evidence/results.json` lists image hashes, exit statuses
+and archived artifacts. All image hashes were rechecked against the current
+builds, and the archived execution trace's hash was checked against its JSON.
+Desktop/CPUID output, Snake turn, Color palette, MOV frame 2 and STARSCR phase 2
+screenshots were visually inspected. Logs and exit markers:
+`build/surface_move_{system,snake,color,mov,starscr}_smoke.{log,exit}`.
+These are integration checkpoints for a partial recovery that still depends
+on unrecovered components in the original image.

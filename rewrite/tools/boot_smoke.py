@@ -1,8 +1,10 @@
 """Boot a snapshot, capture its screen, and check the loaded C kernel slots."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
+import re
 import socket
 import struct
 import subprocess
@@ -38,6 +40,8 @@ def main():
     parser.add_argument("image", nargs="?", type=Path)
     parser.add_argument("--input-check", action="store_true",
                         help="exercise the desktop pointer and CMD keyboard input")
+    parser.add_argument("--surface-move-check", action="store_true",
+                        help="trace recovered moved-layer execution during the PS/2 input check")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -55,6 +59,10 @@ def main():
     arguments = parser.parse_args()
     if arguments.starscr_reference and not arguments.starscr_check:
         parser.error("--starscr-reference requires --starscr-check")
+    if arguments.surface_move_check:
+        if arguments.starscr_reference:
+            parser.error("--surface-move-check requires the compiled kernel image")
+        arguments.input_check = True
     if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
@@ -71,6 +79,10 @@ def main():
         command = ["qemu-system-i386", "-machine", "pc", "-m", "128", "-drive",
                    f"file={image},format=raw,snapshot=on", "-boot", "c", "-display", "none",
                    "-monitor", f"unix:{monitor},server=on,wait=off"]
+        if arguments.surface_move_check:
+            trace = build / "surface_move_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x8191d8..0x8194e3", "-D", str(trace)])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -107,6 +119,10 @@ def main():
                         from task_smoke import check_task_switch
                         check_task_switch(execute, build)
                     if arguments.input_check or arguments.snake_check or arguments.color_check or arguments.mov_check or arguments.starscr_check:
+                        if arguments.surface_move_check:
+                            # Trace after boot/RAM probing; disabling TB chaining
+                            # during early memory initialization distorts timing.
+                            execute("log exec,nochain")
                         cmd_base = check_inputs(execute, build, image)
                         if arguments.snake_check:
                             from snake_smoke import check_snake
@@ -140,6 +156,22 @@ def main():
         start, end = int(patch["start"], 0) - 0x800000, int(patch["end"], 0) - 0x800000
         if loaded[start:end] != kernel[start:end]:
             raise RuntimeError("loaded kernel patch differs: " + patch["name"])
+    if arguments.surface_move_check:
+        pcs = [int(match.group(1), 16) for match in
+               re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+        entry_hits = pcs.count(0x8191d8)
+        body_hits = sum(0x8191d8 < pc < 0x8194e4 for pc in pcs)
+        if not entry_hits or not body_hits:
+            raise RuntimeError("recovered moved-layer entry and C body did not both execute")
+        evidence = {"image": str(image),
+                    "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
+                    "entry": "0x8191d8", "entry_execution_events": entry_hits,
+                    "body_execution_events": body_hits,
+                    "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))]}
+        (build / "surface_move_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
+        print(f"Recovered moved-layer entry executed {entry_hits} times; "
+              f"{body_hits} C-body/return block execution events")
     png_from_ppm(screen, build / f"{capture_prefix}.png")
     print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else
           "all fixed-address C patches") + " match guest memory")
