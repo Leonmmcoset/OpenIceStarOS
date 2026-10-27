@@ -248,3 +248,26 @@ rejects unsupported relocation types and external/absolute symbol references.
 including unaligned load bases, verifies the original SNAKE.X header/relocations,
 and rejects malformed input. This format-tool checkpoint does not yet replace
 an application in the disk image.
+
+`apps/snake.c` recovers all seven SNAKE.X application routines: cell drawing,
+food generation, reset, movement/collision, rendering/score formatting, keyboard
+handling, and the complete application entry/event/timer loop. Its initialized
+data, strings, BSS layout, 16-page stack request, and 2,852-byte X file size
+match the original contract. Twelve used syscall boundaries in `apps/xapi.c`
+are compiled from naked C definitions with the necessary interrupt assembly;
+each exactly matches the original 14-byte stub. Unused SDK stubs are omitted.
+`make build/snake.x` links only recovered sources and packages 96 compiler
+relocations rather than copying any original application code.
+
+`tests/snake.py` extracts the reference application from the original VHD,
+validates its SHA-256, and executes both original and fully linked recovered
+images at aligned and unaligned bases. The freestanding test compares 258,392
+cases covering full-byte and full-width keyboard inputs, signed/wrapping
+coordinates, all directions, food/collision paths, lengths 0 through selected
+out-of-bounds values, score formatting, callback mutations, initialization
+failure, and event/timer-loop execution. It compares the complete affected
+state plus ordered syscall arguments, strings, and event-array observations.
+Tests retain the original unchecked body-array overflow, draw-food-before-clear
+reset order, and missing digits for negative scores. Interrupts use identical
+test callbacks; actual OS loading and rendering require the separate QEMU
+integration check. The complete verification suite passed on 2026-10-27.

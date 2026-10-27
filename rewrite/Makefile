@@ -8,6 +8,7 @@ IMAGE := ../IceStarOS_x86_32M.vhd
 KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
                  -fno-stack-protector -fno-asynchronous-unwind-tables \
                  -ffunction-sections -fdata-sections -Wall -Wextra -Werror
+APP_CFLAGS := $(KERNEL_CFLAGS) -fno-optimize-sibling-calls
 KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o $(BUILD)/kernel_events.o $(BUILD)/kernel_poll.o $(BUILD)/kernel_pointer.o \
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
@@ -258,11 +259,13 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_service_forward_test
 	$(BUILD)/kernel_service_forward_linked_test
 	python3 tests/xformat.py
+	python3 tests/snake.py
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
 verify: $(BUILD)/kernel_keyboard_test $(BUILD)/kernel_keyboard_linked_test
 verify: $(BUILD)/kernel_service_forward_test $(BUILD)/kernel_service_forward_linked_test
+verify: $(BUILD)/snake.x
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
@@ -272,3 +275,15 @@ run-hybrid: $(BUILD)/IceStarOS_c_fat16.vhd
 
 run-c-init: $(BUILD)/IceStarOS_c_init.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
+
+$(BUILD)/snake.o: apps/snake.c apps/snake.h apps/xapi.h apps/xapi.def | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/xapi.o: apps/xapi.c apps/xapi.def | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/snake.elf: $(BUILD)/snake.o $(BUILD)/xapi.o apps/snake.ld
+	$(LD) -m elf_i386 --emit-relocs -T apps/snake.ld -Map=$(BUILD)/snake.map -o $@ $(BUILD)/snake.o $(BUILD)/xapi.o
+
+$(BUILD)/snake.x: $(BUILD)/snake.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --file-size 0xb24 --metadata $(BUILD)/snake.symbols.json

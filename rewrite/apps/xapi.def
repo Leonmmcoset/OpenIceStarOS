@@ -1,0 +1,18 @@
+/* Interfaces used by SNAKE.X. Addresses are recovered by behavior/call sites;
+ * less certain operations retain their interrupt vector and service number. */
+XAPI(rectangle, 0x40, 2, (uint32_t surface U, uint32_t x1 U, uint32_t y1 U,
+                        uint32_t x2 U, uint32_t y2 U, uint32_t color U))
+XAPI(text, 0x40, 9, (uint32_t surface U, uint32_t x U, uint32_t y U,
+                   uint32_t foreground U, uint32_t background U, const char *text U))
+XAPI(window_create, 0x41, 0, (uint32_t x U, uint32_t y U, uint32_t width U,
+                            uint32_t height U, uint32_t flags U, uint32_t color U,
+                            uint32_t style U, const char *title U))
+XAPI(service_40_13, 0x40, 13, (uint32_t window U))
+XAPI(service_40_16, 0x40, 16, (uint32_t window U))
+XAPI(service_40_17, 0x40, 17, (uint32_t handle U))
+XAPI(events, 0x40, 18, (uint32_t window U, volatile uint32_t *events U))
+XAPI(service_41_01, 0x41, 1, (uint32_t window U))
+XAPI(surface, 0x41, 2, (uint32_t window U))
+XAPI(color, 0x41, 3, (uint32_t index U))
+XAPI(random, 0x41, 4, (uint32_t minimum U, uint32_t maximum U))
+XAPI(ticks, 0x41, 5, (void))
