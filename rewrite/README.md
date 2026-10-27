@@ -647,3 +647,48 @@ verified. Logs: `build/verify_memory.log`, `build/tasks_memory_smoke.log`,
 Representative JSON and image evidence is preserved in
 `build/memory_evidence/`. Memory probing/heap initialization and other
 unrecovered routines still use original code at this stage.
+
+`kernel/memory_init.c` recovers the RAM-probe wrapper at
+`0x815320..0x8153d4` (133/180 bytes) and heap initialization at
+`0x8153d4..0x815464` (86/144). The wrapper tests EFLAGS.AC, conditionally
+disables caches through CR0, scans pages from 4 MiB, and rereads CR0 before
+clearing its cache-control bits. Heap initialization retains the original
+store order, signed division of detected bytes by 4096, and untouched owner
+field of the first heap header.
+
+`kernel/memory_probe.c` rebuilds the segment-sensitive physical-page test
+at `0x8373ee..0x83743c` with all 78 original bytes. It saves and restores
+each tested page's final DWORD around complementary write patterns, using
+DS=8 for physical memory. The original bounded-success exit is missing
+`POP EDX` and unbalances the stack; this defect is documented and preserved.
+Normal boot scans to `0xffffffff` and returns through the failed-write exit.
+The two duplicate CR0 entry points at `0x8372fe..0x83730a` are also rebuilt
+from the existing CPU primitives, with exact-byte checks.
+
+Both memory-initialization differential executables pass 65,536 probe-wrapper
+and 65,536 heap-initializer cases each (262,144 comparisons altogether).
+Only flags, CR0, and the physical page-test boundary use shared callbacks;
+the complete high-level routines execute. Every case compares all 8,192
+mapped data bytes, defined results, and ordered callback traces. Inputs
+cover AC availability, full-width detected sizes, signed page counts,
+patterned owner fields, and all 32 callback mutation modes. The physical
+page test itself is verified byte for byte, rather than run in user mode.
+`make smoke-memory` adds read-only QEMU checks for the detected RAM limit,
+page metadata, heap origin, and every header in the live next chain,
+together with real TSS switching and PS/2/CMD input checks. Previous links
+are recorded without imposing invariants the original allocator does not
+maintain.
+
+The complete verification suite passed on 2026-10-27 with all 107 replacement
+intervals. In three QEMU boots the compiled probe detected 134,217,728 bytes
+(32,768 pages), a 4,096-byte page size and a heap origin of 32 MiB; the live
+next chain contained 59 valid headers, including 57 allocated headers. Real
+TSS switching, PS/2 and CMD input, MOV's four exact animation frames, window
+close and subsequent `cpuid`, and STARSCR's four phases, Esc and task cleanup
+passed. All installed kernel intervals matched guest memory. MOV's post-close
+CMD screen and STARSCR's first phase were visually inspected. The original
+post-STARSCR mouse stall remains. Logs: `build/verify_memory_init.log`,
+`build/memory_init_smoke.log`, `build/mov_memory_init_smoke.log`, and
+`build/starscr_memory_init_smoke.log`; representative evidence is preserved
+in `build/memory_init_evidence/`. Other unrecovered kernel, driver and
+application routines still use original code.

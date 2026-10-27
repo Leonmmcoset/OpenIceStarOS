@@ -128,6 +128,10 @@ SECTIONS
     ASSERT(kernel_create_thread == 0x815002 && ADDR(.task_create_thread) + SIZEOF(.task_create_thread) <= 0x8150aa, "thread creation overflow")
     .task_active 0x8150aa : { *kernel_task_lifecycle.o(.text.kernel_task_is_active) }
     ASSERT(kernel_task_is_active == 0x8150aa && ADDR(.task_active) + SIZEOF(.task_active) <= 0x815106, "task state query overflow")
+    .memory_probe 0x815320 : { *kernel_memory_init.o(.text.kernel_probe_memory) }
+    ASSERT(kernel_probe_memory == 0x815320 && ADDR(.memory_probe) + SIZEOF(.memory_probe) <= 0x8153d4, "memory probe overflow")
+    .heap_init 0x8153d4 : { *kernel_memory_init.o(.text.kernel_init_heap) }
+    ASSERT(kernel_init_heap == 0x8153d4 && ADDR(.heap_init) + SIZEOF(.heap_init) <= 0x815464, "heap initialization overflow")
     .allocate 0x815464 : { *kernel_memory.o(.text.kernel_allocate) }
     ASSERT(kernel_allocate == 0x815464 && ADDR(.allocate) + SIZEOF(.allocate) <= 0x8155ca, "allocation overflow")
     .allocate_owner 0x8155ca : { *kernel_memory.o(.text.kernel_allocate_for_task) }
@@ -264,6 +268,8 @@ SECTIONS
     ASSERT(kernel_physical_read_word == 0x8373bf && SIZEOF(.physical_read_word) == 24, "physical word read layout changed")
     .physical_read_dword 0x8373d7 : { *kernel_physical.o(.text.kernel_physical_read_dword) }
     ASSERT(kernel_physical_read_dword == 0x8373d7 && SIZEOF(.physical_read_dword) == 23, "physical DWORD read layout changed")
+    .page_probe 0x8373ee : { *kernel_memory_probe.o(.text.kernel_probe_pages) }
+    ASSERT(kernel_probe_pages == 0x8373ee && SIZEOF(.page_probe) == 78, "physical page test layout changed")
     .cpu_cr0_read 0x83743c : { *kernel_cpu.o(.text.kernel_read_cr0) }
     ASSERT(kernel_read_cr0 == 0x83743c && SIZEOF(.cpu_cr0_read) == 4, "read CR0 layout changed")
     .cpu_cr0_write 0x837440 : { *kernel_cpu.o(.text.kernel_write_cr0) }

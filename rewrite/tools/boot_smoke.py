@@ -40,6 +40,8 @@ def main():
                         help="exercise the desktop pointer and CMD keyboard input")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
+    parser.add_argument("--memory-check", action="store_true",
+                        help="verify detected RAM, page metadata, and the live heap chain")
     parser.add_argument("--snake-check", action="store_true",
                         help="load the C Snake through CMD and exercise movement/restart")
     parser.add_argument("--color-check", action="store_true",
@@ -96,6 +98,9 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
+                    if arguments.memory_check:
+                        from memory_smoke import check_memory
+                        check_memory(execute, build)
                     if arguments.task_check:
                         if arguments.starscr_reference:
                             parser.error("--task-check requires the compiled kernel image")
