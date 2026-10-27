@@ -1604,3 +1604,24 @@ use by an original application. Evidence:
 `build/surface_scale_guest_report.memory`, `build/surface_scale_guest.trace`;
 log/exit/timing: `build/surface_scale_diagnostic_smoke.{log,exit}` and
 `build/surface_scale_diagnostic_smoke_summary.json` (exit 0).
+
+The production 210-interval images also passed five separate QEMU snapshot
+boots on 2026-10-27. The system check verifies desktop input, relocated CMD,
+keyboard queue/prompt, detected RAM, live heap headers, timer preemption and
+suspended recovered C scheduler state. Snake movement/collision/restart/turns,
+Color's 600 palette probes and close/task-exit/CMD reuse, MOV's four frames
+and close/task-exit/CMD reuse, and STARSCR's four phases, 21 relocations,
+Esc exit and task cleanup pass. STARSCR's subsequent mouse probe still stalls;
+desktop reuse after that application remains unverified.
+
+All five production smoke runs and the separate diagnostic run exit 0 and
+compare all 210 kernel intervals with guest memory. Fresh artifacts are
+archived under `build/surface_scale_evidence/{diagnostic,system,snake,color,mov,starscr}/`;
+`results.json` records commands, durations, image digests, artifact lists and
+artifact digests. Stale files from previous runs are excluded. The six image
+digests and archived diagnostic trace digest were rechecked. Desktop CPUID,
+Snake turn, Color palette, MOV frame 2 and STARSCR phase 2 screenshots were
+visually inspected. Logs/exit markers:
+`build/surface_scale_{system,snake,color,mov,starscr}_smoke.{log,exit}`.
+These checks establish bounded integration of the current partial recovery;
+they do not establish a fully recovered OS or fix the screen-saver limitation.
