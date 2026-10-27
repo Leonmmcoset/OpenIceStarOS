@@ -753,6 +753,10 @@ test-firmware-scan-preview: $(BUILD)/icestar_c.x
 test-firmware-scan: $(BUILD)/icestar_c.x
 	python3 tests/firmware_scan_qemu.py --installed
 
+.PHONY: smoke-firmware
+smoke-firmware: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --firmware-check --memory-check --task-check --input-check --color-check
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 

@@ -1889,3 +1889,27 @@ Evidence: `build/firmware_scan_install_build.log`,
 `build/firmware_scan_installed_summary.json`. The installed QEMU fixture is
 also included in `make verify`. This records focused installation checks;
 production boot coverage and a full 224-interval regression follow separately.
+
+### Firmware production boot coverage (2026-10-27)
+
+`make smoke-firmware` boots the 224-interval application image and records
+execution of the entry and body of both recovered firmware routines. Each
+entry executes once. All 224 installed intervals match guest memory. The
+same boot verifies 128 MiB RAM, 59 heap headers, timer/TSS switching, real
+PS/2 input, CMD/CPUID, Color's 600 palette probes, window closure, task exit
+and CMD reuse. The desktop, CPUID output and Color screenshot were visually
+inspected. No production image changes or guest-memory writes are used.
+
+Three further snapshot boots, using `--firmware-check` with `--snake-check`,
+`--mov-check` and `--starscr-check`, pass in 33.539, 32.335 and 26.266 seconds.
+They cover Snake movement/collision/restart, all four MOV animation frames,
+and STARSCR's four phases/Esc exit/task cleanup. Both firmware entries and
+all 224 installed intervals are verified on each boot. STARSCR retains the
+previously documented original post-exit mouse/timer stall; desktop reuse
+after that application is still not verified.
+
+Logs, per-boot traces, screenshots and memory evidence are archived in
+`build/firmware_evidence/{color,snake,mov,starscr}/`; `results.json` records
+image and artifact hashes. Logs are also retained as
+`build/firmware_{boot,snake,mov,starscr}_smoke.log` with exit files (all 0).
+These focused production boots precede the complete regression below.

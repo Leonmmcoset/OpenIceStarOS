@@ -50,6 +50,8 @@ def main():
                         help="trace recovered surface remove/append/front/move during normal boot and input")
     parser.add_argument("--cursor-check", action="store_true",
                         help="trace recovered cursor show/hide/select/move during normal boot and input")
+    parser.add_argument("--firmware-check", action="store_true",
+                        help="trace both recovered firmware scans during unmodified production boot")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -65,6 +67,10 @@ def main():
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.firmware_check and any((arguments.starscr_reference, arguments.surface_move_check,
+                                         arguments.surface_scale_check, arguments.surface_lifecycle_check,
+                                         arguments.surface_order_check, arguments.cursor_check)):
+        parser.error("--firmware-check requires its own compiled-kernel execution trace")
     if arguments.starscr_reference and not arguments.starscr_check:
         parser.error("--starscr-reference requires --starscr-check")
     if arguments.surface_move_check:
@@ -127,6 +133,10 @@ def main():
             trace = build / "cursor_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", "0x8130cc..0x81331f", "-D", str(trace), "-d", "exec"])
+        if arguments.firmware_check:
+            trace = build / "firmware_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x815106..0x81531f", "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -312,6 +322,27 @@ def main():
                     "functions": functions}
         (build / "cursor_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
         print("Recovered cursor entries observed: " +
+              ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
+    if arguments.firmware_check:
+        pcs = [int(match.group(1), 16) for match in
+               re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+        functions = {}
+        for name, start, end in (("acpi", 0x815106, 0x8152cc), ("pmid", 0x8152cc, 0x815320)):
+            entries = pcs.count(start)
+            body_events = sum(start < pc < end for pc in pcs)
+            if not entries or not body_events:
+                raise RuntimeError("recovered firmware entry/body was not observed: " + name)
+            functions[name] = {"entry": hex(start), "entry_execution_events": entries,
+                               "body_execution_events": body_events,
+                               "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))
+                                                            if start <= pc < end]}
+        evidence = {"image": str(image), "diagnostic_only": False,
+                    "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
+                    "installed_intervals_verified": len(json.loads((root / "kernel/patches.json").read_text())),
+                    "functions": functions}
+        (build / "firmware_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
+        print("Recovered firmware entries observed: " +
               ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
     png_from_ppm(screen, build / f"{capture_prefix}.png")
     print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else
