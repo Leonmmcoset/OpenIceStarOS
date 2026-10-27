@@ -1024,3 +1024,18 @@ setup checks also pass. `make verify` now runs the entry byte-identity check.
 Logs: `build/interrupt_entries_build.log`, `build/interrupt_entries_exact.log`,
 `build/interrupt_entries_init_test.log`, `build/interrupt_entries_gate_qemu.log`.
 Full-suite and OS regression for this image follow the installation step.
+
+`python3 tests/interrupt_entries_qemu.py` executes all installed entry points
+and their original counterparts at actual CPU privilege levels. All 1,056
+original/rebuilt/oracle comparisons pass: 896 software INT/IRET cases across
+interrupt and trap gates, 32 real #NM faults with CLTS and retry of the
+faulting x87 instruction, and 128 CPL3 system calls through vectors 0x40 and
+0x41 with a real TSS kernel-stack switch and IRET back to user mode.
+Tests vary arithmetic flags, IF, DF, segment selectors, callback results and
+callback register/segment clobbers. They check saved general registers,
+stack balance, callback selection, segment/flag restoration and the special
+0x41 EAX result. The original exception entry's unsaved FS behavior is retained.
+RTC status C's volatile low byte is excluded only from callback-entry EAX
+comparison; its upper bytes and the complete entry code remain checked.
+The fixture runs without paging and does not boot or modify the VHD. Logs:
+`build/interrupt_entries_qemu_build.log`, `build/interrupt_entries_qemu.log`.
