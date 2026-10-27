@@ -48,6 +48,8 @@ def main():
                         help="trace recovered surface initialization/search/create/delete during normal boot and input")
     parser.add_argument("--surface-order-check", action="store_true",
                         help="trace recovered surface remove/append/front/move during normal boot and input")
+    parser.add_argument("--cursor-check", action="store_true",
+                        help="trace recovered cursor show/hide/select/move during normal boot and input")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -79,6 +81,11 @@ def main():
     if arguments.surface_order_check:
         if arguments.starscr_reference or arguments.surface_move_check or arguments.surface_scale_check:
             parser.error("--surface-order-check requires its own compiled-kernel execution trace")
+        arguments.input_check = True
+    if arguments.cursor_check:
+        if (arguments.starscr_reference or arguments.surface_move_check or arguments.surface_scale_check or
+                arguments.surface_lifecycle_check or arguments.surface_order_check):
+            parser.error("--cursor-check requires its own compiled-kernel execution trace")
         arguments.input_check = True
     if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check,
             arguments.surface_scale_check)) > 1:
@@ -116,6 +123,10 @@ def main():
             trace = build / "surface_order_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", "0x8178f0..0x817ccf", "-D", str(trace), "-d", "exec"])
+        if arguments.cursor_check:
+            trace = build / "cursor_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x8130cc..0x81331f", "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -154,11 +165,15 @@ def main():
                     if (arguments.input_check or arguments.snake_check or arguments.color_check or
                             arguments.mov_check or arguments.starscr_check or arguments.surface_scale_check):
                         if (arguments.surface_move_check or arguments.surface_scale_check or
-                                arguments.surface_lifecycle_check or arguments.surface_order_check):
+                                arguments.surface_lifecycle_check or arguments.surface_order_check or
+                                arguments.cursor_check):
                             # Trace after boot/RAM probing; disabling TB chaining
                             # during early memory initialization distorts timing.
                             execute("log exec,nochain")
                         cmd_base = check_inputs(execute, build, image)
+                        if arguments.cursor_check:
+                            from cursor_smoke import check_cursor
+                            check_cursor(execute, build, cmd_base)
                         if arguments.snake_check:
                             from snake_smoke import check_snake
                             check_snake(execute, build, image, cmd_base)
@@ -273,6 +288,30 @@ def main():
                     "functions": functions}
         (build / "surface_order_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
         print("Recovered surface order entries observed: " +
+              ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
+    if arguments.cursor_check:
+        pcs = [int(match.group(1), 16) for match in
+               re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+        functions = {}
+        for name, start, end in (("show", 0x8130cc, 0x81313e),
+                                 ("hide", 0x81313e, 0x8131b0),
+                                 ("select", 0x8131b0, 0x81325c),
+                                 ("move", 0x81325c, 0x813320)):
+            entries = pcs.count(start)
+            body_events = sum(start < pc < end for pc in pcs)
+            if not entries or not body_events:
+                raise RuntimeError("recovered cursor entry/body was not observed: " + name)
+            functions[name] = {"entry": hex(start), "entry_execution_events": entries,
+                               "body_execution_events": body_events,
+                               "executed_block_addresses": [hex(pc) for pc in sorted(set(pcs))
+                                                            if start <= pc < end]}
+        evidence = {"image": str(image), "diagnostic_only": False,
+                    "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
+                    "installed_intervals_verified": len(json.loads((root / "kernel/patches.json").read_text())),
+                    "functions": functions}
+        (build / "cursor_execution.json").write_text(json.dumps(evidence, indent=2) + "\n")
+        print("Recovered cursor entries observed: " +
               ", ".join(f"{name}={data['entry_execution_events']}" for name, data in functions.items()))
     png_from_ppm(screen, build / f"{capture_prefix}.png")
     print("QEMU snapshot boot captured; " + ("reference kernel intervals" if arguments.starscr_reference else

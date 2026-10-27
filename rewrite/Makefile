@@ -735,6 +735,10 @@ smoke-surface-lifecycle: $(BUILD)/IceStarOS_c_apps.vhd
 smoke-surface-order: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --surface-order-check --memory-check --task-check --color-check
 
+.PHONY: smoke-cursor
+smoke-cursor: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --cursor-check --memory-check --task-check --color-check
+
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 

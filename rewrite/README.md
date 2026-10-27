@@ -1819,3 +1819,21 @@ verifiers exit 0. Logs/exit/timing:
 `build/cursor_install_images.json`. An initial application-verifier invocation
 used an unsupported test option; its failed log is retained separately and
 the documented successful checks use `tools/app_image.py verify` directly.
+
+The 222-interval application image passes `make smoke-cursor` on 2026-10-27
+(exit 0; 38.812 seconds). The first trace missed positioned movement, and
+an initial CMD-border probe failed because CMD uses style 2. The check now
+launches the original DEVMGR.X, whose seventh creation argument is style 3,
+and uses only PS/2 input to hover its top-left border and interior. It checks
+shape 2 with the original eight-pixel hotspot, normal-shape restoration,
+pixel-source pointers, visibility, window deletion and return to root in CMD.
+Filtered execution observes show/hide/select/move entries 10/10/11/1 times
+and body blocks for all four compiled routines. All 222 intervals match guest
+memory; RAM/heap, timer/TSS preemption, keyboard input, CMD/CPUID and recovered
+Color palette/close/task-exit/CMD-reuse checks also pass. Border, interior and
+Color screenshots were visually inspected. Successful artifacts and hashes
+are archived in `build/cursor_evidence/color/` and `results.json`; earlier
+failed attempts remain in separately named subdirectories. The application
+image SHA-256 remains
+`1bef08e3b88d858e5bf8b7ee80e3ed9942e0d66a12f2ebe1d33a382ae2f57c79`.
+This is focused integration evidence, not a complete 222-interval regression.
