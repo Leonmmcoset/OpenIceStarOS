@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 210 declared kernel intervals and
+original VHD. The current build installs 214 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1667,3 +1667,18 @@ Log/exit/timing: `build/surface_lifecycle_preview_test.log`,
 Production compilation with the original four-byte i386 stack boundary fits
 the four extents: 66/102, 344/414, 61/122 and 170/178 bytes in address order.
 This source checkpoint precedes installation; the manifest remains at 210.
+
+The four surface lifecycle routines are installed in their original entry
+intervals, bringing the manifest to 214. Explicit linker assertions retain
+all four boundaries; the 170-byte deletion implementation fits its original
+178-byte slot using `-mpreferred-stack-boundary=2`, matching the original
+four-byte i386 caller alignment. Existing 210 interval bytes match the prior
+QEMU guest dump. Host-linked and installed-address fixtures each pass all
+175,692 cases, including native success/failure flags. C-init, Snake and
+combined-application images rebuild, and the complete kernel disk verifier
+and both application-image verifiers exit 0. Evidence:
+`build/surface_lifecycle_install_{build,host,linked,disk,snake_image,apps_image}.{log,exit}`,
+`build/surface_lifecycle_install_summary.json`, and
+`build/surface_lifecycle_install_images.json`. This records installation and
+focused checks; the 210-interval regression/QEMU notes remain historical
+until the new images are tested.

@@ -6,6 +6,7 @@ PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
+PROVIDE(kernel_surface_order_remove = 0x8178f0);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -200,6 +201,25 @@ SECTIONS
     ASSERT(kernel_malloc == 0x817590 && ADDR(.malloc) + SIZEOF(.malloc) <= 0x8175a4, "allocation wrapper overflow")
     .free 0x8175a4 : { *kernel_memory_ops.o(.text.kernel_free) }
     ASSERT(kernel_free == 0x8175a4 && ADDR(.free) + SIZEOF(.free) <= 0x8175c0, "free wrapper overflow")
+    .surfaces_init 0x8175c0 : SUBALIGN(1) {
+        *kernel_surface_lifecycle.o(.text.kernel_surfaces_init)
+    }
+    ASSERT(kernel_surfaces_init == 0x8175c0 && ADDR(.surfaces_init) + SIZEOF(.surfaces_init) <= 0x817626, "surface table initializer overflow")
+    .surface_create 0x817626 : SUBALIGN(1) {
+        *kernel_surface_lifecycle.o(.text.kernel_surface_create)
+        *kernel_surface_lifecycle.o(.text.surface_create_body)
+        *kernel_surface_lifecycle.o(.text.surface_create_free_failure)
+    }
+    ASSERT(kernel_surface_create == 0x817626 && ADDR(.surface_create) + SIZEOF(.surface_create) <= 0x8177c4, "surface allocation overflow")
+    .surface_find_free 0x8177c4 : SUBALIGN(1) {
+        *kernel_surface_lifecycle.o(.text.kernel_surface_find_free)
+    }
+    ASSERT(kernel_surface_find_free == 0x8177c4 && ADDR(.surface_find_free) + SIZEOF(.surface_find_free) <= 0x81783e, "surface free-slot search overflow")
+    .surface_delete 0x81783e : SUBALIGN(1) {
+        *kernel_surface_lifecycle.o(.text.kernel_surface_delete)
+        *kernel_surface_lifecycle.o(.text.surface_delete_body)
+    }
+    ASSERT(kernel_surface_delete == 0x81783e && ADDR(.surface_delete) + SIZEOF(.surface_delete) <= 0x8178f0, "surface deletion overflow")
     .surface_composite 0x817cd0 : SUBALIGN(1) {
         *kernel_surface_composite.o(.text.kernel_surface_target_817cd0)
         *kernel_surface_composite.o(.text* .rodata*)
