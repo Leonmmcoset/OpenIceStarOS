@@ -1,5 +1,8 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_init_global_state)
+PROVIDE(kernel_handle_pointer_input = 0x801454);
+PROVIDE(kernel_queue_available = 0x812f72);
+PROVIDE(kernel_input_available = 0x819e44);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -31,6 +34,16 @@ SECTIONS
     }
     ASSERT(kernel_queue_api_request == 0x80129e, "queue entry moved")
     ASSERT(ADDR(.queue_request) + SIZEOF(.queue_request) <= 0x8012ca, "queue slot overflow")
+    .event_loop 0x8012ca : SUBALIGN(1) {
+        *kernel_poll.o(.text.kernel_event_loop)
+    }
+    ASSERT(kernel_event_loop == 0x8012ca, "event loop entry moved")
+    ASSERT(ADDR(.event_loop) + SIZEOF(.event_loop) <= 0x8012dc, "event loop slot overflow")
+    .poll_events 0x8012dc : SUBALIGN(1) {
+        *kernel_poll.o(.text.kernel_poll_events)
+    }
+    ASSERT(kernel_poll_events == 0x8012dc, "poll entry moved")
+    ASSERT(ADDR(.poll_events) + SIZEOF(.poll_events) <= 0x801372, "poll slot overflow")
     .dispatch_event 0x801372 : SUBALIGN(1) {
         *kernel_events.o(.text.kernel_dispatch_event)
     }

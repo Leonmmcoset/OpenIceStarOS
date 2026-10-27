@@ -94,3 +94,17 @@ against original machine code, using three memory patterns, six indices, four
 arguments, and callbacks that modify record fields and shared pointer globals.
 The event-enabled image also reached the desktop on 2026-10-27, with all ten
 compiled intervals matching guest memory.
+
+`kernel/poll.c` recovers the halt-and-poll loop at `0x8012ca` and one polling
+iteration at `0x8012dc`. Each iteration preserves the original order: event
+slots 1 and 2, the input queue and slot 3, pointer input, then an API request.
+It observes later flags after earlier callbacks and clears the originally
+captured record even when callbacks change the shared record pointer. The
+loop uses inline `hlt` for the privileged CPU instruction.
+The two polling differential executables each cover 384 cases: all 32 event
+flag combinations, three memory patterns, and four callback mutation modes.
+The unrecovered pointer handler is replaced by an identical callback only
+inside these tests; the boot image continues to use its original implementation.
+The twelve-interval image reached the desktop on 2026-10-27. QEMU reported
+`EIP=0x8012d1, HLT=1`, confirming execution of the C-generated event loop,
+and all twelve installed intervals matched the guest memory dump.

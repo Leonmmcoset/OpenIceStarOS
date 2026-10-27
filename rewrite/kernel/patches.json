@@ -4,6 +4,8 @@
   {"name": "API table", "binary": "kernel.api.bin", "start": "0x8004fa", "end": "0x8005aa"},
   {"name": "service table", "binary": "kernel.services.bin", "start": "0x8005aa", "end": "0x80129e"},
   {"name": "queue request", "binary": "kernel.queue_request.bin", "start": "0x80129e", "end": "0x8012ca"},
+  {"name": "event loop", "binary": "kernel.event_loop.bin", "start": "0x8012ca", "end": "0x8012dc"},
+  {"name": "poll events", "binary": "kernel.poll_events.bin", "start": "0x8012dc", "end": "0x801372"},
   {"name": "event dispatch", "binary": "kernel.dispatch_event.bin", "start": "0x801372", "end": "0x8013aa"},
   {"name": "request dispatch", "binary": "kernel.dispatch_request.bin", "start": "0x8013aa", "end": "0x8013f4"},
   {"name": "dispatch slot 1", "binary": "kernel.dispatch_slot1.bin", "start": "0x8013f4", "end": "0x801414"},
