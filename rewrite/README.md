@@ -58,7 +58,7 @@ The differential test executes the original routine and the C routine for
 six display depths, four feature words, and three memory patterns (72 cases).
 This routine is installed at its original address in the boot image.
 
-`kernel/patches.ld` links the four recovered initializers into their original
+`kernel/patches.ld` links the recovered routines into their original
 address intervals. Linker assertions check entry addresses and available space.
 `kernel/patches.json` declares the replaceable intervals; `tools/kernel_image.py`
 replaces those intervals and writes the equal-length kernel back along the
@@ -81,3 +81,16 @@ to confirm desktop rendering. This smoke test does not validate every driver
 or application, and unrecovered code still comes from the original disk.
 The fixed-address four-initializer image was booted on 2026-10-27: visual
 inspection confirmed the desktop, and all four guest memory intervals matched.
+
+`kernel/events.c` recovers six routines: queueing an API request at `0x80129e`,
+dispatching the record's event slot at `0x801372`, dispatching a one-argument
+API request at `0x8013aa`, and selecting event slots 1, 2, and 3 at
+`0x8013f4`, `0x801414`, and `0x801434`. Record and API table addresses,
+unchecked slot indexing, callback argument passing, and post-callback field
+clearing retain the original behavior. Callbacks may alter the shared pointer
+globals; clearing still targets the original captured record.
+`kernel_events_test` and `kernel_events_linked_test` each compare 1,512 cases
+against original machine code, using three memory patterns, six indices, four
+arguments, and callbacks that modify record fields and shared pointer globals.
+The event-enabled image also reached the desktop on 2026-10-27, with all ten
+compiled intervals matching guest memory.

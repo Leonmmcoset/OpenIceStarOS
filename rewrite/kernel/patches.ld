@@ -26,6 +26,36 @@ SECTIONS
     }
     ASSERT(kernel_init_service_table == 0x8005aa, "service entry moved")
     ASSERT(ADDR(.services) + SIZEOF(.services) <= 0x80129e, "service slot overflow")
+    .queue_request 0x80129e : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_queue_api_request)
+    }
+    ASSERT(kernel_queue_api_request == 0x80129e, "queue entry moved")
+    ASSERT(ADDR(.queue_request) + SIZEOF(.queue_request) <= 0x8012ca, "queue slot overflow")
+    .dispatch_event 0x801372 : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_dispatch_event)
+    }
+    ASSERT(kernel_dispatch_event == 0x801372, "event entry moved")
+    ASSERT(ADDR(.dispatch_event) + SIZEOF(.dispatch_event) <= 0x8013aa, "event slot overflow")
+    .dispatch_request 0x8013aa : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_dispatch_api_request)
+    }
+    ASSERT(kernel_dispatch_api_request == 0x8013aa, "request entry moved")
+    ASSERT(ADDR(.dispatch_request) + SIZEOF(.dispatch_request) <= 0x8013f4, "request slot overflow")
+    .dispatch_slot1 0x8013f4 : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_dispatch_slot1)
+    }
+    ASSERT(kernel_dispatch_slot1 == 0x8013f4, "slot 1 entry moved")
+    ASSERT(ADDR(.dispatch_slot1) + SIZEOF(.dispatch_slot1) <= 0x801414, "slot 1 overflow")
+    .dispatch_slot2 0x801414 : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_dispatch_slot2)
+    }
+    ASSERT(kernel_dispatch_slot2 == 0x801414, "slot 2 entry moved")
+    ASSERT(ADDR(.dispatch_slot2) + SIZEOF(.dispatch_slot2) <= 0x801434, "slot 2 overflow")
+    .dispatch_slot3 0x801434 : SUBALIGN(1) {
+        *kernel_events.o(.text.kernel_dispatch_slot3)
+    }
+    ASSERT(kernel_dispatch_slot3 == 0x801434, "slot 3 entry moved")
+    ASSERT(ADDR(.dispatch_slot3) + SIZEOF(.dispatch_slot3) <= 0x801454, "slot 3 overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
