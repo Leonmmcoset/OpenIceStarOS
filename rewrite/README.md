@@ -1109,3 +1109,17 @@ after its read preserves the captured callback argument. All 144 undersized
 record executions fault as expected, including the signed-byte routes whose
 original code still performs DWORD loads. Log: `build/syscalls_preview.log`.
 These dispatchers are not installed by this source-recovery step.
+
+`python3 tests/syscalls_qemu.py` executes 3,456 original/C/oracle comparisons
+of complete vector 0x40/0x41 chains, using actual INT, PUSHAD, service calls
+and IRET at CPL0 and CPL3. A real TSS switches user calls to a kernel stack.
+All valid routes and the unknown-opcode set run through both interrupt and
+trap gates while IF, DF, arithmetic flags, selectors, arguments, service
+returns and service writes to outgoing arguments vary. Checks cover callback
+privilege/segments/IF, captured arguments, saved general registers, user EAX,
+stack balance, restored flags/segments and full shared-memory comparisons.
+Service implementations are observation stubs; this fixture validates the
+dispatchers, not those remaining original services. The preview invokes the
+newly compiled C dispatchers; `--installed` instead selects their fixed kernel
+addresses. Logs: `build/syscalls_qemu_preview_build.log`,
+`build/syscalls_qemu_preview.log`.
