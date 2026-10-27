@@ -1921,6 +1921,36 @@ Evidence: `build/startup_boot_smoke.log`, `build/entry_execution.json`,
 installation and boot checks; the complete 224-interval regression recorded
 above is not a full regression of the new 231-interval image.
 
+### VGA DAC writer source checkpoint (2026-10-27)
+
+`kernel/display_dac.c/.h` recovers `0x81ad6e..0x81ae14`. The C body saves
+the flags-helper result, disables interrupts, selects DAC index port `0x3c8`,
+then writes the three separately read RGB components shifted right by two to
+`0x3c9`. The inclusive comparison is signed; both the index and RGB address
+advance with 32-bit wrapping. A 30-byte assembly ABI wrapper preserves the
+original incoming RGB argument-slot update and performs only LEAVE/RET after
+the flags restore, avoiding flag damage from compiler-generated stack cleanup.
+The complete compiled routine is 161/166 bytes.
+
+`python3 tests/display_dac_qemu.py` passes 6,912 scenarios / 20,736 executions
+of original x86, ordinary C and fixed-address C at CPL0. An independent oracle
+checks every ordered helper/I/O event, full-width and signed index arguments,
+unaligned RGB sources, address wrapping through zero, component-by-component
+callback mutation, all 20 KiB of mapped source/side-effect memory, updated
+incoming arguments, stack canaries/balance and callee-saved registers. Native
+CLI/POPFL verifies IF, DF and arithmetic flags for injected flags-helper return
+values. Across 324 hardware checks the fixture writes real emulated VGA DAC
+ports and reads back all 768 components. INT_MAX-crossing ranges are checked
+with a controlled four-triplet escape; their full enormous loops are not run.
+Only CALL operands in fixture copies are hooked; the production CPU helpers
+and images are unchanged at this source checkpoint.
+
+QEMU exits 33 (success) after 21.922 seconds. Evidence:
+`build/display_dac_preview_test.log`, `build/display_dac_preview_qemu.log`,
+`build/display_dac_preview_summary.json`, `build/display_dac_calls.h` and
+`build/display_dac_preview.elf`. Installation follows after the running
+231-interval baseline regression, so that baseline is not modified mid-run.
+
 Evidence: `build/firmware_scan_install_build.log`,
 `build/firmware_scan_install_test.log`, `build/firmware_scan_installed_qemu.log`,
 `build/firmware_scan_installed_summary.json`. The installed QEMU fixture is
