@@ -923,3 +923,11 @@ the original ABI with a zero effective feature mask. These native checks
 skip explicitly if required host capabilities are absent. Log:
 `build/fpu_preview_test.log`. Fixed-address installation and QEMU regression
 remain pending for these 13 routines.
+
+All 13 FPU routines are now installed at their original addresses, increasing
+the manifest to 166 intervals. The five C control routines occupy 58/86,
+45/72, 93/204, 10/24 and 13/14 bytes; all eight hardware leaves remain exact.
+Both host-linked and fixed-address tests pass all 2,928 comparisons each,
+including the 128 native x87/SSE state comparisons (5,856 in total). Logs:
+`build/fpu_build.log`, `build/fpu_test.log`, `build/fpu_linked_test.log`.
+Full-suite and QEMU verification of this image follow the installation step.

@@ -18,7 +18,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o $(BUILD)/kernel_memory_ops.o \
                   $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o \
                   $(BUILD)/kernel_graphics_primitives.o $(BUILD)/kernel_service_optional.o \
-                  $(BUILD)/kernel_cpuid.o
+                  $(BUILD)/kernel_cpuid.o $(BUILD)/kernel_fpu.o $(BUILD)/kernel_fpu_state.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -65,7 +65,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.rep_copy_dwords.bin $(BUILD)/kernel.rep_fill_dwords.bin \
                   $(BUILD)/kernel.wait_vertical_retrace.bin $(BUILD)/kernel.blend_color.bin \
                   $(foreach slot,14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c,$(BUILD)/kernel.optional_$(slot).bin) \
-                  $(BUILD)/kernel.cpuid_available.bin $(BUILD)/kernel.cpuid_vendor.bin $(BUILD)/kernel.cpuid_features.bin
+                  $(BUILD)/kernel.cpuid_available.bin $(BUILD)/kernel.cpuid_vendor.bin $(BUILD)/kernel.cpuid_features.bin \
+                  $(BUILD)/kernel.fpu_available.bin $(BUILD)/kernel.fpu_enable.bin $(BUILD)/kernel.fpu_restore_task.bin $(BUILD)/kernel.fpu_mark_lazy.bin $(BUILD)/kernel.fpu_fault.bin \
+                  $(BUILD)/kernel.fpu_save_legacy.bin $(BUILD)/kernel.fpu_restore_legacy.bin $(BUILD)/kernel.fpu_save_environment.bin $(BUILD)/kernel.fpu_load_environment.bin $(BUILD)/kernel.fpu_save_extended.bin $(BUILD)/kernel.fpu_restore_extended.bin $(BUILD)/kernel.fpu_save_xstate.bin $(BUILD)/kernel.fpu_restore_xstate.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -162,6 +164,8 @@ $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o: kernel/memory_init
 $(BUILD)/kernel_memory_ops.o: kernel/memory_ops.h kernel/memory.h
 $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o: kernel/memory_accel.h
 $(BUILD)/kernel_graphics_primitives.o: kernel/graphics_primitives.h
+$(BUILD)/kernel_fpu.o: kernel/fpu.h kernel/cpuid.h
+$(BUILD)/kernel_fpu_state.o: kernel/fpu.h
 $(BUILD)/kernel_cpuid.o: kernel/cpuid.h
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
@@ -308,6 +312,12 @@ $(BUILD)/kernel_cpuid_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $
 $(BUILD)/kernel_cpuid_linked_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_cpuid.c kernel/cpuid.c -o $@
 
+$(BUILD)/kernel_fpu_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c -o $@
+
+$(BUILD)/kernel_fpu_linked_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c -o $@
+
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
@@ -393,6 +403,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_graphics_primitives_linked_test
 	$(BUILD)/kernel_cpuid_test
 	$(BUILD)/kernel_cpuid_linked_test
+	$(BUILD)/kernel_fpu_test
+	$(BUILD)/kernel_fpu_linked_test
 	python3 tests/xformat.py
 	python3 tests/snake.py
 	python3 tests/color.py
@@ -417,6 +429,7 @@ verify: $(BUILD)/kernel_memory_init_test $(BUILD)/kernel_memory_init_linked_test
 verify: $(BUILD)/kernel_memory_ops_test $(BUILD)/kernel_memory_ops_linked_test
 verify: $(BUILD)/kernel_memory_accel_test $(BUILD)/kernel_memory_accel_linked_test
 verify: $(BUILD)/kernel_graphics_primitives_test $(BUILD)/kernel_graphics_primitives_linked_test
+verify: $(BUILD)/kernel_fpu_test $(BUILD)/kernel_fpu_linked_test
 verify: $(BUILD)/kernel_cpuid_test $(BUILD)/kernel_cpuid_linked_test
 verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x

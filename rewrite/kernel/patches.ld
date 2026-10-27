@@ -296,6 +296,22 @@ SECTIONS
     ASSERT(kernel_load_gdt == 0x8372e8 && ADDR(.cpu_load_gdt) + SIZEOF(.cpu_load_gdt) <= 0x8372f8, "LGDT boundary overflow")
     .cpu_load_tr 0x8372f8 : { *kernel_cpu.o(.text.kernel_load_task_register) }
     ASSERT(kernel_load_task_register == 0x8372f8 && ADDR(.cpu_load_tr) + SIZEOF(.cpu_load_tr) <= 0x8372fe, "LTR boundary overflow")
+    .fpu_save_legacy 0x83730a : { *kernel_fpu_state.o(.text.kernel_fpu_save_legacy) }
+    ASSERT(kernel_fpu_save_legacy == 0x83730a && SIZEOF(.fpu_save_legacy) == 7, "fpu_save_legacy layout overflow")
+    .fpu_restore_legacy 0x837311 : { *kernel_fpu_state.o(.text.kernel_fpu_restore_legacy) }
+    ASSERT(kernel_fpu_restore_legacy == 0x837311 && SIZEOF(.fpu_restore_legacy) == 7, "fpu_restore_legacy layout overflow")
+    .fpu_save_environment 0x837318 : { *kernel_fpu_state.o(.text.kernel_fpu_save_environment) }
+    ASSERT(kernel_fpu_save_environment == 0x837318 && SIZEOF(.fpu_save_environment) == 8, "fpu_save_environment layout overflow")
+    .fpu_load_environment 0x837320 : { *kernel_fpu_state.o(.text.kernel_fpu_load_environment) }
+    ASSERT(kernel_fpu_load_environment == 0x837320 && SIZEOF(.fpu_load_environment) == 7, "fpu_load_environment layout overflow")
+    .fpu_save_extended 0x837327 : { *kernel_fpu_state.o(.text.kernel_fpu_save_extended) }
+    ASSERT(kernel_fpu_save_extended == 0x837327 && SIZEOF(.fpu_save_extended) == 8, "fpu_save_extended layout overflow")
+    .fpu_restore_extended 0x83732f : { *kernel_fpu_state.o(.text.kernel_fpu_restore_extended) }
+    ASSERT(kernel_fpu_restore_extended == 0x83732f && SIZEOF(.fpu_restore_extended) == 8, "fpu_restore_extended layout overflow")
+    .fpu_save_xstate 0x837337 : { *kernel_fpu_state.o(.text.kernel_fpu_save_xstate) }
+    ASSERT(kernel_fpu_save_xstate == 0x837337 && SIZEOF(.fpu_save_xstate) == 8, "fpu_save_xstate layout overflow")
+    .fpu_restore_xstate 0x83733f : { *kernel_fpu_state.o(.text.kernel_fpu_restore_xstate) }
+    ASSERT(kernel_fpu_restore_xstate == 0x83733f && SIZEOF(.fpu_restore_xstate) == 8, "fpu_restore_xstate layout overflow")
     .fpu_reset 0x837347 : { *kernel_cpu.o(.text.kernel_fpu_reset) }
     ASSERT(kernel_fpu_reset == 0x837347 && SIZEOF(.fpu_reset) == 3, "FPU initialization layout changed")
     .physical_write_byte 0x83735b : { *kernel_physical.o(.text.kernel_physical_write_byte) }
@@ -406,6 +422,16 @@ SECTIONS
     ASSERT(kernel_optional_2b == 0x837ecd && ADDR(.optional_2b) + SIZEOF(.optional_2b) <= 0x837f0d, "optional service 2b overflow")
     .optional_2c 0x837f0d : { *kernel_service_optional.o(.text.kernel_optional_2c) }
     ASSERT(kernel_optional_2c == 0x837f0d && ADDR(.optional_2c) + SIZEOF(.optional_2c) <= 0x837f5f, "optional service 2c overflow")
+    .fpu_available 0x837f5f : { *kernel_fpu.o(.text.kernel_fpu_available) }
+    ASSERT(kernel_fpu_available == 0x837f5f && ADDR(.fpu_available) + SIZEOF(.fpu_available) <= 0x837fb5, "fpu_available layout overflow")
+    .fpu_enable 0x837fb5 : { *kernel_fpu.o(.text.kernel_fpu_enable) }
+    ASSERT(kernel_fpu_enable == 0x837fb5 && ADDR(.fpu_enable) + SIZEOF(.fpu_enable) <= 0x837ffd, "fpu_enable layout overflow")
+    .fpu_restore_task 0x837ffd : { *kernel_fpu.o(.text.kernel_fpu_restore_task) }
+    ASSERT(kernel_fpu_restore_task == 0x837ffd && ADDR(.fpu_restore_task) + SIZEOF(.fpu_restore_task) <= 0x8380c9, "fpu_restore_task layout overflow")
+    .fpu_mark_lazy 0x8380c9 : { *kernel_fpu.o(.text.kernel_fpu_mark_lazy) }
+    ASSERT(kernel_fpu_mark_lazy == 0x8380c9 && ADDR(.fpu_mark_lazy) + SIZEOF(.fpu_mark_lazy) <= 0x8380e1, "fpu_mark_lazy layout overflow")
+    .fpu_fault 0x8380e1 : { *kernel_fpu.o(.text.kernel_fpu_fault) }
+    ASSERT(kernel_fpu_fault == 0x8380e1 && ADDR(.fpu_fault) + SIZEOF(.fpu_fault) <= 0x8380ef, "fpu_fault layout overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

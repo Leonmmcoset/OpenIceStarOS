@@ -25,6 +25,7 @@ static const uint32_t entries[] = {
     0x83730a, 0x837311, 0x837318, 0x837320,
     0x837327, 0x83732f, 0x837337, 0x83733f
 };
+#ifndef KERNEL_LINKED_TEST
 static const uint32_t functions[] = {
     (uint32_t)kernel_fpu_available, (uint32_t)kernel_fpu_enable,
     (uint32_t)kernel_fpu_restore_task, (uint32_t)kernel_fpu_mark_lazy,
@@ -34,6 +35,7 @@ static const uint32_t functions[] = {
     (uint32_t)kernel_fpu_restore_extended, (uint32_t)kernel_fpu_save_xstate,
     (uint32_t)kernel_fpu_restore_xstate
 };
+#endif
 struct registers {
     uint32_t ebx, ecx, edx, esi, edi, ebp, eax;
     uint32_t ds, es, fs, gs, original_eax, eip, cs, flags, esp, ss;
