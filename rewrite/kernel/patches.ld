@@ -205,6 +205,20 @@ SECTIONS
         *kernel_surface_composite.o(.text* .rodata*)
     }
     ASSERT(kernel_surface_target_817cd0 == 0x817cd0 && ADDR(.surface_composite) + SIZEOF(.surface_composite) <= 0x817dac, "surface clipping/list dispatcher overflow")
+    .surface_regions 0x818d14 : SUBALIGN(1) {
+        *kernel_surface_present.o(.text.kernel_surface_regions_test)
+    }
+    ASSERT(kernel_surface_regions_test == 0x818d14 && ADDR(.surface_regions) + SIZEOF(.surface_regions) <= 0x818d5e, "surface rectangle predicate overflow")
+    .surface_present8 0x818d5e : SUBALIGN(1) {
+        *kernel_surface_present.o(.text.kernel_surface_present8)
+        *kernel_surface_present.o(.text.surface_present8_body)
+    }
+    ASSERT(kernel_surface_present8 == 0x818d5e && ADDR(.surface_present8) + SIZEOF(.surface_present8) <= 0x818f22, "8-bit framebuffer submission overflow")
+    .surface_present32 0x818f22 : SUBALIGN(1) {
+        *kernel_surface_present.o(.text.kernel_surface_present32)
+        *kernel_surface_present.o(.text.surface_present32_body)
+    }
+    ASSERT(kernel_surface_present32 == 0x818f22 && ADDR(.surface_present32) + SIZEOF(.surface_present32) <= 0x81905e, "32-bit framebuffer submission overflow")
     .surface_refresh 0x81905e : SUBALIGN(1) {
         *kernel_surface_refresh.o(.text.kernel_syscall_target_81905e)
         *kernel_surface_refresh.o(.text* .rodata*)

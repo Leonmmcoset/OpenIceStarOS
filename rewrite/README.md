@@ -1321,3 +1321,17 @@ return values and complete mapped-memory comparisons. It explicitly skips
 pages; those cases are not counted as passing. Log:
 `build/surface_present_preview.log`. This source checkpoint does not yet
 install the three functions into the VHDs.
+
+The three framebuffer functions are now installed at their original addresses,
+bringing the manifest to 205 intervals. The predicate occupies 67/74 bytes,
+8-bit submission 361/452 bytes, and 32-bit submission 264/316 bytes. All
+three C-init, Snake and combined application VHDs rebuilt. Both host-linked
+and installed-address fixtures pass the 131,072 predicate and 61,056
+submission comparisons; 3,456 unsafe generated ranges are explicitly skipped.
+The full-disk verifier confirms that only declared compiled kernel slots and
+compiled boot stages changed. Logs: `build/surface_present_install_build.log`,
+`build/surface_present_host_test.log`,
+`build/surface_present_linked_test.log`, and
+`build/surface_present_disk_verify.log`. These focused checks are for the
+205-interval image; the earlier full-suite/OS evidence is not reused as a
+regression result for this image.
