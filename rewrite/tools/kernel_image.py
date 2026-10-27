@@ -101,6 +101,21 @@ class Fat16:
     def read_kernel(self):
         return b"".join(self.data[o:o + n] for o, n in self.kernel_extents())
 
+    def read_file(self, *short_names):
+        """Read an explicit path of FAT 8.3 names, each exactly 11 bytes."""
+        require(bool(short_names) and all(len(name) == 11 for name in short_names),
+                "expected a nonempty FAT short-name path")
+        contents = self.root
+        for index, name in enumerate(short_names):
+            directory = index < len(short_names) - 1
+            entry = self.find(contents, name, directory)
+            contents = b"".join(self.data[o:o + self.cluster_bytes]
+                                for o in self.chain(word(entry, 26)))
+            if not directory:
+                size = dword(entry, 28)
+                require(len(contents) >= size, "truncated file")
+                return contents[:size]
+
     def replace_kernel(self, kernel):
         extents = self.kernel_extents()
         require(sum(n for _, n in extents) == len(kernel), "kernel size must stay unchanged")

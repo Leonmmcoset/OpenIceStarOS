@@ -182,3 +182,16 @@ and queue wrapping. Only physical accesses, LED I/O, and text rendering use
 shared test callbacks; the real queue routines and ASCII conversion execute.
 All thirty-one installed intervals passed full disk verification and QEMU
 loaded-memory checks, and the desktop was visually inspected on 2026-10-27.
+
+`python3 tools/boot_smoke.py --input-check` additionally moves the emulated
+PS/2 pointer to the CMD icon and double-clicks it, types `cpuid`, and presses
+Return. It reads CMD directly from FAT16, distinguishes relocated executable
+instructions from cached file bytes, verifies the application's input buffer,
+checks consumption of all ten make/break bytes, and checks command-buffer
+clearing and return to the prompt. Mouse position is checked against guest
+state, rather than inferred from injected motion. Evidence is written to
+`build/input_smoke.json` and `build/input_{desktop,cmd,typed,cpuid}.png`.
+The result text still requires visual inspection. On 2026-10-27 the test passed
+and the final screenshot showed the CPU identification result and a new prompt.
+This exercises the recovered keyboard/pointer path with the original desktop
+and CMD application; those applications have not yet been rewritten.

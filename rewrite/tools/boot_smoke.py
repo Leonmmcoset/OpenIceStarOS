@@ -1,14 +1,16 @@
 """Boot a snapshot, capture its screen, and check the loaded C kernel slots."""
 
+import argparse
 import json
 from pathlib import Path
 import socket
 import struct
 import subprocess
-import sys
 import tempfile
 import time
 import zlib
+
+from kernel_image import Fat16
 
 
 def png_from_ppm(source, destination):
@@ -32,9 +34,14 @@ def png_from_ppm(source, destination):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("image", nargs="?", type=Path)
+    parser.add_argument("--input-check", action="store_true",
+                        help="exercise the desktop pointer and CMD keyboard input")
+    arguments = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    image = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else build / "IceStarOS_c_init.vhd"
+    image = arguments.image.resolve() if arguments.image else build / "IceStarOS_c_init.vhd"
     screen = build / "boot_c_init.ppm"
     memory = build / "boot_kernel.memory"
     with tempfile.TemporaryDirectory(prefix="icestar-qemu-") as temporary:
@@ -69,6 +76,8 @@ def main():
 
                     read_prompt()
                     time.sleep(12)
+                    if arguments.input_check:
+                        check_inputs(execute, build, image)
                     execute("stop")
                     execute(f'screendump "{screen}"')
                     execute(f'pmemsave 0x800000 0x40000 "{memory}"')
@@ -91,6 +100,115 @@ def main():
     print("QEMU snapshot boot captured; all fixed-address C patches match guest memory")
     print("Screenshot: " + str(build / "boot_c_init.png"))
     print("Desktop appearance still requires visual inspection; this is not a full OS test")
+
+
+def check_inputs(execute, build, image):
+    """Use only emulated PS/2 events; inspect state through the monitor."""
+    evidence = {}
+    scratch = build / "input_state.memory"
+
+    def read_memory(address, size):
+        execute("stop")
+        try:
+            scratch.unlink(missing_ok=True)
+            execute(f'pmemsave {address:#x} {size:#x} "{scratch}"')
+            data = scratch.read_bytes()
+            if len(data) != size:
+                raise RuntimeError("incomplete guest state read")
+            return data
+        finally:
+            execute("cont")
+
+    def dword(address):
+        return struct.unpack("<I", read_memory(address, 4))[0]
+
+    def position():
+        pointer = dword(0x1b048)
+        return struct.unpack("<ii", read_memory(pointer + 12, 8))
+
+    def capture(name):
+        ppm = build / f"input_{name}.ppm"
+        execute("stop")
+        try:
+            execute(f'screendump "{ppm}"')
+        finally:
+            execute("cont")
+        png_from_ppm(ppm, build / f"input_{name}.png")
+
+    def move_to(x, y):
+        for _ in range(30):
+            px, py = position()
+            dx, dy = x - px, y - py
+            if abs(dx) <= 2 and abs(dy) <= 2:
+                return px, py
+            dx, dy = max(-100, min(100, dx)), max(-100, min(100, dy))
+            execute(f"mouse_move {dx} {dy}")
+            time.sleep(0.12)
+        raise RuntimeError(f"pointer did not reach {(x, y)}; observed {position()}")
+
+    evidence["pointer_initial"] = position()
+    capture("desktop")
+    evidence["pointer_cmd_icon"] = move_to(45, 282)
+    for _ in range(2):
+        execute("mouse_button 1")
+        time.sleep(0.07)
+        execute("mouse_button 0")
+        time.sleep(0.07)
+    time.sleep(3)
+    capture("cmd")
+    # Match immutable instructions, then validate mutable CMD state. Cached
+    # file copies can contain the same instructions but never consume input.
+    command_file = Fat16(image.read_bytes()).read_file(b"ICESTAR    ", b"CMD     X  ")
+    ram_start = 0x900000
+    ram = read_memory(ram_start, 128 * 1024 * 1024 - ram_start)
+    # The operand at file offset 0x6f is relocated, as are later absolute
+    # references. Match the first instructions preceding that operand.
+    signature = command_file[0x40:0x6b]
+    candidates = []
+    offset = ram.find(signature)
+    while offset >= 0:
+        base = ram_start + offset - 0x40
+        # The store operand at 0xc8 must reference this loaded copy's BSS,
+        # distinguishing the running relocated program from its file cache.
+        if struct.unpack_from("<I", ram, offset - 0x40 + 0xc8)[0] == base + 0xf490:
+            candidates.append(base)
+        offset = ram.find(signature, offset + 1)
+    del ram
+    evidence["cmd_code_candidates"] = [hex(base) for base in candidates]
+    if len(candidates) != 1:
+        raise RuntimeError("expected one relocated CMD instance after clicking its icon")
+    cmd_base = candidates[0]
+    queue = dword(0x1b038)
+    evidence["keyboard_queue_before"] = list(struct.unpack("<4I", read_memory(queue, 16)))
+    for key in ("c", "p", "u", "i", "d"):
+        execute(f"sendkey {key} 50")
+        time.sleep(0.15)
+    time.sleep(1)
+    capture("typed")
+    evidence["keyboard_queue_after"] = list(struct.unpack("<4I", read_memory(queue, 16)))
+    before, after = evidence["keyboard_queue_before"], evidence["keyboard_queue_after"]
+    if before[2:] != [0, 2048] or after[2:] != [0, 2048]:
+        raise RuntimeError("keyboard queue was not drained or changed capacity")
+    if [(after[i] - before[i]) % 2048 for i in range(2)] != [10, 10]:
+        raise RuntimeError("five key make/break pairs did not traverse the queue")
+    typed = read_memory(cmd_base + 0xb2da, 6)
+    evidence["cmd_input"] = typed.rstrip(b"\0").decode("ascii")
+    if typed != b"cpuid\0":
+        raise RuntimeError("CMD did not receive the expected text")
+    evidence["cmd_cursor_before_return"] = list(struct.unpack("<2I", read_memory(cmd_base + 0xf46c, 8)))
+    execute("sendkey ret 50")
+    time.sleep(2)
+    capture("cpuid")
+    evidence["cmd_cursor_after_return"] = list(struct.unpack("<2I", read_memory(cmd_base + 0xf46c, 8)))
+    column, row = evidence["cmd_cursor_after_return"]
+    if column != 4 or row != evidence["cmd_cursor_before_return"][1] + 2:
+        raise RuntimeError("CMD did not print a result and return to its prompt")
+    if read_memory(cmd_base + 0xb2da, 6) != b"\0" * 6:
+        raise RuntimeError("CMD did not clear its command buffer")
+    (build / "input_smoke.json").write_text(json.dumps(evidence, indent=2) + "\n")
+    print("Input state: " + json.dumps(evidence))
+    print("Mouse position, relocated CMD, input text, queue consumption, and prompt return verified")
+    print("Inspect input_cpuid.png for the command result; its text is not OCR-checked")
 
 
 if __name__ == "__main__":
