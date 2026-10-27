@@ -155,3 +155,14 @@ queue cases and 262,144 full-width character cases against original machine
 code, and the shared mouse-queue/decoder tests still pass. All twenty-three
 installed intervals passed disk verification and QEMU loaded-memory checks;
 the desktop was visually inspected on 2026-10-27.
+
+`kernel/keyboard_init.c` recovers controller readiness, reading/discarding a
+response byte, LED control, and keyboard initialization at
+`0x819c40..0x819d96`. It preserves the captured queue pointer, the initial
+physical read, the complete port transaction order, and signed-byte LED
+arguments. Physical accesses still use the original GS-selector helpers.
+Each differential executable covers 48 initialization, 4,096 LED, 1,024 wait,
+and 256 discard cases, with all byte values, delayed readiness, unaligned
+queues, and global-pointer mutation from I/O and physical-memory callbacks.
+The twenty-seven-interval image passed the full verification suite and QEMU
+loaded-memory checks and rendered the desktop on 2026-10-27.

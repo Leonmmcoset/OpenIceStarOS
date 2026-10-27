@@ -6,6 +6,8 @@ PROVIDE(kernel_disable_interrupts = 0x81a242);
 PROVIDE(kernel_write_flags = 0x81a24d);
 PROVIDE(kernel_read_port_byte = 0x81a254);
 PROVIDE(kernel_write_port_byte = 0x81a261);
+PROVIDE(kernel_physical_write_byte = 0x83735b);
+PROVIDE(kernel_physical_read_byte = 0x8373a8);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -107,6 +109,26 @@ SECTIONS
     }
     ASSERT(kernel_decode_pointer == 0x812f96, "pointer decoder entry moved")
     ASSERT(ADDR(.pointer_decode) + SIZEOF(.pointer_decode) <= 0x8130cc, "pointer decoder slot overflow")
+    .keyboard_ready 0x819c40 : SUBALIGN(1) {
+        *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
+    }
+    ASSERT(kernel_wait_keyboard_ready == 0x819c40, "keyboard ready entry moved")
+    ASSERT(ADDR(.keyboard_ready) + SIZEOF(.keyboard_ready) <= 0x819c60, "keyboard ready slot overflow")
+    .keyboard_discard 0x819c60 : SUBALIGN(1) {
+        *kernel_keyboard_init.o(.text.kernel_discard_keyboard_byte)
+    }
+    ASSERT(kernel_discard_keyboard_byte == 0x819c60, "keyboard discard entry moved")
+    ASSERT(ADDR(.keyboard_discard) + SIZEOF(.keyboard_discard) <= 0x819c7c, "keyboard discard slot overflow")
+    .keyboard_leds 0x819c7c : SUBALIGN(1) {
+        *kernel_keyboard_init.o(.text.kernel_set_keyboard_leds)
+    }
+    ASSERT(kernel_set_keyboard_leds == 0x819c7c, "keyboard LEDs entry moved")
+    ASSERT(ADDR(.keyboard_leds) + SIZEOF(.keyboard_leds) <= 0x819cf8, "keyboard LEDs slot overflow")
+    .keyboard_init 0x819cf8 : SUBALIGN(1) {
+        *kernel_keyboard_init.o(.text.kernel_init_keyboard)
+    }
+    ASSERT(kernel_init_keyboard == 0x819cf8, "keyboard init entry moved")
+    ASSERT(ADDR(.keyboard_init) + SIZEOF(.keyboard_init) <= 0x819d96, "keyboard init slot overflow")
     .input_write 0x819d96 : SUBALIGN(1) {
         *kernel_input_queue.o(.text.kernel_input_write)
     }
