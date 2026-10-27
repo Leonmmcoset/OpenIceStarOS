@@ -1734,3 +1734,24 @@ and 303/414 bytes. Log/exit/timing:
 `build/surface_order_preview_test.log`, `build/surface_order_preview_test.exit`
 (0), and `build/surface_order_preview_summary.json`. This source checkpoint
 precedes installation; the manifest still declares 214 intervals.
+
+`kernel/cursor.c/.h` recovers cursor show, hide, shape selection and movement
+at `0x8130cc`, `0x81313e`, `0x8131b0` and `0x81325c`. Showing appends layer 1
+and refreshes from layer 1; hiding removes it and refreshes from layer 2.
+Geometry is reloaded after the order callback. Shape/movement routines retain
+the descriptor captured before hiding, select the original six pixel-source
+globals, preserve unsupported shape values and reload live incoming words
+after each potentially aliased store. Only the incoming-storage adapters use
+assembly.
+
+The standalone original/C/independent byte-memory fixture passes 86,400 cases
+on 2026-10-27 in 11.518 seconds with no unsafe generated scenarios. It compares
+all 25,600 mapped data bytes, raw returns, callback order/arguments and watched
+state, including nine alias layouts, four descriptor alignments, five position
+words, all ten supported shapes and four unsupported values, sixteen callback
+mutation modes, captured-pointer semantics and outgoing-argument isolation.
+The production object fits the four original slots, including its jump tables:
+75/114, 75/114, 136/172 and 148/196 bytes. Log/exit/timing:
+`build/cursor_preview_test.log`, `build/cursor_preview_test.exit` (0), and
+`build/cursor_preview_summary.json`. This is another source checkpoint;
+the installed manifest remains at 214 until integration is recorded below.
