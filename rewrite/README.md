@@ -236,3 +236,15 @@ shared memory, the table pointer, and the active slot. All seventy-two installed
 kernel intervals passed full disk verification and the interactive QEMU input
 smoke test on 2026-10-27. The CPU identification output and fresh CMD prompt
 were visually inspected. Later optional service slots remain original code.
+
+`tools/xformat.py` builds type-`0x50` X applications from linked i386 ELF files
+made with `ld --emit-relocs`. It preserves the observed 64-byte header contract,
+records each `R_386_32` location, and leaves `R_386_PC32` references relative.
+The kernel loader at `0x8023df..0x8024aa` adds the load base at those locations,
+stores it in header field `0x1c`, then erases the relocation table, BSS, and
+stack area. BSS therefore begins at the relocation-table file offset. The tool
+rejects unsupported relocation types and external/absolute symbol references.
+`tests/xformat.py` compares loaded code/data against three independent links,
+including unaligned load bases, verifies the original SNAKE.X header/relocations,
+and rejects malformed input. This format-tool checkpoint does not yet replace
+an application in the disk image.

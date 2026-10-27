@@ -257,6 +257,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_keyboard_linked_test
 	$(BUILD)/kernel_service_forward_test
 	$(BUILD)/kernel_service_forward_linked_test
+	python3 tests/xformat.py
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
