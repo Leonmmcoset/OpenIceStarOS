@@ -968,9 +968,22 @@ Log: `build/interrupts_preview_test.log`. Fixed-address installation and
 privileged execution checks are the next step for these six functions.
 
 These six functions are installed at their original addresses, bringing the
-manifest to 172 intervals. The C initializer occupies 440 of 678 bytes; all
+manifest to 172 intervals. The C initializer occupies 417 of 678 bytes; all
 five hardware leaves remain byte exact. Both host-linked and fixed-address
 tests pass 96 scenarios each (192 scenarios and 50,880 gate events total).
 Logs: `build/interrupts_build.log`, `build/interrupts_test.log`,
 `build/interrupts_linked_test.log`, `build/interrupts_images.log`. Full-suite,
 dedicated CPL0 tests and OS QEMU regression follow this installation step.
+
+`python3 tests/interrupts_qemu.py` builds an isolated multiboot fixture and
+executes the original and rebuilt interrupt routines at CPL 0 under QEMU.
+All 521 comparisons pass: 384 gate/LIDT/segment/wrapped-index cases, 16 GS
+boot-selector cases, 24 complete IDT/callback initializations, one real
+INT/IRET round trip through both implementations, and 96 PIC/PIT/RTC cases.
+The fixture checks the complete 20,480-byte shared region against an
+independent oracle, IDTR contents, register/segment preservation and device
+configuration. Volatile RTC status C's low return byte is excluded from the
+device result comparison; the routine's exact instruction bytes are checked
+separately during image installation. The fixture keeps IF clear and does
+not boot or modify the OS disk. Logs: `build/interrupts_qemu_build.log` and
+`build/interrupts_qemu.log`.
