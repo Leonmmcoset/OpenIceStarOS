@@ -1,6 +1,6 @@
 /* Task subsystem initialization, free-slot search, and nonpaged task creation,
- * recovered from 0x814536..0x814a56. Paged creation and destruction remain
- * original. All task/TSS accesses retain their original DWORD order. */
+ * recovered from 0x814536..0x814a56. The application variant and deletion are
+ * in task_lifecycle.c. Task/TSS accesses retain their original DWORD order. */
 #include "tasks.h"
 
 #define WORD(address) (*(volatile uint32_t *)(uintptr_t)(address))

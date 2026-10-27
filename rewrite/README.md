@@ -521,3 +521,44 @@ matched guest memory. MOV's post-close screen and STARSCR's first phase were
 visually inspected. The known post-STARSCR mouse limitation remains. Logs:
 `build/verify_task_create.log`, `build/task_create_preemption_smoke.log`,
 `build/mov_task_create_smoke.log`, and `build/starscr_task_create_smoke.log`.
+
+`kernel/task_lifecycle.c` recovers application-task creation at
+`0x814a56..0x814e54`, task deletion at `0x814e54..0x815002`, thread creation
+at `0x815002..0x8150aa`, and the active-task query at `0x8150aa..0x815106`.
+Their compiled sizes are 448/1,022, 139/430, 82/168, and 47/92 bytes.
+The application constructor is used by the X program loader. Both it and the
+ordinary task constructor set CR3 to the same `0x19000`; the earlier historical
+description of this variant as "paged creation" did not establish separate
+address spaces. Its differing TSS fields, rounded allocation extent with DWORD
+wraparound, and allocator-before-flags ordering are retained.
+
+Deletion preserves unchecked indices, link reloads after aliasing writes,
+free-before-tail-update ordering, repeated-deletion behavior, and wrapping hole
+accounting. Thread creation retains the original table snapshot across memory
+allocation and nested task creation, including zero allocation results and the
+original lack of rollback when task creation fails. No new safety guards are
+added to these recovered routines. The three allocator routines, descriptor
+emitter, and string copier remain original implementations at this checkpoint.
+
+The lifecycle differential executables execute the real free-slot search and
+both constructors. Each exercises 7,680 application creations, 2,304 deletions,
+7,680 thread creations, and 7,436 active-state queries (50,200 comparisons
+across host-linked C and fixed-address C). Every case compares all 319,488
+mapped data bytes and ordered boundary traces. Cases cover allocation-size
+rounding/wraparound, unaligned tables, failed creation, reused holes, signed
+owner pointers, TSS/metadata aliasing, self-linked and wrapped task indices,
+callback mutations at allocator/flags/string/descriptor/free boundaries,
+thread stack-size wraparound, and negative/out-of-range active queries with
+an invalid table pointer that must never be dereferenced.
+
+The complete verification suite passed on 2026-10-27. The 88-interval image
+passed QEMU's real TSS preemption checks with 12 ticks between samples, PS/2
+and CMD input, MOV's four pixel-exact frames, close, image/task cleanup and
+subsequent `cpuid`, and STARSCR's four phases, Esc and task cleanup. Every
+installed interval matched guest memory. The post-MOV command screen and first
+STARSCR phase were visually inspected. The existing post-STARSCR mouse-input
+limitation remains; desktop reuse after that screen saver is not claimed.
+Logs: `build/verify_task_lifecycle.log`, `build/tasks_lifecycle_smoke.log`,
+`build/mov_lifecycle_smoke.log`, and `build/starscr_lifecycle_smoke.log`.
+Representative JSON and image evidence is preserved under
+`build/task_lifecycle_evidence/`.

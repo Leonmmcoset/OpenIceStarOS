@@ -4,6 +4,9 @@ PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_set_segment_descriptor = 0x8135c6);
 PROVIDE(kernel_copy_string = 0x82a32b);
+PROVIDE(kernel_allocate = 0x815464);
+PROVIDE(kernel_free_allocation = 0x815978);
+PROVIDE(kernel_allocation_size = 0x815a0a);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -120,6 +123,14 @@ SECTIONS
     ASSERT(kernel_find_free_task == 0x814606 && ADDR(.task_find_free) + SIZEOF(.task_find_free) <= 0x814688, "task free-slot search overflow")
     .task_create 0x814688 : { *kernel_task_create.o(.text.kernel_create_task) }
     ASSERT(kernel_create_task == 0x814688 && ADDR(.task_create) + SIZEOF(.task_create) <= 0x814a56, "task creation overflow")
+    .task_create_app 0x814a56 : { *kernel_task_lifecycle.o(.text.kernel_create_application_task) }
+    ASSERT(kernel_create_application_task == 0x814a56 && ADDR(.task_create_app) + SIZEOF(.task_create_app) <= 0x814e54, "application task creation overflow")
+    .task_delete 0x814e54 : { *kernel_task_lifecycle.o(.text.kernel_delete_task) }
+    ASSERT(kernel_delete_task == 0x814e54 && ADDR(.task_delete) + SIZEOF(.task_delete) <= 0x815002, "task deletion overflow")
+    .task_create_thread 0x815002 : { *kernel_task_lifecycle.o(.text.kernel_create_thread) }
+    ASSERT(kernel_create_thread == 0x815002 && ADDR(.task_create_thread) + SIZEOF(.task_create_thread) <= 0x8150aa, "thread creation overflow")
+    .task_active 0x8150aa : { *kernel_task_lifecycle.o(.text.kernel_task_is_active) }
+    ASSERT(kernel_task_is_active == 0x8150aa && ADDR(.task_active) + SIZEOF(.task_active) <= 0x815106, "task state query overflow")
     .keyboard_ready 0x819c40 : SUBALIGN(1) {
         *kernel_keyboard_init.o(.text.kernel_wait_keyboard_ready)
     }
