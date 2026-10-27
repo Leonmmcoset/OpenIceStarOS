@@ -72,6 +72,7 @@
   {"name": "32-bit framebuffer submission", "binary": "kernel.surface_present32.bin", "start": "0x818f22", "end": "0x81905e"},
   {"name": "surface refresh selector", "binary": "kernel.surface_refresh.bin", "start": "0x81905e", "end": "0x8191d8"},
   {"name": "moved-layer damage selector", "binary": "kernel.surface_move.bin", "start": "0x8191d8", "end": "0x8194e4"},
+  {"name": "same-depth surface scaler", "binary": "kernel.surface_scale.bin", "start": "0x8194e4", "end": "0x819c40"},
   {"name": "keyboard controller wait", "binary": "kernel.keyboard_ready.bin", "start": "0x819c40", "end": "0x819c60"},
   {"name": "keyboard discard byte", "binary": "kernel.keyboard_discard.bin", "start": "0x819c60", "end": "0x819c7c"},
   {"name": "keyboard LED control", "binary": "kernel.keyboard_leds.bin", "start": "0x819c7c", "end": "0x819cf8"},

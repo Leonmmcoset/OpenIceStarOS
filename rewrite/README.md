@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 209 declared kernel intervals and
+original VHD. The current build installs 210 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1568,3 +1568,15 @@ Logs: `build/surface_scale_preview_build.log`, `build/surface_scale_preview.log`
 exit marker: `build/surface_scale_preview.exit` (0). Production compilation
 occupies 1,097 bytes against 1,884 available. This source checkpoint precedes
 installation in the VHDs; the installed manifest remains at 209 intervals.
+
+The scaler is now installed at its original `0x8194e4` entry, using
+1,097/1,884 bytes and bringing the manifest to 210 intervals. C-init, Snake
+and combined-application VHDs rebuild, and host-linked and installed-address
+fixtures each pass all 50,252 data/return cases and 192 fault executions.
+The entire-disk kernel check and both application-image checks pass: only
+declared boot/kernel/application extents change. Logs and exit markers:
+`build/surface_scale_install_build.{log,exit}` and
+`build/surface_scale_{host,linked,disk,snake_image,apps_image}_test.{log,exit}`
+(all final exits 0). This closes installation and focused verification;
+the previous full-suite and QEMU results still describe the 209-interval
+images until the new integration/regression runs finish.
