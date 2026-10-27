@@ -1059,3 +1059,15 @@ SHA-verified VHD before comparing. No UIP wait, BCD conversion, rollover
 retry or index/NMI restoration is introduced. These six functions are not
 installed by this preview step; fixed-address installation and privileged
 execution checks follow separately.
+
+The complete `make verify` suite passed for the 186-interval interrupt-entry
+image on 2026-10-27. Three OS snapshot boots verified 128 MiB RAM and live
+heap chains, real TSS preemption, PS/2/CMD, MOV's four exact frames/close/
+cleanup/CMD reuse, and STARSCR's four phases/Esc/task cleanup. Every installed
+interval matched guest RAM. MOV's post-close CMD screenshot was visually
+inspected and shows `cpuid` output and a returned prompt. The known original
+post-STARSCR mouse stall remains; desktop reuse after STARSCR is not verified.
+Logs: `build/verify_interrupt_entries.log`, `build/interrupt_entries_smoke.log`,
+`build/mov_interrupt_entries_smoke.log`, `build/starscr_interrupt_entries_smoke.log`;
+screenshots/JSON: `build/interrupt_entries_evidence/`. This remains a hybrid
+image containing original code outside the recovered intervals.
