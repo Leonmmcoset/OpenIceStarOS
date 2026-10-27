@@ -35,11 +35,19 @@ $(BUILD)/IceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin
 	dd if=$(BUILD)/mbr.bin of=$@ bs=512 count=1 conv=notrunc status=none
 	dd if=$(BUILD)/menu.bin of=$@ bs=512 seek=1 count=3 conv=notrunc status=none
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd
+$(BUILD)/fat16.o: boot/fat16.c boot/fat16.h | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+
+$(BUILD)/fat16_image: tests/fat16_image.c boot/fat16.c boot/fat16.h | $(BUILD)
+	$(CC) -std=c11 -Wall -Wextra -Werror -Iboot tests/fat16_image.c boot/fat16.c -o $@
+
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
 	cmp -i 2048:2048 $(IMAGE) $(BUILD)/IceStarOS_c_mbr.vhd
+	$(BUILD)/fat16_image $(IMAGE) $(BUILD)/init.x
+	printf '%s  %s\n' 0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007 $(BUILD)/init.x | sha256sum -c -
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c

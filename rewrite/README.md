@@ -16,3 +16,8 @@ Only the first two stages are C code so far. The remainder of the disk is copied
 the original image, including the next boot stage, kernel, drivers, applications,
 and resources. Successful boot is an integration test for this stage, not
 evidence that the rest of the OS has been rewritten or its APIs recovered.
+
+`boot/fat16.c` is a freestanding FAT16 root-file reader intended for the next
+stage. It is not yet connected to the boot image. Verification builds it for
+32-bit x86 and uses a host sector reader to recover `INIT.X` from the original
+VHD; its SHA-256 is checked against the independently extracted file.
