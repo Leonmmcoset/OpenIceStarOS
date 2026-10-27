@@ -48,3 +48,5 @@ It also redirects the call at `0x80007b` to the global-state initializer in
 untouched retain their values from `DAT.BIN`.
 The verification suite executes the original x86 initializer and the C version
 against identical patterned memory and compares the entire affected region.
+The kernel function table initializer at `0x8004fa` is also recovered in
+`kernel/api_table.c` and invoked from the original call at `0x800099`.

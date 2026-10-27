@@ -92,14 +92,17 @@ $(BUILD)/kernel_reset.o: kernel/reset.c | $(BUILD)
 $(BUILD)/kernel_state.o: kernel/state.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
 
+$(BUILD)/kernel_api_table.o: kernel/api_table.c | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+
 $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror $^ -o $@
 
-$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c | $(BUILD)
+$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/api_table.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o init/init.ld
-	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o
+$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o $(BUILD)/kernel_api_table.o init/init.ld
+	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o $(BUILD)/kernel_api_table.o
 
 $(BUILD)/IceStarOS_c_init.vhd: $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin
 	cp $(BUILD)/IceStarOS_c_fat16.vhd $@

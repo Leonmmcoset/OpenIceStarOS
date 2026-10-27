@@ -1,8 +1,10 @@
 #include <stdint.h>
 
 void kernel_init_global_state(void);
+void kernel_init_api_table(void);
 
 static uint8_t expected[0x5000];
+static uint8_t expected_table[0x1000];
 
 static int syscall3(int number, unsigned a, unsigned b, unsigned c)
 {
@@ -22,11 +24,13 @@ static int map_memory(uint32_t address, uint32_t length, int protection)
 static int run_test(const char *path)
 {
     volatile uint8_t *memory = (volatile uint8_t *)0x1b000;
+    volatile uint8_t *table = (volatile uint8_t *)0x6b0000;
     unsigned pattern, i;
     int fd, count;
 
     if (map_memory(0x1b000, 0x5000, 3) != 0x1b000 ||
-        map_memory(0x800000, 0x40000, 7) != 0x800000) return 1;
+        map_memory(0x800000, 0x40000, 7) != 0x800000 ||
+        map_memory(0x6b0000, 0x1000, 3) != 0x6b0000) return 1;
     fd = syscall3(5, (unsigned)(uintptr_t)path, 0, 0);
     if (fd < 0) return 2;
     count = syscall3(3, (unsigned)fd, 0x800000, 0x40000);
@@ -46,6 +50,20 @@ static int run_test(const char *path)
         kernel_init_global_state();
         for (i = 0; i < sizeof(expected); ++i)
             if (memory[i] != expected[i]) return 4;
+
+        for (i = 0; i < sizeof(expected_table); ++i)
+            table[i] = (uint8_t)(i * 17 + pattern * 59);
+        ((void (*)(void))0x8004fa)();
+        for (i = 0; i < sizeof(expected); ++i) expected[i] = memory[i];
+        for (i = 0; i < sizeof(expected_table); ++i) expected_table[i] = table[i];
+        for (i = 0; i < sizeof(expected_table); ++i)
+            table[i] = (uint8_t)(i * 17 + pattern * 59);
+        *(volatile uint32_t *)(memory + 0xac) = 0x12345678;
+        kernel_init_api_table();
+        for (i = 0; i < sizeof(expected); ++i)
+            if (memory[i] != expected[i]) return 5;
+        for (i = 0; i < sizeof(expected_table); ++i)
+            if (table[i] != expected_table[i]) return 6;
     }
     return 0;
 }
