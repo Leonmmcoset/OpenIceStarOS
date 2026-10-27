@@ -18,6 +18,11 @@ stage_flat:
     call stage_load_init
     testl %eax, %eax
     jnz stage_failed
+#ifdef REWRITE_INIT
+    call stage_load_rewritten_init
+    testl %eax, %eax
+    jnz stage_failed
+#endif
     pushl $0x70000
     pushl $0x70000
     call stage_prepare_init

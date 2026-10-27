@@ -36,5 +36,8 @@ other low memory if sufficiently many devices are present.
 original addresses `0x70040` and `0x700a2`. `init/directory.c` recovers the
 root directory and first-cluster file searches at `0x70c70` and `0x70bb0`.
 `init/clusters.c` recovers the cluster-chain reads and primary ATA sector read
-used by those searches. The recovered INIT code is compiled and tested against
-the disk image, but is not yet linked into the boot image.
+used by those searches. `make run-c-init` boots a third test image that loads
+these C routines from sectors 13 through 16 at physical address `0x60000` and
+redirects INIT's entry there. This image still loads the original INIT binary
+at `0x70000`, as well as the original kernel, drivers, and applications. It is
+an integration test of the rewritten startup path, not a standalone rewrite.

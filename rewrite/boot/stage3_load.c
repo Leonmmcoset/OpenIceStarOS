@@ -41,6 +41,19 @@ static int ata_read(void *context, uint32_t lba, uint8_t *buffer)
     return 0;
 }
 
+#ifdef REWRITE_INIT
+int stage_load_rewritten_init(void)
+{
+    uint32_t i;
+    for (i = 0; i < 4; ++i) {
+        if (ata_read(0, 13 + i, (uint8_t *)(uintptr_t)(0x60000 + i * 512)))
+            return -1;
+    }
+    *(volatile uint32_t *)0x70010 = 0x60000;
+    return 0;
+}
+#endif
+
 int stage_load_init(void)
 {
     static const uint8_t name[11] = "INIT    X  ";

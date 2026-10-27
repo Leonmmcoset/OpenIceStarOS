@@ -12,7 +12,7 @@ int init_load_file(const char *name, uint8_t *destination)
     return init_read_file(destination + (uint32_t)file_index * 32, destination) > 0;
 }
 
-void init_entry(void)
+__attribute__((section(".text.init_entry"))) void init_entry(void)
 {
     uint8_t *kernel = (uint8_t *)0x800000;
     int data_loaded, kernel_loaded;
