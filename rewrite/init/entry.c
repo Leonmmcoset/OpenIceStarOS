@@ -1,9 +1,5 @@
 #include "entry.h"
 
-void kernel_init_startup_record(void);
-void kernel_init_global_state(void);
-void kernel_init_api_table(void);
-
 int init_load_file(const char *name, uint8_t *destination)
 {
     int directory_index = init_find_root_directory("ICESTAR");
@@ -25,15 +21,7 @@ __attribute__((section(".text.init_entry"))) void init_entry(void)
     data_loaded = init_load_file("DAT.BIN", (uint8_t *)0x1b000);
     kernel_loaded = init_load_file("ICESTAR.X", kernel);
     if (data_loaded > 0 && kernel_loaded > 0) {
-        /* Redirect the original global-state initializer at 0x80007b. */
-        *(uint32_t *)(kernel + 0x7c) =
-            (uint32_t)(uintptr_t)kernel_init_global_state - 0x800080;
-        /* Redirect the original API table initializer at 0x800099. */
-        *(uint32_t *)(kernel + 0x9a) =
-            (uint32_t)(uintptr_t)kernel_init_api_table - 0x80009e;
-        /* Redirect the original call at 0x800085 to the recovered routine. */
-        *(uint32_t *)(kernel + 0x86) =
-            (uint32_t)(uintptr_t)kernel_init_startup_record - 0x80008a;
+        /* Recovered kernel routines are installed at their original addresses. */
         uint32_t address = *(uint32_t *)(kernel + 0x10);
         ((void (*)(void))(uintptr_t)address)();
     }

@@ -39,13 +39,12 @@ root directory and first-cluster file searches at `0x70c70` and `0x70bb0`.
 used by those searches. `make run-c-init` boots a third test image that loads
 these C routines from sectors 13 through 16 at physical address `0x60000` and
 redirects INIT's entry there. This image still loads the original INIT binary
-at `0x70000`, as well as the original kernel, drivers, and applications. It is
+at `0x70000`, as well as the patched kernel and original drivers and applications. It is
 an integration test of the rewritten startup path, not a standalone rewrite.
-The same image redirects the original kernel's call at `0x800085` to the C
-startup-record initialization in `kernel/reset.c` (original at `0x80049a`).
-It also redirects the call at `0x80007b` to the global-state initializer in
-`kernel/state.c` (original at `0x800104`). Fields that the original leaves
-untouched retain their values from `DAT.BIN`.
+The same image installs C startup-record initialization in `kernel/reset.c`
+at the original `0x80049a` and the global-state initializer in `kernel/state.c`
+at `0x800104`. Fields that the original leaves untouched retain their values
+from `DAT.BIN`.
 The verification suite executes the original x86 initializer and the C version
 against identical patterned memory and compares the entire affected region.
 The kernel function table initializer at `0x8004fa` is also recovered in
@@ -57,4 +56,28 @@ CPU feature word selects the accelerated memory operations. Unsupported
 display depths and the original unused slots preserve their previous values.
 The differential test executes the original routine and the C routine for
 six display depths, four feature words, and three memory patterns (72 cases).
-This routine is not yet installed in the boot image.
+This routine is installed at its original address in the boot image.
+
+`kernel/patches.ld` links the four recovered initializers into their original
+address intervals. Linker assertions check entry addresses and available space.
+`kernel/patches.json` declares the replaceable intervals; `tools/kernel_image.py`
+replaces those intervals and writes the equal-length kernel back along the
+existing FAT16 cluster chain. It preserves the file header, all other kernel
+bytes, directory entries, both FAT copies (including original unused-entry
+discrepancies), allocation slack, and VHD footer. INIT no longer redirects
+kernel calls into the four-sector C INIT block.
+
+Verification constructs the expected entire disk byte for byte from the
+original and the compiled boot stages and kernel intervals. Unexpected changes
+anywhere on disk fail the check. In addition to host-linked C differential
+tests, `kernel_linked_test` executes the actual fixed-address replacement
+machine code at its original addresses. Both variants cover global state,
+startup-record clearing, the API table, and all 72 service-table cases.
+
+After `make verify`, run `python3 tools/boot_smoke.py` to start QEMU with a
+temporary disk snapshot, capture `build/boot_c_init.png`, and compare the
+guest's loaded kernel intervals with the compiled patches. Inspect the image
+to confirm desktop rendering. This smoke test does not validate every driver
+or application, and unrecovered code still comes from the original disk.
+The fixed-address four-initializer image was booted on 2026-10-27: visual
+inspection confirmed the desktop, and all four guest memory intervals matched.

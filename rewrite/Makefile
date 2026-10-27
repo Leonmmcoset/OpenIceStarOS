@@ -5,6 +5,13 @@ CFLAGS := -m16 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
           -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra
 BUILD := build
 IMAGE := ../IceStarOS_x86_32M.vhd
+KERNEL_CFLAGS := -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie \
+                 -fno-stack-protector -fno-asynchronous-unwind-tables \
+                 -ffunction-sections -fdata-sections -Wall -Wextra -Werror
+KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
+                  $(BUILD)/kernel_api_table.o $(BUILD)/kernel_service_table.o
+KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
+                  $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin
 
 .PHONY: all verify run run-hybrid run-c-init
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -86,26 +93,32 @@ $(BUILD)/init_directory.o: init/directory.c init/directory.h init/entry.h | $(BU
 $(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
 
-$(BUILD)/kernel_reset.o: kernel/reset.c | $(BUILD)
-	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+$(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 
-$(BUILD)/kernel_state.o: kernel/state.c | $(BUILD)
-	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+$(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
+	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
 
-$(BUILD)/kernel_api_table.o: kernel/api_table.c | $(BUILD)
-	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
+$(BUILD)/kernel.%.bin: $(BUILD)/kernel_patch.elf
+	$(OBJCOPY) -O binary --only-section=.$* $< $@
+
+$(BUILD)/icestar_c.x: $(IMAGE) $(KERNEL_PATCHES) kernel/patches.json tools/kernel_image.py
+	python3 tools/kernel_image.py patch $(IMAGE) kernel/patches.json $(BUILD) $@
 
 $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror $^ -o $@
 
-$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/api_table.c kernel/service_table.c | $(BUILD)
+$(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/reset.c kernel/api_table.c kernel/service_table.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o $(BUILD)/kernel_api_table.o init/init.ld
-	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/kernel_reset.o $(BUILD)/kernel_state.o $(BUILD)/kernel_api_table.o
+$(BUILD)/kernel_linked_test: tests/kernel_state.c $(BUILD)/icestar_c.x | $(BUILD)
+	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/state.c kernel/reset.c kernel/api_table.c kernel/service_table.c -o $@
 
-$(BUILD)/IceStarOS_c_init.vhd: $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin
-	cp $(BUILD)/IceStarOS_c_fat16.vhd $@
+$(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
+	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
+
+$(BUILD)/IceStarOS_c_init.vhd: $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin $(BUILD)/icestar_c.x tools/kernel_image.py
+	python3 tools/kernel_image.py install $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/icestar_c.x $@
 	dd if=$(BUILD)/stage3_c_init.bin of=$@ bs=512 seek=5 count=8 conv=notrunc status=none
 	dd if=$(BUILD)/init_c.bin of=$@ bs=512 seek=13 count=4 conv=notrunc status=none
 
@@ -124,7 +137,7 @@ $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/ini
 $(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test
+verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test $(BUILD)/kernel_linked_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
@@ -132,7 +145,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	test "$$(wc -c < $(BUILD)/stage3_hybrid.bin)" -eq 4096
 	cmp -i 6656:6656 $(IMAGE) $(BUILD)/IceStarOS_c_fat16.vhd
 	test "$$(wc -c < $(BUILD)/init_c.bin)" -eq 2048
-	cmp -i 8704:8704 $(IMAGE) $(BUILD)/IceStarOS_c_init.vhd
+	python3 tools/kernel_image.py verify $(IMAGE) $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/icestar_c.x kernel/patches.json $(BUILD)
 	$(BUILD)/fat16_image $(IMAGE) $(BUILD)/init.x
 	printf '%s  %s\n' 0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007 $(BUILD)/init.x | sha256sum -c -
 	$(BUILD)/init_entry_test
@@ -143,6 +156,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/pci_test
 	$(BUILD)/kernel_reset_test
 	$(BUILD)/kernel_state_test
+	$(BUILD)/kernel_linked_test
 
 run: $(BUILD)/IceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c

@@ -1,0 +1,6 @@
+[
+  {"name": "global state", "binary": "kernel.state.bin", "start": "0x800104", "end": "0x80049a"},
+  {"name": "startup record", "binary": "kernel.reset.bin", "start": "0x80049a", "end": "0x8004fa"},
+  {"name": "API table", "binary": "kernel.api.bin", "start": "0x8004fa", "end": "0x8005aa"},
+  {"name": "service table", "binary": "kernel.services.bin", "start": "0x8005aa", "end": "0x80129e"}
+]
