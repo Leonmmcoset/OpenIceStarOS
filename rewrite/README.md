@@ -103,8 +103,21 @@ captured record even when callbacks change the shared record pointer. The
 loop uses inline `hlt` for the privileged CPU instruction.
 The two polling differential executables each cover 384 cases: all 32 event
 flag combinations, three memory patterns, and four callback mutation modes.
-The unrecovered pointer handler is replaced by an identical callback only
-inside these tests; the boot image continues to use its original implementation.
+The pointer handler is replaced by an identical callback only inside these
+polling tests, isolating its separate input and privileged-instruction behavior.
 The twelve-interval image reached the desktop on 2026-10-27. QEMU reported
 `EIP=0x8012d1, HLT=1`, confirming execution of the C-generated event loop,
 and all twelve installed intervals matched the guest memory dump.
+
+`kernel/pointer.c` recovers mouse input processing at `0x801454..0x801632`.
+It drains the original byte queue and packet decoder, preserves wrapped DWORD
+coordinate arithmetic and signed clipping, and retains the original press,
+release, drag, and click timing rules. The event is dispatched once after
+draining the queue when the cursor enables dispatch; the captured record is
+cleared even if a callback changes global pointers. The two pointer differential
+executables each compare 5,760 cases against original machine code, including
+partial packets, all decoder phases, queue wrapping, coordinate and timer
+boundaries, cursor enablement, and callback mutations. Only interrupt flag
+helpers use identical test stubs; the original queue and decoder execute.
+The thirteen-interval image reached the desktop on 2026-10-27, and every
+compiled interval matched the guest memory dump.

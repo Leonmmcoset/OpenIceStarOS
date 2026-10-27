@@ -10,5 +10,6 @@
   {"name": "request dispatch", "binary": "kernel.dispatch_request.bin", "start": "0x8013aa", "end": "0x8013f4"},
   {"name": "dispatch slot 1", "binary": "kernel.dispatch_slot1.bin", "start": "0x8013f4", "end": "0x801414"},
   {"name": "dispatch slot 2", "binary": "kernel.dispatch_slot2.bin", "start": "0x801414", "end": "0x801434"},
-  {"name": "dispatch slot 3", "binary": "kernel.dispatch_slot3.bin", "start": "0x801434", "end": "0x801454"}
+  {"name": "dispatch slot 3", "binary": "kernel.dispatch_slot3.bin", "start": "0x801434", "end": "0x801454"},
+  {"name": "pointer input", "binary": "kernel.pointer_input.bin", "start": "0x801454", "end": "0x801632"}
 ]

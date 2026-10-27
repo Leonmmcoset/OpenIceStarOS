@@ -3,6 +3,11 @@ ENTRY(kernel_init_global_state)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_queue_available = 0x812f72);
 PROVIDE(kernel_input_available = 0x819e44);
+PROVIDE(kernel_queue_read = 0x812f2c);
+PROVIDE(kernel_decode_pointer = 0x812f96);
+PROVIDE(kernel_read_flags = 0x81a24a);
+PROVIDE(kernel_disable_interrupts = 0x81a242);
+PROVIDE(kernel_write_flags = 0x81a24d);
 SECTIONS
 {
     .state 0x800104 : SUBALIGN(1) {
@@ -69,6 +74,11 @@ SECTIONS
     }
     ASSERT(kernel_dispatch_slot3 == 0x801434, "slot 3 entry moved")
     ASSERT(ADDR(.dispatch_slot3) + SIZEOF(.dispatch_slot3) <= 0x801454, "slot 3 overflow")
+    .pointer_input 0x801454 : SUBALIGN(1) {
+        *kernel_pointer.o(.text.kernel_handle_pointer_input)
+    }
+    ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
+    ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
