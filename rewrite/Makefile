@@ -26,7 +26,8 @@ KERNEL_OBJECTS := $(BUILD)/kernel_state.o $(BUILD)/kernel_reset.o \
                   $(BUILD)/kernel_surface_present.o $(BUILD)/kernel_surface_draw.o \
                   $(BUILD)/kernel_surface_alpha.o $(BUILD)/kernel_surface_draw32.o \
                   $(BUILD)/kernel_surface_move.o $(BUILD)/kernel_surface_scale.o \
-                  $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o
+                  $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o \
+                  $(BUILD)/kernel_firmware_scan.o
 KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -93,7 +94,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.surface_order_remove.bin $(BUILD)/kernel.surface_order_append.bin \
                   $(BUILD)/kernel.surface_order_front.bin $(BUILD)/kernel.surface_order_move.bin \
                   $(BUILD)/kernel.cursor_show.bin $(BUILD)/kernel.cursor_hide.bin \
-                  $(BUILD)/kernel.cursor_select.bin $(BUILD)/kernel.cursor_move.bin
+                  $(BUILD)/kernel.cursor_select.bin $(BUILD)/kernel.cursor_move.bin \
+                  $(BUILD)/kernel.scan_acpi.bin $(BUILD)/kernel.scan_pmid.bin
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
@@ -218,6 +220,9 @@ $(BUILD)/kernel_surface_order.o: kernel/surface_order.c kernel/surface_order.h k
 
 $(BUILD)/kernel_cursor.o: kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_firmware_scan.o: kernel/firmware_scan.c kernel/firmware_scan.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 	$(LD) -m elf_i386 -T kernel/patches.ld -Map=$(BUILD)/kernel_patch.map -o $@ $(KERNEL_OBJECTS)
@@ -586,6 +591,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	$(BUILD)/kernel_surface_order_linked_test
 	$(BUILD)/kernel_cursor_test
 	$(BUILD)/kernel_cursor_linked_test
+	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
 	python3 tests/snake.py
@@ -742,6 +748,10 @@ smoke-cursor: $(BUILD)/IceStarOS_c_apps.vhd
 .PHONY: test-firmware-scan-preview
 test-firmware-scan-preview: $(BUILD)/icestar_c.x
 	python3 tests/firmware_scan_qemu.py
+
+.PHONY: test-firmware-scan
+test-firmware-scan: $(BUILD)/icestar_c.x
+	python3 tests/firmware_scan_qemu.py --installed
 
 smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check

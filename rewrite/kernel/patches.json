@@ -45,6 +45,8 @@
   {"name": "task deletion", "binary": "kernel.task_delete.bin", "start": "0x814e54", "end": "0x815002"},
   {"name": "thread creation", "binary": "kernel.task_create_thread.bin", "start": "0x815002", "end": "0x8150aa"},
   {"name": "task active query", "binary": "kernel.task_active.bin", "start": "0x8150aa", "end": "0x815106"},
+  {"name": "ACPI firmware scan", "binary": "kernel.scan_acpi.bin", "start": "0x815106", "end": "0x8152cc"},
+  {"name": "PMID firmware scan", "binary": "kernel.scan_pmid.bin", "start": "0x8152cc", "end": "0x815320"},
   {"name": "memory probe wrapper", "binary": "kernel.memory_probe.bin", "start": "0x815320", "end": "0x8153d4"},
   {"name": "heap initialization", "binary": "kernel.heap_init.bin", "start": "0x8153d4", "end": "0x815464"},
   {"name": "heap allocation", "binary": "kernel.allocate.bin", "start": "0x815464", "end": "0x8155ca"},

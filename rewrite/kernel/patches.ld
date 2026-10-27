@@ -176,6 +176,10 @@ SECTIONS
     ASSERT(kernel_create_thread == 0x815002 && ADDR(.task_create_thread) + SIZEOF(.task_create_thread) <= 0x8150aa, "thread creation overflow")
     .task_active 0x8150aa : { *kernel_task_lifecycle.o(.text.kernel_task_is_active) }
     ASSERT(kernel_task_is_active == 0x8150aa && ADDR(.task_active) + SIZEOF(.task_active) <= 0x815106, "task state query overflow")
+    .scan_acpi 0x815106 : { *kernel_firmware_scan.o(.text.kernel_scan_acpi) }
+    ASSERT(kernel_scan_acpi == 0x815106 && ADDR(.scan_acpi) + SIZEOF(.scan_acpi) <= 0x8152cc, "ACPI scan overflow")
+    .scan_pmid 0x8152cc : { *kernel_firmware_scan.o(.text.kernel_scan_pmid) }
+    ASSERT(kernel_scan_pmid == 0x8152cc && ADDR(.scan_pmid) + SIZEOF(.scan_pmid) <= 0x815320, "PMID scan overflow")
     .memory_probe 0x815320 : { *kernel_memory_init.o(.text.kernel_probe_memory) }
     ASSERT(kernel_probe_memory == 0x815320 && ADDR(.memory_probe) + SIZEOF(.memory_probe) <= 0x8153d4, "memory probe overflow")
     .heap_init 0x8153d4 : { *kernel_memory_init.o(.text.kernel_init_heap) }

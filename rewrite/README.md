@@ -1866,3 +1866,26 @@ Reproduction: `python3 tests/firmware_scan_qemu.py` (QEMU exit 33 means
 success). Evidence: `build/firmware_scan_preview_build.log`,
 `build/firmware_scan_preview_qemu.log`, `build/firmware_scan_preview_summary.json`.
 The installed manifest still contains 222 intervals until integration below.
+
+### Firmware scan installation (2026-10-27)
+
+The two firmware routines are installed at their original entries, bringing
+the kernel manifest to 224 intervals. The ACPI body uses 253 of 454 bytes;
+PMID uses 50 of 84 bytes. Linker assertions enforce entry addresses and slot
+bounds. The module uses `-fno-delete-null-pointer-checks` because the original
+PMID scan intentionally starts at address zero. Both startup callers ignore
+EAX, so the recovered entry points expose void interfaces.
+
+`make test-firmware-scan` passes all 320 scenarios with 960 original,
+standalone-C and installed-C executions. Full-disk verification passes for
+the init image and both application images. All 222 previously installed
+intervals remain byte-identical; all 521 changed kernel bytes are confined
+to `0x815106..0x815320`. Image hashes and slot sizes are recorded in
+`build/firmware_scan_install_images.json`. The application image SHA-256 is
+`20d0c0320627eab6c329d2b9f4ab5c61a773f8f57195938e07cf46673ce23dfc`.
+
+Evidence: `build/firmware_scan_install_build.log`,
+`build/firmware_scan_install_test.log`, `build/firmware_scan_installed_qemu.log`,
+`build/firmware_scan_installed_summary.json`. The installed QEMU fixture is
+also included in `make verify`. This records focused installation checks;
+production boot coverage and a full 224-interval regression follow separately.
