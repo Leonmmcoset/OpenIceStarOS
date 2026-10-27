@@ -336,3 +336,23 @@ code or application state. Evidence is in `build/color_smoke.json` and
 and Color smoke test passed on 2026-10-27; all three screenshots were inspected.
 These applications still run on the partially recovered kernel and original
 desktop, window system, drivers, and CMD.
+
+`apps/mov.c` recovers MOV.X's entry/animation loop at original offset `0x40`
+and close handler at `0x262`. Its eight reachable SDK boundaries compile from
+`legacy_api.c` and `legacy_image_api.c`; unused function sections are discarded.
+`make build/mov.x` links only recovered C code and produces the original
+type-`0x0a`, 14,932-byte file contract, 16 relocations, 16-byte frame-handle
+BSS at `0x3a14`, 16 stack pages, and byte-identical GBK title and four resource
+paths at `0x3990`. The four original JPEG files remain external resources.
+
+`tests/mov.py` executes both X images, including their unmodified SDK wrappers,
+at aligned and unaligned load bases. Its 40,960 differential cases compare
+ordered service calls, selected service-table targets, strings and pointer
+offsets, full BSS, window records, display/palette memory, global pointers,
+timer state, and the close handler's returned bits. Cases cover signed and
+wrapping window handles, negative/odd display dimensions, unsigned timer
+boundaries and wraparound, multiple frame cycles, callbacks that change
+frames/ticks/window records/service tables, and close dispatch during polling.
+The original behavior of entering the animation loop after window-creation
+failure is preserved. This checkpoint builds and differentially tests MOV;
+installation and real guest execution are a separate integration step.
