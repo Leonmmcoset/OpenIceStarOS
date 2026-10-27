@@ -1039,3 +1039,23 @@ RTC status C's volatile low byte is excluded only from callback-entry EAX
 comparison; its upper bytes and the complete entry code remain checked.
 The fixture runs without paging and does not boot or modify the VHD. Logs:
 `build/interrupt_entries_qemu_build.log`, `build/interrupt_entries_qemu.log`.
+
+`kernel/interrupt_callbacks.c/.h` recovers the five C IRQ callbacks at
+`0x813a8c..0x813b70`: RTC clock sampling/event publication, keyboard byte
+enqueue/event publication, IRQ5 DMA/DSP acknowledgement, unused IRQ9/10/11,
+and mouse byte enqueue/event publication. Keyboard and mouse capture both
+pointers before port I/O and ignore the queue writer's result; RTC reads
+its event pointer after clock sampling. The preview differential test passes
+30,720 original/C/oracle cases, covering every byte, three memory patterns,
+eight dependency-mutation/rejection combinations, complete 12,288-byte shared
+memory comparisons and ordered I/O/queue events. Log:
+`build/interrupt_callbacks_preview.log`.
+
+`kernel/cmos_clock.c` recovers the hardware leaf at `0x82ae84..0x82af08` as
+132 byte-identical symbolic-assembly bytes. It retains GS save/selector/restore,
+CMOS index order 0/2/4/6/7/8/9/0x32, and raw stores at `0x1b004..0x1b00b`.
+`python3 tests/cmos_clock_exact.py` extracts the original directly from the
+SHA-verified VHD before comparing. No UIP wait, BCD conversion, rollover
+retry or index/NMI restoration is introduced. These six functions are not
+installed by this preview step; fixed-address installation and privileged
+execution checks follow separately.
