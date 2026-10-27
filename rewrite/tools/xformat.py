@@ -1,6 +1,8 @@
 """Build IceStarOS flat X applications from linked ELF32 and retained relocations.
 
-Loader evidence: kernel 0x8023df..0x8024aa. Each relocation names a DWORD
+Loader evidence: kernel 0x80229a..0x8024aa. Types 0x0a and 0x50 use the same
+relocation and clear algorithm, with different task startup selectors.
+Each relocation names a DWORD
 to which the load base is added. The table is then erased together with BSS
 and stack storage. The X entry remains an offset; header +0x1c holds the base.
 """
@@ -27,7 +29,7 @@ class XImage:
         self.header = struct.unpack_from("<16I", data)
         kind, size, _, pages, entry = self.header[:5]
         count, offset = self.header[8:10]
-        require(kind == 0x50, "expected application type 0x50")
+        require(kind in (0x0a, 0x50), "expected application type 0x0a or 0x50")
         require(size == len(data), "X file size mismatch")
         require(64 <= entry < offset <= size, "invalid X entry or relocation offset")
         require(count <= (size - offset) // 4, "truncated X relocation table")
@@ -89,7 +91,8 @@ class Elf32:
         require(len(content) % 16 == 0, "truncated ELF symbols")
         return [struct.unpack_from("<IIIBBH", content, i) for i in range(0, len(content), 16)]
 
-    def build_x(self, stack_pages=16, file_size=None):
+    def build_x(self, stack_pages=16, file_size=None, kind=0x50):
+        require(kind in (0x0a, 0x50), "unsupported X application type")
         allocated = [(i, s) for i, s in enumerate(self.sections) if s[2] & 2 and s[5]]
         bss = [s for _, s in allocated if s[1] == 8]
         require(len(bss) == 1, "expected one nonempty BSS section")
@@ -129,15 +132,15 @@ class Elf32:
             require(len(content) % 8 == 0, "truncated ELF relocations")
             for cursor in range(0, len(content), 8):
                 address, info = struct.unpack_from("<II", content, cursor)
-                kind, symbol_index = info & 255, info >> 8
+                relocation_kind, symbol_index = info & 255, info >> 8
                 require(symbol_index < len(table), "invalid ELF relocation symbol")
                 symbol = table[symbol_index]
                 require(0 < symbol[5] < len(self.sections) and self.sections[symbol[5]][2] & 2,
                         "ELF relocation references an external or absolute symbol")
                 require(target[3] <= address and address + 4 <= target[3] + target[5],
                         "ELF relocation outside target section")
-                require(kind in (1, 2), f"unsupported i386 relocation type {kind}")
-                if kind == 1:  # R_386_32; PC32 already remains correct after moving.
+                require(relocation_kind in (1, 2), f"unsupported i386 relocation type {relocation_kind}")
+                if relocation_kind == 1:  # R_386_32; PC32 already remains correct after moving.
                     require(address + 4 <= bss_start, "ELF absolute relocation is not initialized")
                     relocations.append(address)
         relocations.sort()
@@ -148,10 +151,10 @@ class Elf32:
         require(0 < stack_pages <= 4096, "invalid stack page count")
         payload += struct.pack(f"<{len(relocations)}I", *relocations)
         payload += bytes(size - len(payload))
-        struct.pack_into("<16I", payload, 0, 0x50, size, 0, stack_pages,
+        struct.pack_into("<16I", payload, 0, kind, size, 0, stack_pages,
                          self.entry, 0, 0, 0, len(relocations), bss_start, 0, bss_size, 0, 0, 0, 0)
         XImage(payload)
-        return bytes(payload), {"entry": self.entry, "file_size": size, "bss_start": bss_start,
+        return bytes(payload), {"kind": kind, "entry": self.entry, "file_size": size, "bss_start": bss_start,
                                 "bss_size": bss_size, "stack_pages": stack_pages,
                                 "relocations": relocations, "symbols": symbols}
 
@@ -163,8 +166,10 @@ def main():
     parser.add_argument("--metadata", type=Path)
     parser.add_argument("--file-size", type=lambda value: int(value, 0))
     parser.add_argument("--stack-pages", type=int, default=16)
+    parser.add_argument("--kind", type=lambda value: int(value, 0), default=0x50,
+                        choices=(0x0a, 0x50), help="preserve the original task startup type")
     args = parser.parse_args()
-    data, metadata = Elf32(args.elf.read_bytes()).build_x(args.stack_pages, args.file_size)
+    data, metadata = Elf32(args.elf.read_bytes()).build_x(args.stack_pages, args.file_size, args.kind)
     args.output.write_bytes(data)
     if args.metadata:
         args.metadata.write_text(json.dumps(metadata, indent=2) + "\n")

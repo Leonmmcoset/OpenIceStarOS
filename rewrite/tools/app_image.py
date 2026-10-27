@@ -22,8 +22,9 @@ def installed(source, manifest, build):
                 "original application SHA-256 mismatch: " + app["name"])
         replacement = (Path(build) / app["binary"]).read_bytes()
         before, after = XImage(original), XImage(replacement)
-        require((before.bss_size, before.header[3]) == (after.bss_size, after.header[3]),
-                "application memory/stack contract changed: " + app["name"])
+        require((before.header[0], before.bss_size, before.header[3]) ==
+                (after.header[0], after.bss_size, after.header[3]),
+                "application type/memory/stack contract changed: " + app["name"])
         result = disk.replace_file(replacement, *path)
         require(Fat16(result).read_file(*path) == replacement, "installed application mismatch")
     return bytes(result)

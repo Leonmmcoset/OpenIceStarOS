@@ -1,7 +1,9 @@
 """Verify exact FAT16 application replacement and preservation of all other bytes."""
 
 from pathlib import Path
+import json
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +55,16 @@ class ApplicationImageTests(unittest.TestCase):
         for path in ((), (b"bad",), (b"MISSING X  ",)):
             with self.assertRaises(ValueError):
                 disk.file_extents(*path)
+
+    def test_reject_changed_application_type(self):
+        replacement = bytearray((self.build / "snake.x").read_bytes())
+        replacement[0] = 0x0a
+        manifest = json.loads(self.manifest.read_text())
+        with tempfile.TemporaryDirectory(prefix="icestar-app-type-") as temporary:
+            build = Path(temporary)
+            (build / manifest[0]["binary"]).write_bytes(replacement)
+            with self.assertRaisesRegex(ValueError, "application type/memory/stack contract changed"):
+                installed(self.source, self.manifest, build)
 
 
 if __name__ == "__main__":

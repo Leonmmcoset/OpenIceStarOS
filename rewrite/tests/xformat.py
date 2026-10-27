@@ -53,16 +53,33 @@ SECTIONS {
 
     def test_independent_links(self):
         self.assertGreaterEqual(len(self.metadata["relocations"]), 4)
-        for base in (0x900000, 0x44a9010, 0x713001):
-            memory = XImage(self.packed).load(base)
-            linked = self.link(base)
-            for section in linked.sections:
-                if section[2] & 2 and section[1] == 1:
-                    offset = section[3] - base
-                    self.assertEqual(memory[offset:offset + section[5]],
-                                     linked.data[section[4]:section[4] + section[5]])
-            self.assertEqual(struct.unpack_from("<I", memory, 0x1c)[0], base)
-            self.assertFalse(any(memory[self.metadata["bss_start"]:]))
+        for kind in (0x0a, 0x50):
+            packed, metadata = self.elf.build_x(kind=kind)
+            self.assertEqual(struct.unpack_from("<I", packed)[0], kind)
+            self.assertEqual(metadata["kind"], kind)
+            for base in (0x900000, 0x44a9010, 0x713001):
+                memory = XImage(packed).load(base)
+                linked = self.link(base)
+                for section in linked.sections:
+                    if section[2] & 2 and section[1] == 1:
+                        offset = section[3] - base
+                        self.assertEqual(memory[offset:offset + section[5]],
+                                         linked.data[section[4]:section[4] + section[5]])
+                self.assertEqual(struct.unpack_from("<I", memory, 0x1c)[0], base)
+                self.assertFalse(any(memory[metadata["bss_start"]:]))
+
+    def test_original_color_header(self):
+        root = Path(__file__).resolve().parents[2]
+        data = Fat16((root / "IceStarOS_x86_32M.vhd").read_bytes()).read_file(
+            b"ICESTAR    ", b"COLOR   X  ")
+        original = XImage(data)
+        self.assertEqual(original.header[0], 0x0a)
+        self.assertEqual((original.entry, original.bss_start, original.bss_size), (0x40, 0x3898, 16))
+        self.assertEqual(len(original.relocations), 7)
+        memory = original.load(0x12345000)
+        self.assertEqual(struct.unpack_from("<I", memory, 0x51)[0], 0x12348890)
+        self.assertEqual(struct.unpack_from("<I", memory, 0x105)[0], 0x1b0e0)
+        self.assertFalse(any(memory[0x3898:]))
 
     def test_original_snake_header(self):
         root = Path(__file__).resolve().parents[2]
@@ -79,13 +96,15 @@ SECTIONS {
         for data in (b"", self.packed[:-1], b"\0" * 64):
             with self.assertRaises(ValueError):
                 XImage(data)
-        for offset, value in ((0x10, 0), (0x20, 0xffffffff), (0x24, 63)):
+        for offset, value in ((0, 0x51), (0x10, 0), (0x20, 0xffffffff), (0x24, 63)):
             data = bytearray(self.packed)
             struct.pack_into("<I", data, offset, value)
             with self.assertRaises(ValueError):
                 XImage(data)
         with self.assertRaises(ValueError):
             self.elf.build_x(file_size=64)
+        with self.assertRaises(ValueError):
+            self.elf.build_x(kind=0x51)
         data = bytearray(self.packed)
         first = self.metadata["bss_start"]
         data[first + 4:first + 8] = data[first:first + 4]

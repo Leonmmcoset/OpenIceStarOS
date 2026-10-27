@@ -289,3 +289,12 @@ emulated Num Lock key before testing the scan-only arrow path. It changes no
 guest code or game state. Evidence and screenshots are written to
 `build/snake_smoke.json` and `build/snake_*.png`. The game still depends on the
 partially recovered kernel, original window system, desktop, and CMD.
+
+The packager also accepts `--kind 0x0a` for the older shared-address-space
+application format used by COLOR.X. The original kernel loader at
+`0x80229a..0x8023ab` performs the same base relocation, header update, and
+relocation/BSS/stack clearing as its `0x50` branch, then uses a different task
+startup path. Both types are compared with independent ELF links at three
+load bases. The original COLOR.X header, seven relocation entries, and
+unrelocated palette-pointer address are checked directly. Installation now
+requires preserving application type in addition to BSS size and stack pages.
