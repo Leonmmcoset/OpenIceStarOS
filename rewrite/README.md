@@ -2378,3 +2378,21 @@ Evidence: `build/clock_display_preview_summary.json`,
 `build/clock_display_preview_test.log`, `build/clock_display_calls.h` and
 `build/clock_display_preview.elf`. Production images remain at 239 intervals
 until their ongoing full regression completes.
+
+### Timer interrupt-flag QEMU checkpoint (2026-10-28)
+
+`python3 tests/timer_flags_qemu.py` passes 48 scenarios / 144 original-x86,
+ordinary-C and fixed-address-C executions at CPL0 in 0.086 seconds (QEMU
+exit 33). The CLI/PUSHFL/POPFL helpers execute unmodified; only allocator
+entrypoints are redirected. Cases cover initial IF=0/1, four delay boundaries,
+new slots, hole reuse, full tables, negative high-water counts, allocation
+failure and deletion of positive/zero/negative pointers. The fixture checks
+that allocator/free callbacks observe IF=0, creation failures leave IF cleared,
+and successful creation and every deletion restore the incoming IF.
+
+PIC IRQs are masked: this verifies real interrupt-flag instructions and the
+observed IF contract, not IRQ delivery or every arithmetic EFLAGS bit. The
+independent memory/callback/ABI fixture remains the broader timer test.
+Evidence: `build/timer_flags_preview_summary.json`,
+`build/timer_flags_preview_test.log`, `build/timer_flags_preview_qemu.log`
+and `build/timer_flags_qemu.elf`. Production images remain unchanged.
