@@ -3613,3 +3613,40 @@ Kernel SHA-256:
 Combined-application disk SHA-256:
 `fab48e34cc985e2cea1fb71e08bb97ae9915a28e63c5f0951b1fbf57926a9948`.
 Complete boot/kernel/application/driver source recovery remains unfinished.
+
+### Periodic-color rectangle source checkpoint (2026-10-28)
+
+`kernel/raster_gradient.c/.h` recovers the unclipped 32-bit rectangle at
+`0x81bf50..0x81c058`. Its color increments after every caller-selected number
+of pixels. The counter persists across rows; color, increment and X extrema
+restart from live incoming words on each row. Y extrema remain captured.
+The period remains live after each store, so aliasing output can alter the
+current iteration's increment decision. Arithmetic wraps like the original.
+There is no clipping or added surface-height read. The C body uses 168 of
+264 available bytes.
+
+`python3 tests/kernel_raster_gradient.py` passes 23,956 original/ordinary-C/
+fixed-address-C scenarios / 71,868 executions (4.611 seconds), plus 1,536
+real initialized-table scenarios / 3,072 executions (0.257 seconds). The
+independent widened-coordinate, byte-address oracle compares all 32 KiB of
+mapped state, eight live incoming words, EAX, stack canaries and saved
+registers. It observes 96,741 stores, including 260 metadata and 848 caller
+stores, 11,378 row boundaries with a nonzero counter, 120 rows recapturing
+mutated geometry/color/increment and 144 live period changes. Cases include
+unaligned records, wrapped IDs, signed geometry and dimension extremes,
+reversed/degenerate rectangles, overflowed colors, zero periods and periods
+that do not divide row lengths. The bounded oracle excludes 3,824 large or
+unmapped scenarios; original unchecked behavior remains in source.
+
+The initialized-table fixture calls the real function at table offset
+`0x208`, for six display depths and both CPU acceleration choices. It compares
+all 320 table words and performs no CALL substitution. The shared raster ABI
+fixture now supports eight arguments as well as six; the default six-argument
+assembly bytes exactly match their predecessor, and the installed filled-circle
+fixture passes again with the generalized fixture.
+
+Evidence: `build/raster_gradient_direct_preview_summary.json`,
+`build/raster_gradient_chain_preview_summary.json`,
+`build/raster_gradient_preview_test.log` and
+`build/raster_disc_shared_fixture_check.log`. Production remains at 293
+intervals at this checkpoint. Complete OS source recovery remains unfinished.

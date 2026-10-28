@@ -1,7 +1,10 @@
+#ifndef RASTER_ARGUMENT_WORDS
+#define RASTER_ARGUMENT_WORDS 6
+#endif
 .text
 .globl raster_checked_call
 .type raster_checked_call, @function
-/* Six cdecl arguments live at 0x640f60, permitting deterministic aliases. */
+/* Cdecl arguments live at 0x640f60, permitting deterministic aliases. */
 raster_checked_call:
     pushl %ebp
     pushl %ebx
@@ -10,9 +13,15 @@ raster_checked_call:
     movl %esp, raster_outer_stack
     movl 20(%esp), %eax
     movl 24(%esp), %edx
-    movl $0x640f80, %esp
+    movl $(0x640f60+RASTER_ARGUMENT_WORDS*4+8), %esp
     pushl $0x13579bdf
     pushl $0x2468ace0
+#if RASTER_ARGUMENT_WORDS == 8
+    pushl 28(%edx)
+    pushl 24(%edx)
+#elif RASTER_ARGUMENT_WORDS != 6
+#error Unsupported raster argument count
+#endif
     pushl 20(%edx)
     pushl 16(%edx)
     pushl 12(%edx)
@@ -27,9 +36,9 @@ raster_checked_call:
     movl %eax, raster_raw_result
     cmpl $0x640f60, %esp
     jne 1f
-    cmpl $0x2468ace0, 0x640f78
+    cmpl $0x2468ace0, (0x640f60+RASTER_ARGUMENT_WORDS*4)
     jne 1f
-    cmpl $0x13579bdf, 0x640f7c
+    cmpl $0x13579bdf, (0x640f64+RASTER_ARGUMENT_WORDS*4)
     jne 1f
     cmpl $0x11223344, %ebp
     jne 1f
@@ -48,7 +57,7 @@ raster_checked_call:
     movl %ecx, (%edi)
     addl $4, %edi
     movl $0x640f60, %esi
-    movl $6, %ecx
+    movl $RASTER_ARGUMENT_WORDS, %ecx
     cld
     rep movsl
     popl %edi

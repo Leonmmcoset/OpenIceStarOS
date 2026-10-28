@@ -1,13 +1,16 @@
 /* Shared mapped-memory and ABI machinery for direct raster execution. */
 #include <stdint.h>
+#ifndef RASTER_ARGUMENT_WORDS
+#define RASTER_ARGUMENT_WORDS 6
+#endif
 #define TABLE 0x4ff000u
 #define ORDER 0x50f000u
 #define DATA 0x600000u
 #define ARGUMENTS 0x640f60u
 #define REGION 32768u
 #define PRINT(s) syscall3(4,1,(uint32_t)(s),sizeof(s)-1)
-static uint8_t initial[REGION+24],expected[REGION+24];
-static uint32_t args[6],stage,scenario,implementation,cases,skipped;
+static uint8_t initial[REGION+RASTER_ARGUMENT_WORDS*4],expected[REGION+RASTER_ARGUMENT_WORDS*4];
+static uint32_t args[RASTER_ARGUMENT_WORDS],stage,scenario,implementation,cases,skipped;
 static uint32_t random_state=0x79268314u;
 static const uint32_t values[]={0,1,2,3,7,31,255,256,0x10000,0x20000000,
     0x40000001,0x7fffffff,0x80000000,0x80000001,0xfffffffe,0xffffffff};
@@ -39,7 +42,7 @@ static uint32_t index_of(uint32_t a)
     if(a-TABLE<8192u)return a-TABLE;
     if(a-ORDER<8192u)return 8192u+a-ORDER;
     if(a-DATA<16384u)return 16384u+a-DATA;
-    if(a-ARGUMENTS<24u)return REGION+a-ARGUMENTS;
+    if(a-ARGUMENTS<RASTER_ARGUMENT_WORDS*4u)return REGION+a-ARGUMENTS;
     return UINT32_MAX;
 }
 static uint32_t get32(const uint8_t *m,uint32_t a)
@@ -58,8 +61,8 @@ static void pattern(void)
 {for(uint32_t i=0;i<REGION;++i)initial[i]=(uint8_t)(i*37u+(i/32u)*11u+cases*83u);}
 static void begin_oracle(void)
 {
-    for(uint32_t i=0;i<6;++i)REQUIRE(put(initial,ARGUMENTS+i*4u,args[i],4),"fixture arguments");
-    for(uint32_t i=0;i<REGION+24;++i)expected[i]=initial[i];
+    for(uint32_t i=0;i<RASTER_ARGUMENT_WORDS;++i)REQUIRE(put(initial,ARGUMENTS+i*4u,args[i],4),"fixture arguments");
+    for(uint32_t i=0;i<REGION+RASTER_ARGUMENT_WORDS*4u;++i)expected[i]=initial[i];
 }
 static void reset(void)
 {
@@ -68,14 +71,14 @@ static void reset(void)
         *(volatile uint8_t *)a=initial[i];
     }
 }
-static void compare(uint32_t actual[7],uint32_t value)
+static void compare(uint32_t actual[RASTER_ARGUMENT_WORDS+1],uint32_t value)
 {
     REQUIRE(actual[0]==value,"raw return mismatch");
     for(uint32_t i=0;i<REGION;++i){
         uint32_t a=i<8192u?TABLE+i:i<16384u?ORDER+i-8192u:DATA+i-16384u;
         REQUIRE(*(volatile uint8_t *)a==expected[i],"32 KiB memory oracle mismatch");
     }
-    for(uint32_t i=0;i<6;++i)REQUIRE(actual[i+1]==get32(expected,ARGUMENTS+i*4u),"live incoming word mismatch");
+    for(uint32_t i=0;i<RASTER_ARGUMENT_WORDS;++i)REQUIRE(actual[i+1]==get32(expected,ARGUMENTS+i*4u),"live incoming word mismatch");
 }
 static void mappings(void)
 {REQUIRE(map(TABLE,8192)&&map(ORDER,8192)&&map(DATA,16384)&&map(0x640000,4096)&&map(0x800000,0x40000)&&map(0x900000,0x40000),"mmap");}
