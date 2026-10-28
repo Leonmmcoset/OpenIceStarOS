@@ -2537,3 +2537,36 @@ Combined-application disk SHA-256:
 `66c369d8cb656f8f8c7df8ba41672858993f9598f37cff690a5154458c3ebd90`.
 This is focused and boot coverage; a complete 255-interval regression has not
 been run. The latest complete regression remains the 239-interval checkpoint.
+
+### File icon source checkpoint (2026-10-28)
+
+`kernel/x_icon.c/.h` recovers the unchecked X-header icon pointer accessor
+at `0x812c0e..0x812c3e`. A zero DWORD at header +40 returns zero; a nonzero
+offset is added with 32-bit wrapping and without magic, bounds or null checks.
+`kernel/icon_files.c/.h` recovers the file/frame wrapper at
+`0x82b0a0..0x82b112` and suffix-selecting wrapper at `0x82b112..0x82b20c`.
+Only the second and third path bytes select absolute versus relative loading.
+The automatic API tests uppercase `.ICO` only at lengths greater than four,
+and uppercase `.X` only at lengths greater than two, after loading the file.
+Both wrappers draw even when their selected icon pointer is null, then free a
+nonzero loaded file. The automatic API returns the selected pointer after
+freeing its backing allocation. These original behaviors are retained.
+
+`python3 tests/kernel_icon_files.py` passes 336,248 scenarios / 1,008,744
+original-x86, ordinary-C and fixed-address-C executions in 10.414 seconds.
+Coverage includes all low/high WORD icon offsets, unaligned headers, wrapped
+pointer sums, all 65,536 path lookahead pairs through both wrappers, every
+first path byte, every final two-byte pair and each possible ICO suffix byte,
+short/case-sensitive names, callback mutations and forged wrapped lengths.
+Eight original X headers include four real embedded ICO directories (CMD,
+TASKMGR, PICVIEW and DESKTOP). Return values, ordered boundary calls, all 8 KiB
+of fixture memory, callee-saved registers, stack balance and canaries agree.
+
+The wrapper fixture substitutes filesystem, string-length, X-header, drawing
+and free callbacks; the real X-header routine is tested separately without
+substitution. It does not execute the null-buffer X-header access, filesystem
+I/O or image decoding. Bodies fit their original slots at 20/48, 77/114 and
+165/250 bytes. Evidence: `build/icon_files_preview_test.log`,
+`build/icon_files_preview_summary.json`, `build/icon_files_calls.h`,
+`build/icon_files_resources.h` and `build/icon_files_preview.elf`.
+All four production hashes remain unchanged at the 255-interval installation.
