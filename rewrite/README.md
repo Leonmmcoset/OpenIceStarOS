@@ -2,7 +2,7 @@
 
 This directory is an incomplete C recovery integrated into copies of the
 original VHD. The current build installs 273 declared kernel intervals and
-four rebuilt applications. It still requires unrecovered original components;
+five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
 verification checkpoint.
@@ -3223,3 +3223,40 @@ Evidence: `build/clock_differential_summary.json`, `build/clock.original.x`,
 `build/clock.x`. At this source checkpoint the production manifest and image
 still contain four rebuilt applications; CLOCK is not installed yet. The
 complete OS recovery remains unfinished.
+
+### CLOCK installation and real-guest validation (2026-10-28)
+
+CLOCK is now the fifth application in `apps/images.json` and the combined
+image. Restoring only its original file bytes reproduces the previous
+four-application disk exactly: 14,223 disk bytes changed, all inside the
+existing CLOCK extent. The kernel remains byte-identical at 273 intervals.
+The inventory now records five rebuilt paths, two partial programs and 32
+unrecovered paths. The original VHD is unchanged.
+
+`tools/clock_smoke.py`, invoked by `make smoke-clock`, launches the real C X
+file from CMD using PS/2 input without diagnostic guest code or memory writes.
+The successful QEMU run also includes entry, heap and task checks. It verifies
+all 24 relocations against guest code/data, loader-cleared BSS, the window
+pool, surface, registered close callback, task and 200/100/400/380 geometry.
+Three distinct complete frames at three packed times contain the rim, all
+twelve labels, center and cleared background; representative screenshots were
+visually inspected. The second hand moves. A PS/2 click at 587/112 closes the
+window and removes the task. A subsequent real CMD `cpuid` returns to its
+prompt; its screenshot was visually inspected. This verifies observed
+rendering and motion, not a per-pixel oracle for every possible guest time.
+
+Application regressions pass Snake (258,392 pairs), Color (2,304), MOV
+(40,960), STARSCR (75,520) and CLOCK (55,576), along with four X-format tests,
+five disk-installation tests, exact application-disk reconstruction and the
+inventory check. The kernel/INIT disk also passes complete reconstruction.
+The latest full `make verify` remains the successful 262-interval run; this
+installation has the focused and guest checks described above.
+
+Evidence: `build/clock_boot_validation.log`, `build/clock_smoke.json`,
+`build/clock_installation_summary.json`, `build/clock_kernel_disk_verify.log`,
+`build/clock_install_evidence/` and `build/clock_install_baseline/`.
+CLOCK SHA-256:
+`70a2e9ba6483f825909eab030364804863d2ecb2f60045bf561c1ef4ea72aedf`.
+Combined image SHA-256:
+`d5a2bc1764f6780ea08048ce221bc9f02721043100828b943863cf9c70225a1e`.
+The full boot/kernel/application/driver C recovery remains unfinished.

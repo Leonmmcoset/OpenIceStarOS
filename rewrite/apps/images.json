@@ -22,5 +22,11 @@
     "path": ["ICESTAR    ", "STARSCR X  "],
     "original_sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c",
     "binary": "starscr.x"
+  },
+  {
+    "name": "Clock",
+    "path": ["ICESTAR    ", "CLOCK   X  "],
+    "original_sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7",
+    "binary": "clock.x"
   }
 ]

@@ -714,6 +714,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/color.py
 	python3 tests/mov.py
 	python3 tests/starscr.py
+	python3 tests/clock.py
 	python3 tests/app_image.py
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_apps.vhd
@@ -756,6 +757,7 @@ verify: $(BUILD)/snake.x
 verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x
 verify: $(BUILD)/starscr.x
+verify: $(BUILD)/clock.x
 verify: $(BUILD)/IceStarOS_c_snake.vhd
 verify: $(BUILD)/IceStarOS_c_apps.vhd
 
@@ -840,7 +842,7 @@ $(BUILD)/clock.elf: $(BUILD)/clock.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image
 $(BUILD)/clock.x: $(BUILD)/clock.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x3cd8 --metadata $(BUILD)/clock.symbols.json
 
-$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x $(BUILD)/starscr.x apps/images.json tools/app_image.py tools/kernel_image.py
+$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x $(BUILD)/starscr.x $(BUILD)/clock.x apps/images.json tools/app_image.py tools/kernel_image.py
 	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@
 
 run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
@@ -910,6 +912,10 @@ smoke-mov: $(BUILD)/IceStarOS_c_apps.vhd
 
 smoke-starscr: $(BUILD)/IceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --starscr-check
+
+.PHONY: smoke-clock
+smoke-clock: $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/boot_smoke.py --clock-check
 
 smoke-starscr-reference:
 	python3 tools/boot_smoke.py --starscr-check --starscr-reference

@@ -20,8 +20,8 @@
     },
     "recovery": {
       "partial": 2,
-      "rebuilt": 4,
-      "unrecovered": 33
+      "rebuilt": 5,
+      "unrecovered": 32
     }
   },
   "duplicate_binaries": [
@@ -273,8 +273,13 @@
         "bss_bytes": 16
       },
       "recovery": {
-        "state": "unrecovered",
-        "sources": []
+        "state": "rebuilt",
+        "sources": [
+          "apps/clock.c",
+          "apps/clock.ld"
+        ],
+        "output": "build/clock.x",
+        "note": "Reachable application logic and required API wrappers rebuilt; the guest OS still contains original components."
       }
     },
     {

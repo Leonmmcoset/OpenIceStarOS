@@ -70,6 +70,8 @@ def main():
                         help="load the C MOV, verify its four animation frames, and close it")
     parser.add_argument("--starscr-check", action="store_true",
                         help="load the C screen saver, verify four phases, and exit with Esc")
+    parser.add_argument("--clock-check", action="store_true",
+                        help="load C CLOCK, verify changing hands/face, close it and reuse CMD")
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
@@ -115,13 +117,15 @@ def main():
                 arguments.surface_lifecycle_check or arguments.surface_order_check):
             parser.error("--cursor-check requires its own compiled-kernel execution trace")
         arguments.input_check = True
-    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check,
+    if arguments.clock_check and arguments.starscr_reference:
+        parser.error("--clock-check requires the compiled application image")
+    if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check, arguments.clock_check,
             arguments.surface_scale_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
     default_image = ("IceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
-                     "IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check else
+                     "IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check or arguments.clock_check else
                      "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
     image = (arguments.image.resolve() if arguments.image else
              root.parent / "IceStarOS_x86_32M.vhd" if arguments.starscr_reference else build / default_image)
@@ -208,7 +212,7 @@ def main():
                         from task_smoke import check_task_switch
                         check_task_switch(execute, build)
                     if (arguments.input_check or arguments.snake_check or arguments.color_check or
-                            arguments.mov_check or arguments.starscr_check or arguments.surface_scale_check):
+                            arguments.mov_check or arguments.starscr_check or arguments.clock_check or arguments.surface_scale_check):
                         if (arguments.surface_move_check or arguments.surface_scale_check or
                                 arguments.surface_lifecycle_check or arguments.surface_order_check or
                                 arguments.cursor_check):
@@ -231,6 +235,9 @@ def main():
                         if arguments.starscr_check:
                             from starscr_smoke import check_starscr
                             check_starscr(execute, build, image, cmd_base, arguments.starscr_reference)
+                        if arguments.clock_check:
+                            from clock_smoke import check_clock
+                            check_clock(execute, build, image, cmd_base)
                         if arguments.surface_scale_check:
                             from surface_scale_smoke import check_surface_scale
                             check_surface_scale(execute, build, image, cmd_base)

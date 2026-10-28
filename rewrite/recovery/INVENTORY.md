@@ -3,7 +3,7 @@
 Generated from the original VHD and the committed recovery manifests by
 `python3 tools/binary_inventory.py`. Recheck with `make inventory-check`.
 
-There are 39 original `.X`/`.DX` paths and 37 distinct binaries. 4 applications are rebuilt, 2 programs are partially recovered and 33 paths still use original programs.
+There are 39 original `.X`/`.DX` paths and 37 distinct binaries. 5 applications are rebuilt, 2 programs are partially recovered and 32 paths still use original programs.
 
 The complete OS recovery is unfinished. Rebuilt applications continue to
 depend on original guest components. Kernel interval/byte counts describe
@@ -21,7 +21,7 @@ headers are in [inventory.json](inventory.json).
 | `/ICESTAR/BROWSER.X` | 17,304 | application | unrecovered |
 | `/ICESTAR/CALC.X` | 45,274 | application | unrecovered |
 | `/ICESTAR/CHAT.X` | 35,952 | application | unrecovered |
-| `/ICESTAR/CLOCK.X` | 15,576 | application | unrecovered |
+| `/ICESTAR/CLOCK.X` | 15,576 | application | rebuilt |
 | `/ICESTAR/CMD.X` | 65,492 | application | unrecovered |
 | `/ICESTAR/COLOR.X` | 14,516 | application | rebuilt |
 | `/ICESTAR/DESKTOP.X` | 54,966 | application | unrecovered |
