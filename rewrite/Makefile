@@ -33,7 +33,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
                   $(BUILD)/kernel_object_registry.o \
                   $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o \
-                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o \
+                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o $(BUILD)/kernel_bitmap.o \
                   $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o $(BUILD)/kernel_raster_fill.o $(BUILD)/kernel_raster_outline.o $(BUILD)/kernel_raster_circle.o $(BUILD)/kernel_raster_disc.o $(BUILD)/kernel_raster_gradient.o $(BUILD)/kernel_raster_brush.o $(BUILD)/kernel_raster_rounded.o $(BUILD)/kernel_text_glyph.o $(BUILD)/kernel_text_wide.o $(BUILD)/kernel_text_run.o $(BUILD)/kernel_text_number.o $(BUILD)/kernel_text_format.o $(BUILD)/kernel_math_series.o $(BUILD)/kernel_math_extra.o $(BUILD)/kernel_math_format.o $(BUILD)/kernel_simd.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
@@ -46,7 +46,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.clock_draw_time.bin $(BUILD)/kernel.clock_draw_date.bin \
                   $(BUILD)/kernel.icon_draw_id.bin $(BUILD)/kernel.icon_draw_centered.bin $(BUILD)/kernel.icon_draw_frame.bin \
                   $(BUILD)/kernel.x_icon_pointer.bin $(BUILD)/kernel.icon_draw_file.bin $(BUILD)/kernel.icon_draw_file_auto.bin \
-                  $(BUILD)/kernel.icon_dib.bin $(BUILD)/kernel.icon_put8.bin $(BUILD)/kernel.icon_put32.bin $(BUILD)/kernel.icon_quantize.bin \
+                  $(BUILD)/kernel.icon_dib.bin $(BUILD)/kernel.icon_put8.bin $(BUILD)/kernel.icon_put32.bin $(BUILD)/kernel.icon_quantize.bin $(BUILD)/kernel.bitmap_draw.bin \
                   $(BUILD)/kernel.pixel_put8.bin $(BUILD)/kernel.pixel_put32.bin $(BUILD)/kernel.pixel_get8.bin $(BUILD)/kernel.pixel_get32.bin \
                   $(BUILD)/kernel.pixel_sample.bin $(BUILD)/kernel.raster_line8.bin $(BUILD)/kernel.raster_line32.bin \
                   $(BUILD)/kernel.brush_square.bin $(BUILD)/kernel.brush_line.bin $(BUILD)/kernel.brush_circle.bin $(BUILD)/kernel.circle_quadrants.bin \
@@ -319,6 +319,9 @@ $(BUILD)/kernel_text_format.o: kernel/text_format.c kernel/text_format.h kernel/
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_icon_files.o: kernel/icon_files.c kernel/icon_files.h kernel/icon_directory.h kernel/x_icon.h kernel/helpers.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_bitmap.o: kernel/bitmap.c kernel/bitmap.h kernel/pixel_access.h kernel/icon_pixels.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_x_icon.o: kernel/x_icon.c kernel/x_icon.h Makefile | $(BUILD)
@@ -771,6 +774,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_text_run.py --installed
 	python3 tests/kernel_text_number.py --installed
 	python3 tests/kernel_text_format.py --installed
+	python3 tests/kernel_bitmap.py --installed
 	python3 tests/kernel_simd.py --installed
 	python3 tests/kernel_math_series.py --installed
 	python3 tests/kernel_math_extra.py --installed
@@ -1145,3 +1149,10 @@ test-text-format: $(BUILD)/icestar_c.x
 
 test-text-format-preview: $(BUILD)/icestar_c.x
 	python3 tests/kernel_text_format.py
+
+.PHONY: test-bitmap test-bitmap-preview
+test-bitmap: $(BUILD)/icestar_c.x
+	python3 tests/kernel_bitmap.py --installed
+
+test-bitmap-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_bitmap.py

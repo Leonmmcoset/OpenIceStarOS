@@ -581,6 +581,8 @@ SECTIONS
     ASSERT(kernel_text_format_81f88a == 0x81f88a && ADDR(.text_format) + SIZEOF(.text_format) <= 0x81fd90, "text_format overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
+    .bitmap_draw 0x81ffc4 : SUBALIGN(1) { *kernel_bitmap.o(.text.kernel_bitmap_draw_81ffc4) }
+    ASSERT(kernel_bitmap_draw_81ffc4 == 0x81ffc4 && ADDR(.bitmap_draw) + SIZEOF(.bitmap_draw) <= 0x82040c, "bitmap_draw overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
     ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
     .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }

@@ -4217,3 +4217,27 @@ Evidence: `build/bitmap_direct_preview_summary.json`,
 `build/bitmap_original.disasm` and `build/bitmap_candidate.x`. Production
 remains at 319 intervals at this source checkpoint. Complete OS recovery
 is unfinished.
+
+### BMP drawing installation checkpoint (2026-10-28)
+
+The renderer is installed in the production kernel and all three disks,
+bringing the manifest to 320 intervals. All preceding 319 intervals remain
+byte-identical; only 1,051 kernel bytes change. Production matches the
+independent source preview, and each disk differs from the recorded 319
+baseline only in its kernel. `make test-bitmap` runs the installed direct
+and initialized-service fixtures; both are included in `make verify`.
+
+Installed BMP, quantizer, pixel access, startup UI, clock display, linked
+startup/runtime, inventory and whole-disk checks pass. A production CLOCK
+QEMU boot passes rendering, close/input, memory, task and all 320 loaded
+interval checks; its screenshot was visually inspected. Normal startup
+does not observe the BMP entry: execution of this body is established by
+the direct and service composition fixtures. Kernel and disk hashes remain
+unchanged throughout validation and boot.
+
+Evidence: `build/bitmap_320_final_summary.json`,
+`build/bitmap_320_validation_summary.json`, `build/bitmap_320_app_boots.json`
+and `build/bitmap_320_evidence/`. The kernel SHA-256 is
+`b4cf03fa96980fc96e45600a5c97bda9da262260e3b2b167f8c53d9ad5752afb`.
+The latest complete regression remains 305; later checkpoints use focused
+checks and recorded QEMU boots. Complete OS source recovery is unfinished.

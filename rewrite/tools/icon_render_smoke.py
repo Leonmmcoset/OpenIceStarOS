@@ -10,6 +10,7 @@ SLOTS = {
     "icon_put8": (0x81b37c, 0x81b3c0),
     "icon_put32": (0x81b3c0, 0x81b406),
     "icon_quantize": (0x81fd90, 0x81fec2),
+    "bitmap_draw": (0x81ffc4, 0x82040c),
     "icon_dib": (0x82b20c, 0x82b678),
     "pixel_put8": (0x81b26e, 0x81b2f4),
     "pixel_put32": (0x81b2f4, 0x81b37c),
