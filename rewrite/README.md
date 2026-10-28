@@ -2826,3 +2826,21 @@ Evidence: `build/pixel_access_chain_preview_summary.json`,
 `build/pixel_access_chain_candidate.x`,
 `build/kernel_pixel_access_chain_preview_test` and the combined
 `build/pixel_access_preview_test.log`. Production remains at 262 intervals.
+
+### Complete 262-interval regression (2026-10-28)
+
+`make -j4 verify` passes in 1,147.859 seconds (exit 0) against production
+commit `15f576e43bb6aec20815e1d323a5c3b664c81ae1`. This runs the complete current
+boot, INIT, kernel, device-state, graphics, startup/resource and application
+verification recipe, including the installed pixel helpers and full DIB chain.
+The kernel, three production disks and all snapshotted kernel/build inputs
+retain their hashes throughout the run. The four additional surface-ID pixel
+APIs are still a separate source/preview checkpoint and are not part of this
+262-interval production regression.
+
+Evidence: `build/full_regression_262.log` and
+`build/full_regression_262_summary.json`, which records the source hashes,
+production hashes, command, revision, elapsed time and exit status. This
+supersedes the 239-interval checkpoint as the latest complete regression;
+the separate application/natural-boot captures above provide the corresponding
+262-interval runtime evidence.
