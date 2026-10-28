@@ -2246,3 +2246,49 @@ Evidence: `build/verify_startup.log`, `build/verify_startup.exit` and
 `0f28ad0eeafa9a97fe368cc84d2ca09afa1d1584c1e758c6c1df712af9cb6382`.
 Combined-application disk SHA-256:
 `fd413dfa25246c1e6867ff0336e61c2aedb094728859d8dfb77af95912eb2b95`.
+
+### Four startup installations (2026-10-28)
+
+Commit `fdf63f3` installs startup UI/resources, desktop startup, the VGA DAC
+writer and identity paging at their original addresses, increasing the
+production manifest from 231 to 235 intervals. All prior intervals remain
+unchanged; the 2,440 changed kernel bytes are confined to the four new slots.
+Complete-disk checks restrict disk changes to the existing kernel file.
+Eight focused installed tests pass. Four independent snapshot boots pass
+Color, Snake, MOV and STARSCR checks, with startup execution tracing, memory,
+task switching, real PS/2 input and all 235 guest-memory intervals checked.
+STARSCR's previously observed original post-exit mouse/timer stall persists;
+desktop reuse after that application is not established.
+
+Evidence: `build/startup_235_installation_summary.json`,
+`build/startup_235_focused_summary.json` and
+`build/startup_235_evidence/results.json`. The kernel SHA-256 is
+`958993ea2566c0f39508ac10532f7c7a64269d177e402fb5e2c3ec1b9aa3f121`;
+the combined-application disk SHA-256 is
+`8b6e65969f271a297243af2a8df04cf881d924ccfdfc65a674dc0871bdb7bb12`.
+
+### Object registry source checkpoint (2026-10-28)
+
+`kernel/object_registry.c/.h` recovers name lookup, object state assignment,
+registry insertion and removal at `0x8104a0..0x81067a`. Lookup skips signed
+nonpositive object pointers, captures capacity once and accepts only comparison
+result 1. Registry routines capture the table/capacity but read the count live,
+including after writes that alias it. Removal preserves the original extra
+read at the old count before decrementing. State writes retain unchecked
+32-bit index arithmetic and the unaligned field at offset `0x127`.
+
+`python3 tests/kernel_object_registry.py` passes 61,474 scenarios / 184,422
+original-x86, ordinary-C and fixed-address-C executions in 13.445 seconds.
+The bytewise oracle checks all 40 KiB of fixture memory, comparison calls and
+mutations, stack balance/canaries and callee-saved registers. Cases include
+signed limits, duplicate/absent entries, unaligned tables and fields, wrapped
+indices, overlapping globals and count changes during table writes. The
+fixture explicitly excludes 1,326 unmapped or unbounded alias inputs before
+execution; it does not establish behavior for those inputs. Only the name
+comparison CALL is redirected in fixture copies of the original/candidate.
+
+Preview bodies occupy 71/128, 31/46, 88/142 and 104/158 bytes. Linker
+assertions enforce original entries and slot bounds. Evidence:
+`build/object_registry_preview_summary.json`, `build/object_registry_calls.h`
+and `build/object_registry_preview.elf`. This source checkpoint does not
+change the production disk images.
