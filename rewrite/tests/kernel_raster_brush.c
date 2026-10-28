@@ -3,6 +3,7 @@
  * Output may overwrite outer caller words, descriptors and ID table entries.
  */
 #include "../kernel/raster_brush.h"
+#include "../kernel/runtime.h"
 #include "raster_fixture.h"
 #define SERVICES 0x620000u
 #define INCOMING_EAX 0x6e25c813u
@@ -238,7 +239,7 @@ static void run(void)
 {
     scenario=cases+skipped;begin_oracle();uint32_t value;
     if(!oracle(&value)){++skipped;return;}
-    const void *native[]={(void *)kernel_palette_lookup_81b714,(void *)kernel_brush_square_81d032,
+    const void *native[]={(void *)kernel_palette_color,(void *)kernel_brush_square_81d032,
         (void *)kernel_brush_line_81d070,(void *)kernel_brush_circle_81d1fc,(void *)kernel_circle_quadrants_81d4e6};
     const void *functions[]={(void *)(uintptr_t)(entries[kind]+0x100000u),native[kind],(void *)(uintptr_t)entries[kind]};
     for(implementation=0;implementation<3;++implementation){

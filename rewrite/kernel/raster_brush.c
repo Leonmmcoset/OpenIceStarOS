@@ -12,12 +12,6 @@ typedef uint32_t (*point_fn)(uint32_t,uint32_t,uint32_t,uint32_t);
 #define SQUARE ((square_fn)(uintptr_t)0x81d032u)
 #define POINT ((point_fn)(uintptr_t)0x8374cfu)
 
-uint32_t kernel_palette_lookup_81b714(uint32_t index)
-{
-    uint32_t palette=DWORD(0x1b0e0u);
-    return DWORD(palette+index*4u);
-}
-
 __attribute__((optimize("no-omit-frame-pointer")))
 uint32_t kernel_brush_square_81d032(uint32_t id,uint32_t x,uint32_t y,
     uint32_t color,uint32_t side)

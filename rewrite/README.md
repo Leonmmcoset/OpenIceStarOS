@@ -3693,11 +3693,13 @@ Complete boot/kernel/application/driver source recovery remains unfinished.
 
 ### Palette and square-brush source checkpoint (2026-10-28)
 
-`kernel/raster_brush.c/.h` recovers five routines: palette DWORD lookup at
-`0x81b714..0x81b734`, square brush at `0x81d032..0x81d070`, square-stamped
+`kernel/raster_brush.c/.h` recovers four routines: square brush at
+`0x81d032..0x81d070`, square-stamped
 DDA line at `0x81d070..0x81d1fc`, square-stamped circle at
 `0x81d1fc..0x81d4e6`, and quadrant-selected circle pairs at
-`0x81d4e6..0x81d6c2`. They preserve wrapped indexing, ten-bit DDA positions,
+`0x81d4e6..0x81d6c2`. The combined fixture reuses the palette DWORD lookup
+already recovered in `kernel/runtime.c` at `0x81b714..0x81b734`. The drawing
+routines preserve wrapped indexing, ten-bit DDA positions,
 signed division/truncation, asymmetric thick-circle octants, quadrant bit
 order, duplicated points and the original separate service calls. All brush
 math and control flow are C. A 15-byte ABI entry retains the original
@@ -3706,7 +3708,7 @@ to the C body for nonzero radii. The square uses the original six-word
 outgoing frame so the underlying 32-bit fill's expired-frame EAX is also
 preserved. GCC reserves EBX/ESI/EDI for this translation unit to achieve that
 frame without extra save slots. Compiled slot usage is respectively
-18/32, 39/62, 316/396, 659/746 and 419/476 bytes.
+39/62, 316/396, 659/746 and 419/476 bytes.
 
 `python3 tests/kernel_raster_brush.py` passes 46,904 original/ordinary-C/
 fixed-address-C scenarios / 140,712 executions (7.848 seconds). A separate
