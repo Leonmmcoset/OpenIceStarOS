@@ -2711,3 +2711,23 @@ Bodies fit their original slots at 55/68, 56/70 and 98/306 bytes. Evidence:
 `build/icon_pixels_preview_test.log`, `build/icon_pixels_preview_summary.json`,
 `build/icon_pixels_preview.elf` and `build/icon_pixels_preview.x`. This source
 checkpoint leaves production at 259 installed intervals with unchanged images.
+
+### Complete DIB rendering chain checkpoint (2026-10-28)
+
+`python3 tests/kernel_icon_render.py` passes 9,288 scenarios / 27,864
+original-x86, ordinary-C and fixed-address-C executions in 2.779 seconds.
+The decoder calls the real pixel writers and quantizer with no CALL
+substitutions. All four conversion paths, mask bytes, alignments, rectangular
+dimensions, height 47/48, coordinate wrapping, clipping, signed surface bounds
+and seventy-one real non-PNG resource frames agree with a bytewise oracle.
+Output aliases into headers, palettes, pixels and masks retain live-read
+behavior. The entire 64 KiB fixture memory, callee-saved registers, stack
+balance and canaries agree across implementations. The oracle predicts
+2,985,649 pixel writes; unsupported source/destination depths are rejected in
+42 scenarios. These controlled mapped fixtures do not establish arbitrary
+invalid-pointer safety or full operating-system equivalence.
+
+Evidence: `build/icon_render_preview_test.log`,
+`build/icon_render_preview_summary.json`, `build/icon_render_preview.elf`
+and `build/icon_render_preview.x`. This source-test checkpoint leaves
+production at 259 intervals; the three pixel helper slots are not yet installed.
