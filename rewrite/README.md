@@ -2354,3 +2354,27 @@ size assertions. Evidence: `build/timer_objects_preview_summary.json`,
 `build/timer_objects_preview_test.log`, `build/timer_objects_calls.h` and
 `build/timer_objects_preview.elf`. This checkpoint does not alter production
 images while the 239-interval regression is running.
+
+### Packed clock display source checkpoint (2026-10-28)
+
+`kernel/clock_display.c/.h` recovers the time/date wrappers at
+`0x82ac53..0x82ad81`. Each captures its packed CMOS global once, forwards the
+five drawing arguments and sends six/eight individual nibbles to the original
+variadic text renderer at `0x81f88a`. The original format pointers and nibble
+order are retained, including values 10..15 rather than normalizing invalid
+BCD. The wrappers have void interfaces; renderer EAX is incidental.
+
+`python3 tests/kernel_clock_display.py` passes 139,520 scenarios / 418,560
+original-x86, ordinary-C and fixed-address-C executions in 1.977 seconds.
+Coverage includes every 16-bit value paired with its complement in the other
+half, all 16 values at each of eight nibble positions, 4,096 deterministic
+32-bit samples per wrapper, and varied drawing arguments. The oracle checks
+all 4 KiB of fixture memory, format pointers, five fixed arguments, every
+variadic digit, callback mutations, stack balance/canaries and callee-saved
+registers. Only renderer CALL operands are redirected in fixture copies.
+
+C bodies fit 87/138 and 102/164 bytes with original-address and size assertions.
+Evidence: `build/clock_display_preview_summary.json`,
+`build/clock_display_preview_test.log`, `build/clock_display_calls.h` and
+`build/clock_display_preview.elf`. Production images remain at 239 intervals
+until their ongoing full regression completes.
