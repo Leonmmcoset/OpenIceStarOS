@@ -2776,3 +2776,33 @@ Combined-application disk SHA-256:
 `05f488636184854f94714965059e8e9e9abcb92c171000b78a835f44133d2912`.
 This checkpoint has focused and boot coverage; the latest complete regression
 remains the 239-interval checkpoint.
+
+### Surface-ID pixel API source checkpoint (2026-10-28)
+
+`kernel/pixel_access.c/.h` recovers the 8/32-bit setters at `0x81b26e` and
+`0x81b2f4`, and getters at `0x81b406` and `0x81b486`. They use the original
+table at `0x500000`, wrapped DWORD ID indexing, signed width/height comparisons,
+repeated volatile table/field reads and wrapped effective pixel addresses.
+Setters reject negative coordinates. Getters retain the original absence of
+negative-coordinate checks and return `0xffffffff` when bounds reject; valid
+32-bit pixels may also contain that value. No ID validation or surface-depth
+check is added.
+
+`python3 tests/kernel_pixel_access.py` passes 557,312 scenarios / 1,671,936
+original-x86, ordinary-C and fixed-address-C executions in 42.789 seconds.
+Each setter passes 139,344 scenarios and each getter 139,312. Coverage includes
+full DWORD dimensions and coordinates, high/wrapped IDs including table slots
+outside the ordinary table page, four alignments, every complementary WORD
+color pair, pseudorandom inputs and writes aliasing surface metadata or the
+table. Guarded width rejection skips an unmapped height field; negative setter
+coordinates skip later unmapped accesses. There are 11,957/11,929 accepted
+negative-coordinate 8/32-bit reads. The complete 12 KiB mapped table/data
+oracle, getter results, callee-saved registers, stack balance and canaries agree.
+No CALL boundaries are substituted. Patterned mapped memory does not establish
+arbitrary invalid-pointer safety.
+
+Bodies fit their original slots at 89/134, 93/136, 85/128 and 87/142 bytes.
+Evidence: `build/pixel_access_preview_test.log`,
+`build/pixel_access_preview_summary.json`, `build/pixel_access_preview.elf`
+and `build/pixel_access_preview.x`. This source checkpoint leaves production
+at 262 installed intervals; these four additional slots are not yet installed.
