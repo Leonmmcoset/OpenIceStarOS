@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 262 declared kernel intervals and
+original VHD. The current build installs 266 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2844,3 +2844,50 @@ production hashes, command, revision, elapsed time and exit status. This
 supersedes the 239-interval checkpoint as the latest complete regression;
 the separate application/natural-boot captures above provide the corresponding
 262-interval runtime evidence.
+
+### Surface-ID pixel API installation (2026-10-28)
+
+The four surface-ID pixel APIs are installed at their original addresses,
+increasing production from 262 to 266 intervals. All 262 preceding intervals
+retain identical bytes. The 500 changed kernel bytes lie only in the four
+new slots; bodies occupy 89/134, 93/136, 85/128 and 87/142 bytes, followed by
+NOP padding. Complete reconstruction passes for all three production disks,
+whose changes from the 262-interval images are confined to the existing kernel
+file. FATs, directories, file slack, boot stages and applications retain their
+previous bytes.
+
+Installed checks pass 557,312 pixel API scenarios / 1,671,936 executions
+(42.850 s), 4,608 complete service scenarios / 9,216 chains (0.567 s),
+68,682,058 pixel/quantizer scenarios (7.987 s) and 9,288 complete DIB scenarios
+(2.789 s). The installed startup table/state and service-forwarder regressions
+also pass. No CALL is substituted in the complete pixel service or DIB chains.
+
+Independent QEMU snapshot checks pass Color (29.652 s), Snake (34.362 s),
+MOV (32.474 s) and STARSCR (26.631 s), including startup execution, all
+266 loaded intervals, heap/task state, PS/2 input and the respective application
+checks. Representative application screenshots were visually inspected.
+The original STARSCR post-exit mouse/timer stall remains documented.
+
+`make smoke-icon-render` now also verifies/traces the four surface-ID slots.
+A separate normal startup/input run observes the new 32-bit setter (32,174
+entry / eight body trace records) and getter (5,205 / four), plus the DIB
+decoder (two / 1,474,138) and its direct 32-bit writer (1,474,072 / ten).
+The desktop screenshot was visually checked. The 8-bit APIs and quantizer are
+unobserved in this display mode; TB chaining prevents interpreting the records
+as exact call counts. No diagnostic guest or CALL substitution is used.
+The complete image kernel and eight compiled bodies/padding are checked, and
+all four production hashes remain unchanged across validation.
+
+Evidence: `build/pixel_access_266_build.log`,
+`build/pixel_access_266_disk_verify.log`,
+`build/pixel_access_266_installation_summary.json`,
+`build/pixel_access_266_service_regression.log`,
+`build/pixel_access_266_validation.log` and `build/pixel_access_266_evidence/`,
+including independent application captures, `differential/` summaries and
+`natural/` execution traces. Kernel SHA-256:
+`800aef5719794aac703bd406e13335bf78b671e5902c5c7534cff77a674eff84`.
+Combined-application disk SHA-256:
+`0354da490ce7165ff81b0890cb25fc34f1a895504ad176ec440e2e2d4a9a54c6`.
+The latest complete regression remains the successful 262-interval run;
+266 has the focused and runtime coverage described here. The overall OS
+recovery remains incomplete and continues to require original components.

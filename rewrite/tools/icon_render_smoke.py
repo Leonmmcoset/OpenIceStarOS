@@ -11,6 +11,10 @@ SLOTS = {
     "icon_put32": (0x81b3c0, 0x81b406),
     "icon_quantize": (0x81fd90, 0x81fec2),
     "icon_dib": (0x82b20c, 0x82b678),
+    "pixel_put8": (0x81b26e, 0x81b2f4),
+    "pixel_put32": (0x81b2f4, 0x81b37c),
+    "pixel_get8": (0x81b406, 0x81b486),
+    "pixel_get32": (0x81b486, 0x81b514),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

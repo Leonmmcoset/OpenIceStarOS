@@ -459,10 +459,18 @@ SECTIONS
     ASSERT(kernel_timer_delete == 0x82abaf && ADDR(.timer_delete) + SIZEOF(.timer_delete) <= 0x82ac21, "timer_delete layout overflow")
     .timer_rearm 0x82ac21 : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_rearm) }
     ASSERT(kernel_timer_rearm == 0x82ac21 && ADDR(.timer_rearm) + SIZEOF(.timer_rearm) <= 0x82ac53, "timer_rearm layout overflow")
+    .pixel_put8 0x81b26e : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put8_81b26e) }
+    ASSERT(kernel_pixel_put8_81b26e == 0x81b26e && ADDR(.pixel_put8) + SIZEOF(.pixel_put8) <= 0x81b2f4, "pixel_put8 overflow")
+    .pixel_put32 0x81b2f4 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put32_81b2f4) }
+    ASSERT(kernel_pixel_put32_81b2f4 == 0x81b2f4 && ADDR(.pixel_put32) + SIZEOF(.pixel_put32) <= 0x81b37c, "pixel_put32 overflow")
     .icon_put8 0x81b37c : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_put8_81b37c) }
     ASSERT(kernel_icon_put8_81b37c == 0x81b37c && ADDR(.icon_put8) + SIZEOF(.icon_put8) <= 0x81b3c0, "icon_put8 overflow")
     .icon_put32 0x81b3c0 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_put32_81b3c0) }
     ASSERT(kernel_icon_put32_81b3c0 == 0x81b3c0 && ADDR(.icon_put32) + SIZEOF(.icon_put32) <= 0x81b406, "icon_put32 overflow")
+    .pixel_get8 0x81b406 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_get8_81b406) }
+    ASSERT(kernel_pixel_get8_81b406 == 0x81b406 && ADDR(.pixel_get8) + SIZEOF(.pixel_get8) <= 0x81b486, "pixel_get8 overflow")
+    .pixel_get32 0x81b486 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_get32_81b486) }
+    ASSERT(kernel_pixel_get32_81b486 == 0x81b486 && ADDR(.pixel_get32) + SIZEOF(.pixel_get32) <= 0x81b514, "pixel_get32 overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }

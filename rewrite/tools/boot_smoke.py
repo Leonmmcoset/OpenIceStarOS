@@ -57,7 +57,7 @@ def main():
     parser.add_argument("--icon-dib-check", action="store_true",
                         help="trace the installed DIB icon decoder during normal production boot")
     parser.add_argument("--icon-render-check", action="store_true",
-                        help="trace the DIB decoder and real pixel/quantizer helpers during normal boot")
+                        help="trace the DIB decoder, real helpers and surface-ID pixel APIs during normal boot")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
