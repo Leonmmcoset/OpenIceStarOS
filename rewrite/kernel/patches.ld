@@ -851,6 +851,10 @@ SECTIONS
     ASSERT(kernel_fpu_fault == 0x8380e1 && ADDR(.fpu_fault) + SIZEOF(.fpu_fault) <= 0x8380ef, "fpu_fault layout overflow")
     .jpeg_bits 0x83a835 : { *kernel_jpeg_bits.o(.text.kernel_jpeg_bits_83a835) }
     ASSERT(kernel_jpeg_bits_83a835 == 0x83a835 && ADDR(.jpeg_bits) + SIZEOF(.jpeg_bits) <= 0x83a919, "jpeg bit reader layout overflow")
+    .jpeg_frame 0x83a919 : { *kernel_jpeg_frame.o(.text.kernel_jpeg_frame_83a919) }
+    ASSERT(kernel_jpeg_frame_83a919 == 0x83a919 && ADDR(.jpeg_frame) + SIZEOF(.jpeg_frame) <= 0x83aae7, "jpeg frame layout overflow")
+    .jpeg_tables 0x83aae7 : { *kernel_jpeg_tables.o(.text.kernel_jpeg_tables_83aae7) }
+    ASSERT(kernel_jpeg_tables_83aae7 == 0x83aae7 && ADDR(.jpeg_tables) + SIZEOF(.jpeg_tables) <= 0x83ac7b, "jpeg quantization layout overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

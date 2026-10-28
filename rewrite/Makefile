@@ -33,7 +33,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
                   $(BUILD)/kernel_object_registry.o \
                   $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o \
-                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o $(BUILD)/kernel_bitmap.o $(BUILD)/kernel_bitmap_files.o $(BUILD)/kernel_bitmap_fit.o $(BUILD)/kernel_bitmap_surface_fit.o $(BUILD)/kernel_bitmap_key.o $(BUILD)/kernel_jpeg_bits.o \
+                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o $(BUILD)/kernel_bitmap.o $(BUILD)/kernel_bitmap_files.o $(BUILD)/kernel_bitmap_fit.o $(BUILD)/kernel_bitmap_surface_fit.o $(BUILD)/kernel_bitmap_key.o $(BUILD)/kernel_jpeg_bits.o $(BUILD)/kernel_jpeg_frame.o $(BUILD)/kernel_jpeg_tables.o \
                   $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o $(BUILD)/kernel_raster_fill.o $(BUILD)/kernel_raster_outline.o $(BUILD)/kernel_raster_circle.o $(BUILD)/kernel_raster_disc.o $(BUILD)/kernel_raster_gradient.o $(BUILD)/kernel_raster_brush.o $(BUILD)/kernel_raster_rounded.o $(BUILD)/kernel_text_glyph.o $(BUILD)/kernel_text_wide.o $(BUILD)/kernel_text_run.o $(BUILD)/kernel_text_number.o $(BUILD)/kernel_text_format.o $(BUILD)/kernel_math_series.o $(BUILD)/kernel_math_extra.o $(BUILD)/kernel_math_format.o $(BUILD)/kernel_simd.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
@@ -46,7 +46,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.clock_draw_time.bin $(BUILD)/kernel.clock_draw_date.bin \
                   $(BUILD)/kernel.icon_draw_id.bin $(BUILD)/kernel.icon_draw_centered.bin $(BUILD)/kernel.icon_draw_frame.bin \
                   $(BUILD)/kernel.x_icon_pointer.bin $(BUILD)/kernel.icon_draw_file.bin $(BUILD)/kernel.icon_draw_file_auto.bin \
-                  $(BUILD)/kernel.icon_dib.bin $(BUILD)/kernel.icon_put8.bin $(BUILD)/kernel.icon_put32.bin $(BUILD)/kernel.icon_quantize.bin $(BUILD)/kernel.bitmap_draw.bin $(BUILD)/kernel.bitmap_draw_file.bin $(BUILD)/kernel.bitmap_fit_file.bin $(BUILD)/kernel.bitmap_fit.bin $(BUILD)/kernel.bitmap_surface_fit.bin $(BUILD)/kernel.bitmap_key.bin $(BUILD)/kernel.jpeg_bits.bin \
+                  $(BUILD)/kernel.icon_dib.bin $(BUILD)/kernel.icon_put8.bin $(BUILD)/kernel.icon_put32.bin $(BUILD)/kernel.icon_quantize.bin $(BUILD)/kernel.bitmap_draw.bin $(BUILD)/kernel.bitmap_draw_file.bin $(BUILD)/kernel.bitmap_fit_file.bin $(BUILD)/kernel.bitmap_fit.bin $(BUILD)/kernel.bitmap_surface_fit.bin $(BUILD)/kernel.bitmap_key.bin $(BUILD)/kernel.jpeg_bits.bin $(BUILD)/kernel.jpeg_frame.bin $(BUILD)/kernel.jpeg_tables.bin \
                   $(BUILD)/kernel.pixel_put8.bin $(BUILD)/kernel.pixel_put32.bin $(BUILD)/kernel.pixel_get8.bin $(BUILD)/kernel.pixel_get32.bin \
                   $(BUILD)/kernel.pixel_sample.bin $(BUILD)/kernel.raster_line8.bin $(BUILD)/kernel.raster_line32.bin \
                   $(BUILD)/kernel.brush_square.bin $(BUILD)/kernel.brush_line.bin $(BUILD)/kernel.brush_circle.bin $(BUILD)/kernel.circle_quadrants.bin \
@@ -337,6 +337,12 @@ $(BUILD)/kernel_bitmap_key.o: kernel/bitmap_key.c kernel/bitmap.h kernel/pixel_a
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_jpeg_bits.o: kernel/jpeg_bits.c kernel/jpeg_bits.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_jpeg_frame.o: kernel/jpeg_frame.c kernel/jpeg_frame.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_jpeg_tables.o: kernel/jpeg_tables.c kernel/jpeg_tables.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_x_icon.o: kernel/x_icon.c kernel/x_icon.h Makefile | $(BUILD)
@@ -795,6 +801,8 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_bitmap_surface_fit.py --installed
 	python3 tests/kernel_bitmap_key.py --installed
 	python3 tests/kernel_jpeg_bits.py --installed
+	python3 tests/kernel_jpeg_frame.py --installed
+	python3 tests/kernel_jpeg_tables.py --installed
 	python3 tests/kernel_simd.py --installed
 	python3 tests/kernel_math_series.py --installed
 	python3 tests/kernel_math_extra.py --installed
@@ -1211,3 +1219,16 @@ test-jpeg-bits: $(BUILD)/icestar_c.x
 
 test-jpeg-bits-preview: $(BUILD)/icestar_c.x
 	python3 tests/kernel_jpeg_bits.py
+
+.PHONY: test-jpeg-frame test-jpeg-frame-preview test-jpeg-tables test-jpeg-tables-preview
+test-jpeg-frame: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_frame.py --installed
+
+test-jpeg-frame-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_frame.py
+
+test-jpeg-tables: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_tables.py --installed
+
+test-jpeg-tables-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_tables.py

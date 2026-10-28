@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 326 declared kernel intervals and
+original VHD. The current build installs 328 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4652,3 +4652,32 @@ Evidence: `build/jpeg_bits_326_verify_main.log`,
 `build/jpeg_bits_326_verify_tail.log` and
 `build/jpeg_bits_326_verify_tail_summary.json`. Complete OS source recovery
 remains unfinished.
+
+### JPEG frame/quantization installation checkpoint (2026-10-28)
+
+Both new JPEG parser bodies are installed at their original addresses,
+bringing production to 328 declared intervals. Their installed fixtures
+pass with the source-checkpoint counts, and the preceding bit-reader
+fixture also passes against this combined kernel. Real original/C JPEG
+information and complete decoding agree across all three fixtures, with
+no helper substitutions. Make targets `test-jpeg-frame` and
+`test-jpeg-tables` and their preview variants are available; installed
+checks are included in `make verify`.
+
+All preceding 326 intervals and all other kernel bytes remain unchanged;
+789 kernel bytes change. Each of the three rebuilt disks differs from
+its saved baseline only in the kernel. Whole boot/app disk reconstruction,
+inventory, linked startup/runtime and desktop checks pass. A production
+CLOCK QEMU boot passes rendering, closing, CMD reuse, memory, task switching
+and all 328 loaded-interval checks; its CLOCK screenshot was visually
+inspected. Kernel/disk hashes stay unchanged during validation and boot.
+
+Evidence: `build/jpeg_parsers_328_build.log`,
+`build/jpeg_parsers_328_validation.log`,
+`build/jpeg_parsers_328_final_summary.json`,
+`build/jpeg_parsers_328_boot.log` and `build/jpeg_parsers_328_evidence/`.
+Kernel SHA-256:
+`b9d9a39c2ef64def9dbe3fc9be57e10a8d21f4c60634393a39c9c2da8a401e3b`.
+The latest complete verification recipe coverage is 326; this checkpoint
+uses focused checks and a recorded production boot. Other JPEG routines
+and full OS source recovery remain unfinished.
