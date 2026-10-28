@@ -46,6 +46,12 @@ python3 rewrite/tools/boot_smoke.py --vga cirrus --input-check
 这些命令成功表示其记录的场景通过，无法证明所有未恢复组件的行为。
 截图、内存转储和 JSON 证据位于 `rewrite/build/`。
 
+OpenIceStarOS 的品牌安装、兼容名称保留项和磁盘残留说明见
+[`rewrite/branding/README.md`](rewrite/branding/README.md)。实际 QEMU 启动菜单、
+桌面、新品牌 CMD 与 C CLOCK 截图保存在
+[`rewrite/evidence/2026-10-28-branding/`](rewrite/evidence/2026-10-28-branding/)。
+CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
+
 根目录的 `make verify` 是较早的前两阶段逐字节汇编恢复，构建
 `build/OpenIceStarOS_mbr_rebuilt.vhd`；OpenIceStarOS 的当前源码恢复与集成请使用
 `make -C rewrite ...`。Git 仓库位于根目录，每个验证后的步骤分别提交。

@@ -161,6 +161,13 @@ test-x-loader: $(BUILD)/openicestaros_kernel.x
 
 verify: test-x-loader
 
+.PHONY: test-branding
+test-branding: $(BUILD)/OpenIceStarOS_c_apps.vhd
+	python3 tests/branding.py
+	python3 tools/branding.py scan $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/branding_residuals.json
+
+verify: test-branding
+
 verify: test-boot-video test-boot-stage3
 
 $(BUILD):
@@ -190,8 +197,10 @@ $(BUILD)/menu.bin: $(BUILD)/menu_entry.o $(BUILD)/menu.o boot/menu.ld
 $(BUILD)/menu_hybrid.bin: $(BUILD)/menu_entry.o $(BUILD)/menu_hybrid.o boot/menu.ld
 	$(LD) -m elf_i386 -T boot/menu.ld -o $@ $(BUILD)/menu_entry.o $(BUILD)/menu_hybrid.o
 
-$(BUILD)/OpenIceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin
-	cp $(IMAGE) $@
+BRANDING := tools/branding.py branding/patches.json
+
+$(BUILD)/OpenIceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin $(BRANDING)
+	python3 tools/branding.py install $(IMAGE) $@
 	dd if=$(BUILD)/mbr.bin of=$@ bs=512 count=1 conv=notrunc status=none
 	dd if=$(BUILD)/menu.bin of=$@ bs=512 seek=1 count=3 conv=notrunc status=none
 
@@ -236,8 +245,8 @@ $(BUILD)/stage3_c_init.elf: $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init
 $(BUILD)/stage3_%.bin: $(BUILD)/stage3_%.elf
 	$(OBJCOPY) -O binary $< $@
 
-$(BUILD)/OpenIceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin
-	cp $(IMAGE) $@
+$(BUILD)/OpenIceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin $(BRANDING)
+	python3 tools/branding.py install $(IMAGE) $@
 	dd if=$(BUILD)/mbr.bin of=$@ bs=512 count=1 conv=notrunc status=none
 	dd if=$(BUILD)/menu_hybrid.bin of=$@ bs=512 seek=1 count=3 conv=notrunc status=none
 	dd if=$(BUILD)/stage3_hybrid.bin of=$@ bs=512 seek=5 count=8 conv=notrunc status=none
@@ -455,7 +464,7 @@ $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 $(BUILD)/kernel.%.bin: $(BUILD)/kernel_patch.elf
 	$(OBJCOPY) -O binary --only-section=.$* $< $@
 
-$(BUILD)/openicestaros_kernel.x: $(IMAGE) $(KERNEL_PATCHES) kernel/patches.json tools/kernel_image.py
+$(BUILD)/openicestaros_kernel.x: $(IMAGE) $(KERNEL_PATCHES) kernel/patches.json tools/kernel_image.py $(BRANDING)
 	python3 tools/kernel_image.py patch $(IMAGE) kernel/patches.json $(BUILD) $@
 
 $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
@@ -722,9 +731,9 @@ verify: $(BUILD)/OpenIceStarOS_c_mbr.vhd $(BUILD)/OpenIceStarOS_c_fat16.vhd $(BU
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
-	cmp -i 2048:2048 $(IMAGE) $(BUILD)/OpenIceStarOS_c_mbr.vhd
+	python3 tools/branding.py verify-boot $(IMAGE) $(BUILD)/OpenIceStarOS_c_mbr.vhd
 	test "$$(wc -c < $(BUILD)/stage3_hybrid.bin)" -eq 4096
-	cmp -i 6656:6656 $(IMAGE) $(BUILD)/OpenIceStarOS_c_fat16.vhd
+	python3 tools/branding.py verify-boot $(IMAGE) $(BUILD)/OpenIceStarOS_c_fat16.vhd --stage3
 	test "$$(wc -c < $(BUILD)/init_c.bin)" -eq 2048
 	python3 tools/kernel_image.py verify $(IMAGE) $(BUILD)/OpenIceStarOS_c_init.vhd $(BUILD)/openicestaros_kernel.x kernel/patches.json $(BUILD)
 	$(BUILD)/fat16_image $(IMAGE) $(BUILD)/init.x

@@ -220,6 +220,13 @@ def main():
                         return read_prompt()
 
                     read_prompt()
+                    if not arguments.starscr_reference:
+                        time.sleep(1)
+                        execute("stop")
+                        menu = build / "openicestaros_menu.ppm"
+                        execute(f'screendump "{menu}"')
+                        execute("cont")
+                        png_from_ppm(menu, build / "openicestaros_menu.png")
                     if arguments.menu_choice is not None:
                         time.sleep(1)
                         execute(f"sendkey {arguments.menu_choice} 50")

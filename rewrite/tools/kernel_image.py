@@ -149,7 +149,8 @@ def patched_kernel(original, manifest_path, build_path):
         result[start - BASE:end - BASE] = binary + b"\x90" * (end - start - len(binary))
         previous_end = end
         print(f'{patch["name"]}: {len(binary)}/{end - start} bytes at {start:#x}')
-    return bytes(result)
+    from branding import brand_kernel
+    return brand_kernel(bytes(result))
 
 
 def write_new(path, data, source):
@@ -162,7 +163,8 @@ def verify(original_path, image_path, kernel_path, manifest_path, build_path):
     kernel = Path(kernel_path).read_bytes()
     expected_kernel = patched_kernel(Fat16(original).read_kernel(), manifest_path, build_path)
     require(kernel == expected_kernel, "patched kernel differs from linked C patches")
-    expected = Fat16(original).replace_kernel(kernel)
+    from branding import installed as branded
+    expected = Fat16(branded(original)).replace_kernel(kernel)
     for offset, length, name in ((0, 512, "mbr.bin"),
                                  (512, 1536, "menu_hybrid.bin"),
                                  (2560, 4096, "stage3_c_init.bin"),

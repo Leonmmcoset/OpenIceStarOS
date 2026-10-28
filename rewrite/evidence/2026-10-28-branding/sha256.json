@@ -1,0 +1,10 @@
+{
+  "evidence/2026-10-28-branding/02-desktop.png": "bca46bd4b4ea30cc2e88355231d6557324da7cc59f7b9c1745591405c03771ad",
+  "evidence/2026-10-28-branding/branding_residuals.json": "4823fcbb166728d29e79f52dfbe24eac86b850ff188e382c91bbc2cb34a88e68",
+  "evidence/2026-10-28-branding/source-residuals.json": "b9c0defecf87ae31d7059cf21fa10477966b43d857c032636f99d5ec8f2ce7c3",
+  "evidence/2026-10-28-branding/01-boot-menu.png": "d89023207976a748f945659a27ff6f69bbdb7b75868cec99ff2db2784911b85d",
+  "evidence/2026-10-28-branding/04-c-clock.png": "9391c5e2460f6b5abaf0cf5ff0e33e893b45bc306cf74fd4dfa9e195f82d236d",
+  "evidence/2026-10-28-branding/03-cmd-cpuid.png": "5d49c1209cd3e457c5d5b506cabcb6479f7d9d3b5b8b6b586febf0a92ccdb4c2",
+  "evidence/2026-10-28-branding/openicestaros_clock_boot.log": "856d5350f95c5c3175fbf1406fb6b5bb859635c9cda57382622b2311ec21d5be",
+  "build/OpenIceStarOS_c_apps.vhd": "e010dc0df368ba8ba13d313ab6552401cd28df682271b321c93170d9133f0da6"
+}

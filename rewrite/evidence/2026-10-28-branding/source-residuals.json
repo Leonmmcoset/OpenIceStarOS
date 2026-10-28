@@ -1,0 +1,438 @@
+{
+  ".gitignore": {
+    "classification": "original-VHD-input",
+    "lines": [
+      3
+    ]
+  },
+  "Makefile": {
+    "classification": "original-VHD-input",
+    "lines": [
+      1
+    ]
+  },
+  "README.md": {
+    "classification": "documentation/history",
+    "lines": [
+      3,
+      4
+    ]
+  },
+  "reverse/README.md": {
+    "classification": "original-reference",
+    "lines": [
+      1
+    ]
+  },
+  "reverse/boot/mbr.asm": {
+    "classification": "original-reference",
+    "lines": [
+      1
+    ]
+  },
+  "reverse/boot/menu.asm": {
+    "classification": "original-reference",
+    "lines": [
+      11,
+      13
+    ]
+  },
+  "rewrite/Makefile": {
+    "classification": "original-VHD-input",
+    "lines": [
+      7
+    ]
+  },
+  "rewrite/README.md": {
+    "classification": "documentation/history",
+    "lines": [
+      4
+    ]
+  },
+  "rewrite/recovery/inventory.json": {
+    "classification": "original-VHD-input",
+    "lines": [
+      4
+    ]
+  },
+  "rewrite/tests/boot_stage3.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      116
+    ]
+  },
+  "rewrite/tests/boot_video.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      119
+    ]
+  },
+  "rewrite/tests/clock.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      21
+    ]
+  },
+  "rewrite/tests/cmos_clock_exact.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      15
+    ]
+  },
+  "rewrite/tests/color.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      17
+    ]
+  },
+  "rewrite/tests/display_dac_qemu.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/firmware_scan_qemu.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      21
+    ]
+  },
+  "rewrite/tests/interrupt_entries_exact.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      16
+    ]
+  },
+  "rewrite/tests/kernel_bitmap.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_bitmap_files.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      37
+    ]
+  },
+  "rewrite/tests/kernel_bitmap_fit.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_bitmap_key.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_bitmap_surface_fit.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_clock_display.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      32
+    ]
+  },
+  "rewrite/tests/kernel_cmos_fields.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      32
+    ]
+  },
+  "rewrite/tests/kernel_display_palette.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_entry.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_icon_dib.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      76
+    ]
+  },
+  "rewrite/tests/kernel_icon_directory.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      34
+    ]
+  },
+  "rewrite/tests/kernel_icon_files.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      39
+    ]
+  },
+  "rewrite/tests/kernel_icon_pixels.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      36
+    ]
+  },
+  "rewrite/tests/kernel_icon_render.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      30
+    ]
+  },
+  "rewrite/tests/kernel_jpeg_bits.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      23,
+      46
+    ]
+  },
+  "rewrite/tests/kernel_jpeg_frame.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      27
+    ]
+  },
+  "rewrite/tests/kernel_jpeg_huffman.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      27
+    ]
+  },
+  "rewrite/tests/kernel_jpeg_scan.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      45
+    ]
+  },
+  "rewrite/tests/kernel_jpeg_tables.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      27
+    ]
+  },
+  "rewrite/tests/kernel_math_extra.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      37
+    ]
+  },
+  "rewrite/tests/kernel_math_format.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      30
+    ]
+  },
+  "rewrite/tests/kernel_math_series.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      35
+    ]
+  },
+  "rewrite/tests/kernel_object_registry.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_pixel_access.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      35
+    ]
+  },
+  "rewrite/tests/kernel_raster.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      35
+    ]
+  },
+  "rewrite/tests/kernel_raster_brush.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      40
+    ]
+  },
+  "rewrite/tests/kernel_raster_circle.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_raster_disc.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      34
+    ]
+  },
+  "rewrite/tests/kernel_raster_fill.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_raster_gradient.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_raster_outline.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      33
+    ]
+  },
+  "rewrite/tests/kernel_raster_rounded.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      45
+    ]
+  },
+  "rewrite/tests/kernel_simd.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      34
+    ]
+  },
+  "rewrite/tests/kernel_startup_apps.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_startup_desktop.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_startup_state.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_startup_ui.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      26
+    ]
+  },
+  "rewrite/tests/kernel_string_extra.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      37
+    ]
+  },
+  "rewrite/tests/kernel_text_format.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      41
+    ]
+  },
+  "rewrite/tests/kernel_text_glyph.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      37
+    ]
+  },
+  "rewrite/tests/kernel_text_number.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      41
+    ]
+  },
+  "rewrite/tests/kernel_text_run.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      45
+    ]
+  },
+  "rewrite/tests/kernel_text_wide.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      37
+    ]
+  },
+  "rewrite/tests/kernel_timer_objects.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      36
+    ]
+  },
+  "rewrite/tests/kernel_x_loader.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      227
+    ]
+  },
+  "rewrite/tests/mov.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      17
+    ]
+  },
+  "rewrite/tests/paging_qemu.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      45
+    ]
+  },
+  "rewrite/tests/snake.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      18
+    ]
+  },
+  "rewrite/tests/starscr.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      16
+    ]
+  },
+  "rewrite/tests/timer_flags_qemu.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      27
+    ]
+  },
+  "rewrite/tests/timestamp_exact.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      15
+    ]
+  },
+  "rewrite/tests/xformat.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      73,
+      86
+    ]
+  },
+  "rewrite/tools/binary_inventory.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      20
+    ]
+  },
+  "rewrite/tools/boot_smoke.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      144
+    ]
+  },
+  "rewrite/tools/entry_smoke.py": {
+    "classification": "original-VHD-input",
+    "lines": [
+      48
+    ]
+  }
+}

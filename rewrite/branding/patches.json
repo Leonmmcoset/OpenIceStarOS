@@ -1,0 +1,98 @@
+[
+  {
+    "path": "/ADMIN/DESKTOP/CMD.X",
+    "short_names": [
+      "ADMIN      ",
+      "DESKTOP    ",
+      "CMD     X  "
+    ],
+    "original_sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+    "edits": [
+      {
+        "offset": "0xb429",
+        "before_hex": "49636553746172204f53205bb0e6b1be2025642e25642e25645d00",
+        "after_hex": "4f70656e496365537461724f53205b25642e25642e25645d000000"
+      },
+      {
+        "offset": "0xb4b8",
+        "before_hex": "49636553746172204f5320436f6d6d616e64204c6973743a00",
+        "after_hex": "4f70656e496365537461724f5320436f6d6d616e64733a0000"
+      }
+    ]
+  },
+  {
+    "path": "/ICESTAR/CMD.X",
+    "short_names": [
+      "ICESTAR    ",
+      "CMD     X  "
+    ],
+    "original_sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+    "edits": [
+      {
+        "offset": "0xb429",
+        "before_hex": "49636553746172204f53205bb0e6b1be2025642e25642e25645d00",
+        "after_hex": "4f70656e496365537461724f53205b25642e25642e25645d000000"
+      },
+      {
+        "offset": "0xb4b8",
+        "before_hex": "49636553746172204f5320436f6d6d616e64204c6973743a00",
+        "after_hex": "4f70656e496365537461724f5320436f6d6d616e64733a0000"
+      }
+    ]
+  },
+  {
+    "path": "/ICESTAR/TASKBAR.X",
+    "short_names": [
+      "ICESTAR    ",
+      "TASKBAR X  "
+    ],
+    "original_sha256": "e43e9a785fd8e29cb38c540fe9293a06de458f20d39685150e12b5a881008fa6",
+    "edits": [
+      {
+        "offset": "0xc5ab",
+        "before_hex": "57656c636f6d6520746f2049636553746172204f5300",
+        "after_hex": "57656c636f6d65204f70656e496365537461724f5300"
+      }
+    ]
+  },
+  {
+    "path": "/ICESTAR/ICESTAR.X",
+    "short_names": [
+      "ICESTAR    ",
+      "ICESTAR X  "
+    ],
+    "original_sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3",
+    "edits": [
+      {
+        "offset": "0x3cce3",
+        "before_hex": "49636553746172204f53204c6f6164696e6700",
+        "after_hex": "4f70656e496365537461724f53000000000000"
+      },
+      {
+        "offset": "0x3cdc4",
+        "before_hex": "49636573746172204f5300",
+        "after_hex": "0000000000000000000000"
+      },
+      {
+        "offset": "0x137fe",
+        "before_hex": "c4cd8300",
+        "after_hex": "e3cc8300"
+      }
+    ]
+  },
+  {
+    "path": "/ICESTAR/README.TXT",
+    "short_names": [
+      "ICESTAR    ",
+      "README  TXT"
+    ],
+    "original_sha256": "c2d15da6e65f6702ef74a9b215894ce99ea9d91b3339667e472ae690d4e91dd0",
+    "edits": [
+      {
+        "offset": "0x0",
+        "before_hex": "b1f9d0c7cfb5cdb32849636553746172204f5329cac7d2bbbfeeb4bfb9fab2fad7d4b4b4b2d9d7f7cfb5cdb3a3a1cfb5cdb3bdbbc1f75151c8baa3ba3138323436303835",
+        "after_hex": "4f70656e496365537461724f530d0a4320d4b4c2ebbbd6b8b4bdf8d0d0d6d0a3acb1a3c1f4d4adcfb5cdb3bce6c8ddbdd3bfdaa1a30d0a20202020202020202020202020"
+      }
+    ]
+  }
+]
