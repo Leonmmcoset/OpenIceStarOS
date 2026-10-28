@@ -7,6 +7,26 @@ import subprocess
 from kernel_image import Fat16
 
 
+def block_events(text):
+    """A QEMU Trace line can precede a cancelled TB, before guest execution.
+
+    Remove it only when QEMU explicitly cancels the same host TB and guest
+    PC. Repeated PCs without that cancellation remain separate events.
+    """
+    events, cancelled = [], []
+    trace = re.compile(r"^Trace \d+: (0x[0-9a-fA-F]+) \[[0-9a-fA-F]+/([0-9a-fA-F]+)/")
+    stopped = re.compile(r"^Stopped execution of TB chain before (0x[0-9a-fA-F]+) \[([0-9a-fA-F]+)\]")
+    for line in text.splitlines():
+        match = trace.match(line)
+        if match:
+            events.append(tuple(int(value,16) for value in match.groups()))
+            continue
+        match = stopped.match(line)
+        if match and events and events[-1] == tuple(int(value,16) for value in match.groups()):
+            cancelled.append(events.pop()[1])
+    return [pc for _,pc in events],cancelled
+
+
 def calls(path):
     assembly = subprocess.run(
         ["objdump", "-D", "-b", "binary", "-m", "i386", "--adjust-vma=0x800000",
@@ -42,8 +62,7 @@ def check_entry_execution(root, image, trace):
     # startup block is observed before input and application tests begin.
     expected = ([0x800040, 0x800070] + [address + 5 for address, _ in bootstrap] +
                 [address + 5 for address, _ in entry[:-1]])
-    observed = [int(match.group(1), 16) for match in
-                re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
+    observed,cancelled = block_events(trace.read_text())
     observed = [pc for pc in observed if 0x800040 <= pc < 0x800104]
     if observed != expected:
         raise RuntimeError("startup block sequence differs: " + json.dumps({
@@ -56,6 +75,7 @@ def check_entry_execution(root, image, trace):
         "trace_sha256": hashlib.sha256(trace.read_bytes()).hexdigest(),
         "installed_intervals_verified": len(json.loads((root / "kernel/patches.json").read_text())),
         "ordered_block_events": [hex(pc) for pc in observed],
+        "cancelled_translation_blocks": [hex(pc) for pc in cancelled],
         "ordered_external_calls": [hex(target) for _, target in bootstrap + entry[1:]],
         "final_event_loop_returned": False,
     }
