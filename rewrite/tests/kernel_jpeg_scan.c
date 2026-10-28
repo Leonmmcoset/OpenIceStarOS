@@ -3,6 +3,7 @@
 #include "../kernel/jpeg_basis.h"
 #include "../kernel/jpeg_transform.h"
 #include "../kernel/jpeg_block.h"
+#include "../kernel/jpeg_output.h"
 #define CONTEXT 0x1000000u
 #define SOURCE 0x1100000u
 #define ARGUMENTS 0x640f60u
@@ -10,13 +11,13 @@
 #define SOURCE_BYTES 8192u
 #define BYTES (CONTEXT_BYTES+SOURCE_BYTES)
 #define SHARED 0x1400000u
-#define SNAPSHOT (BYTES+32u)
+#define SNAPSHOT (BYTES+40u)
 #define PRINT(s) syscall3(4,1,(uint32_t)(s),sizeof(s)-1u)
 #define D(a) (*(volatile uint32_t *)(uintptr_t)(a))
 static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[0x100000];
 static uint8_t reference_context[CONTEXT_BYTES];
-static uint32_t args[6],stage,scenario,implementation,cases,kind;
-static uint32_t per_kind[7],faults,loops,safe_probes,caller_changes;
+static uint32_t args[8],stage,scenario,implementation,cases,kind;
+static uint32_t per_kind[9],faults,loops,safe_probes,caller_changes;
 static uint8_t basis_oracle[16384];
 static uint32_t state=0x13a984c7u;
 extern uint32_t raster_checked_call(const void *,const uint32_t *,uint32_t *);
@@ -42,17 +43,17 @@ static void put(uint32_t a,uint32_t v,unsigned n)
 static void setup(unsigned alignment)
 {
     for(unsigned i=0;i<BYTES;++i)initial[i]=(uint8_t)(i*31u+(i/64u)*13u+cases*17u);
-    args[0]=CONTEXT+0x101u+alignment;for(unsigned i=1;i<6;++i)args[i]=random32();
+    args[0]=CONTEXT+0x101u+alignment;for(unsigned i=1;i<8;++i)args[i]=random32();
     put(args[0]+0x5be0u,SOURCE+0x101u,4);put(args[0]+0x5be4u,SOURCE+0x301u,4);
 }
 static void capture(void)
 {
-    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f,kernel_jpeg_block_83b7ab};
-    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f,0x83b7ab};
-    uint32_t actual[7];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
+    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f,kernel_jpeg_block_83b7ab,kernel_jpeg_expand_83b96d,kernel_jpeg_color_83bc15};
+    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f,0x83b7ab,0x83b96d,0x83bc15};
+    uint32_t actual[9];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
     for(unsigned i=0;i<BYTES;++i)*(volatile uint8_t *)(SHARED+i)=*(volatile uint8_t *)address(i);
-    for(unsigned i=0;i<7;++i)D(SHARED+BYTES+i*4u)=actual[i];
-    D(SHARED+BYTES+28u)=abi;
+    for(unsigned i=0;i<9;++i)D(SHARED+BYTES+i*4u)=actual[i];
+    D(SHARED+BYTES+36u)=abi;
 }
 static void exercise(unsigned forked)
 {
@@ -68,13 +69,13 @@ static void exercise(unsigned forked)
         if(!implementation)first_status=status;
         REQUIRE(status==first_status,"original/C probe termination differs");
         if(status){REQUIRE((status&127u)==11u||(status&127u)==14u,"expected fault or bounded loop");continue;}
-        REQUIRE(!D(SHARED+BYTES+28u),"preserved registers/stack/canaries");
+        REQUIRE(!D(SHARED+BYTES+36u),"preserved registers/stack/canaries");
         for(unsigned i=0;i<SNAPSHOT;++i){uint8_t v=*(volatile uint8_t *)(SHARED+i);if(!implementation)reference[i]=v;else if(v!=reference[i]){PRINT("first difference offset/expected/actual: ");number(i);PRINT(" ");number(reference[i]);PRINT(" ");number(v);PRINT("\n");REQUIRE(0,"state/source/caller/EAX comparison");}}
     }
     if(first_status){if((first_status&127u)==11u)faults+=3u;else loops+=3u;}
     else{
         if(forked)safe_probes+=3u;
-        for(unsigned i=0;i<6;++i)if(*(uint32_t *)(reference+BYTES+4u+i*4u)!=args[i]){++caller_changes;break;}
+        for(unsigned i=0;i<8;++i)if(*(uint32_t *)(reference+BYTES+4u+i*4u)!=args[i]){++caller_changes;break;}
     }
     ++per_kind[kind];++cases;
 }
@@ -271,6 +272,51 @@ static void blocks(void)
         exercise(1);
     }
 }
+static void expansion(void)
+{
+    stage=12;kind=7;
+    static const uint32_t sizes[]={0,1,2,7,8,9,16,31,0x80000000u,UINT32_MAX};
+    for(unsigned w=0;w<10;++w)for(unsigned h=0;h<10;++h)for(unsigned a=0;a<4;++a){
+        setup(a);args[1]=CONTEXT+0x8001u+a;args[2]=40;args[3]=2;args[4]=1;args[5]=2u+sizes[w];args[6]=1u+sizes[h];
+        exercise(0);
+        if(w<8u&&h<8u)for(unsigned y=0;y<sizes[h];++y)for(unsigned x=0;x<sizes[w];++x){
+            uint32_t s=args[0]-CONTEXT+(y*8u/sizes[h]*8u+x*8u/sizes[w])*4u;
+            uint32_t d=args[1]-CONTEXT+((y+1u)*40u+x+2u)*4u;
+            for(unsigned b=0;b<4;++b)REQUIRE(reference[d+b]==initial[s+b],"nearest-neighbour expansion oracle");
+        }
+    }
+    for(unsigned a=0;a<4;++a)for(unsigned shift=0;shift<16;++shift){
+        setup(a);args[1]=args[0]+shift;args[2]=8;args[3]=args[4]=0;args[5]=args[6]=8;exercise(0);
+    }
+    for(unsigned a=0;a<4;++a){setup(a);args[1]=ARGUMENTS+a*4u;args[2]=8;args[3]=args[4]=0;args[5]=args[6]=8;exercise(1);}
+}
+static void colors(void)
+{
+    stage=13;kind=8;
+    static const uint32_t modes[]={0,1,2,3,4,0x8004u,UINT32_MAX};
+    static const int32_t lumas[]={-129,-128,-127,-1,0,1,126,127,128,0x7fffffff,(int32_t)0x80000000u};
+    for(unsigned m=0;m<7;++m)for(unsigned v=0;v<11;++v)for(unsigned a=0;a<4;++a){
+        setup(a);args[1]=args[2]=0;args[3]=CONTEXT+0x11001u+a;args[4]=modes[m];
+        put(args[0],5,4);put(args[0]+4u,3,4);put(args[0]+8u,8,4);put(args[0]+12u,8,4);
+        put(args[0]+16u,1,4);put(args[0]+20u,1,4);put(args[0]+0x5bf0u,7,4);
+        for(unsigned i=0;i<64;++i){put(args[0]+0xa8u+i*4u,(uint32_t)lumas[v],4);put(args[0]+0x10a8u+i*4u,0,4);put(args[0]+0x20a8u+i*4u,0,4);}
+        exercise(0);
+        if(v<9u&&(modes[m]==2u||modes[m]==4u)){
+            int32_t c=lumas[v]+128;if(c<0)c=0;if(c>255)c=255;
+            uint32_t rgb565=((uint32_t)c>>3u)<<11u|((uint32_t)c>>2u)<<5u|((uint32_t)c>>3u);
+            for(unsigned y=0;y<3;++y)for(unsigned x=0;x<5;++x){
+                uint32_t d=args[3]-CONTEXT+(y*7u+x)*modes[m];
+                REQUIRE(reference[d]==(modes[m]==4u?(uint8_t)c:(uint8_t)rgb565),"grayscale output oracle low");
+                REQUIRE(reference[d+1u]==(modes[m]==4u?(uint8_t)c:(uint8_t)(rgb565>>8u)),"grayscale output oracle high");
+            }
+        }
+    }
+    for(unsigned a=0;a<4;++a)for(unsigned mode=0;mode<5;++mode){
+        setup(a);args[1]=1;args[2]=0;args[3]=args[0]+0xa8u;args[4]=mode;
+        put(args[0],17,4);put(args[0]+4u,11,4);put(args[0]+8u,8,4);put(args[0]+12u,8,4);
+        put(args[0]+16u,1,4);put(args[0]+20u,1,4);put(args[0]+0x5bf0u,22,4);exercise(1);
+    }
+}
 static void composed(void)
 {
     stage=7;REQUIRE(map(SOURCE,65536,0)&&map(0x1200000,0x100000,0),"composition mappings");
@@ -279,7 +325,7 @@ static void composed(void)
         REQUIRE(syscall3(3,fd,SOURCE,65536)==JPEG_FILE_BYTES,"JPEG read");syscall3(6,fd,0,0);
         for(unsigned i=0;i<CONTEXT_BYTES;++i)*(volatile uint8_t *)(CONTEXT+i)=(uint8_t)(i*19u+71u);
         for(unsigned i=0;i<0x100000;++i)*(volatile uint8_t *)(0x1200000u+i)=0x6d;
-        uint32_t call[]={CONTEXT,CONTEXT+0xf000u,JPEG_FILE_BYTES,SOURCE,0,0},actual[7];
+        uint32_t call[]={CONTEXT,CONTEXT+0xf000u,JPEG_FILE_BYTES,SOURCE,0,0,0,0},actual[9];
         REQUIRE(!raster_checked_call((void *)0x83a70f,call,actual)&&actual[0]==1u,"real JPEG info");
         REQUIRE(D(CONTEXT+0xf008u)==JPEG_WIDTH&&D(CONTEXT+0xf00cu)==JPEG_HEIGHT,"real dimensions");
         call[1]=JPEG_FILE_BYTES;call[2]=SOURCE;call[3]=4;call[4]=0x1200000;
@@ -293,10 +339,10 @@ static void composed(void)
 void _start(void)
 {
     REQUIRE(map(CONTEXT,CONTEXT_BYTES,0)&&map(SOURCE,SOURCE_BYTES,0)&&map(0x640000,4096,0)&&map(0x800000,0x40000,0)&&map(SHARED,0x23000,1),"mappings");
-    markers();preparation();symbols();probes();basis();transform();magnitude();blocks();composed();
+    markers();preparation();symbols();probes();basis();transform();magnitude();blocks();expansion();colors();composed();
     REQUIRE(faults&&safe_probes&&per_kind[0]&&per_kind[1]&&per_kind[2],"coverage");
     PRINT("JPEG scan scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
-    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude/block scenarios: ");for(unsigned i=0;i<7;++i){number(per_kind[i]);PRINT(" ");}
+    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude/block/expand/color scenarios: ");for(unsigned i=0;i<9;++i){number(per_kind[i]);PRINT(" ");}
     PRINT("; fault/loop/safe probe executions/caller changes: ");number(faults);PRINT(" ");number(loops);PRINT(" ");number(safe_probes);PRINT(" ");number(caller_changes);
     PRINT("; real JPEG info/decode executions: 2; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
     syscall3(1,0,0,0);

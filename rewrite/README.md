@@ -4871,3 +4871,24 @@ Complete real JPEG information/decode still matches every pixel/slack and
 workspace byte. Evidence: `build/jpeg_scan_preview_summary.json` and
 `build/jpeg_scan_preview_test.log`. Production remains at 336 intervals;
 MCU assembly, color conversion and the rest of the OS remain unfinished.
+
+### JPEG component expansion and color source checkpoint (2026-10-28)
+
+`kernel/jpeg_output.c` recovers nearest-neighbour component expansion at
+`0x83b96d..0x83ba4f` (167/226 bytes) and YCbCr conversion at
+`0x83bc15..0x83be59` (448/580 bytes). Expansion retains signed bounds and
+division, wrapped addresses, live source/output overlap and mutations of
+incoming destination/stride words. Color conversion retains its original
+integer coefficients and saturation, edge clipping, output pitch and mode
+selection. Four-byte output preserves the fourth byte; two-byte output
+repeatedly reads the same component sample within a row, as the original does.
+
+The fixture now uses eight incoming words to cover the seven-argument
+expander and passes 6,655 scenarios / 19,965 executions. The new 468 expansion
+and 328 color cases include independent nearest-neighbour/grayscale oracles,
+signed dimensions, unaligned and overlapping buffers, unsupported modes,+extreme luma and caller destinations. All prior comparisons and complete
+JPEG pixel/slack/workspace checks still pass. Forked probes compare 96
+faults, twelve bounded loops and 225 successes; 763 cases change incoming
+words. Evidence: `build/jpeg_scan_preview_summary.json` and
+`build/jpeg_scan_preview_test.log`. Production remains at 336 intervals;
+MCU assembly, public wrappers and remaining OS code are unfinished.
