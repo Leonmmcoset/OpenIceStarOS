@@ -4497,3 +4497,39 @@ A complete `make -j4 verify` regression is running at this checkpoint;
 `build/bitmap_key_325_verify.log` records its progress. The latest completed
 full regression remains 305 until that run finishes. Full OS source recovery
 remains unfinished.
+
+### Remaining string services source checkpoint (2026-10-28)
+
+`kernel/string_extra.c` recovers seven entries at `0x82a531..0x82a9bb` in
+703/1,162 bytes: in-place ASCII uppercase, substring search, configuration
+value lookup, character search, signed-byte uppercase, unsigned radix text
+and delimiter splitting. Character search advances the actual incoming
+pointer word. Configuration lookup scans the fixed table at `0x62200`, can
+match a name inside another name, and copies until a semicolon or 255 bytes,
+including bytes after a NUL. Radix conversion retains signed width/character
+comparisons, live output/radix/width words, unsigned division and the zero
+value's empty result for nonpositive widths. Splitting zeroes delimiters,
+then writes pointers to nonempty runs without appending a sentinel.
+The original radix-1 and nonempty-input/empty-delimiter loops remain intact.
+
+`python3 tests/kernel_string_extra.py` passes 10,913 scenarios / 32,739
+original/ordinary-C/fixed-address-C executions in 9.244 seconds. Independent
+bytewise models use bitwise division and bounded memory/iteration checks;
+1,160 unsafe scenarios are excluded before execution. Tests execute real
+`strlen` and initializer bodies and dispatch via services 186..192 across
+six display depths and both CPU choices, without helper substitutions.
+They compare 32 KiB of memory, 4 KiB of configuration memory, six caller
+words, EAX, registers/canaries, 4 KiB of globals and all 320 service words.
+
+Coverage includes all character bytes and full-width inputs, substring
+overlaps, configuration name collisions/embedded NUL/254..256-byte limits,
+16 radices and nine signed widths, binary strings through length seven,
+and output aliasing with inputs, configuration memory and caller words.
+There are 98,077 stores, 1,599 caller-memory stores, 6,000 configuration
+stores, 1,609 changed caller words, 14,880 pointer increments, 52 empty-zero
+results and 2,536 emitted tokens. Forks reproduce six unchecked-memory/
+divide faults, six loops terminated by SIGALRM and three safe terminator
+returns. Evidence: `build/string_extra_preview_summary.json`,
+`build/string_extra_preview_test.log`, `build/text_convert_original.disasm`
+and `build/string_extra_candidate.x`. Production remains at 325 intervals
+at this source checkpoint. Full OS source recovery remains unfinished.
