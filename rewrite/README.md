@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 259 declared kernel intervals and
+original VHD. The current build installs 262 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2731,3 +2731,48 @@ Evidence: `build/icon_render_preview_test.log`,
 `build/icon_render_preview_summary.json`, `build/icon_render_preview.elf`
 and `build/icon_render_preview.x`. This source-test checkpoint leaves
 production at 259 intervals; the three pixel helper slots are not yet installed.
+
+### Icon pixel helper installation (2026-10-28)
+
+The two pixel writers and ordered-dither quantizer are installed at their
+original entries, increasing production from 259 to 262 declared intervals.
+All previous intervals, including the DIB decoder, retain identical bytes.
+The 432 changed kernel bytes are confined to the three new slots; compiled
+bodies occupy 55/68, 56/70 and 98/306 bytes, with NOP padding. Complete disk
+reconstruction passes for the INIT, Snake and combined-application images,
+whose only changes from the 259-interval images lie in the existing kernel file.
+
+Installed differential checks pass the 68,682,058 pixel/quantizer scenarios
+(7.913 s), 9,288 complete-chain scenarios (2.789 s), 79,233 DIB scenarios
+(13.229 s), 235,066 directory scenarios (11.847 s) and 336,248 file-icon
+scenarios (10.370 s). The complete-chain fixture executes the real decoder,
+pixel writers and quantizer without CALL substitution.
+
+Independent QEMU snapshot runs pass Color (29.680 s), Snake (34.306 s),
+MOV (32.502 s) and STARSCR (26.546 s), including startup execution, all
+262 loaded intervals, heap/task state, PS/2 input and application checks.
+Representative application screenshots were visually inspected.
+STARSCR's documented original post-exit mouse/timer stall remains.
+
+`make smoke-icon-render` additionally traces all four recovered rendering
+slots during normal production startup/input, without a diagnostic guest or
+CALL substitution. The DIB decoder has two entry and 1,506,073 body trace
+records; the 32-bit writer has 1,506,017 entry and twelve body records.
+The 8-bit writer and quantizer are unobserved in this 32-bit-display boot.
+TB chaining makes these trace records rather than exact invocation counts.
+The complete disk kernel and all four installed bodies/padding are checked
+against the current production build. This boot does not cover every pixel
+conversion path; differential fixtures provide separate coverage.
+
+Evidence: `build/icon_pixels_262_build.log`,
+`build/icon_pixels_262_disk_verify.log`,
+`build/icon_pixels_262_installation_summary.json`,
+`build/icon_pixels_262_validation.log` and `build/icon_pixels_262_evidence/`,
+including per-application captures, `differential/` summaries and `natural/`
+trace/check results. All four production hashes remain unchanged throughout
+validation. Kernel SHA-256:
+`7dc0b67fe0fc3b200e38af427615d1e8e0147dd6d5f11137a9dc3aa3615ae6ed`.
+Combined-application disk SHA-256:
+`05f488636184854f94714965059e8e9e9abcb92c171000b78a835f44133d2912`.
+This checkpoint has focused and boot coverage; the latest complete regression
+remains the 239-interval checkpoint.

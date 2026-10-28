@@ -3,9 +3,6 @@ ENTRY(kernel_entry)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_icon_png_8241d0 = 0x8241d0);
-PROVIDE(kernel_icon_put8_81b37c = 0x81b37c);
-PROVIDE(kernel_icon_put32_81b3c0 = 0x81b3c0);
-PROVIDE(kernel_icon_quantize_81fd90 = 0x81fd90);
 PROVIDE(kernel_icon_read_relative_826f38 = 0x826f38);
 PROVIDE(kernel_icon_read_absolute_827798 = 0x827798);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
@@ -462,6 +459,12 @@ SECTIONS
     ASSERT(kernel_timer_delete == 0x82abaf && ADDR(.timer_delete) + SIZEOF(.timer_delete) <= 0x82ac21, "timer_delete layout overflow")
     .timer_rearm 0x82ac21 : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_rearm) }
     ASSERT(kernel_timer_rearm == 0x82ac21 && ADDR(.timer_rearm) + SIZEOF(.timer_rearm) <= 0x82ac53, "timer_rearm layout overflow")
+    .icon_put8 0x81b37c : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_put8_81b37c) }
+    ASSERT(kernel_icon_put8_81b37c == 0x81b37c && ADDR(.icon_put8) + SIZEOF(.icon_put8) <= 0x81b3c0, "icon_put8 overflow")
+    .icon_put32 0x81b3c0 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_put32_81b3c0) }
+    ASSERT(kernel_icon_put32_81b3c0 == 0x81b3c0 && ADDR(.icon_put32) + SIZEOF(.icon_put32) <= 0x81b406, "icon_put32 overflow")
+    .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
+    ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
     ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
     .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }
