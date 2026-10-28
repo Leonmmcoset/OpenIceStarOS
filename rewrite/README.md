@@ -4276,3 +4276,31 @@ this does not establish real filesystem integration. Evidence:
 `build/bitmap_draw_file_original.disasm`, `build/bitmap_fit_file_original.disasm`
 and `build/bitmap_files_candidate.x`. Production remains at 320 intervals
 at this source checkpoint. Complete OS source recovery is unfinished.
+
+### BMP file wrapper installation checkpoint (2026-10-28)
+
+Both file wrappers are installed in the production kernel and all three
+disks, bringing the manifest to 322 intervals. All preceding 320 intervals
+remain byte-identical; only 382 kernel bytes change. Production exactly
+matches the independent source preview, and each disk differs from the
+recorded 320 baseline only in its kernel. `make test-bitmap-files` and
+`make verify` include the installed wrapper fixture.
+
+Installed wrapper/BMP fixtures, startup UI, clock display, linked startup/
+runtime, inventory and whole-disk checks pass. A production CLOCK QEMU boot
+passes rendering, close/input, memory, task and all 322 loaded-interval
+checks. Its screenshot was visually inspected. Normal CLOCK execution
+does not observe either new wrapper entry; their execution evidence comes
+from the explicit helper-boundary fixtures, including real BMP composition.
+Real filesystem integration of these wrappers remains unverified. Kernel
+and disk hashes remain unchanged throughout validation and boot.
+
+Evidence: `build/bitmap_files_322_final_summary.json`,
+`build/bitmap_files_322_validation_summary.json`,
+`build/bitmap_files_322_app_boots.json` and `build/bitmap_files_322_evidence/`.
+The kernel SHA-256 is
+`9f381907fd6914382db24870e54da771c76eb589a65d2eac9c643eeed090e3a0`.
+The latest complete regression remains 305; later checkpoints use focused
+checks and recorded guest boots. INIT/kernel and boot stage 3 remain
+partial, five applications are rebuilt and 32 original program paths
+remain unrecovered. Complete OS source recovery is unfinished.

@@ -22,6 +22,10 @@ PROVIDE(kernel_startup_text_8376d3 = 0x8376d3);
 PROVIDE(kernel_startup_read_alloc_827454 = 0x827454);
 PROVIDE(kernel_startup_read_into_82760c = 0x82760c);
 PROVIDE(kernel_startup_load_image_80214c = 0x80214c);
+PROVIDE(kernel_bitmap_lookup_relative_825c8e = 0x825c8e);
+PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
+PROVIDE(kernel_bitmap_fit_8204ac = 0x8204ac);
+PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -581,8 +585,12 @@ SECTIONS
     ASSERT(kernel_text_format_81f88a == 0x81f88a && ADDR(.text_format) + SIZEOF(.text_format) <= 0x81fd90, "text_format overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
+    .bitmap_draw_file 0x81fec2 : SUBALIGN(1) { *kernel_bitmap_files.o(.text.kernel_bitmap_draw_file_81fec2) }
+    ASSERT(kernel_bitmap_draw_file_81fec2 == 0x81fec2 && ADDR(.bitmap_draw_file) + SIZEOF(.bitmap_draw_file) <= 0x81ffc4, "bitmap_draw_file overflow")
     .bitmap_draw 0x81ffc4 : SUBALIGN(1) { *kernel_bitmap.o(.text.kernel_bitmap_draw_81ffc4) }
     ASSERT(kernel_bitmap_draw_81ffc4 == 0x81ffc4 && ADDR(.bitmap_draw) + SIZEOF(.bitmap_draw) <= 0x82040c, "bitmap_draw overflow")
+    .bitmap_fit_file 0x82040c : SUBALIGN(1) { *kernel_bitmap_files.o(.text.kernel_bitmap_fit_file_82040c) }
+    ASSERT(kernel_bitmap_fit_file_82040c == 0x82040c && ADDR(.bitmap_fit_file) + SIZEOF(.bitmap_fit_file) <= 0x8204ac, "bitmap_fit_file overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
     ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
     .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }
