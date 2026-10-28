@@ -1,9 +1,5 @@
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_entry)
-/* Startup callees whose bodies are not recovered yet. */
-PROVIDE(kernel_startup_step_837448 = 0x837448);
-PROVIDE(kernel_startup_step_81067a = 0x81067a);
-PROVIDE(kernel_startup_step_810d4a = 0x810d4a);
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
@@ -11,7 +7,18 @@ PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
 PROVIDE(kernel_startup_launch_image = 0x802282);
-PROVIDE(kernel_display_write_palette = 0x81ad6e);
+PROVIDE(kernel_startup_lookup_8263c0 = 0x8263c0);
+PROVIDE(kernel_startup_jpeg_823120 = 0x823120);
+PROVIDE(kernel_startup_png_82443e = 0x82443e);
+PROVIDE(kernel_startup_activate_810520 = 0x810520);
+PROVIDE(kernel_startup_logo_821624 = 0x821624);
+PROVIDE(kernel_startup_panel_81d6c2 = 0x81d6c2);
+PROVIDE(kernel_startup_fill_837545 = 0x837545);
+PROVIDE(kernel_startup_outline_837589 = 0x837589);
+PROVIDE(kernel_startup_text_8376d3 = 0x8376d3);
+PROVIDE(kernel_startup_read_alloc_827454 = 0x827454);
+PROVIDE(kernel_startup_read_into_82760c = 0x82760c);
+PROVIDE(kernel_startup_load_image_80214c = 0x80214c);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -95,6 +102,16 @@ SECTIONS
     ASSERT(kernel_syscall_target_810448 == 0x810448 && ADDR(.syscall_object_field12) + SIZEOF(.syscall_object_field12) <= 0x810478, "object field12 overflow")
     .syscall_object_field4 0x810478 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810478) }
     ASSERT(kernel_syscall_target_810478 == 0x810478 && ADDR(.syscall_object_field4) + SIZEOF(.syscall_object_field4) <= 0x8104a0, "object field4 overflow")
+    .startup_ui 0x81067a : SUBALIGN(1) {
+        *kernel_startup_ui.o(.text.kernel_startup_ui)
+        *kernel_startup_ui.o(.text.relative_rectangle .rodata*)
+    }
+    ASSERT(kernel_startup_ui == 0x81067a && ADDR(.startup_ui) + SIZEOF(.startup_ui) <= 0x810d4a, "startup UI slot overflow")
+    .startup_desktop 0x810d4a : SUBALIGN(1) {
+        *kernel_startup_desktop.o(.text.kernel_startup_desktop)
+        *kernel_startup_desktop.o(.text.copy_dimensions)
+    }
+    ASSERT(kernel_startup_desktop == 0x810d4a && ADDR(.startup_desktop) + SIZEOF(.startup_desktop) <= 0x810f38, "startup desktop slot overflow")
     .startup_apps 0x810f38 : SUBALIGN(1) { *kernel_startup_apps.o(.text.kernel_startup_applications) }
     ASSERT(kernel_startup_applications == 0x810f38 && ADDR(.startup_apps) + SIZEOF(.startup_apps) <= 0x810f78, "startup_apps slot overflow")
     .pointer_init 0x812c70 : SUBALIGN(1) {
@@ -410,6 +427,11 @@ SECTIONS
     ASSERT(kernel_jump_boot_entry == 0x81a2a2 && SIZEOF(.cpu_boot_jump) == 8, "boot jump layout changed")
     .display_state 0x81acc4 : SUBALIGN(1) { *kernel_startup_state.o(.text.kernel_init_display_state) }
     ASSERT(kernel_init_display_state == 0x81acc4 && ADDR(.display_state) + SIZEOF(.display_state) <= 0x81ad6e, "display_state slot overflow")
+    .display_dac 0x81ad6e : SUBALIGN(1) {
+        *kernel_display_dac.o(.text.kernel_display_write_palette)
+        *kernel_display_dac.o(.text.display_dac_body)
+    }
+    ASSERT(kernel_display_write_palette == 0x81ad6e && ADDR(.display_dac) + SIZEOF(.display_dac) <= 0x81ae14, "display DAC slot overflow")
     .display_palette 0x81ae14 : SUBALIGN(1) { *kernel_display_palette.o(.text.kernel_display_init_palette) }
     ASSERT(kernel_display_init_palette == 0x81ae14 && ADDR(.display_palette) + SIZEOF(.display_palette) <= 0x81afbc, "display_palette slot overflow")
     .display_colors 0x81afbc : SUBALIGN(1) { *kernel_display_palette.o(.text.kernel_display_select_depth) *kernel_display_palette.o(.rodata*) }
@@ -534,6 +556,11 @@ SECTIONS
     ASSERT(kernel_read_cr0 == 0x83743c && SIZEOF(.cpu_cr0_read) == 4, "read CR0 layout changed")
     .cpu_cr0_write 0x837440 : { *kernel_cpu.o(.text.kernel_write_cr0) }
     ASSERT(kernel_write_cr0 == 0x837440 && SIZEOF(.cpu_cr0_write) == 8, "write CR0 layout changed")
+    .identity_paging 0x837448 : SUBALIGN(1) {
+        *kernel_paging.o(.text.kernel_init_identity_paging)
+        *kernel_paging.o(.text.build_identity_tables)
+    }
+    ASSERT(kernel_init_identity_paging == 0x837448 && ADDR(.identity_paging) + SIZEOF(.identity_paging) <= 0x8374b2, "identity paging slot overflow")
     .service_00 0x8374cf : { *kernel_service_forward.o(.text.kernel_service_00) }
     ASSERT(kernel_service_00 == 0x8374cf && ADDR(.service_00) + SIZEOF(.service_00) <= 0x837501, "service 00 overflow")
     .service_01 0x837501 : { *kernel_service_forward.o(.text.kernel_service_01) }

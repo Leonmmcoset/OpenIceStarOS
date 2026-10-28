@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 231 declared kernel intervals and
+original VHD. The current build installs 235 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -1904,6 +1904,46 @@ bytes lie within the seven new slots. Evidence:
 `0f28ad0eeafa9a97fe368cc84d2ca09afa1d1584c1e758c6c1df712af9cb6382`;
 combined-application image SHA-256 is
 `fd413dfa25246c1e6867ff0336e61c2aedb094728859d8dfb77af95912eb2b95`.
+
+### Install four startup intervals (2026-10-28)
+
+The production manifest now installs 235 intervals, including startup UI and
+resource orchestration, desktop/background creation, VGA DAC writes and
+identity paging. Their compiled sizes are respectively 813/1,744, 336/494,
+161/166 and 102/106 bytes. Entry/bootstrap calls now use the recovered names.
+All 231 previous intervals remain byte-identical. All 2,440 changed kernel
+bytes fall inside the four new slots. Each rebuilt disk differs from its
+231-interval predecessor only in the existing kernel file's extents; FAT,
+directory entries, other file contents and slack are unchanged.
+
+Eight focused installed suites pass: entry, startup state/application caller,
+palette, DAC, paging, desktop and startup UI. The four new suites execute
+59,328 scenarios / 177,984 original/C/fixed-address executions, including
+privileged DAC and paging QEMU fixtures. Evidence:
+`build/startup_235_build.log`, `build/startup_235_focused_summary.json`,
+`build/startup_235_installation_summary.json` and the corresponding test logs.
+The pre-installation manifest, ELF, kernel and disks are retained in
+`build/startup_before_235/`.
+
+Four sequential production snapshot boots pass with Color, Snake, MOV and
+STARSCR. Each verifies detected RAM/heap, real task switches, desktop input,
+all 30 ordered entry/bootstrap blocks, 28 subsystem targets and every one of
+the 235 loaded slots. Color verifies 600 palette pixels and close/CMD reuse;
+Snake verifies movement, collision and restart; MOV verifies four frames and
+close/CMD reuse; STARSCR verifies four phases, Esc and task cleanup. The
+previously documented original post-STARSCR mouse/timer stall remains;
+desktop reuse after that application is not verified. Logs, screenshots,
+traces, memory captures and artifact hashes are archived in
+`build/startup_235_evidence/{color,snake,mov,starscr}/`.
+
+The 235-interval kernel SHA-256 is
+`958993ea2566c0f39508ac10532f7c7a64269d177e402fb5e2c3ec1b9aa3f121`;
+the combined-application disk SHA-256 is
+`8b6e65969f271a297243af2a8df04cf881d924ccfdfc65a674dc0871bdb7bb12`.
+These are focused installation/boot checks. The complete 231-interval
+regression above does not establish a full regression of the 235-interval
+image. Image decoders, resource/file loaders and object creation remain
+explicit original-code dependencies.
 
 `make smoke-kernel-entry` passes a real QEMU snapshot boot. The new
 `tools/entry_smoke.py` compares all 28 external CALL targets against the

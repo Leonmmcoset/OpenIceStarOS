@@ -28,10 +28,14 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_surface_move.o $(BUILD)/kernel_surface_scale.o \
                   $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o \
                   $(BUILD)/kernel_firmware_scan.o \
-                  $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o
+                  $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o \
+                  $(BUILD)/kernel_display_dac.o $(BUILD)/kernel_paging.o \
+                  $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
+                  $(BUILD)/kernel.display_dac.bin $(BUILD)/kernel.identity_paging.bin \
+                  $(BUILD)/kernel.startup_desktop.bin $(BUILD)/kernel.startup_ui.bin \
                   $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -196,8 +200,21 @@ $(BUILD)/kernel_startup_apps.o: kernel/startup_apps.c kernel/startup_apps.h Make
 $(BUILD)/kernel_display_palette.o: kernel/display_palette.c kernel/display_palette.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
+$(BUILD)/kernel_display_dac.o: kernel/display_dac.c kernel/display_dac.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_paging.o: kernel/paging.c kernel/paging.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_startup_desktop.o: kernel/startup_desktop.c kernel/startup_desktop.h kernel/syscalls.h kernel/surface_order.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_startup_ui.o: kernel/startup_ui.c kernel/startup_ui.h kernel/runtime.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
 $(BUILD)/kernel_startup_apps.o: kernel/runtime.h
 $(BUILD)/kernel_startup_state.o: kernel/display_palette.h
+$(BUILD)/kernel_display_palette.o: kernel/display_dac.h
 
 $(BUILD)/kernel_service_forward.o: kernel/service_forward.h kernel/service_forward.def
 $(BUILD)/kernel_service_optional.o: kernel/service_optional.h kernel/service_optional.def
@@ -614,6 +631,10 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_startup_state.py --installed
 	python3 tests/kernel_startup_apps.py --installed
 	python3 tests/kernel_display_palette.py --installed
+	python3 tests/display_dac_qemu.py --installed
+	python3 tests/paging_qemu.py --installed
+	python3 tests/kernel_startup_desktop.py --installed
+	python3 tests/kernel_startup_ui.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -805,7 +826,7 @@ smoke-starscr: $(BUILD)/IceStarOS_c_apps.vhd
 smoke-starscr-reference:
 	python3 tools/boot_smoke.py --starscr-check --starscr-reference
 
-.PHONY: test-startup-state test-startup-apps test-display-palette
+.PHONY: test-startup-state test-startup-apps test-display-palette test-display-dac test-paging test-startup-desktop test-startup-ui
 test-startup-state: $(BUILD)/icestar_c.x
 	python3 tests/kernel_startup_state.py --installed
 
@@ -814,3 +835,15 @@ test-startup-apps: $(BUILD)/icestar_c.x
 
 test-display-palette: $(BUILD)/icestar_c.x
 	python3 tests/kernel_display_palette.py --installed
+
+test-display-dac: $(BUILD)/icestar_c.x
+	python3 tests/display_dac_qemu.py --installed
+
+test-paging: $(BUILD)/icestar_c.x
+	python3 tests/paging_qemu.py --installed
+
+test-startup-desktop: $(BUILD)/icestar_c.x
+	python3 tests/kernel_startup_desktop.py --installed
+
+test-startup-ui: $(BUILD)/icestar_c.x
+	python3 tests/kernel_startup_ui.py --installed

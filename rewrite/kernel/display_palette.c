@@ -1,11 +1,10 @@
 /* VGA palette construction 0x81ae14..0x81afbc and software color table
- * initialization 0x81afbc..0x81b26e. The DAC writer remains original code. */
+ * initialization 0x81afbc..0x81b26e. The DAC writer is in display_dac.c. */
 #include <stdint.h>
 #include "display_palette.h"
+#include "display_dac.h"
 
 #define DWORD(address) (*(volatile uint32_t *)(uintptr_t)(address))
-
-void kernel_display_write_palette(uint32_t first, uint32_t last, uint8_t *rgb);
 
 void kernel_display_init_palette(void)
 {
