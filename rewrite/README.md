@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 255 declared kernel intervals and
+original VHD. The current build installs 258 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2570,3 +2570,40 @@ I/O or image decoding. Bodies fit their original slots at 20/48, 77/114 and
 `build/icon_files_preview_summary.json`, `build/icon_files_calls.h`,
 `build/icon_files_resources.h` and `build/icon_files_preview.elf`.
 All four production hashes remain unchanged at the 255-interval installation.
+
+### File icon installation (2026-10-28)
+
+The X-header accessor and two file icon wrappers are installed at their original
+addresses, raising the manifest from 255 to 258 intervals. All previous interval
+bytes remain unchanged. The 392 changed kernel bytes are confined to the three
+new slots, and complete reconstruction passes for all three production disks.
+Their only differences from the preceding images lie in the existing kernel
+file; no files, FAT chains or directory entries are added or resized.
+
+The installed file-icon fixture passes 336,248 scenarios / 1,008,744 executions
+in 11.094 seconds, including equality of the installed slot bodies and NOP
+padding with separately linked source. The installed ICO-directory regression
+also passes 235,066 scenarios / 705,198 executions in 12.316 seconds.
+
+Four independent QEMU snapshot checks pass Color (29.598 s), Snake (33.745 s),
+MOV (32.452 s) and STARSCR (26.514 s), with startup execution, all 258 loaded
+intervals, heap/task state, PS/2 input and the respective application checks.
+Representative screenshots have been visually inspected. The four production
+hashes remain unchanged during validation. These boot checks do not establish
+natural execution of every new function; the entry trace only covers startup.
+The file fixture substitutes filesystem and decoder boundaries. STARSCR's
+documented original post-exit mouse/timer stall remains.
+
+Evidence: `build/icon_files_installed_test.log`,
+`build/icon_files_installed_summary.json`,
+`build/icon_directory_258_installed_test.log`,
+`build/icon_files_258_installation_summary.json`,
+`build/icon_files_258_build.log`, `build/icon_files_258_disk_verify.log`,
+`build/icon_files_258_validation.log` and
+`build/icon_files_258_evidence/results.json` with per-application artifacts.
+Kernel SHA-256:
+`73ecc65b14b9b36222493ef37a5a5d4140295ed9f4cfb9b8ba877dfac0751b45`.
+Combined-application disk SHA-256:
+`3cad3adf5f9a9dae1cdafdb767e3f3510b0171ebc21e3cc46e749c03727bb0bf`.
+This is focused and boot coverage. The latest complete regression remains the
+239-interval checkpoint; a complete 258-interval regression has not been run.

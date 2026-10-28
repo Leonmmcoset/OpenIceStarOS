@@ -4,6 +4,8 @@ PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_icon_png_8241d0 = 0x8241d0);
 PROVIDE(kernel_icon_dib_82b20c = 0x82b20c);
+PROVIDE(kernel_icon_read_relative_826f38 = 0x826f38);
+PROVIDE(kernel_icon_read_absolute_827798 = 0x827798);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
@@ -124,6 +126,8 @@ SECTIONS
     ASSERT(kernel_startup_desktop == 0x810d4a && ADDR(.startup_desktop) + SIZEOF(.startup_desktop) <= 0x810f38, "startup desktop slot overflow")
     .startup_apps 0x810f38 : SUBALIGN(1) { *kernel_startup_apps.o(.text.kernel_startup_applications) }
     ASSERT(kernel_startup_applications == 0x810f38 && ADDR(.startup_apps) + SIZEOF(.startup_apps) <= 0x810f78, "startup_apps slot overflow")
+    .x_icon_pointer 0x812c0e : SUBALIGN(1) { *kernel_x_icon.o(.text.kernel_x_icon_pointer) }
+    ASSERT(kernel_x_icon_pointer == 0x812c0e && ADDR(.x_icon_pointer) + SIZEOF(.x_icon_pointer) <= 0x812c3e, "x_icon_pointer overflow")
     .pointer_init 0x812c70 : SUBALIGN(1) {
         *kernel_pointer_init.o(.text.kernel_init_pointer)
     }
@@ -480,6 +484,10 @@ SECTIONS
     ASSERT(kernel_icon_draw_centered == 0x82af4c && ADDR(.icon_draw_centered) + SIZEOF(.icon_draw_centered) <= 0x82b004, "icon_draw_centered overflow")
     .icon_draw_frame 0x82b004 : SUBALIGN(1) { *kernel_icon_directory.o(.text.kernel_icon_draw_frame) }
     ASSERT(kernel_icon_draw_frame == 0x82b004 && ADDR(.icon_draw_frame) + SIZEOF(.icon_draw_frame) <= 0x82b0a0, "icon_draw_frame overflow")
+    .icon_draw_file 0x82b0a0 : SUBALIGN(1) { *kernel_icon_files.o(.text.kernel_icon_draw_file) }
+    ASSERT(kernel_icon_draw_file == 0x82b0a0 && ADDR(.icon_draw_file) + SIZEOF(.icon_draw_file) <= 0x82b112, "icon_draw_file overflow")
+    .icon_draw_file_auto 0x82b112 : SUBALIGN(1) { *kernel_icon_files.o(.text.kernel_icon_draw_file_auto) }
+    ASSERT(kernel_icon_draw_file_auto == 0x82b112 && ADDR(.icon_draw_file_auto) + SIZEOF(.icon_draw_file_auto) <= 0x82b20c, "icon_draw_file_auto overflow")
     .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
     ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
     .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }
