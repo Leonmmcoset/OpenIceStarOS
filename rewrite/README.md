@@ -4304,3 +4304,42 @@ The latest complete regression remains 305; later checkpoints use focused
 checks and recorded guest boots. INIT/kernel and boot stage 3 remain
 partial, five applications are rebuilt and 32 original program paths
 remain unrecovered. Complete OS source recovery is unfinished.
+
+### BMP fitting source checkpoint (2026-10-28)
+
+`kernel/bitmap_fit.c` recovers `0x8204ac..0x820d66` as a 1,188-byte C body
+in its original 2,234-byte interval. It accepts only 24-bit source data and
+8-/32-bit targets. Percent steps divide the wrapped destination-times-100
+by the unsigned dimension difference, using signed division. It retains
+live dimensions, ID/bitmap arguments, source-coordinate clamps, horizontal
+skip/repeat counters and asymmetric vertical repetition. In the 8-bit
+repeat branch, source addressing stays captured while components are read
+again; dither X is the preceding destination column. The 32-bit branch
+recalculates the source on every repeated store and reads a full DWORD.
+No signature/compression validation or standard BMP row padding is added.
+
+`python3 tests/kernel_bitmap_fit.py` passes 26,940 scenarios / 80,820
+original/ordinary-C/fixed-address-C executions in 10.416 seconds. The
+bytewise oracle uses widened wrapped address arithmetic and bitwise signed
+division, comparing 32 KiB of state, six caller words, raw EAX, registers/
+canaries, 4 KiB of globals and all 320 service words. It invokes the real
+initializer across six display depths/two CPU choices and dispatches the
+original/fixed C via slot 76, with real pixel/quantizer callees throughout.
+No helpers are substituted. The bounded oracle excludes 2,383 scenarios
+before execution, including 411 that exceed its iteration budget; C retains
+the original unchecked behavior.
+
+Coverage includes all 0..8 source/target dimension combinations, signed/
+wrapped geometry, six target depths/eight source depths, unaligned and
+aliased metadata/caller/bitmap storage, 273,380 stores, 618 changed caller
+words and 17 changed bitmap arguments. It exercises 30,312 horizontal skips,
+87,213 repeats, 8,646 vertical skips, 23,588 vertical holds and 43,964 source
+clamps. There are 1,087 duplicate stores whose fresh source address would
+differ from the required captured one, and 48,982 distinct dither phases.
+Forked probes reproduce 15 source-read SIGSEGVs, three zero-ratio loops
+terminated by SIGALRM, three successful three-byte reads in 8-bit mode,
+and three required-unused-global SIGSEGVs. Evidence:
+`build/bitmap_fit_preview_summary.json`, `build/bitmap_fit_preview_test.log`,
+`build/bitmap_fit_original.disasm` and `build/bitmap_fit_candidate.x`.
+Production remains at 322 intervals at this source checkpoint. Complete
+OS source recovery is unfinished.
