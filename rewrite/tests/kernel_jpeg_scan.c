@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "../kernel/jpeg_scan.h"
 #include "../kernel/jpeg_basis.h"
+#include "../kernel/jpeg_transform.h"
 #define CONTEXT 0x1000000u
 #define SOURCE 0x1100000u
 #define ARGUMENTS 0x640f60u
@@ -14,7 +15,7 @@
 static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[0x100000];
 static uint8_t reference_context[CONTEXT_BYTES];
 static uint32_t args[6],stage,scenario,implementation,cases,kind;
-static uint32_t per_kind[4],faults,loops,safe_probes,caller_changes;
+static uint32_t per_kind[6],faults,loops,safe_probes,caller_changes;
 static uint8_t basis_oracle[16384];
 static uint32_t state=0x13a984c7u;
 extern uint32_t raster_checked_call(const void *,const uint32_t *,uint32_t *);
@@ -45,8 +46,8 @@ static void setup(unsigned alignment)
 }
 static void capture(void)
 {
-    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b};
-    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b};
+    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f};
+    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f};
     uint32_t actual[7];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
     for(unsigned i=0;i<BYTES;++i)*(volatile uint8_t *)(SHARED+i)=*(volatile uint8_t *)address(i);
     for(unsigned i=0;i<7;++i)D(SHARED+BYTES+i*4u)=actual[i];
@@ -187,6 +188,48 @@ static void basis(void)
         setup(a);args[0]=ARGUMENTS+a*4u;exercise(1);
     }
 }
+static void transform(void)
+{
+    kind=4;stage=9;
+    static const uint32_t values[]={0,1,1024,0xfffffc00u,0x7fffffffu,0x80000000u,UINT32_MAX};
+    for(unsigned f=0;f<64;++f)for(unsigned v=0;v<7;++v){
+        setup(f&3u);args[1]=CONTEXT+0x2001u+(f&3u);args[2]=CONTEXT+0x8000u;
+        for(unsigned i=0;i<64;++i)put(args[0]+i*4u,i==f?values[v]:0,4);
+        for(unsigned i=0;i<sizeof(basis_oracle);++i)put(args[2]+i,basis_oracle[i],1);
+        exercise(0);
+        for(unsigned j=0;j<64;++j){
+            uint32_t b=0;for(unsigned k=0;k<4;++k)b|=(uint32_t)basis_oracle[(f*64u+j)*4u+k]<<(k*8u);
+            uint32_t wanted=(uint32_t)((int32_t)(b*values[v])>>17u);
+            REQUIRE(*(uint32_t *)(reference+args[1]-CONTEXT+j*4u)==wanted,"single-frequency transform oracle");
+        }
+    }
+    /* Dense blocks and shifted source/output/basis overlaps remain live. */
+    for(unsigned mode=0;mode<32;++mode)for(unsigned a=0;a<4;++a){
+        setup(a);args[1]=args[0]+mode*4u;args[2]=mode&1u?args[0]:CONTEXT+0x8000u;exercise(0);
+    }
+    for(unsigned a=0;a<4;++a){
+        setup(a);args[1]=ARGUMENTS+a*4u;args[2]=CONTEXT+0x8000u;exercise(1);
+    }
+}
+static void magnitude(void)
+{
+    kind=5;stage=10;
+    static const uint32_t counts[]={0,1,2,3,4,7,8,15,16,17,24,31,32,33,63,64,65,0x7fffffffu,0x80000000u,UINT32_MAX};
+    static const uint32_t reservoir[]={0,0x80000000u,0x7fffffffu,0xffff0000u,UINT32_MAX};
+    for(unsigned n=0;n<20;++n)for(unsigned b=0;b<5;++b)for(unsigned a=0;a<4;++a){
+        setup(a);args[1]=counts[n];put(args[0]+0x5becu,32,4);put(args[0]+0x5be8u,reservoir[b],4);exercise(0);
+    }
+    for(unsigned byte=0;byte<256;++byte){
+        setup(byte&3u);args[1]=8;put(args[0]+0x5becu,0,4);put(args[0]+0x5be8u,0,4);
+        for(unsigned i=0;i<16;++i)put(SOURCE+0x101u+i,byte,1);
+        exercise(0);
+        REQUIRE(*(uint32_t *)(reference+BYTES)==(byte<128u?byte-255u:byte),"eight-bit sign extension oracle");
+    }
+    for(unsigned n=0;n<20;++n){
+        setup(0);args[0]=ARGUMENTS+8u-0x5be0u;args[1]=counts[n];
+        args[2]=SOURCE+0x101u;args[3]=SOURCE+0x109u;args[4]=random32();args[5]=32;exercise(1);
+    }
+}
 static void composed(void)
 {
     stage=7;REQUIRE(map(SOURCE,65536,0)&&map(0x1200000,0x100000,0),"composition mappings");
@@ -209,10 +252,10 @@ static void composed(void)
 void _start(void)
 {
     REQUIRE(map(CONTEXT,CONTEXT_BYTES,0)&&map(SOURCE,SOURCE_BYTES,0)&&map(0x640000,4096,0)&&map(0x800000,0x40000,0)&&map(SHARED,0x23000,1),"mappings");
-    markers();preparation();symbols();probes();basis();composed();
+    markers();preparation();symbols();probes();basis();transform();magnitude();composed();
     REQUIRE(faults&&safe_probes&&per_kind[0]&&per_kind[1]&&per_kind[2],"coverage");
     PRINT("JPEG scan scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
-    PRINT("; dispatcher/prepare/symbol/basis scenarios: ");for(unsigned i=0;i<4;++i){number(per_kind[i]);PRINT(" ");}
+    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude scenarios: ");for(unsigned i=0;i<6;++i){number(per_kind[i]);PRINT(" ");}
     PRINT("; fault/loop/safe probe executions/caller changes: ");number(faults);PRINT(" ");number(loops);PRINT(" ");number(safe_probes);PRINT(" ");number(caller_changes);
     PRINT("; real JPEG info/decode executions: 2; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
     syscall3(1,0,0,0);

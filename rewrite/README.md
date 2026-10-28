@@ -4827,3 +4827,26 @@ and workspace byte with no helper substitutions. Evidence is in the updated
 `build/jpeg_scan_preview_summary.json` and `build/jpeg_basis_oracle.bin`.
 Production remains at 336 intervals; transform accumulation and the remaining
 JPEG/OS routines are still unrecovered.
+
+### JPEG inverse accumulation and magnitude source checkpoint (2026-10-28)
+
+`kernel/jpeg_transform.c` recovers inverse accumulation at
+`0x83b653..0x83b73f` (141/236 bytes) and signed magnitude extension at
+`0x83b73f..0x83b7ab` (61/108 bytes). Accumulation clears 64 outputs,
+captures each nonzero coefficient, retains low-DWORD products/sums and
+arithmetic right shifts by seventeen, and preserves live overlapping
+source/output/basis accesses. Its raw EAX stack-counter address also matches.
+Magnitude conversion keeps the reader's zero-extended WORD, live arguments,
+zero-count fast path and x86-masked shifts for oversized counts.
+
+The expanded scan fixture passes 5,083 scenarios / 15,249 executions,
+including 580 transform and 676 magnitude scenarios. Single-frequency cases
+compare with the independently generated cosine basis, including wrapped
+extreme signed products. Dense/overlapping buffers and every input byte's
+eight-bit sign extension also pass. Forked probes cover 72 faults, twelve
+bounded loops and 105 successful executions; nineteen cases mutate incoming
+words. Real JPEG information and complete decoding still compare every
+pixel/slack and all workspace bytes with no helper substitutions. Evidence:
+`build/jpeg_scan_preview_summary.json`, `build/jpeg_scan_preview_test.log`
+and `build/jpeg_scan_original.disasm`. Production remains at 336 intervals;
+block entropy decoding, output composition and remaining OS code are unfinished.
