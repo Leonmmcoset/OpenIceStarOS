@@ -4013,3 +4013,36 @@ inspected. Boot evidence: `build/text_glyph_305_app_boots.json` and
 The installed kernel SHA-256 is
 `ed9afd9def016a801e09727c3948922eba0a8af7d8f0f440b004df6043a5ee37`.
 This remains a hybrid OS image; complete source recovery is unfinished.
+
+### Wide glyph and mixed text installation checkpoint (2026-10-28)
+
+The eight wide-glyph/text-run entries at `0x81e106..0x81eaf2` are installed
+in all three production disks, bringing the manifest to 313 intervals.
+All preceding 305 intervals remain byte-identical; only 2,424 kernel bytes
+change, and production exactly matches the combined source preview. Each
+disk differs from the recorded 305 baseline only in its kernel.
+
+Focused checks pass for entire-disk scope, wide glyphs, mixed runs, ASCII
+glyphs, rounded rectangles, startup UI, clock display, linked startup/runtime
+and inventory. The shared direct fixture result arrays now honor their
+configured incoming-word count; both wide/run installed suites pass again
+with their original six-word configuration. This checkpoint uses the complete
+305-interval regression plus these focused checks; a complete `make verify`
+has not been run at 313.
+
+CLOCK, Color, Snake, MOV and STARSCR pass QEMU startup, loaded-code, heap
+and task checks. CLOCK traces execute new `text_wide32`, `text_wide32_mask`,
+`text_run32` and `text_vertical32` entries and bodies. The other new entries
+remain covered by fixed-address and initialized-table fixtures. CLOCK and
+Color screenshots were visually inspected. Snake's first attempt failed
+before launching CMD after the icon double-click; its screenshot shows the
+desktop without CMD. A separate retry passes input, Snake and startup checks.
+The failed attempt is retained in `build/text_run_313_evidence/snake_attempt1/`.
+STARSCR retains the previously observed post-exit mouse-input stall.
+
+Evidence: `build/text_run_313_final_summary.json`,
+`build/text_run_313_validation_summary.json`, `build/text_run_313_app_boots.json`
+and `build/text_run_313_evidence/`. The kernel SHA-256 is
+`45e4db3790a4115c33d4fad81901e6abdf7526ea4df2fe0b8edf54a930b851fe`;
+kernel and three disk hashes remain unchanged throughout testing and boots.
+Complete bootloader/kernel/driver/application source recovery is unfinished.

@@ -39,6 +39,14 @@ SLOTS = {
     "text_rotated8": (0x81dcc0, 0x81de2a),
     "text_glyph32": (0x81de2a, 0x81df96),
     "text_rotated32": (0x81df96, 0x81e106),
+    "text_wide8": (0x81e106, 0x81e2cc),
+    "text_wide8_mask": (0x81e2cc, 0x81e45a),
+    "text_wide32": (0x81e45a, 0x81e624),
+    "text_wide32_mask": (0x81e624, 0x81e7b2),
+    "text_run8": (0x81e7b2, 0x81e87c),
+    "text_vertical8": (0x81e87c, 0x81e952),
+    "text_run32": (0x81e952, 0x81ea1c),
+    "text_vertical32": (0x81ea1c, 0x81eaf2),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

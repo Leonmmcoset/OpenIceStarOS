@@ -551,6 +551,22 @@ SECTIONS
     ASSERT(kernel_text_glyph32_81de2a == 0x81de2a && ADDR(.text_glyph32) + SIZEOF(.text_glyph32) <= 0x81df96, "text_glyph32 overflow")
     .text_rotated32 0x81df96 : SUBALIGN(1) { *kernel_text_glyph.o(.text.kernel_text_rotated32_81df96) }
     ASSERT(kernel_text_rotated32_81df96 == 0x81df96 && ADDR(.text_rotated32) + SIZEOF(.text_rotated32) <= 0x81e106, "text_rotated32 overflow")
+    .text_wide8 0x81e106 : SUBALIGN(1) { *kernel_text_wide.o(.text.kernel_text_wide8_81e106) }
+    ASSERT(kernel_text_wide8_81e106 == 0x81e106 && ADDR(.text_wide8) + SIZEOF(.text_wide8) <= 0x81e2cc, "text_wide8 overflow")
+    .text_wide8_mask 0x81e2cc : SUBALIGN(1) { *kernel_text_wide.o(.text.kernel_text_wide8_mask_81e2cc) }
+    ASSERT(kernel_text_wide8_mask_81e2cc == 0x81e2cc && ADDR(.text_wide8_mask) + SIZEOF(.text_wide8_mask) <= 0x81e45a, "text_wide8_mask overflow")
+    .text_wide32 0x81e45a : SUBALIGN(1) { *kernel_text_wide.o(.text.kernel_text_wide32_81e45a) }
+    ASSERT(kernel_text_wide32_81e45a == 0x81e45a && ADDR(.text_wide32) + SIZEOF(.text_wide32) <= 0x81e624, "text_wide32 overflow")
+    .text_wide32_mask 0x81e624 : SUBALIGN(1) { *kernel_text_wide.o(.text.kernel_text_wide32_mask_81e624) }
+    ASSERT(kernel_text_wide32_mask_81e624 == 0x81e624 && ADDR(.text_wide32_mask) + SIZEOF(.text_wide32_mask) <= 0x81e7b2, "text_wide32_mask overflow")
+    .text_run8 0x81e7b2 : SUBALIGN(1) { *kernel_text_run.o(.text.kernel_text_run8_81e7b2) }
+    ASSERT(kernel_text_run8_81e7b2 == 0x81e7b2 && ADDR(.text_run8) + SIZEOF(.text_run8) <= 0x81e87c, "text_run8 overflow")
+    .text_vertical8 0x81e87c : SUBALIGN(1) { *kernel_text_run.o(.text.kernel_text_vertical8_81e87c) }
+    ASSERT(kernel_text_vertical8_81e87c == 0x81e87c && ADDR(.text_vertical8) + SIZEOF(.text_vertical8) <= 0x81e952, "text_vertical8 overflow")
+    .text_run32 0x81e952 : SUBALIGN(1) { *kernel_text_run.o(.text.kernel_text_run32_81e952) }
+    ASSERT(kernel_text_run32_81e952 == 0x81e952 && ADDR(.text_run32) + SIZEOF(.text_run32) <= 0x81ea1c, "text_run32 overflow")
+    .text_vertical32 0x81ea1c : SUBALIGN(1) { *kernel_text_run.o(.text.kernel_text_vertical32_81ea1c) }
+    ASSERT(kernel_text_vertical32_81ea1c == 0x81ea1c && ADDR(.text_vertical32) + SIZEOF(.text_vertical32) <= 0x81eaf2, "text_vertical32 overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
