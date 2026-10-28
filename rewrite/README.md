@@ -4886,7 +4886,8 @@ repeatedly reads the same component sample within a row, as the original does.
 The fixture now uses eight incoming words to cover the seven-argument
 expander and passes 6,655 scenarios / 19,965 executions. The new 468 expansion
 and 328 color cases include independent nearest-neighbour/grayscale oracles,
-signed dimensions, unaligned and overlapping buffers, unsupported modes,+extreme luma and caller destinations. All prior comparisons and complete
+signed dimensions, unaligned and overlapping buffers, unsupported modes,
+extreme luma and caller destinations. All prior comparisons and complete
 JPEG pixel/slack/workspace checks still pass. Forked probes compare 96
 faults, twelve bounded loops and 225 successes; 763 cases change incoming
 words. Evidence: `build/jpeg_scan_preview_summary.json` and
@@ -4904,3 +4905,33 @@ Evidence: `build/jpeg_huffman_336_verify.log` and the updated
 `build/jpeg_huffman_336_integrity_summary.json`; the log is also preserved
 in `build/jpeg_huffman_336_evidence/`. This advances complete recipe coverage
 from 326 to 336 intervals. Full OS recovery is still unfinished.
+
+### JPEG public entries and MCU traversal source checkpoint (2026-10-28)
+
+`kernel/jpeg_decode.c` recovers information/decode entry points at
+`0x83a70f..0x83a835`, MCU component assembly at `0x83ba4f..0x83bc15`
+and image traversal at `0x83be59..0x83c02f`. Their linked sizes are
+116/146, 112/148, 387/454 and 342/470 bytes, including traversal's zigzag
+table. These retain signed/wrapped dimension and stride arithmetic,
+ignored helper errors, the restart bit-count adjustment and predictor reset.
+All seventeen routines in this JPEG decoder now have recovered sources;
+integration is still pending at this checkpoint.
+
+The expanded fixture passes 6,751 scenarios / 20,253 native executions,
+including direct MCU, image traversal and information-entry comparisons.
+It extracts all twelve original JPEG files directly from FAT16 and performs
+108 complete information/decode executions: original, ordinary C and fixed
+address C; four-byte output, two-byte output and flagged four-byte output
+with thirteen extra row bytes. Dimensions range from 260-by-260 through
+1920-by-1080. Every execution compares the full twelve-MiB output/slack
+and 128-KiB workspace; no helper bodies are substituted. The preview still
+uses original bodies for the four previously recovered JPEG routines;
+the installed check will exercise their recovered versions together.
+
+Malformed MCU paths that consume uninitialized local coefficients after an
+early block error have not been established equivalent. Existing unchecked
+memory, division and looping behavior is retained, with bounded fault probes
+covering the tested cases. Evidence: `build/jpeg_scan_preview_summary.json`,
+`build/jpeg_scan_preview_test.log`, `build/jpeg_corpus/` and
+`build/jpeg_basis_oracle.bin`. Production remains at 336 intervals here;
+the complete operating system remains unfinished.

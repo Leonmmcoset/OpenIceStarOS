@@ -4,6 +4,8 @@
 #include "../kernel/jpeg_transform.h"
 #include "../kernel/jpeg_block.h"
 #include "../kernel/jpeg_output.h"
+#include "../kernel/jpeg_decode.h"
+#include "../build/jpeg_corpus.h"
 #define CONTEXT 0x1000000u
 #define SOURCE 0x1100000u
 #define ARGUMENTS 0x640f60u
@@ -12,12 +14,14 @@
 #define BYTES (CONTEXT_BYTES+SOURCE_BYTES)
 #define SHARED 0x1400000u
 #define SNAPSHOT (BYTES+40u)
+#define OUTPUT 0x2000000u
+#define OUTPUT_BYTES (12u*1024u*1024u)
 #define PRINT(s) syscall3(4,1,(uint32_t)(s),sizeof(s)-1u)
 #define D(a) (*(volatile uint32_t *)(uintptr_t)(a))
-static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[0x100000];
+static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[OUTPUT_BYTES];
 static uint8_t reference_context[CONTEXT_BYTES];
 static uint32_t args[8],stage,scenario,implementation,cases,kind;
-static uint32_t per_kind[9],faults,loops,safe_probes,caller_changes;
+static uint32_t per_kind[13],faults,loops,safe_probes,caller_changes,real_decodes;
 static uint8_t basis_oracle[16384];
 static uint32_t state=0x13a984c7u;
 extern uint32_t raster_checked_call(const void *,const uint32_t *,uint32_t *);
@@ -48,8 +52,8 @@ static void setup(unsigned alignment)
 }
 static void capture(void)
 {
-    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f,kernel_jpeg_block_83b7ab,kernel_jpeg_expand_83b96d,kernel_jpeg_color_83bc15};
-    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f,0x83b7ab,0x83b96d,0x83bc15};
+    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f,kernel_jpeg_block_83b7ab,kernel_jpeg_expand_83b96d,kernel_jpeg_color_83bc15,kernel_jpeg_mcu_83ba4f,kernel_jpeg_image_83be59,kernel_jpeg_info_83a70f,kernel_jpeg_decode_83a7a1};
+    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f,0x83b7ab,0x83b96d,0x83bc15,0x83ba4f,0x83be59,0x83a70f,0x83a7a1};
     uint32_t actual[9];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
     for(unsigned i=0;i<BYTES;++i)*(volatile uint8_t *)(SHARED+i)=*(volatile uint8_t *)address(i);
     for(unsigned i=0;i<9;++i)D(SHARED+BYTES+i*4u)=actual[i];
@@ -317,33 +321,63 @@ static void colors(void)
         put(args[0]+16u,1,4);put(args[0]+20u,1,4);put(args[0]+0x5bf0u,22,4);exercise(1);
     }
 }
+static void traversal(void)
+{
+    stage=14;
+    for(unsigned a=0;a<4;++a)for(unsigned sampling=1;sampling<=2;++sampling)for(unsigned restart=0;restart<3;++restart){
+        block_setup(a,0,0);uint32_t c=args[0];
+        put(c,17,4);put(c+4u,9,4);put(c+16u,sampling,4);put(c+20u,sampling,4);
+        put(c+0x18u,3,4);put(c+0x58u,3,4);put(c+0xa4u,restart,4);put(c+0x5bf0u,19,4);
+        for(unsigned i=0;i<3;++i){
+            put(c+0x1cu+i*4u,i+1u,4);put(c+0x5cu+i*4u,i+1u,4);
+            put(c+0x34u+i*4u,i?1u:sampling,4);put(c+0x40u+i*4u,i?1u:sampling,4);
+            put(c+0x4cu+i*4u,0,4);put(c+0x68u+i*4u,0,4);put(c+0x74u+i*4u,0,4);
+            put(c+0x98u+i*4u,0,4);put(c+0x40b8u+i*4u,0,4);
+            put(c+0x80u+i*4u,i?1u:sampling,4);put(c+0x8cu+i*4u,i?1u:sampling,4);
+        }
+        for(unsigned i=0;i<sizeof(basis_oracle);++i)put(c+0x5bf4u+i,basis_oracle[i],1);
+        kind=9;args[1]=SOURCE+0x501u;put(c+8u,sampling*8u,4);put(c+12u,sampling*8u,4);exercise(0);
+        kind=10;args[1]=CONTEXT+0x11000u;args[2]=4;exercise(0);
+    }
+    stage=15;
+    for(unsigned a=0;a<4;++a)for(unsigned width=0;width<4;++width)for(unsigned truncated=0;truncated<3;++truncated){
+        setup(a);uint32_t p=SOURCE+0x101u;
+        uint8_t header[]={255,216,255,192,0,11,8,0,3,0,(uint8_t)width,1,1,17,0,255,218,0,8,1,1,0,0,63,0};
+        for(unsigned i=0;i<sizeof(header);++i)put(p+i,header[i],1);
+        args[1]=CONTEXT+0x11000u;args[2]=truncated==0?sizeof(header):truncated==1?17u:1u;args[3]=p;kind=11;exercise(0);
+        REQUIRE(*(uint32_t *)(reference+BYTES)==(!truncated&&width?1u:0u),"public JPEG info result oracle");
+    }
+}
 static void composed(void)
 {
-    stage=7;REQUIRE(map(SOURCE,65536,0)&&map(0x1200000,0x100000,0),"composition mappings");
-    for(implementation=0;implementation<2;++implementation){
-        load(implementation);int fd=syscall3(5,(uint32_t)"build/jpeg_scan_fixture.jpg",0,0);REQUIRE(fd>=0,"JPEG open");
-        REQUIRE(syscall3(3,fd,SOURCE,65536)==JPEG_FILE_BYTES,"JPEG read");syscall3(6,fd,0,0);
+    stage=7;REQUIRE(map(SOURCE,0x80000u,0)&&map(OUTPUT,OUTPUT_BYTES,0),"composition mappings");
+    for(unsigned file=0;file<sizeof(corpus)/sizeof(corpus[0]);++file)for(unsigned variant=0;variant<3;++variant)
+    for(implementation=0;implementation<3;++implementation){
+        scenario=file*3u+variant;
+        load(implementation);int fd=syscall3(5,(uint32_t)corpus[file].path,0,0);REQUIRE(fd>=0,"JPEG open");
+        REQUIRE((uint32_t)syscall3(3,fd,SOURCE,0x80000u)==corpus[file].bytes,"JPEG read");syscall3(6,fd,0,0);
         for(unsigned i=0;i<CONTEXT_BYTES;++i)*(volatile uint8_t *)(CONTEXT+i)=(uint8_t)(i*19u+71u);
-        for(unsigned i=0;i<0x100000;++i)*(volatile uint8_t *)(0x1200000u+i)=0x6d;
-        uint32_t call[]={CONTEXT,CONTEXT+0xf000u,JPEG_FILE_BYTES,SOURCE,0,0,0,0},actual[9];
-        REQUIRE(!raster_checked_call((void *)0x83a70f,call,actual)&&actual[0]==1u,"real JPEG info");
-        REQUIRE(D(CONTEXT+0xf008u)==JPEG_WIDTH&&D(CONTEXT+0xf00cu)==JPEG_HEIGHT,"real dimensions");
-        call[1]=JPEG_FILE_BYTES;call[2]=SOURCE;call[3]=4;call[4]=0x1200000;
-        REQUIRE(!raster_checked_call((void *)0x83a7a1,call,actual)&&!actual[0],"real JPEG decode");
+        for(unsigned i=0;i<OUTPUT_BYTES;++i)*(volatile uint8_t *)(OUTPUT+i)=0x6d;
+        uint32_t call[]={CONTEXT,CONTEXT+0xf000u,corpus[file].bytes,SOURCE,0,0,0,0},actual[9];
+        REQUIRE(!raster_checked_call(implementation==1u?(void *)kernel_jpeg_info_83a70f:(void *)0x83a70f,call,actual)&&actual[0]==1u,"real JPEG info");
+        REQUIRE(D(CONTEXT+0xf008u)==corpus[file].width&&D(CONTEXT+0xf00cu)==corpus[file].height,"real dimensions");
+        call[1]=corpus[file].bytes;call[2]=SOURCE;call[3]=variant==1u?2u:variant==2u?0x8004u:4u;call[4]=OUTPUT;call[5]=variant==2u?13u:0u;
+        REQUIRE(!raster_checked_call(implementation==1u?(void *)kernel_jpeg_decode_83a7a1:(void *)0x83a7a1,call,actual)&&!actual[0],"real JPEG decode");
         unsigned changed=0;
-        for(unsigned i=0;i<0x100000;++i){uint8_t v=*(volatile uint8_t *)(0x1200000u+i);if(v!=0x6d)++changed;if(!implementation)reference_pixels[i]=v;else REQUIRE(v==reference_pixels[i],"real pixel/slack comparison");}
-        REQUIRE(changed>JPEG_WIDTH*JPEG_HEIGHT,"real image output");
+        for(unsigned i=0;i<OUTPUT_BYTES;++i){uint8_t v=*(volatile uint8_t *)(OUTPUT+i);if(v!=0x6d)++changed;if(!implementation)reference_pixels[i]=v;else REQUIRE(v==reference_pixels[i],"real pixel/slack comparison");}
+        REQUIRE(changed>corpus[file].width*corpus[file].height,"real image output");
         for(unsigned i=0;i<CONTEXT_BYTES;++i){uint8_t v=*(volatile uint8_t *)(CONTEXT+i);if(!implementation)reference_context[i]=v;else REQUIRE(v==reference_context[i],"real workspace comparison");}
+        ++real_decodes;
     }
 }
 void _start(void)
 {
     REQUIRE(map(CONTEXT,CONTEXT_BYTES,0)&&map(SOURCE,SOURCE_BYTES,0)&&map(0x640000,4096,0)&&map(0x800000,0x40000,0)&&map(SHARED,0x23000,1),"mappings");
-    markers();preparation();symbols();probes();basis();transform();magnitude();blocks();expansion();colors();composed();
+    markers();preparation();symbols();probes();basis();transform();magnitude();blocks();expansion();colors();traversal();composed();
     REQUIRE(faults&&safe_probes&&per_kind[0]&&per_kind[1]&&per_kind[2],"coverage");
     PRINT("JPEG scan scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
-    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude/block/expand/color scenarios: ");for(unsigned i=0;i<9;++i){number(per_kind[i]);PRINT(" ");}
+    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude/block/expand/color/MCU/image/info/decode scenarios: ");for(unsigned i=0;i<13;++i){number(per_kind[i]);PRINT(" ");}
     PRINT("; fault/loop/safe probe executions/caller changes: ");number(faults);PRINT(" ");number(loops);PRINT(" ");number(safe_probes);PRINT(" ");number(caller_changes);
-    PRINT("; real JPEG info/decode executions: 2; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
+    PRINT("; real JPEG info/decode executions: ");number(real_decodes);PRINT("; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
     syscall3(1,0,0,0);
 }
