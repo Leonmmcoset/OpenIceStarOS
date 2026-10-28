@@ -3820,3 +3820,44 @@ It compares all 320 table words. Evidence:
 `build/raster_rounded_preview_test.log`, `build/raster_rounded_preview.elf`
 and `build/raster_rounded_candidate.x`. Production remains at 298 intervals
 at this source checkpoint. Complete OS source recovery remains unfinished.
+
+### Rounded/chamfered rectangle production installation (2026-10-28)
+
+All three rectangle routines are installed at their original addresses,
+increasing production from 298 to 301 declared intervals. Every preceding
+interval is byte-identical. Only 1,135 kernel bytes change inside the three
+new slots, and production exactly matches the independently built preview.
+The startup panel boundary now links to the recovered rounded outline.
+All three rebuilt disks change only in the kernel file. Whole-disk
+INIT/kernel/application reconstruction checks pass.
+
+Installed rounded direct and real-table fixtures pass all 55,116 and 5,760
+executions. Brush, fill, pixel-access, periodic-color rectangles, DDA line/
+sampler, border, circle, filled-circle and startup-UI fixtures also pass,
+as do current fixed-address startup/table initialization, palette/tick-wait
+and inventory checks. `make verify` includes the installed rounded test;
+`make test-raster-rounded` runs it separately. The latest complete regression
+remains the successful 285-interval run; this checkpoint has the focused
+and guest checks described here.
+
+Five ordinary production QEMU boots pass CLOCK, Color, Snake, MOV and
+STARSCR behavior checks, memory/task checks and all 301 loaded interval
+comparisons. CLOCK's graphics trace observes the new rounded outline entry
+and compiled body (1 entry / 8 interior translation-block records). Rounded
+fill and chamfer fill are unobserved in that boot; separate fixed-address
+and initialized-table fixtures execute them. Translation-block records are
+not exact call counts. CLOCK and Color screenshots were visually inspected;
+CLOCK passes three complete changing frames, closure and CMD reuse.
+STARSCR retains its original post-exit input stall.
+
+Evidence: `build/raster_rounded_301_final_summary.json`,
+`build/raster_rounded_301_installation_summary.json`,
+`build/raster_rounded_301_validation_summary.json`,
+`build/raster_rounded_301_app_boots.json`, `build/raster_rounded_301_evidence/`
+and `build/raster_rounded_298_baseline/`. Production hashes remain unchanged
+during validation and guest boots.
+Kernel SHA-256:
+`bb6518754712c8a3dad6463e0e819ff1194cdcf45fe7145e4fcac0249aae7cec`.
+Combined-application disk SHA-256:
+`9db17b2d944f29c63e00e7a3d5a89bed7a98108b3156c4d88cbb4bcc80fbe744`.
+Complete boot/kernel/application/driver source recovery remains unfinished.

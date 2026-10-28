@@ -32,6 +32,9 @@ SLOTS = {
     "brush_line": (0x81d070, 0x81d1fc),
     "brush_circle": (0x81d1fc, 0x81d4e6),
     "circle_quadrants": (0x81d4e6, 0x81d6c2),
+    "rounded_outline": (0x81d6c2, 0x81d8ca),
+    "rounded_fill": (0x81d8ca, 0x81da68),
+    "chamfer_fill": (0x81da68, 0x81db5a),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

@@ -15,7 +15,7 @@ PROVIDE(kernel_startup_jpeg_823120 = 0x823120);
 PROVIDE(kernel_startup_png_82443e = 0x82443e);
 PROVIDE(kernel_startup_activate_810520 = 0x810520);
 PROVIDE(kernel_startup_logo_821624 = 0x821624);
-PROVIDE(kernel_startup_panel_81d6c2 = 0x81d6c2);
+PROVIDE(kernel_startup_panel_81d6c2 = kernel_rounded_outline_81d6c2);
 PROVIDE(kernel_startup_fill_837545 = 0x837545);
 PROVIDE(kernel_startup_outline_837589 = 0x837589);
 PROVIDE(kernel_startup_text_8376d3 = 0x8376d3);
@@ -537,6 +537,12 @@ SECTIONS
     ASSERT(kernel_brush_circle_81d1fc == 0x81d1fc && ADDR(.brush_circle) + SIZEOF(.brush_circle) <= 0x81d4e6, "brush_circle overflow")
     .circle_quadrants 0x81d4e6 : SUBALIGN(1) { *kernel_raster_brush.o(.text.kernel_circle_quadrants_81d4e6) }
     ASSERT(kernel_circle_quadrants_81d4e6 == 0x81d4e6 && ADDR(.circle_quadrants) + SIZEOF(.circle_quadrants) <= 0x81d6c2, "circle_quadrants overflow")
+    .rounded_outline 0x81d6c2 : SUBALIGN(1) { *kernel_raster_rounded.o(.text.kernel_rounded_outline_81d6c2) }
+    ASSERT(kernel_rounded_outline_81d6c2 == 0x81d6c2 && ADDR(.rounded_outline) + SIZEOF(.rounded_outline) <= 0x81d8ca, "rounded_outline overflow")
+    .rounded_fill 0x81d8ca : SUBALIGN(1) { *kernel_raster_rounded.o(.text.kernel_rounded_fill_81d8ca) }
+    ASSERT(kernel_rounded_fill_81d8ca == 0x81d8ca && ADDR(.rounded_fill) + SIZEOF(.rounded_fill) <= 0x81da68, "rounded_fill overflow")
+    .chamfer_fill 0x81da68 : SUBALIGN(1) { *kernel_raster_rounded.o(.text.kernel_chamfer_fill_81da68) }
+    ASSERT(kernel_chamfer_fill_81da68 == 0x81da68 && ADDR(.chamfer_fill) + SIZEOF(.chamfer_fill) <= 0x81db5a, "chamfer_fill overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
