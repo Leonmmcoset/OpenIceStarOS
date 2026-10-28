@@ -2,6 +2,8 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_entry)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
+PROVIDE(kernel_icon_png_8241d0 = 0x8241d0);
+PROVIDE(kernel_icon_dib_82b20c = 0x82b20c);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
@@ -472,6 +474,12 @@ SECTIONS
     ASSERT(kernel_cmos_month == 0x82ae2d && ADDR(.cmos_month) + SIZEOF(.cmos_month) == 0x82ae47, "cmos_month layout overflow")
     .cmos_year 0x82ae47 : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_year) }
     ASSERT(kernel_cmos_year == 0x82ae47 && ADDR(.cmos_year) + SIZEOF(.cmos_year) == 0x82ae84, "cmos_year layout overflow")
+    .icon_draw_id 0x82af08 : SUBALIGN(1) { *kernel_icon_directory.o(.text.kernel_icon_draw_id) }
+    ASSERT(kernel_icon_draw_id == 0x82af08 && ADDR(.icon_draw_id) + SIZEOF(.icon_draw_id) <= 0x82af4c, "icon_draw_id overflow")
+    .icon_draw_centered 0x82af4c : SUBALIGN(1) { *kernel_icon_directory.o(.text.kernel_icon_draw_centered) }
+    ASSERT(kernel_icon_draw_centered == 0x82af4c && ADDR(.icon_draw_centered) + SIZEOF(.icon_draw_centered) <= 0x82b004, "icon_draw_centered overflow")
+    .icon_draw_frame 0x82b004 : SUBALIGN(1) { *kernel_icon_directory.o(.text.kernel_icon_draw_frame) }
+    ASSERT(kernel_icon_draw_frame == 0x82b004 && ADDR(.icon_draw_frame) + SIZEOF(.icon_draw_frame) <= 0x82b0a0, "icon_draw_frame overflow")
     .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
     ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
     .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }

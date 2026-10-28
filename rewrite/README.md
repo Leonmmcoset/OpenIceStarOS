@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 252 declared kernel intervals and
+original VHD. The current build installs 255 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2507,3 +2507,33 @@ for entry addresses, sizes and unexpected sections. Evidence:
 `build/icon_directory_resources.h` and `build/icon_directory_preview.elf`.
 This source checkpoint leaves all four production artifact hashes unchanged
 at the 252-interval installation.
+
+### ICO directory installation (2026-10-28)
+
+The three ICO directory routines are installed at their original entries,
+raising the manifest from 252 to 255 intervals. All previous interval bytes
+remain unchanged; the 391 changed kernel bytes lie entirely within the three
+new slots. All three disks pass complete reconstruction and differ from the
+252-interval baseline only inside the existing kernel file.
+
+The installed differential fixture passes all 235,066 scenarios / 705,198
+executions in 11.940 seconds. Four independent QEMU snapshot checks pass Color
+(29.557 s), Snake (33.803 s), MOV (32.440 s) and STARSCR (26.598 s), including
+startup execution, all 255 loaded intervals, heap/task state, PS/2 input and
+the respective application checks. Representative screenshots have been
+visually inspected. Kernel and disk hashes stay unchanged during testing.
+Decoder pixel correctness is not established by the dispatch fixture, and
+STARSCR's original post-exit mouse/timer stall remains as documented earlier.
+
+Evidence: `build/icon_directory_installed_test.log`,
+`build/icon_directory_installed_summary.json`,
+`build/icon_directory_255_installation_summary.json`,
+`build/icon_directory_255_build.log`,
+`build/icon_directory_255_disk_verify.log`, and
+`build/icon_directory_255_evidence/results.json` with per-application logs,
+memory dumps and screenshots. Kernel SHA-256:
+`698adeff575da09968e9d72d9fb7a4c023ab5ff1692f1bfbe1947b829f388b2c`.
+Combined-application disk SHA-256:
+`66c369d8cb656f8f8c7df8ba41672858993f9598f37cff690a5154458c3ebd90`.
+This is focused and boot coverage; a complete 255-interval regression has not
+been run. The latest complete regression remains the 239-interval checkpoint.
