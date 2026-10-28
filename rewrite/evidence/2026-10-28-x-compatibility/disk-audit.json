@@ -1,0 +1,413 @@
+{
+  "source": "IceStarOS_x86_32M.vhd",
+  "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "image": "rewrite/build/OpenIceStarOS_c_apps.vhd",
+  "image_sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "programs": [
+    {
+      "path": "/ADMIN/DESKTOP/CMD.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 65492,
+      "original_sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+      "image_sha256": "8748d31642cffedfb33e12625a85431d2aeb49867ffa985f99e49e0c3707693c",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ADMIN/DESKTOP/DEVTEST.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 34586,
+      "original_sha256": "37a9e541a35202265f99f5af13f1fbed32d0eb7648e3ded3b6005bb99d3c0255",
+      "image_sha256": "37a9e541a35202265f99f5af13f1fbed32d0eb7648e3ded3b6005bb99d3c0255",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ADMIN/DESKTOP/NETWORK.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 48418,
+      "original_sha256": "7053d5eec75298519d05c455774b892b416a521bd34044c4b26f9a321a6e0c92",
+      "image_sha256": "7053d5eec75298519d05c455774b892b416a521bd34044c4b26f9a321a6e0c92",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ADMIN/DESKTOP/TASKMGR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 42190,
+      "original_sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "image_sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/AREOBAR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 48950,
+      "original_sha256": "33b9f192417e861a078453727adcbb9d53f258ec4dcf4cbfa290e43733fb9963",
+      "image_sha256": "33b9f192417e861a078453727adcbb9d53f258ec4dcf4cbfa290e43733fb9963",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/BROWSER.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 17304,
+      "original_sha256": "d74fe5e1b522941f31f47dfe643f5ded629bf886a585a593efe58d4f8b419e35",
+      "image_sha256": "d74fe5e1b522941f31f47dfe643f5ded629bf886a585a593efe58d4f8b419e35",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/CALC.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 45274,
+      "original_sha256": "2fcfcea430f278ff85eaf24278578f845e0c85000b92613f8ef4c597146d47cc",
+      "image_sha256": "2fcfcea430f278ff85eaf24278578f845e0c85000b92613f8ef4c597146d47cc",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/CHAT.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 35952,
+      "original_sha256": "7035ae7bb738900c2b00bee16d1c196d64da9bf9836b48f3aab8b5493f17c553",
+      "image_sha256": "7035ae7bb738900c2b00bee16d1c196d64da9bf9836b48f3aab8b5493f17c553",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/CLOCK.X",
+      "role": "application",
+      "recovery": "rebuilt",
+      "kind": "0xa",
+      "bytes": 15576,
+      "original_sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7",
+      "image_sha256": "70a2e9ba6483f825909eab030364804863d2ecb2f60045bf561c1ef4ea72aedf",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/CMD.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 65492,
+      "original_sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+      "image_sha256": "8748d31642cffedfb33e12625a85431d2aeb49867ffa985f99e49e0c3707693c",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/COLOR.X",
+      "role": "application",
+      "recovery": "rebuilt",
+      "kind": "0xa",
+      "bytes": 14516,
+      "original_sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3",
+      "image_sha256": "12862eceed90b190210b833122f16a918901bf043c8ff18c0ae8b346e09e2958",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 54966,
+      "original_sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78",
+      "image_sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/DEVMGR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 33482,
+      "original_sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18",
+      "image_sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/AC97.DX",
+      "role": "driver",
+      "recovery": "unrecovered",
+      "kind": "0xd",
+      "bytes": 17782,
+      "original_sha256": "c32abec4b297e78495f788e3c7a7d854cbc3515598fd4a2d66b17b18929054bc",
+      "image_sha256": "c32abec4b297e78495f788e3c7a7d854cbc3515598fd4a2d66b17b18929054bc",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/E1000.DX",
+      "role": "driver",
+      "recovery": "unrecovered",
+      "kind": "0xd",
+      "bytes": 38680,
+      "original_sha256": "b14471f9d97f26ff85796c7889bc94f622a90bb760692e97120e27be5d25a414",
+      "image_sha256": "b14471f9d97f26ff85796c7889bc94f622a90bb760692e97120e27be5d25a414",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/HDA.DX",
+      "role": "driver",
+      "recovery": "unrecovered",
+      "kind": "0xd",
+      "bytes": 25538,
+      "original_sha256": "b9c9b06159514ca5e8cb19b514be87eeb2e0506b5d70cb63376786fedac3f2ac",
+      "image_sha256": "b9c9b06159514ca5e8cb19b514be87eeb2e0506b5d70cb63376786fedac3f2ac",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/SB16.DX",
+      "role": "driver",
+      "recovery": "unrecovered",
+      "kind": "0xd",
+      "bytes": 15966,
+      "original_sha256": "4e419f24ba0ae96eada28000416a19c1c00b5dbd2a8fa25cf2f504f7bece16c2",
+      "image_sha256": "4e419f24ba0ae96eada28000416a19c1c00b5dbd2a8fa25cf2f504f7bece16c2",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/ELSFK.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 80694,
+      "original_sha256": "e3b91cd68b9a1b73b0885347b7091aea569a41f34ae9a4d816de3d5cd93c225a",
+      "image_sha256": "e3b91cd68b9a1b73b0885347b7091aea569a41f34ae9a4d816de3d5cd93c225a",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/GLASS.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 85588,
+      "original_sha256": "bcb7638fb30fa41065c50ca2eb0a15b57296748f5ca2c41f8fb6d4f105738a1d",
+      "image_sha256": "bcb7638fb30fa41065c50ca2eb0a15b57296748f5ca2c41f8fb6d4f105738a1d",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/INVADER.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 33390,
+      "original_sha256": "8417747cbda6d58c0f55bc49cc5abce9ecceca04611213968e15cdcd1ded44a1",
+      "image_sha256": "8417747cbda6d58c0f55bc49cc5abce9ecceca04611213968e15cdcd1ded44a1",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/MINE.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 69330,
+      "original_sha256": "6fbc646c15fea7ee9d97dc3382ca23cb0b6aec0b5a4accde2ade37955f14fa42",
+      "image_sha256": "6fbc646c15fea7ee9d97dc3382ca23cb0b6aec0b5a4accde2ade37955f14fa42",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "role": "application",
+      "recovery": "rebuilt",
+      "kind": "0xa",
+      "bytes": 14932,
+      "original_sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68",
+      "image_sha256": "431486281973c1c2011b0c7a05373574801eaee8fa7428d9983d327ca675b073",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/GAMES/NES/NES.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 57680,
+      "original_sha256": "7258c05dc6e219195a6fd20554088208f45338e3e9b2adf30b75808e727f94ce",
+      "image_sha256": "7258c05dc6e219195a6fd20554088208f45338e3e9b2adf30b75808e727f94ce",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/PUSHBOX.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 68046,
+      "original_sha256": "7d4fedece810f0ea0cd2cf9e8c6b319fc71f3ef0115abc5cf4334af6a352d3ab",
+      "image_sha256": "7d4fedece810f0ea0cd2cf9e8c6b319fc71f3ef0115abc5cf4334af6a352d3ab",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/GAMES/SNAKE.X",
+      "role": "application",
+      "recovery": "rebuilt",
+      "kind": "0x50",
+      "bytes": 2852,
+      "original_sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488",
+      "image_sha256": "48189ea655741844b184fc285fa79d4a2b538f77eb3d4610a9231bee8b7f7a0e",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "role": "kernel",
+      "recovery": "partial",
+      "kind": "0xa",
+      "bytes": 250099,
+      "original_sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3",
+      "image_sha256": "979df96b0d2cd093e72b80005b24cd06e8b4266657c13e60862072b61098b8e5",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/MACBAR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 27758,
+      "original_sha256": "3d9218160e5075cb6bec71754b455b6672d43a4eb24dbda2039f19ecd94195f1",
+      "image_sha256": "3d9218160e5075cb6bec71754b455b6672d43a4eb24dbda2039f19ecd94195f1",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/MPLAY.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 31564,
+      "original_sha256": "8af980ff5c466f7e4c336aab3b13d406b75c3934bbbad12a071013701443d68f",
+      "image_sha256": "8af980ff5c466f7e4c336aab3b13d406b75c3934bbbad12a071013701443d68f",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/NOTEPAD.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 62326,
+      "original_sha256": "69b53e3fe200770f1c2c24bd03991a01276aebb8729b240c918ffa25cdfa1538",
+      "image_sha256": "69b53e3fe200770f1c2c24bd03991a01276aebb8729b240c918ffa25cdfa1538",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/PAINT.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 75490,
+      "original_sha256": "aad10393cfa0f7f5747a1c2b0eb0def53e1a7c553ab832417ad4c6f14cbe1c7d",
+      "image_sha256": "aad10393cfa0f7f5747a1c2b0eb0def53e1a7c553ab832417ad4c6f14cbe1c7d",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/PCMGR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 45914,
+      "original_sha256": "8a017c88d75599a755d945d9ed112528ca61314605a4be3fc40030cfc193550c",
+      "image_sha256": "8a017c88d75599a755d945d9ed112528ca61314605a4be3fc40030cfc193550c",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/PICVIEW.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 43090,
+      "original_sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe",
+      "image_sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/SCRNSET.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 35516,
+      "original_sha256": "08b67a7bf11c36208f8aeaf5d06643780c60cdfa4ef641b4dadd8578457ee27d",
+      "image_sha256": "08b67a7bf11c36208f8aeaf5d06643780c60cdfa4ef641b4dadd8578457ee27d",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/STARSCR.X",
+      "role": "application",
+      "recovery": "rebuilt",
+      "kind": "0xa",
+      "bytes": 16052,
+      "original_sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c",
+      "image_sha256": "0a06fc5581fa32a9746446368673bdc8f21ade38b1198fa6588afe464bae0e0c",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/TASKBAR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 53446,
+      "original_sha256": "e43e9a785fd8e29cb38c540fe9293a06de458f20d39685150e12b5a881008fa6",
+      "image_sha256": "81cd4e8d7e6361a8c54b139bade83744c0dbb1d9af4b80708beeddfd2d893c00",
+      "identical_to_original": false
+    },
+    {
+      "path": "/ICESTAR/TASKMGR.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 42190,
+      "original_sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "image_sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 39038,
+      "original_sha256": "aeb4e960e6dffb5e735689c80c1f28707826b0c3bfda2c9d3f3bf747fbe4ac6e",
+      "image_sha256": "aeb4e960e6dffb5e735689c80c1f28707826b0c3bfda2c9d3f3bf747fbe4ac6e",
+      "identical_to_original": true
+    },
+    {
+      "path": "/ICESTAR/TTFVIEW.X",
+      "role": "application",
+      "recovery": "unrecovered",
+      "kind": "0xa",
+      "bytes": 45506,
+      "original_sha256": "ff1f531663955fe3cbf4597a9af2b1b442d14f328a73c977d1cc3605d1a4b58c",
+      "image_sha256": "ff1f531663955fe3cbf4597a9af2b1b442d14f328a73c977d1cc3605d1a4b58c",
+      "identical_to_original": true
+    },
+    {
+      "path": "/INIT.X",
+      "role": "init",
+      "recovery": "partial",
+      "kind": "0xa",
+      "bytes": 26817,
+      "original_sha256": "0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007",
+      "image_sha256": "0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007",
+      "identical_to_original": true
+    }
+  ],
+  "summary": {
+    "total": 39,
+    "identical_to_original": 30,
+    "changed_paths": [
+      "/ADMIN/DESKTOP/CMD.X",
+      "/ICESTAR/CLOCK.X",
+      "/ICESTAR/CMD.X",
+      "/ICESTAR/COLOR.X",
+      "/ICESTAR/GAMES/MOV/MOV.X",
+      "/ICESTAR/GAMES/SNAKE.X",
+      "/ICESTAR/ICESTAR.X",
+      "/ICESTAR/STARSCR.X",
+      "/ICESTAR/TASKBAR.X"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "image": "/root/IceStarOS-x86-Decompile/rewrite/build/OpenIceStarOS_c_apps.vhd",
+  "diagnostic_only": false,
+  "image_sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "trace_sha256": "c17399c6cc8f92c253d22193a19bbd321a72ba6ee37284326fb135578f7ad9a6",
+  "installed_intervals_verified": 358,
+  "functions": {
+    "show": {
+      "entry": "0x8130cc",
+      "entry_execution_events": 8,
+      "body_execution_events": 29,
+      "executed_block_addresses": [
+        "0x8130cc",
+        "0x8130d8",
+        "0x8130e3",
+        "0x81310e"
+      ]
+    },
+    "hide": {
+      "entry": "0x81313e",
+      "entry_execution_events": 8,
+      "body_execution_events": 28,
+      "executed_block_addresses": [
+        "0x81313e",
+        "0x81314a",
+        "0x813155",
+        "0x813180"
+      ]
+    },
+    "select": {
+      "entry": "0x8131b0",
+      "entry_execution_events": 9,
+      "body_execution_events": 56,
+      "executed_block_addresses": [
+        "0x8131b0",
+        "0x8131b9",
+        "0x8131ba",
+        "0x8131c9",
+        "0x8131d0",
+        "0x8131d7",
+        "0x8131de",
+        "0x8131ff",
+        "0x81320d"
+      ]
+    },
+    "move": {
+      "entry": "0x81325c",
+      "entry_execution_events": 1,
+      "body_execution_events": 7,
+      "executed_block_addresses": [
+        "0x81325c",
+        "0x813265",
+        "0x813266",
+        "0x813275",
+        "0x81327c",
+        "0x813291",
+        "0x8132ab",
+        "0x8132c5"
+      ]
+    }
+  }
+}
