@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 285 declared kernel intervals and
+original VHD. The current build installs 291 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3505,3 +3505,40 @@ Evidence: `build/verify_285_summary.json`, `build/verify_285.log` and
 `build/full_regression_285_evidence/` (saved reports, manifests and hashes).
 The separately tested SIMD and circle sources are not yet in the production
 manifest at this checkpoint. Complete OS recovery remains unfinished.
+
+### SIMD and circle outline installation (2026-10-28)
+
+The four SIMD leaves and two C circle outlines are installed at their original
+addresses, increasing production from 285 to 291 declared kernel intervals.
+All 285 earlier slots remain byte-identical. Only 1,648 kernel bytes change,
+inside the two circle slots; the 400 compiled SIMD bytes exactly reproduce
+the previously retained original instructions. The installed circle bodies
+match the independent source preview. All three production disks differ from
+their 285-interval predecessors only within the existing kernel file, and
+complete INIT/kernel/application disk reconstruction passes.
+
+Installed checks pass the 33,042 circle scenarios / 99,126 executions plus
+3,104 real service-chain executions, and 426,368 direct SIMD scenarios plus
+192 initialized-service scenarios / 1,279,488 total SIMD executions. The
+fixed-address startup/table initializer check and binary inventory also pass.
+`make verify` now includes both new installed fixtures. The latest complete
+regression remains the successful 285-interval run; this installation has the
+focused and guest checks recorded here.
+
+Five normal production QEMU boots pass CLOCK, Color, Snake, MOV and STARSCR
+checks, heap/task checks and all 291 loaded kernel intervals. CLOCK's math
+trace and the other four startup traces pass. Representative screenshots
+were visually inspected. These boots do not establish execution of every new
+SIMD or circle body; their separate differential fixtures execute those
+bodies at their actual fixed addresses. STARSCR retains its original post-exit
+mouse/timer stall, and reuse of the desktop after it is not claimed.
+
+Evidence: `build/graphics_291_final_summary.json`,
+`build/graphics_291_installation_summary.json`,
+`build/graphics_291_validation_summary.json`, `build/graphics_291_app_boots.json`,
+`build/graphics_291_evidence/` and `build/graphics_291_baseline/`.
+Kernel SHA-256:
+`44d816931c9eb139ab07971cf3b6e364958d0ca30c16d0f684eac650de694908`.
+Combined-application disk SHA-256:
+`aae4dd7a1b60f0d8018b80e10320f3b59cde12ddc0f0893f1ebe039691de41e3`.
+Complete boot/kernel/application/driver source recovery remains unfinished.

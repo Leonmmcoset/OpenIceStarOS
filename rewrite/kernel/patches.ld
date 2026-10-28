@@ -483,6 +483,14 @@ SECTIONS
     ASSERT(kernel_remainder_81aab8 == 0x81aab8 && ADDR(.remainder) + SIZEOF(.remainder) <= 0x81ab2a, "remainder overflow")
     .sqrt 0x81ab2a : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_sqrt_81ab2a) }
     ASSERT(kernel_sqrt_81ab2a == 0x81ab2a && ADDR(.sqrt) + SIZEOF(.sqrt) <= 0x81ab34, "sqrt overflow")
+    .simd_add 0x81ab34 : SUBALIGN(1) { *kernel_simd.o(.text.kernel_simd_add_81ab34) }
+    ASSERT(kernel_simd_add_81ab34 == 0x81ab34 && SIZEOF(.simd_add) == 0x24, "SIMD add layout mismatch")
+    .simd_subtract 0x81ab58 : SUBALIGN(1) { *kernel_simd.o(.text.kernel_simd_subtract_81ab58) }
+    ASSERT(kernel_simd_subtract_81ab58 == 0x81ab58 && SIZEOF(.simd_subtract) == 0x24, "SIMD subtract layout mismatch")
+    .simd_multiply 0x81ab7c : SUBALIGN(1) { *kernel_simd.o(.text.kernel_simd_multiply_81ab7c) }
+    ASSERT(kernel_simd_multiply_81ab7c == 0x81ab7c && SIZEOF(.simd_multiply) == 0x4a, "SIMD multiply layout mismatch")
+    .simd_blend 0x81abc6 : SUBALIGN(1) { *kernel_simd.o(.text.kernel_simd_blend_81abc6) }
+    ASSERT(kernel_simd_blend_81abc6 == 0x81abc6 && SIZEOF(.simd_blend) == 0xfe, "SIMD blend layout mismatch")
     .pixel_put8 0x81b26e : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put8_81b26e) }
     ASSERT(kernel_pixel_put8_81b26e == 0x81b26e && ADDR(.pixel_put8) + SIZEOF(.pixel_put8) <= 0x81b2f4, "pixel_put8 overflow")
     .pixel_put32 0x81b2f4 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put32_81b2f4) }
@@ -509,6 +517,10 @@ SECTIONS
     ASSERT(kernel_raster_outline8_81c058 == 0x81c058 && ADDR(.raster_outline8) + SIZEOF(.raster_outline8) <= 0x81c1e4, "raster_outline8 overflow")
     .raster_outline32 0x81c1e4 : SUBALIGN(1) { *kernel_raster_outline.o(.text.kernel_raster_outline32_81c1e4) }
     ASSERT(kernel_raster_outline32_81c1e4 == 0x81c1e4 && ADDR(.raster_outline32) + SIZEOF(.raster_outline32) <= 0x81c396, "raster_outline32 overflow")
+    .raster_circle8 0x81c396 : SUBALIGN(1) { *kernel_raster_circle.o(.text.kernel_raster_circle8_81c396) }
+    ASSERT(kernel_raster_circle8_81c396 == 0x81c396 && ADDR(.raster_circle8) + SIZEOF(.raster_circle8) <= 0x81c6f2, "raster_circle8 overflow")
+    .raster_circle32 0x81c6f2 : SUBALIGN(1) { *kernel_raster_circle.o(.text.kernel_raster_circle32_81c6f2) }
+    ASSERT(kernel_raster_circle32_81c6f2 == 0x81c6f2 && ADDR(.raster_circle32) + SIZEOF(.raster_circle32) <= 0x81ca82, "raster_circle32 overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
