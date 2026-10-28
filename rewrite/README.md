@@ -3185,3 +3185,41 @@ also included in `make verify` to detect stale status after future manifest
 changes. Kernel slot bytes include padding/exact hardware boundaries and are
 reported as physical coverage, not a semantic completion percentage. This
 inventory checkpoint changes no production image.
+
+### CLOCK source checkpoint (2026-10-28)
+
+`apps/clock.c/.h/.ld` recovers CLOCK's entry, close, direct palette lookup,
+face, individual hand and packed-BCD hands at original offsets `0x40`,
+`0x18a`, `0x1a2`, `0x1c2`, `0x340` and `0x3fc`. The original integer hour
+and minute divisions, x87 rounding/precision, double stores, palette reads,
+callback registration and even the failed-create record dereference remain.
+The complete 64-byte initialized-data block and 16-byte BSS stay at their
+original offsets. The type-0x0a output remains 15,576 bytes with entry `0x40`
+and 16 stack pages; its 24 relocations replace the original 26.
+
+`apps/legacy_clock_api.c` retains the reachable text, thick-line/circle,
+digit-count and x87 sine/cosine service boundaries. `apps/legacy_format.c`
+recovers the SDK's nonstandard formatter at `0x3686`, including single-digit
+widths 2..9 for d/x, signed character extension, Chinese byte pairs, unknown
+conversions, CR/LF, zero padding and live unsigned vararg rereads. Numeric
+conversion and drawing continue through the original service slots.
+
+`python3 tests/clock.py` passes 55,576 original/C scenario pairs (1.815 s in
+the source checkpoint). It compares complete service traces, BSS, window
+records, palette memory, table/time/pool state, observable returns, x87
+control words and stack/callee-saved contracts at aligned and unaligned load
+bases. It exercises failed/successful creation, redraw/poll/close, all text
+conversions, live incoming color/vararg changes, table/state changes and
+separate outgoing arguments. Additional passes cover all four rounding modes
+at x87 precision 24/53/64 and 512 packed values per combination. Trig modes
+include controlled boundary returns and calls into the unmodified original
+kernel's actual sine/cosine/power/factorial routines. Raster and window
+services are controlled boundaries in this host fixture, not full guest runs.
+A discovered compiler reuse of a face angle across an intervening service
+call was removed to preserve rounding-mode changes.
+
+Evidence: `build/clock_differential_summary.json`, `build/clock.original.x`,
+`build/clock.kernel.x`, `build/clock.elf`, `build/clock.symbols.json` and
+`build/clock.x`. At this source checkpoint the production manifest and image
+still contain four rebuilt applications; CLOCK is not installed yet. The
+complete OS recovery remains unfinished.
