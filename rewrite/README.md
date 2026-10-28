@@ -4715,3 +4715,33 @@ the interrupted main run and its successful tail. The 328/335 checkpoints
 use focused regression, byte comparisons and recorded production boots.
 The system still retains original boot/INIT/kernel/driver/application
 components; complete OS source recovery remains unfinished.
+
+### JPEG Huffman table source checkpoint (2026-10-28)
+
+`kernel/jpeg_huffman.c` recovers `0x83ac7b..0x83af27` in 484/684 bytes.
+It preserves full-nibble table selection, captured table identity, live
+context/source fields, length expansion, wrapped 16-bit canonical codes,
+and symbol copying. Code generation precedes symbol bounds checking. Its
+inner length-run scan can write code words beyond the declared symbol
+count; oversized code/length arrays can overlap and cause the original
+very long length-counter wrap loop. Even an empty table reads its retained
+first length byte. Declared DHT length has no upfront payload bounds check.
+
+`python3 tests/kernel_jpeg_huffman.py` passes 5,277 scenarios / 15,831
+original/ordinary-C/fixed-address-C executions. The bounded bytewise oracle
+excludes 852 unsafe/excessive-loop cases before native execution. Checks
+compare all 128 KiB of context, 8 KiB of source, six incoming words, raw
+EAX, preserved registers and canaries. Coverage includes all flag bytes,
+16 lengths, 12 input limits, multi-record payloads, unaligned source/table/
+cursor aliases, equal retained length sentinels and caller-word overlaps.
+It observes 569,337 length-byte stores, 571,265 code-word stores, 470,264
+symbol stores, 1,928 code stores past declared counts and 323 empty tables.
+
+Forks reproduce 12 source/wrapped-pointer/mandatory-length/sentinel faults,
+three length-counter wrap loops terminated by SIGALRM, and three safe
+truncated returns. Two real JPEG info/decode executions compare complete
+pixels/slack and workspace without helper substitutions. Evidence:
+`build/jpeg_huffman_preview_summary.json`,
+`build/jpeg_huffman_preview_test.log`, `build/jpeg_huffman_original.disasm`
+and `build/jpeg_huffman_candidate.x`. Production remains at 335 intervals
+at this source checkpoint. Full JPEG and OS source recovery are unfinished.
