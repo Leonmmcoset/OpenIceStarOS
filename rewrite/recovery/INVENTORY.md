@@ -57,7 +57,7 @@ Boot regions are separate from the program-file count:
 
 - MBR at `0x0`, 512 original bytes: C implementation with assembly entry and retained partition data.
 - menu at `0x200`, 1536 original bytes: C implementation using BIOS tick polling in place of original RTC handler.
-- third stage at `0xa00`, 2054 original bytes: partial hybrid; original video/mode setup and other bytes remain via incbin.
+- third stage at `0xa00`, 2054 original bytes: source-built C/assembly replacement; VBE, GDT, A20, CPU/display setup, PCI and INIT load; no incbin.
 
 Identical original binaries occur at multiple paths:
 

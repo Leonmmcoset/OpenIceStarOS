@@ -145,6 +145,15 @@ all: $(BUILD)/IceStarOS_c_mbr.vhd
 test-boot-video-preview:
 	python3 tests/boot_video.py
 
+.PHONY: test-boot-video test-boot-stage3
+test-boot-video: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
+	python3 tests/boot_video.py --installed
+
+test-boot-stage3: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
+	python3 tests/boot_stage3.py
+
+verify: test-boot-video test-boot-stage3
+
 $(BUILD):
 	mkdir -p $@
 
@@ -180,10 +189,10 @@ $(BUILD)/IceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin
 $(BUILD)/fat16.o: boot/fat16.c boot/fat16.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -Wall -Wextra -Werror -c $< -o $@
 
-$(BUILD)/stage3_hybrid.o: boot/stage3_hybrid.S $(IMAGE) | $(BUILD)
+$(BUILD)/stage3_hybrid.o: boot/stage3_hybrid.S | $(BUILD)
 	$(CC) -m32 -c $< -o $@
 
-$(BUILD)/stage3_c_init.o: boot/stage3_hybrid.S $(IMAGE) | $(BUILD)
+$(BUILD)/stage3_c_init.o: boot/stage3_hybrid.S | $(BUILD)
 	$(CC) -m32 -DREWRITE_INIT -c $< -o $@
 
 $(BUILD)/stage3_load.o: boot/stage3_load.c boot/fat16.h | $(BUILD)
@@ -198,11 +207,25 @@ $(BUILD)/init_transfer.o: boot/init_transfer.c boot/init_transfer.h | $(BUILD)
 $(BUILD)/pci.o: boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -c $< -o $@
 
-$(BUILD)/stage3_hybrid.bin: $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o boot/stage3_hybrid.ld
-	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -o $@ $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o
+$(BUILD)/stage3_video16.o: boot/stage3_video.c boot/stage3_video.h | $(BUILD)
+	$(CC) $(CFLAGS) -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -Werror -c $< -o $@
 
-$(BUILD)/stage3_c_init.bin: $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o boot/stage3_hybrid.ld
-	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -o $@ $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o
+$(BUILD)/stage3_video_io.o: boot/stage3_video_io.S | $(BUILD)
+	$(CC) -m32 -c $< -o $@
+
+$(BUILD)/stage3_display.o: boot/stage3_display.c | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+
+STAGE3_COMMON := $(BUILD)/stage3_video16.o $(BUILD)/stage3_video_io.o $(BUILD)/stage3_display.o $(BUILD)/fat16.o $(BUILD)/init_transfer.o $(BUILD)/pci.o
+
+$(BUILD)/stage3_hybrid.elf: $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(STAGE3_COMMON) boot/stage3_hybrid.ld
+	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -Map $(BUILD)/stage3_hybrid.map -o $@ $(BUILD)/stage3_hybrid.o $(BUILD)/stage3_load.o $(STAGE3_COMMON)
+
+$(BUILD)/stage3_c_init.elf: $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init.o $(STAGE3_COMMON) boot/stage3_hybrid.ld
+	$(LD) -m elf_i386 -T boot/stage3_hybrid.ld -Map $(BUILD)/stage3_c_init.map -o $@ $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init.o $(STAGE3_COMMON)
+
+$(BUILD)/stage3_%.bin: $(BUILD)/stage3_%.elf
+	$(OBJCOPY) -O binary $< $@
 
 $(BUILD)/IceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin
 	cp $(IMAGE) $@

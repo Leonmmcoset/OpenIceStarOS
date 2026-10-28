@@ -1,4 +1,5 @@
 """Execute the original 16-bit VBE selector and its C recovery in Unicorn."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -99,9 +100,13 @@ def execute(binary, entry, original, setup):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--installed", action="store_true",
+                        help="compare both production-linked third stages as well as the preview")
+    arguments = parser.parse_args()
     started = time.monotonic()
     BUILD.mkdir(exist_ok=True)
-    obj, io = BUILD/"stage3_video16.o", BUILD/"stage3_video_io.o"
+    obj, io = BUILD/"stage3_video_preview.o", BUILD/"stage3_video_io_preview.o"
     run(["gcc", *FLAGS, "-c", "boot/stage3_video.c", "-o", str(obj)])
     run(["gcc", "-m32", "-c", "boot/stage3_video_io.S", "-o", str(io)])
     linker = BUILD/"stage3_video_preview.ld"
@@ -114,7 +119,13 @@ def main():
     original = (ROOT.parent/"IceStarOS_x86_32M.vhd").read_bytes()[0xa00:0x1206]
     assert hashlib.sha256(original).hexdigest() == (
         "d42ee9ccbedc531a76d599fda98ef9ce246e739c9d80d9acc05f6a19c1733536"), "original stage SHA-256 mismatch"
-    recovered = bytes(0x800)+binary.read_bytes()
+    variants = [("preview", bytes(0x800)+binary.read_bytes(), 0x800)]
+    if arguments.installed:
+        for name in ("stage3_hybrid", "stage3_c_init"):
+            symbols = subprocess.check_output(["nm", str(BUILD/f"{name}.elf")], text=True)
+            entry = next(int(line.split()[0],16)-0x1a800 for line in symbols.splitlines()
+                         if line.split()[-1] == "stage_video_select")
+            variants.append((name, (BUILD/f"{name}.bin").read_bytes(), entry))
     rng = random.Random(0x1892c3)
     scenarios = []
     for requested in (0x101, 0x105, 0x118, 0x1ff, 0, 0xabcd0101):
@@ -148,22 +159,26 @@ def main():
     bios_calls = 0
     for index, case in enumerate(scenarios):
         a = execute(original, 0x189, True, case)
-        b = execute(recovered, 0x800, False, case)
-        if a != b:
-            for region, (left, right) in enumerate(zip(a, b)):
-                if left != right:
-                    if isinstance(left, bytes):
-                        offset = next(i for i,(x,y) in enumerate(zip(left,right)) if x != y)
-                        raise AssertionError(f"case {index} region {region} offset {offset:#x}: {left[offset]:#x}!={right[offset]:#x}")
-                    raise AssertionError(f"case {index} BIOS requests differ")
+        for name, recovered, entry in variants:
+            b = execute(recovered, entry, False, case)
+            if a != b:
+                for region, (left, right) in enumerate(zip(a, b)):
+                    if left != right:
+                        if isinstance(left, bytes):
+                            offset = next(i for i,(x,y) in enumerate(zip(left,right)) if x != y)
+                            raise AssertionError(f"{name} case {index} region {region} offset {offset:#x}: {left[offset]:#x}!={right[offset]:#x}")
+                        raise AssertionError(f"{name} case {index} BIOS requests differ")
         bios_calls += len(a[2])
     paths = [ROOT/p for p in ("boot/stage3_video.c", "boot/stage3_video.h", "boot/stage3_video_io.S", "tests/boot_video.py")]
-    summary = dict(scenarios=len(scenarios), executions=len(scenarios)*2, bios_calls=bios_calls,
+    summary = dict(scenarios=len(scenarios), executions=len(scenarios)*(1+len(variants)), bios_calls=bios_calls,
+        variants=[name for name,_,_ in variants],
         seconds=round(time.monotonic()-started,3), compiled_bytes=len(binary.read_bytes()),
         compared="All boot fields, all 64 KiB low memory except private stack, ordered relevant BIOS requests",
         limitation="INT 10h is a deterministic VBE model; real firmware is tested separately by QEMU boot.",
-        sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*paths,elf]})
-    (BUILD/"boot_video_summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+        sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()
+                for p in [*paths,elf,*([BUILD/f"{n}.bin" for n,_,_ in variants[1:]])]})
+    output = "boot_video_installed_summary.json" if arguments.installed else "boot_video_summary.json"
+    (BUILD/output).write_text(json.dumps(summary,indent=2)+"\n")
     print(json.dumps(summary,indent=2))
 
 

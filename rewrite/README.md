@@ -27,7 +27,7 @@ table, signature, and unchanged contents after sector 3. `make run` starts the
 test disk in QEMU using a temporary snapshot. GCC with `-m16`, binutils, make,
 and qemu-system-i386 are required.
 
-The normal test image replaces only the first two stages. The remainder of the
+The normal `IceStarOS_c_mbr.vhd` test image replaces only the first two stages. The remainder of the
 disk is copied from the original image, including the next boot stage, kernel,
 drivers, applications, and resources.
 
@@ -35,15 +35,20 @@ drivers, applications, and resources.
 for 32-bit x86 and uses a host sector reader to recover `INIT.X` from the
 original VHD; its SHA-256 is checked against the independently extracted file.
 
-`make run-hybrid` starts a second image that uses the original third stage's
-video setup and descriptor tables. C code scans PCI configuration space into
+`make run-hybrid` starts a second image whose third stage is now entirely
+compiled from C and assembly sources, without including original boot bytes.
+C selects VBE/VGA modes and prepares the display; assembly establishes the
+GDT, enables A20 and protected mode, and initializes CPU/FPU/SSE state.
+C code scans PCI configuration space into
 the original low-memory table, loads the BPB,
 FATs and root directory into the original memory layout, loads INIT through the
 FAT16 reader and ATA PIO code, and prepares the INIT header and stack. Assembly
 performs the segment switch and far jump. The menu loads eight sectors for this
 hybrid stage.
-This integration still depends on original boot code and all later programs;
-booting it does not establish that the whole system has been rewritten.
+The menu uses BIOS tick polling and the protected-mode entry uses flat
+code/stack selectors, preserving the later startup contract rather than
+instruction-for-instruction identity. All later programs in this image
+still come from the original disk.
 The PCI scan retains the original unbounded table behavior, which can overwrite
 other low memory if sufficiently many devices are present.
 
@@ -4987,3 +4992,38 @@ firmware execution requires a separate QEMU integration check. Install the
 pinned dependency with `python3 -m pip install --target build/test-deps -r
 tests/requirements.txt`. Evidence is `build/boot_video_summary.json`.
 The production stage still includes original code at this checkpoint.
+
+### Source-built third-stage installation (2026-10-28)
+
+Both eight-sector third-stage images now compile entirely from recovered
+C/assembly. `boot/stage3_hybrid.S` retains its historical filename but no
+longer uses `.incbin`. It defines the original low-memory header layout,
+eleven GDT descriptors, A20 gate, protected-mode transition, CPUID/FPU/SSE
+initialization and INIT transfer. `boot/stage3_display.c` packs the original
+framebuffer descriptor and clears 8/32-bit displays. Existing recovered PCI,
+ATA/FAT16 and INIT-header implementations complete the stage. ELF/map files
+are retained for inspection and the linker enforces the 4,096-byte budget.
+The real-mode stack is explicitly initialized and protected-mode execution
+uses flat code/stack selectors; the original used a stage-relative code
+selector and expand-down stack. These are intentional integration changes.
+
+`make test-boot-video` compares the preview and both production-linked
+selectors with the original: 168 scenarios / 672 executions. `make
+test-boot-stage3` compares complete startup through the pre-PCI boundary:
+27 scenarios / 81 executions, including actual GDT/CR0/CR4/segment operations,
+VBE/VGA fallback and framebuffer clearing, SSE present/absent, small/large
+dimensions and an unaligned framebuffer. It compares boot fields, GDTR,
+CR0/CR4, ordered BIOS/port calls and eight MiB of memory. Private stacks,
+stage code/data and descriptor accessed bits are excluded. BIOS/CPUID use
+deterministic models; zero-pixel and unsupported-depth hangs are untested.
+Both checks are included in `make verify` and use the pinned Unicorn package
+in `tests/requirements.txt` (install into `build/test-deps`).
+
+The source-built production disk reached the desktop in QEMU and passed
+PS/2 CMD opening, `cpuid`, prompt reuse, RAM/heap checks and actual task-switch
+checks. All 349 installed kernel intervals matched guest memory. The command
+result screenshot was visually inspected. Evidence: `build/stage3_source_build.log`,
+`build/stage3_source_boot.log`, `build/boot_video_installed_summary.json`,
+`build/boot_stage3_summary.json` and `build/input_cpuid.png`. Original
+INIT/kernel/driver/application components still remain; this removes the
+third-stage binary dependency and does not complete OS recovery.

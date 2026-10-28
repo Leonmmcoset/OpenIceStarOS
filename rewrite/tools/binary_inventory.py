@@ -103,8 +103,10 @@ def inventory():
                    sources=["boot/mbr.c", "boot/mbr_entry.S"]),
               dict(region="menu", offset="0x200", bytes=1536, recovery="C implementation using BIOS tick polling in place of original RTC handler",
                    sources=["boot/menu.c", "boot/menu_entry.S"]),
-              dict(region="third stage", offset="0xa00", bytes=word(data, 0xa00), recovery="partial hybrid; original video/mode setup and other bytes remain via incbin",
-                   sources=["boot/stage3_hybrid.S", "boot/stage3_load.c", "boot/fat16.c", "boot/pci.c"])],
+              dict(region="third stage", offset="0xa00", bytes=word(data, 0xa00), recovery="source-built C/assembly replacement; VBE, GDT, A20, CPU/display setup, PCI and INIT load; no incbin",
+                   sources=["boot/stage3_hybrid.S", "boot/stage3_hybrid.ld", "boot/stage3_video.c", "boot/stage3_video.h",
+                            "boot/stage3_video_io.S", "boot/stage3_display.c", "boot/stage3_load.c",
+                            "boot/fat16.c", "boot/pci.c", "boot/init_transfer.c"])],
         programs=programs)
     for boot in report["boot"]:
         for path in boot["sources"]:
