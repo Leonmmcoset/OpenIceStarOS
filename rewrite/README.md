@@ -2164,3 +2164,29 @@ entry/size assertions. Evidence: `build/startup_desktop_preview_test.log`,
 `build/startup_desktop_preview_summary.json`, `build/startup_desktop_calls.h`
 and `build/startup_desktop_preview.elf`. Production images are unchanged at
 this source checkpoint while the 231-interval full regression completes.
+
+### Startup UI/resource caller source checkpoint (2026-10-28)
+
+`kernel/startup_ui.c/.h` recovers `0x81067a..0x810d4a`. It preserves both
+startup drawing branches, signed division toward zero when centering, all 69
+progress rectangles, seven resource-lookup stages and 62 one-tick waits.
+Successful stages retain the original allocation/read/image-load calls and
+destination globals; failure leaves those destinations unchanged. Executable
+names are re-read after lookup. Display/color pointers are captured once,
+while dimensions and colors are read live in the original argument order.
+The drawing routines and file/image loading callees are still original-code
+boundaries; recovering their orchestration does not recover their bodies.
+
+`python3 tests/kernel_startup_ui.py` passes 36,864 scenarios / 110,592
+original-x86, ordinary-C and fixed-address-C executions in 5.239 seconds.
+An independent sign/magnitude centering model and bytewise memory oracle cover
+two patterns, eight aligned/unaligned/aliasing layouts, nine dimension values,
+eight full-width boot flags, eight resource-success masks and four mutation
+modes. Each case checks every ordered drawing/load/wait call, all 40 KiB of
+fixture memory, writable metadata across callbacks, stack balance/canaries
+and callee-saved registers. Fixture CALL operands alone are redirected.
+
+The caller and relative-rectangle helper occupy 813/1,744 bytes, enforced by
+linker entry/size assertions. Evidence: `build/startup_ui_preview_test.log`,
+`build/startup_ui_preview_summary.json`, `build/startup_ui_calls.h` and
+`build/startup_ui_preview.elf`. Production images remain unchanged here.
