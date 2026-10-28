@@ -2996,3 +2996,47 @@ Combined-application disk SHA-256:
 The latest complete `make verify` remains the successful 262-interval run;
 269 has the focused and runtime coverage described above. Recovery of the
 entire OS is still incomplete.
+
+### Rectangle fill source and service-chain checkpoint (2026-10-28)
+
+`kernel/raster_fill.c/.h` recovers the inclusive 8/32-bit fills at
+`0x81ba8a..0x81bd26` and `0x81bd26..0x81bf50`. Each endpoint is independently
+clipped to zero and then signed `(dimension - 1)`, retaining wrapped negative
+coordinates for zero/negative dimensions. The 8-bit routine captures the
+full-DWORD shifted/ORed color for its DWORD blocks, keeps the low-byte tail
+color live, and reloads ID/table/width/pixels for each store. The 32-bit
+routine captures pitch and the first-row pointer, writes that row with a live
+color, then copies it through the actual dynamic service wrapper at `0x8378dd`.
+It retains unsigned decrement/sentinel loops. The 8-bit raw return is the
+final row; the 32-bit original returns EBP minus 40 (an expired temporary's
+address), reproduced relative to the incoming frame using GCC's frame builtin.
+
+`python3 tests/kernel_raster_fill.py` passes 44,446 direct scenarios /
+133,338 original-x86, ordinary-C and fixed-address-C executions (11.282 s).
+The independent bytewise oracle checks all 32 KiB of table/order/data memory,
+six incoming words, raw EAX, callee-saved registers, stack balance/canaries
+and the separate 4 KiB service table. Cases cover reversed endpoints, signed
+clipping, wrapped IDs/dimensions/pitch, four alignments, high color bytes,
+DWORD/tail lengths, the 300-DWORD copy boundary, metadata/table aliases,
+incoming-word aliases and overlapping copy rows. Accepted cases include
+9,256 negative clipped coordinates, 1,704 metadata/table stores and 1,892
+incoming-word stores. Before execution, 4,304 generated scenarios are excluded
+for large loops or accesses outside the controlled mappings; this is a fixture
+limit, not additional clipping in the recovered functions.
+
+The complete service fixture passes 13,760 scenarios / 27,520 original and
+candidate chains (4.689 s), with 5,248 large/unmapped executions excluded.
+It executes the real `0x8005aa` initializer, verifies display-selected fill
+slot two and CPU-feature-selected scalar/SSE copy slot 17, then invokes the
+real six-argument forwarder at `0x837545`, fill, copy wrapper and copy routine.
+The ordinary C and fixed-address candidates also use the real copy services;
+no CALL is substituted in either fixture. Both original and recovered
+forwarders preserve the argument-frame offset checked by the raw EAX oracle.
+
+Bodies fit at 489/668 and 387/554 bytes. Evidence:
+`build/raster_fill_preview_test.log`,
+`build/raster_fill_direct_preview_summary.json`,
+`build/raster_fill_chain_preview_summary.json`,
+`build/raster_fill_preview.elf` and `build/raster_fill_candidate.x`.
+Production remains at 269 intervals at this source checkpoint; the preview
+overlays only the two new fill slots on that production kernel.
