@@ -2137,3 +2137,30 @@ Evidence: `build/verify_firmware.log`, `build/verify_firmware.exit` and
 `44ef53e627d5ddd6757e0a89012615de4e912b9b33ddee015676395d4d3baab3`.
 The combined-application image SHA-256 remains
 `20d0c0320627eab6c329d2b9f4ab5c61a773f8f57195938e07cf46673ce23dfc`.
+
+### Desktop startup source checkpoint (2026-10-28)
+
+`kernel/startup_desktop.c/.h` recovers `0x810d4a..0x810f38`. It creates the
+background and desktop objects in their original order, handles each signed
+creation result independently, looks up the configured image, selects exactly
+uppercase JPG/PNG, applies live display dimensions and desktop color, activates
+successful objects, and finally promotes layer 1. Display/color base pointers
+are captured once; object slots and source fields are re-read for each store,
+including when a preceding store aliases another slot. The object factory,
+image lookup, JPEG/PNG renderers and object activation remain explicit original
+machine-code boundaries. Their bodies are not recovered by this caller.
+
+`python3 tests/kernel_startup_desktop.py` passes 15,360 scenarios / 46,080
+original-x86, ordinary-C and fixed-address-C executions in 3.566 seconds.
+The independent bytewise model covers two memory patterns, ten aligned,
+unaligned and aliasing layouts, all four independent creation-success/failure
+combinations, six full-width signed lookup results, eight extensions and four
+callback-mutation modes. It checks ordered boundary calls, captured pointers,
+live source/slot reads, all 48 KiB of fixture memory, stack canaries/balance
+and callee-saved registers. Only fixture CALL operands are redirected.
+
+The body and shared dimension-copy helper occupy 336/494 bytes, with linker
+entry/size assertions. Evidence: `build/startup_desktop_preview_test.log`,
+`build/startup_desktop_preview_summary.json`, `build/startup_desktop_calls.h`
+and `build/startup_desktop_preview.elf`. Production images are unchanged at
+this source checkpoint while the 231-interval full regression completes.
