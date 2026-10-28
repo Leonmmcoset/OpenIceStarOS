@@ -3542,3 +3542,39 @@ Kernel SHA-256:
 Combined-application disk SHA-256:
 `aae4dd7a1b60f0d8018b80e10320f3b59cde12ddc0f0893f1ebe039691de41e3`.
 Complete boot/kernel/application/driver source recovery remains unfinished.
+
+### Filled-circle source checkpoint (2026-10-28)
+
+`kernel/raster_disc.c/.h` recovers the 8-bit and 32-bit filled circles at
+`0x81ca82..0x81cd50` and `0x81cd50..0x81d032`. The code preserves the
+sixteen-digit decimal square-root refinement, binary64 intermediate stores,
+x87 precision/rounding controls, signed comparisons, wrapped arithmetic,
+repeated X clamps, asymmetric Y clipping and original pixel store order.
+Incoming ID, center, radius and color words remain live at the original reads.
+The compiled bodies occupy 618/718 and 621/738 available bytes.
+
+`python3 tests/kernel_raster_disc.py` passes 15,456 direct scenarios / 46,368
+original/ordinary-C/fixed-address-C executions (3.853 seconds), plus 320 real
+mode-selected service scenarios / 640 executions (0.051 seconds). Comparisons
+cover 32 KiB of mapped memory, raw returns, incoming argument mutations,
+callee-saved registers, canaries, x87 control/exception/TOP state and preserved
+incoming x87 data. The matrix includes 12,528 floating-point scenarios, 576
+independent literal zero/one/negative-radius oracles, unaligned descriptors,
+wrapped IDs, signed height extremes and 384 caller/metadata alias scenarios;
+96 of those change the live color observed by subsequent stores.
+
+The original can stall when a decimal increment is too small at 24-bit x87
+precision, or when repeated right-edge clamps prevent X from progressing.
+The C source retains both behaviors. Twelve isolated child-process probes
+observe original/ordinary/fixed-address versions remaining active until their
+100 ms SIGALRM watchdog, covering both pixel formats and both stall triggers.
+The terminating matrix excludes 4,704 single-precision radius-greater-than-one
+scenarios; the service matrix excludes the same class. These are bounded
+fixtures, not a proof of termination or valid accesses for arbitrary inputs.
+No original CALL target is replaced in these fixtures.
+
+Evidence: `build/raster_disc_direct_preview_summary.json`,
+`build/raster_disc_chain_preview_summary.json`, `build/raster_disc_preview_test.log`,
+`build/raster_disc_preview.elf` and `build/raster_disc_candidate.x`.
+Production still has 291 intervals at this source checkpoint. Complete OS
+source recovery remains unfinished.
