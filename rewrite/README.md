@@ -3490,3 +3490,18 @@ Evidence: `build/raster_circle_direct_preview_summary.json`,
 `build/raster_circle_preview_test.log`, `build/raster_circle_preview.elf` and
 `build/raster_circle_candidate.x`. Production remains at 285 intervals at
 this source checkpoint; complete OS recovery remains unfinished.
+
+### Complete 285-interval regression (2026-10-28)
+
+`make -C rewrite verify` completes successfully with exit code zero in
+1,271.388 seconds. This replaces the 262-interval run as the latest complete
+regression. The run includes all boot/INIT and kernel checks, installed scalar
+math and float formatting, privileged QEMU fixtures, five application fixtures,
+CLOCK against the installed kernel, X packaging, exact whole-disk application
+installation and the binary inventory check. Kernel and all three production
+disks retain their recorded pre-run SHA-256 values throughout verification.
+
+Evidence: `build/verify_285_summary.json`, `build/verify_285.log` and
+`build/full_regression_285_evidence/` (saved reports, manifests and hashes).
+The separately tested SIMD and circle sources are not yet in the production
+manifest at this checkpoint. Complete OS recovery remains unfinished.
