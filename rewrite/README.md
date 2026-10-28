@@ -5073,3 +5073,25 @@ Kernel SHA-256 remains
 `4fe8ecf13e88a193f200cbec53506659e498660da529a6c29e5bc3d771c77ed5`.
 This completes the third-stage source replacement checkpoint. Complete
 recovery of INIT, the kernel, drivers and remaining applications is unfinished.
+
+### X executable loader source checkpoint (2026-10-28)
+
+`kernel/x_loader.c` now reconstructs the two X file-loading entry points and
+the application launch/relocation/task-creation entry at their original code
+boundaries. It retains type `0x0a` and `0x50` loading, original allocation
+sizes/alignment, BSS/relocation-table/stack clearing, live relocation-table
+reads, selectors, duplicate-load dialogs and cursor transitions. The public
+X header, relocation and startup contract is documented in `tools/xformat.py`.
+This source preview has not yet been installed in production.
+
+`python3 tests/kernel_x_loader.py` links ordinary and fixed-address C and
+compares both with original x86 in Unicorn: 430 scenarios / 1,290 executions.
+Coverage includes both loader formats, allocation and read branches, shared
+header mutation, relocation table/target aliasing, duplicate launch, CPU
+registers/stack and every byte of the checked low-memory/arena regions. The
+fixture extracts every supported original `.X` program and runs loader/launch
+cases for each file at aligned and unaligned bases. Filesystem, memory
+allocation, task and UI helpers are deterministic callbacks; production boot
+will exercise these against the recovered real subsystems. Invalid and
+unmapped relocation targets are not executed. Evidence:
+`build/x_loader_preview_summary.json` and `build/x_loader_preview_test.log`.
