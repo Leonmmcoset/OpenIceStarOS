@@ -849,6 +849,8 @@ SECTIONS
     ASSERT(kernel_fpu_mark_lazy == 0x8380c9 && ADDR(.fpu_mark_lazy) + SIZEOF(.fpu_mark_lazy) <= 0x8380e1, "fpu_mark_lazy layout overflow")
     .fpu_fault 0x8380e1 : { *kernel_fpu.o(.text.kernel_fpu_fault) }
     ASSERT(kernel_fpu_fault == 0x8380e1 && ADDR(.fpu_fault) + SIZEOF(.fpu_fault) <= 0x8380ef, "fpu_fault layout overflow")
+    .jpeg_bits 0x83a835 : { *kernel_jpeg_bits.o(.text.kernel_jpeg_bits_83a835) }
+    ASSERT(kernel_jpeg_bits_83a835 == 0x83a835 && ADDR(.jpeg_bits) + SIZEOF(.jpeg_bits) <= 0x83a919, "jpeg bit reader layout overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

@@ -4533,3 +4533,41 @@ returns. Evidence: `build/string_extra_preview_summary.json`,
 `build/string_extra_preview_test.log`, `build/text_convert_original.disasm`
 and `build/string_extra_candidate.x`. Production remains at 325 intervals
 at this source checkpoint. Full OS source recovery remains unfinished.
+
+### JPEG bit reader installation checkpoint (2026-10-28)
+
+`kernel/jpeg_bits.c` recovers `0x83a835..0x83a919` in 196/228 bytes.
+It preserves signed reservoir-count comparisons, x86 masked shifts,
+16-bit result truncation, live context/caller words, and the original
+unconditional skip after an input `0xff`. EOF retains source-pointer
+increments while discarding local reservoir/count changes.
+
+`make test-jpeg-bits` passes 7,408 scenarios / 22,224 original/ordinary-C/
+fixed-address-C executions and 38,496 sequential calls. The bytewise oracle
+compares source/state/caller memory, EAX, preserved registers and canaries;
+1,748 scenarios change caller words. Forked probes cover three unchecked
+source faults and six safe EOF/reservoir returns. Real JPEG information and
+decoding execute twice with the original 260-by-260 image, comparing every
+pixel, output slack and all 64 KiB of workspace without helper substitutions.
+
+The entry is installed in the production kernel and all three disks,
+bringing the manifest to 326 intervals. Reversing only this new slot
+reproduces the preceding 325 kernel and disk SHA-256 values: all previous
+slots and all other disk bytes are unchanged; 195 kernel bytes change.
+The production image equals the independently linked source preview.
+The Makefile includes installed/preview targets and the installed fixture
+in `make verify`; the recovery inventory has been regenerated.
+
+A production QEMU CLOCK boot passes its three changing complete frames,
+PS/2 close, task exit, CMD reuse, 128 MiB RAM/heap and real task-switch
+checks. All 326 loaded kernel intervals match the disk. The saved CLOCK
+screenshot was visually inspected. This boot establishes loaded bytes and
+system behavior; direct bit-reader execution is established by the fixtures.
+The full 326-interval `make verify` regression is still running at this
+checkpoint; no complete-regression result is claimed yet.
+
+Evidence: `build/jpeg_bits_installed_summary.json`,
+`build/jpeg_bits_326_integrity_summary.json`, `build/jpeg_bits_326_boot.log`
+and `build/jpeg_bits_326_evidence/`. Kernel SHA-256:
+`02e1af5c1d57557047ceab75eb92955db055f040126b2f55b2815233f760c871`.
+The JPEG decoder as a whole and full OS source recovery remain unfinished.
