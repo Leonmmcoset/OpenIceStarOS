@@ -4892,3 +4892,15 @@ faults, twelve bounded loops and 225 successes; 763 cases change incoming
 words. Evidence: `build/jpeg_scan_preview_summary.json` and
 `build/jpeg_scan_preview_test.log`. Production remains at 336 intervals;
 MCU assembly, public wrappers and remaining OS code are unfinished.
+
+### 336-interval full verification checkpoint (2026-10-28)
+
+The complete `make -j2 verify` invocation finishes with exit code zero at
+336 intervals. Every prerequisite, native and installed comparison, QEMU
+hardware check, application test, whole-disk reconstruction and inventory
+check passes in one uninterrupted run. The kernel SHA-256 remains
+`cfa3907c977e632a038af2737a90ed7a7088960c0e8447d2edc6a56dcbdee490`.
+Evidence: `build/jpeg_huffman_336_verify.log` and the updated
+`build/jpeg_huffman_336_integrity_summary.json`; the log is also preserved
+in `build/jpeg_huffman_336_evidence/`. This advances complete recipe coverage
+from 326 to 336 intervals. Full OS recovery is still unfinished.
