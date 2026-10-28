@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 328 declared kernel intervals and
+original VHD. The current build installs 335 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4681,3 +4681,37 @@ Kernel SHA-256:
 The latest complete verification recipe coverage is 326; this checkpoint
 uses focused checks and a recorded production boot. Other JPEG routines
 and full OS source recovery remain unfinished.
+
+### Seven string services installation checkpoint (2026-10-28)
+
+The seven previously recovered string entries at `0x82a531..0x82a9bb`
+are now linked into production, bringing the manifest to 335 intervals.
+`make test-string-extra` passes the original 10,913 scenarios / 32,739
+original/ordinary-C/fixed-address-C executions, including real `strlen`,
+initializer and services 186..192 without helper substitutions. Its source
+preview equals the production image. All three installed JPEG fixtures
+pass again with their source-checkpoint counts and real JPEG composition.
+Both string test targets and the installed `make verify` check are wired
+into the build.
+
+All preceding 328 intervals and all other kernel bytes are unchanged;
+only 1,106 kernel bytes change. All three production disks differ from
+their saved baseline only in the kernel. Whole boot/application disk
+checks, inventory, linked startup/runtime/string helpers, startup
+applications/UI and 55,576 CLOCK scenarios against the production kernel
+pass. A QEMU CLOCK boot passes changing complete frames, PS/2 close, task
+exit, CMD reuse, RAM/heap and real task-switch checks. All 335 loaded
+intervals match production; the screenshot was visually inspected. Kernel
+and disk hashes remain unchanged during validation and boot.
+
+Evidence: `build/string_extra_335_build.log`,
+`build/string_extra_335_validation.log`, `build/string_extra_335_boot.log`,
+`build/string_extra_335_final_summary.json` and
+`build/string_extra_335_evidence/`. The latter preserves boot artifacts and
+all four installed fixture summaries. Kernel SHA-256:
+`a9dbe4cf8882d98afeda0c8bc39178f8c8df3e13753a7bedc11f0f7f19af4124`.
+The latest complete verification recipe coverage is 326, executed across
+the interrupted main run and its successful tail. The 328/335 checkpoints
+use focused regression, byte comparisons and recorded production boots.
+The system still retains original boot/INIT/kernel/driver/application
+components; complete OS source recovery remains unfinished.

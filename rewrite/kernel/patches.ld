@@ -658,6 +658,20 @@ SECTIONS
     ASSERT(kernel_append_character == 0x82a4bb && ADDR(.string_append_character) + SIZEOF(.string_append_character) <= 0x82a4fb, "character append overflow")
     .string_append 0x82a4fb : { *kernel_strings.o(.text.kernel_append_string) }
     ASSERT(kernel_append_string == 0x82a4fb && ADDR(.string_append) + SIZEOF(.string_append) <= 0x82a531, "string append overflow")
+    .string_upper 0x82a531 : { *kernel_string_extra.o(.text.kernel_string_upper_82a531) }
+    ASSERT(kernel_string_upper_82a531 == 0x82a531 && ADDR(.string_upper) + SIZEOF(.string_upper) <= 0x82a57d, "string uppercase overflow")
+    .string_find 0x82a57d : { *kernel_string_extra.o(.text.kernel_string_find_82a57d) }
+    ASSERT(kernel_string_find_82a57d == 0x82a57d && ADDR(.string_find) + SIZEOF(.string_find) <= 0x82a609, "substring search overflow")
+    .config_value 0x82a609 : { *kernel_string_extra.o(.text.kernel_config_value_82a609) }
+    ASSERT(kernel_config_value_82a609 == 0x82a609 && ADDR(.config_value) + SIZEOF(.config_value) <= 0x82a70d, "configuration lookup overflow")
+    .string_character 0x82a70d : { *kernel_string_extra.o(.text.kernel_string_character_82a70d) }
+    ASSERT(kernel_string_character_82a70d == 0x82a70d && ADDR(.string_character) + SIZEOF(.string_character) <= 0x82a755, "character search overflow")
+    .character_upper 0x82a755 : { *kernel_string_extra.o(.text.kernel_character_upper_82a755) }
+    ASSERT(kernel_character_upper_82a755 == 0x82a755 && ADDR(.character_upper) + SIZEOF(.character_upper) <= 0x82a787, "character uppercase overflow")
+    .unsigned_text 0x82a787 : { *kernel_string_extra.o(.text.kernel_unsigned_text_82a787) }
+    ASSERT(kernel_unsigned_text_82a787 == 0x82a787 && ADDR(.unsigned_text) + SIZEOF(.unsigned_text) <= 0x82a8a3, "radix conversion overflow")
+    .string_split 0x82a8a3 : { *kernel_string_extra.o(.text.kernel_string_split_82a8a3) }
+    ASSERT(kernel_string_split_82a8a3 == 0x82a8a3 && ADDR(.string_split) + SIZEOF(.string_split) <= 0x82a9bb, "string split overflow")
     .random_range 0x82a9bb : { *kernel_syscall_services.o(.text.kernel_syscall_target_82a9bb) }
     ASSERT(kernel_syscall_target_82a9bb == 0x82a9bb && ADDR(.random_range) + SIZEOF(.random_range) <= 0x82aa0f, "random range overflow")
     .wait_ticks 0x82ad81 : { *kernel_runtime.o(.text.kernel_wait_ticks) }

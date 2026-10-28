@@ -14,7 +14,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_queue.o $(BUILD)/kernel_pointer_decode.o $(BUILD)/kernel_pointer_init.o \
                   $(BUILD)/kernel_input_queue.o $(BUILD)/kernel_keyboard_init.o $(BUILD)/kernel_keyboard.o $(BUILD)/kernel_cpu.o \
                   $(BUILD)/kernel_physical.o $(BUILD)/kernel_service_forward.o $(BUILD)/kernel_runtime.o $(BUILD)/kernel_tasks.o $(BUILD)/kernel_task_create.o $(BUILD)/kernel_task_lifecycle.o \
-                  $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o $(BUILD)/kernel_memory.o \
+                  $(BUILD)/kernel_segments.o $(BUILD)/kernel_strings.o $(BUILD)/kernel_string_extra.o $(BUILD)/kernel_memory.o \
                   $(BUILD)/kernel_memory_init.o $(BUILD)/kernel_memory_probe.o $(BUILD)/kernel_memory_ops.o \
                   $(BUILD)/kernel_memory_accel.o $(BUILD)/kernel_memory_transfers.o \
                   $(BUILD)/kernel_graphics_primitives.o $(BUILD)/kernel_service_optional.o \
@@ -98,6 +98,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.segment_descriptor.bin $(BUILD)/kernel.string_copy.bin $(BUILD)/kernel.text_prefix.bin \
                   $(BUILD)/kernel.string_limit.bin $(BUILD)/kernel.string_length.bin $(BUILD)/kernel.string_equal.bin \
                   $(BUILD)/kernel.string_append_character.bin $(BUILD)/kernel.string_append.bin \
+                  $(BUILD)/kernel.string_upper.bin $(BUILD)/kernel.string_find.bin $(BUILD)/kernel.config_value.bin \
+                  $(BUILD)/kernel.string_character.bin $(BUILD)/kernel.character_upper.bin $(BUILD)/kernel.unsigned_text.bin $(BUILD)/kernel.string_split.bin \
                   $(BUILD)/kernel.allocate.bin $(BUILD)/kernel.allocate_owner.bin $(BUILD)/kernel.allocate_aligned.bin \
                   $(BUILD)/kernel.free_allocation.bin $(BUILD)/kernel.allocation_size.bin $(BUILD)/kernel.allocation_total.bin \
                   $(BUILD)/kernel.memory_probe.bin $(BUILD)/kernel.heap_init.bin $(BUILD)/kernel.page_probe.bin \
@@ -343,6 +345,9 @@ $(BUILD)/kernel_jpeg_frame.o: kernel/jpeg_frame.c kernel/jpeg_frame.h Makefile |
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_jpeg_tables.o: kernel/jpeg_tables.c kernel/jpeg_tables.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_string_extra.o: kernel/string_extra.c kernel/string_extra.h kernel/helpers.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_x_icon.o: kernel/x_icon.c kernel/x_icon.h Makefile | $(BUILD)
@@ -803,6 +808,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_jpeg_bits.py --installed
 	python3 tests/kernel_jpeg_frame.py --installed
 	python3 tests/kernel_jpeg_tables.py --installed
+	python3 tests/kernel_string_extra.py --installed
 	python3 tests/kernel_simd.py --installed
 	python3 tests/kernel_math_series.py --installed
 	python3 tests/kernel_math_extra.py --installed
@@ -1232,3 +1238,10 @@ test-jpeg-tables: $(BUILD)/icestar_c.x
 
 test-jpeg-tables-preview: $(BUILD)/icestar_c.x
 	python3 tests/kernel_jpeg_tables.py
+
+.PHONY: test-string-extra test-string-extra-preview
+test-string-extra: $(BUILD)/icestar_c.x
+	python3 tests/kernel_string_extra.py --installed
+
+test-string-extra-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_string_extra.py
