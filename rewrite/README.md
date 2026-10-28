@@ -3342,3 +3342,31 @@ manifests. Kernel SHA-256:
 Combined-application disk SHA-256:
 `8c7a140dba6f9d90043fa1bddc1fbe6dff033fffe9682f3b5810d07d909d611e`.
 The full boot/kernel/application/driver recovery remains incomplete.
+
+### Remaining scalar math source checkpoint (2026-10-28)
+
+`kernel/math_extra.c/.h` recovers acos `0x81a3f6`, round `0x81a4fc`, absolute
+value `0x81a604`, floor `0x81a9ee`, ceil `0x81aa52`, remainder `0x81aab8` and
+sqrt `0x81ab2a`. The 20-term acos expansion calls the recovered factorial and
+power at their original addresses and preserves each binary64 intermediate
+store. Its domain check uses quiet comparisons and the original constants;
+out-of-domain inputs generate a real 0/0 invalid operation. The remaining
+services retain the original int32 conversion, signed wrapping adjustments,
+negative-zero behavior and zero-divisor result. The square root compiles to
+the original x87 FSQRT with an equivalent frame epilogue and no double store
+that would discard its extended return precision.
+
+`python3 tests/kernel_math_extra.py` passes 323,424 scenarios / 927,264
+executions, including 43,008 original/candidate complete service scenarios.
+It compares all ten ST0 bytes, binary64 output, sticky exceptions, control
+words, incoming words, stack/canaries and callee-saved registers. Coverage
+includes all four rounding modes at three precisions, four stack alignments,
+32-bit conversion boundaries and their adjacent binary64 encodings, signed
+zeros/denormals/infinities/NaN payloads, signaling NaNs, random binary64
+operands and in-domain acos values. Every service uses its real initialized
+slot (246/247/249/250/251/252/253); complete service tables are compared and
+no CALL is substituted. Code sizes are 252/262, 51/60, 37/48, 93/100, 95/102,
+98/114 and 10/10 bytes. This source checkpoint leaves production at 277
+intervals. Evidence: `build/math_extra_preview_summary.json`,
+`build/math_extra_preview_test.log`, `build/math_extra_preview.elf` and
+`build/math_extra_candidate.x`. Overall recovery remains unfinished.
