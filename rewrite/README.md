@@ -2396,3 +2396,27 @@ independent memory/callback/ABI fixture remains the broader timer test.
 Evidence: `build/timer_flags_preview_summary.json`,
 `build/timer_flags_preview_test.log`, `build/timer_flags_preview_qemu.log`
 and `build/timer_flags_qemu.elf`. Production images remain unchanged.
+
+### CMOS field reader source checkpoint (2026-10-28)
+
+`kernel/cmos_fields.c/.h` recovers the seven seconds/minutes/hours/weekday/
+day/month/year hardware helpers at `0x82adab..0x82ae84`. Named assembly
+instructions inside C preserve their hardware ABI, including all general
+registers except the EAX result. Six readers occupy 26 bytes each, and the
+century/year reader occupies 61 bytes. Every compiled body is byte-for-byte
+identical to its original interval; there are no embedded opaque code arrays.
+The code preserves the original BCD arithmetic, including invalid nibbles,
+century-first sampling, index/NMI writes and absence of UIP/rollover checks.
+
+`python3 tests/kernel_cmos_fields.py` passes 67,072 scenarios / 201,216
+original-x86, ordinary-source and fixed-address-source executions in 0.031
+seconds. It exhausts all 256 raw bytes for each simple reader and all 65,536
+century/year byte pairs, checking full-width EAX, all other general registers,
+stack balance and canaries against a decimal arithmetic oracle. Only fixture
+copies replace OUT with NOPs and IN with deterministic byte loads; these tests
+do not establish physical RTC timing or port behavior. The unmodified helper
+instruction sequences are checked separately for exact equality.
+
+Evidence: `build/cmos_fields_preview_test.log`,
+`build/cmos_fields_preview_summary.json` and `build/cmos_fields_preview.elf`.
+Production remains at 239 intervals pending the ongoing baseline regression.
