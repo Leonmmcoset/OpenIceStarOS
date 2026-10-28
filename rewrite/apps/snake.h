@@ -1,5 +1,5 @@
-#ifndef ICESTAR_SNAKE_H
-#define ICESTAR_SNAKE_H
+#ifndef OPENICESTAR_SNAKE_H
+#define OPENICESTAR_SNAKE_H
 #include <stdint.h>
 
 /* Preserve the observed data layout, including untouched padding and the

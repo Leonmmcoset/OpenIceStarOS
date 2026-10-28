@@ -1,5 +1,5 @@
-#ifndef ICESTAR_XAPI_H
-#define ICESTAR_XAPI_H
+#ifndef OPENICESTAR_XAPI_H
+#define OPENICESTAR_XAPI_H
 #include <stdint.h>
 
 #define U

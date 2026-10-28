@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_PRESENT_H
-#define ICESTAR_KERNEL_SURFACE_PRESENT_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_PRESENT_H
+#define OPENICESTAR_KERNEL_SURFACE_PRESENT_H
 #include <stdint.h>
 
 uint32_t kernel_surface_regions_test(uint32_t ax, uint32_t ay,

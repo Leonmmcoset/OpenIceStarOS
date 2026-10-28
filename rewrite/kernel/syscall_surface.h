@@ -1,5 +1,5 @@
-#ifndef ICESTAR_SYSCALL_SURFACE_H
-#define ICESTAR_SYSCALL_SURFACE_H
+#ifndef OPENICESTAR_SYSCALL_SURFACE_H
+#define OPENICESTAR_SYSCALL_SURFACE_H
 #include "syscalls.h"
 
 /* The selector is recovered separately in surface_refresh.c. The forwarder

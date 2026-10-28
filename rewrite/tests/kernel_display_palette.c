@@ -146,7 +146,7 @@ static int run(void)
     if (!map(BASE, SIZE) || !map(0x900000, 0x40000) || !map(0x800000, 0x40000)) return 1;
     if (!load("build/display_palette_original.x", 0x900000)) return 2;
 #ifdef TEST_INSTALLED
-    if (!load("build/icestar_c.x", 0x800000)) return 3;
+    if (!load("build/openicestaros_kernel.x", 0x800000)) return 3;
 #else
     if (!load("build/display_palette_preview.x", 0x800000)) return 3;
 #endif

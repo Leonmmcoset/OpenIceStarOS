@@ -1,5 +1,5 @@
-#ifndef ICESTAR_LEGACY_API_H
-#define ICESTAR_LEGACY_API_H
+#ifndef OPENICESTAR_LEGACY_API_H
+#define OPENICESTAR_LEGACY_API_H
 #include <stdint.h>
 
 uint32_t legacy_rectangle(uint32_t surface, uint32_t x1, uint32_t y1,

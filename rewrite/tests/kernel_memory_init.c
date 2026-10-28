@@ -236,7 +236,7 @@ static int run_test(void)
         if (!map_memory(regions[i][0], regions[i][1], 3)) return 1;
     if (!map_memory(0x800000, 0x40000, 7) || !map_memory(0x900000, 0x40000, 7) ||
         !load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 2;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 2;
     stub_boundaries(0x800000);
     stub_boundaries(0x900000);
     for (path = 0; path < 2; ++path) {

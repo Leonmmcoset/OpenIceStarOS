@@ -22,7 +22,7 @@ def main():
     recovered = binary.read_bytes()
     assert len(recovered) == 5 and recovered == original[0x3734a:0x3734f]
     if "--installed" in sys.argv:
-        assert recovered == (build / "icestar_c.x").read_bytes()[0x3734a:0x3734f]
+        assert recovered == (build / "openicestaros_kernel.x").read_bytes()[0x3734a:0x3734f]
     print("PASS: low-TSC primitive, 5 exact original bytes" + (", installed image verified" if "--installed" in sys.argv else ""))
 
 

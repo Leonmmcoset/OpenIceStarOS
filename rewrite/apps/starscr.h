@@ -1,5 +1,5 @@
-#ifndef ICESTAR_STARSCR_H
-#define ICESTAR_STARSCR_H
+#ifndef OPENICESTAR_STARSCR_H
+#define OPENICESTAR_STARSCR_H
 #include <stdint.h>
 
 struct starscr_state {

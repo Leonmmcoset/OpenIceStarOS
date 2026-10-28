@@ -163,7 +163,7 @@ static int run_test(void)
      * without reloading a 250 KB kernel for each of the million test cases. */
     if (!load_kernel(0x900000, "build/icestar.x")) return 1;
 #ifdef KERNEL_LINKED_TEST
-    if (!load_kernel(0x800000, "build/icestar_c.x")) return 1;
+    if (!load_kernel(0x800000, "build/openicestaros_kernel.x")) return 1;
 #endif
     if (!test_queue()) return 2;
 #ifdef QUEUE_INPUT_TEST

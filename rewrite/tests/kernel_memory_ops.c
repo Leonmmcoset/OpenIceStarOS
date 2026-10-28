@@ -210,7 +210,7 @@ static int run_test(void)
     if (!map_memory(0x5ff000, 0x1000, 0) || !map_memory(0x600000, 0x4000, 3) ||
         !map_memory(0x604000, 0x1000, 0) || !map_memory(0x800000, 0x40000, 7) ||
         !map_memory(0x900000, 0x40000, 7) || !load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 1;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 1;
     for (i = 0x800000; i <= 0x900000; i += 0x100000) {
         stub(i + 0x15464, (uint32_t)(uintptr_t)kernel_allocate);
         stub(i + 0x15978, (uint32_t)(uintptr_t)kernel_free_allocation);

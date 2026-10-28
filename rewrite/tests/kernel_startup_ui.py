@@ -65,7 +65,7 @@ SECTIONS {
     preview = bytearray(original)
     preview[0x1067a:0x10d4a] = body + b"\x90" * (1744-len(body))
     (BUILD / "startup_ui_preview.x").write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else BUILD / "startup_ui_preview.x"
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else BUILD / "startup_ui_preview.x"
     symbols = {0x821624: "kernel_startup_logo_821624", 0x81d6c2: "kernel_startup_panel_81d6c2",
                0x837545: "kernel_startup_fill_837545", 0x837589: "kernel_startup_outline_837589",
                0x8376d3: "kernel_startup_text_8376d3", 0x8263c0: "kernel_startup_lookup_8263c0",

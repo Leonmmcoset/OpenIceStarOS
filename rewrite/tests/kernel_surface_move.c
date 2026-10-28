@@ -188,7 +188,7 @@ static int run(void)
     trampoline(0x917cd0,(uint32_t)kernel_surface_target_817cd0);
     trampoline(0x918d14,(uint32_t)kernel_surface_regions_test);
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 3;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 3;
     trampoline(0x817cd0,(uint32_t)kernel_surface_target_817cd0);
     trampoline(0x818d14,(uint32_t)kernel_surface_regions_test);
 #endif

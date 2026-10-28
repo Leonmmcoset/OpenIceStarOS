@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_FPU_H
-#define ICESTAR_KERNEL_FPU_H
+#ifndef OPENICESTAR_KERNEL_FPU_H
+#define OPENICESTAR_KERNEL_FPU_H
 #include <stdint.h>
 
 uint32_t kernel_fpu_available(void);

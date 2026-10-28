@@ -137,15 +137,15 @@ def main():
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = ("IceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
-                     "IceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check or arguments.clock_check else
-                     "IceStarOS_c_snake.vhd" if arguments.snake_check else "IceStarOS_c_init.vhd")
+    default_image = ("OpenIceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
+                     "OpenIceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check or arguments.clock_check else
+                     "OpenIceStarOS_c_snake.vhd" if arguments.snake_check else "OpenIceStarOS_c_init.vhd")
     image = (arguments.image.resolve() if arguments.image else
              root.parent / "IceStarOS_x86_32M.vhd" if arguments.starscr_reference else build / default_image)
-    capture_prefix = "boot_starscr_reference" if arguments.starscr_reference else "boot_c_init"
+    capture_prefix = "boot_starscr_reference" if arguments.starscr_reference else "boot_openicestaros"
     screen = build / f"{capture_prefix}.ppm"
     memory = build / ("boot_starscr_reference.memory" if arguments.starscr_reference else "boot_kernel.memory")
-    with tempfile.TemporaryDirectory(prefix="icestar-qemu-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="openicestaros-qemu-") as temporary:
         monitor = Path(temporary) / "monitor.sock"
         command = ["qemu-system-i386", "-machine", "pc", "-m", "128", "-drive",
                    f"file={image},format=raw,snapshot=on", "-boot", "c", "-display", "none",
@@ -279,7 +279,7 @@ def main():
                     process.wait()
     loaded = memory.read_bytes()
     kernel = (Fat16(image.read_bytes()).read_kernel() if arguments.starscr_reference else
-              (build / "icestar_c.x").read_bytes())
+              (build / "openicestaros_kernel.x").read_bytes())
     for patch in json.loads((root / "kernel/patches.json").read_text()):
         start, end = int(patch["start"], 0) - 0x800000, int(patch["end"], 0) - 0x800000
         if loaded[start:end] != kernel[start:end]:
@@ -459,7 +459,7 @@ def check_inputs(execute, build, image):
             execute(f'screendump "{ppm}"')
         finally:
             execute("cont")
-        png_from_ppm(ppm, build / f"input_{name}.png")
+        png_from_ppm(ppm, build / f"openicestaros_input_{name}.png")
 
     def move_to(x, y):
         for _ in range(30):
@@ -534,7 +534,7 @@ def check_inputs(execute, build, image):
     (build / "input_smoke.json").write_text(json.dumps(evidence, indent=2) + "\n")
     print("Input state: " + json.dumps(evidence))
     print("Mouse position, relocated CMD, input text, queue consumption, and prompt return verified")
-    print("Inspect input_cpuid.png for the command result; its text is not OCR-checked")
+    print("Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked")
     return cmd_base
 
 

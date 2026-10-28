@@ -17,7 +17,7 @@ def main():
         parser.error("--services requires --installed")
     if args.surfaces and not args.installed:
         parser.error("--surfaces requires --installed")
-    subprocess.run(["make", "build/icestar_c.x"], cwd=ROOT, check=True)
+    subprocess.run(["make", "build/openicestaros_kernel.x"], cwd=ROOT, check=True)
     flags = ["-m32", "-march=i386", "-Os", "-ffreestanding", "-fno-pic", "-fno-pie",
              "-fno-stack-protector", "-fno-asynchronous-unwind-tables", "-ffunction-sections",
              "-fdata-sections", "-Wall", "-Wextra", "-Werror"]

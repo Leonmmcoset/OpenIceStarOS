@@ -19,7 +19,7 @@ def check_task_switch(execute, build):
         for name, value, size, _, _, _ in elf.symbol_table(index):
             if name and size:
                 symbols[elf.string(strings, name)] = (value, size)
-    kernel = (build / "icestar_c.x").read_bytes()
+    kernel = (build / "openicestaros_kernel.x").read_bytes()
     jump, jump_size = symbols["kernel_far_task_jump"]
     require(jump_size == 5 and kernel[jump - 0x800000:jump - 0x800000 + 5] ==
             b"\xff\x6c\x24\x04\xc3", "unexpected far task jump boundary")

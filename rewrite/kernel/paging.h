@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_PAGING_H
-#define ICESTAR_KERNEL_PAGING_H
+#ifndef OPENICESTAR_KERNEL_PAGING_H
+#define OPENICESTAR_KERNEL_PAGING_H
 #include <stdint.h>
 
 /* Original 0x837448: build the 4 GiB identity map and enable CR0.PG. */

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_TEXT_FORMAT_H
-#define ICESTAR_KERNEL_TEXT_FORMAT_H
+#ifndef OPENICESTAR_KERNEL_TEXT_FORMAT_H
+#define OPENICESTAR_KERNEL_TEXT_FORMAT_H
 #include <stdint.h>
 uint32_t kernel_text_format8_81ee7e(uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,...);
 uint32_t kernel_text_format32_81f384(uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,...);

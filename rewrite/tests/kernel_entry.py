@@ -59,7 +59,7 @@ def main():
     (BUILD / "entry_preview.x").write_bytes(preview)
     symbols = {int(address, 16): name for name, address in boundaries}
     symbols[0x81a261] = "kernel_write_port_byte"
-    candidate = "build/icestar_c.x" if args.installed else "build/entry_preview.x"
+    candidate = "build/openicestaros_kernel.x" if args.installed else "build/entry_preview.x"
     declarations = []
     for name, path in (("original", "build/entry_original.x"), ("candidate", candidate)):
         assembly = run(["objdump", "-D", "-b", "binary", "-m", "i386", "--adjust-vma=0x800000",
@@ -92,7 +92,7 @@ def main():
              ROOT / "tests/kernel_entry.c", ROOT / "tests/kernel_entry_abi.S",
              ROOT / "tests/kernel_entry.py", BUILD / "entry_preview.elf", executable]
     if args.installed:
-        paths.append(BUILD / "icestar_c.x")
+        paths.append(BUILD / "openicestaros_kernel.x")
     start = time.monotonic()
     result = subprocess.run([str(executable)], cwd=ROOT, capture_output=True, text=True, timeout=30)
     summary = {"installed": args.installed, "exit_code": result.returncode,

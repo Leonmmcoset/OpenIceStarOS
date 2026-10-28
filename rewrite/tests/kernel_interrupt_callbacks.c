@@ -108,7 +108,7 @@ static uint32_t run(void)
     if(!map(BASE,SIZE)||!map(0x900000,0x40000)||!load("build/icestar.x",0x900000))return 1;
     redirect(0x900000);
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 2;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 2;
     redirect(0x800000);
 #endif
     for(pattern=0;pattern<3;++pattern)for(value=0;value<256;++value)

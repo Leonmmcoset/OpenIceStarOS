@@ -32,7 +32,7 @@ gdt_pointer:
     .word 39
     .long gdt
 .section .rebuilt,"a"
-.incbin "build/icestar_c.x"
+.incbin "build/openicestaros_kernel.x"
 .section .original,"a"
 .incbin "build/icestar.x"
 .section .note.GNU-stack,"",@progbits

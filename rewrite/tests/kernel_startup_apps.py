@@ -53,7 +53,7 @@ SECTIONS {
     preview = bytearray(original)
     preview[0x10f38:0x10f78] = data + b"\x90" * (64 - len(data))
     (BUILD / "startup_apps_preview.x").write_bytes(preview)
-    candidate = "build/icestar_c.x" if args.installed else "build/startup_apps_preview.x"
+    candidate = "build/openicestaros_kernel.x" if args.installed else "build/startup_apps_preview.x"
     symbols = {0x802282: "kernel_startup_launch_image", 0x82ad81: "kernel_wait_ticks"}
     declarations = []
     for name, path in (("original", "build/startup_apps_original.x"), ("candidate", candidate)):
@@ -86,7 +86,7 @@ SECTIONS {
              ROOT / "tests/kernel_startup_apps.py", ROOT / "tests/kernel_entry_abi.S",
              BUILD / "startup_apps_preview.elf", executable]
     if args.installed:
-        paths.append(BUILD / "icestar_c.x")
+        paths.append(BUILD / "openicestaros_kernel.x")
     summary = {"installed": args.installed, "exit_code": result.returncode,
                "seconds": round(time.monotonic() - start, 3),
                "slots": {"startup_apps": {"bytes": len(data), "slot": 64}},

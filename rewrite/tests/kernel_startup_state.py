@@ -58,7 +58,7 @@ SECTIONS {
         preview[start:end] = data + b"\x90" * (end - start - len(data))
         sizes[name] = {"bytes": len(data), "slot": end - start}
     (BUILD / "startup_state_preview.x").write_bytes(preview)
-    candidate = "build/icestar_c.x" if args.installed else "build/startup_state_preview.x"
+    candidate = "build/openicestaros_kernel.x" if args.installed else "build/startup_state_preview.x"
     symbols = {0x81ae14: "kernel_display_init_palette", 0x81afbc: "kernel_display_select_depth"}
     declarations = []
     for name, path in (("original", "build/startup_state_original.x"), ("candidate", candidate)):
@@ -90,7 +90,7 @@ SECTIONS {
              ROOT / "tests/kernel_startup_state.py", ROOT / "tests/kernel_entry_abi.S",
              BUILD / "startup_state_preview.elf", executable]
     if args.installed:
-        paths.append(BUILD / "icestar_c.x")
+        paths.append(BUILD / "openicestaros_kernel.x")
     summary = {"installed": args.installed, "exit_code": result.returncode,
                "seconds": round(time.monotonic() - start, 3), "slots": sizes,
                "stdout": result.stdout, "stderr": result.stderr,

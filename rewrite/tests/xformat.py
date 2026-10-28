@@ -15,7 +15,7 @@ from xformat import Elf32, XImage
 class FormatTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.temporary = tempfile.TemporaryDirectory(prefix="icestar-xformat-")
+        cls.temporary = tempfile.TemporaryDirectory(prefix="openicestaros-xformat-")
         cls.path = Path(cls.temporary.name)
         (cls.path / "fixture.c").write_text("""
 unsigned value = 0x12345678, zeros[19];

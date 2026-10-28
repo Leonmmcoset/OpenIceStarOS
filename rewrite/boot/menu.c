@@ -33,8 +33,8 @@ static void draw_line(u16 row, const char *text, u8 attribute)
 static void draw_menu(u8 selected)
 {
     draw_line(0, "Please select a system startup", 7);
-    draw_line(2, "      1.IceStarOS", selected == 1 ? 0x17 : 7);
-    draw_line(3, "      2.IceStarOS(1024*768 8bit)", selected == 2 ? 0x17 : 7);
+    draw_line(2, "      1.OpenIceStarOS", selected == 1 ? 0x17 : 7);
+    draw_line(3, "      2.OpenIceStarOS(1024*768 8bit)", selected == 2 ? 0x17 : 7);
     draw_line(4, "      3.Reboot Computer", selected == 3 ? 0x17 : 7);
     draw_line(5, "      4.off Computer", selected == 4 ? 0x17 : 7);
     draw_line(7, "Choose:[1]", 7);

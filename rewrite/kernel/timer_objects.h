@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_TIMER_OBJECTS_H
-#define ICESTAR_KERNEL_TIMER_OBJECTS_H
+#ifndef OPENICESTAR_KERNEL_TIMER_OBJECTS_H
+#define OPENICESTAR_KERNEL_TIMER_OBJECTS_H
 #include <stdint.h>
 
 uint32_t kernel_timer_find_free(void);

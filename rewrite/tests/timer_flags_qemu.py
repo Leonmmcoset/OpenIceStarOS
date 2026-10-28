@@ -21,7 +21,7 @@ def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument("--installed", action="store_true")
     args = parser.parse_args()
-    candidate = BUILD / ("icestar_c.x" if args.installed else "timer_objects_preview.x")
+    candidate = BUILD / ("openicestaros_kernel.x" if args.installed else "timer_objects_preview.x")
     BUILD.mkdir(exist_ok=True)
     original = BUILD / "timer_objects_original.x"
     original_data = Fat16((ROOT.parent / "IceStarOS_x86_32M.vhd").read_bytes()).read_kernel()

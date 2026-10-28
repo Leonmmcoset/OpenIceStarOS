@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_REFRESH_H
-#define ICESTAR_KERNEL_SURFACE_REFRESH_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_REFRESH_H
+#define OPENICESTAR_KERNEL_SURFACE_REFRESH_H
 #include <stdint.h>
 
 uint32_t kernel_syscall_target_81905e(uint32_t layer, uint32_t x,

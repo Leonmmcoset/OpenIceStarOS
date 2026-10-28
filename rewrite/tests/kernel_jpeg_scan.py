@@ -68,7 +68,7 @@ def main():
         "\n /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n"
         " .unexpected : { *(*) }\n ASSERT(SIZEOF(.unexpected) == 0, \"unexpected sections\")\n}\n")
     run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj), str(basis_obj), str(transform_obj), str(block_obj), str(output_obj), str(decode_obj)])
-    production = BUILD / "icestar_c.x"
+    production = BUILD / "openicestaros_kernel.x"
     # Original neighbours isolate the new source; the installed check also
     # exercises all previously recovered JPEG helpers in the production image.
     candidate = bytearray(production.read_bytes() if args.installed else original)

@@ -59,7 +59,7 @@ def main():
         "\n".join(sections) + "\n /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n"
         " .unexpected : { *(*) }\n ASSERT(SIZEOF(.unexpected) == 0, \"unexpected sections\")\n}\n")
     run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj), str(wide_obj)])
-    production = BUILD / "icestar_c.x"
+    production = BUILD / "openicestaros_kernel.x"
     candidate = bytearray(production.read_bytes())
     sizes = []
     for name, _, start, end in SLOTS:

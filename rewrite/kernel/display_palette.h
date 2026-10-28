@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_DISPLAY_PALETTE_H
-#define ICESTAR_KERNEL_DISPLAY_PALETTE_H
+#ifndef OPENICESTAR_KERNEL_DISPLAY_PALETTE_H
+#define OPENICESTAR_KERNEL_DISPLAY_PALETTE_H
 #include <stdint.h>
 
 void kernel_display_init_palette(void);

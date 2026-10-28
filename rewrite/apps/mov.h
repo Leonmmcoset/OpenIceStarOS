@@ -1,5 +1,5 @@
-#ifndef ICESTAR_MOV_H
-#define ICESTAR_MOV_H
+#ifndef OPENICESTAR_MOV_H
+#define OPENICESTAR_MOV_H
 #include <stdint.h>
 
 struct mov_strings {

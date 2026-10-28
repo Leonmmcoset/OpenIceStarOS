@@ -26,7 +26,7 @@ def main():
     assert len(recovered) == 132
     assert recovered == original[0x2ae84:0x2af08]
     if "--installed" in sys.argv:
-        assert recovered == (build / "icestar_c.x").read_bytes()[0x2ae84:0x2af08]
+        assert recovered == (build / "openicestaros_kernel.x").read_bytes()[0x2ae84:0x2af08]
     print("PASS: CMOS sampling boundary, 132 exact original bytes"
           + (", installed image verified" if "--installed" in sys.argv else ""))
 

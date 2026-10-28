@@ -2,7 +2,7 @@ IMAGE := IceStarOS_x86_32M.vhd
 BUILD := build
 MBR := $(BUILD)/mbr.bin
 MENU := $(BUILD)/menu.bin
-REBUILT := $(BUILD)/IceStarOS_mbr_rebuilt.vhd
+REBUILT := $(BUILD)/OpenIceStarOS_mbr_rebuilt.vhd
 
 .PHONY: all verify run
 all: $(REBUILT)

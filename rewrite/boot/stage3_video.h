@@ -1,5 +1,5 @@
-#ifndef ICESTAR_STAGE3_VIDEO_H
-#define ICESTAR_STAGE3_VIDEO_H
+#ifndef OPENICESTAR_STAGE3_VIDEO_H
+#define OPENICESTAR_STAGE3_VIDEO_H
 #include <stdint.h>
 void stage_video_select(void);
 uint32_t stage_video_bios(uint32_t function,uint32_t argument);

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_SIMD_H
-#define ICESTAR_SIMD_H
+#ifndef OPENICESTAR_SIMD_H
+#define OPENICESTAR_SIMD_H
 #include <stdint.h>
 
 /* Three pointers, each to 16 accessible bytes; unaligned/overlapping storage

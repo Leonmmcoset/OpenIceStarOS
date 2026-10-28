@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_INTERRUPT_CALLBACKS_H
-#define ICESTAR_KERNEL_INTERRUPT_CALLBACKS_H
+#ifndef OPENICESTAR_KERNEL_INTERRUPT_CALLBACKS_H
+#define OPENICESTAR_KERNEL_INTERRUPT_CALLBACKS_H
 #include <stdint.h>
 void kernel_rtc_callback(void);
 void kernel_keyboard_callback(void);

@@ -1,7 +1,7 @@
-# C rewrite
+# OpenIceStarOS C rewrite
 
-This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 352 declared kernel intervals and
+This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
+original IceStarOS VHD. The current build installs 352 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -27,7 +27,7 @@ table, signature, and unchanged contents after sector 3. `make run` starts the
 test disk in QEMU using a temporary snapshot. GCC with `-m16`, binutils, make,
 and qemu-system-i386 are required.
 
-The normal `IceStarOS_c_mbr.vhd` test image replaces only the first two stages. The remainder of the
+The normal `OpenIceStarOS_c_mbr.vhd` test image replaces only the first two stages. The remainder of the
 disk is copied from the original image, including the next boot stage, kernel,
 drivers, applications, and resources.
 
@@ -95,7 +95,7 @@ machine code at its original addresses. Both variants cover global state,
 startup-record clearing, the API table, and all 72 service-table cases.
 
 After `make verify`, run `python3 tools/boot_smoke.py` to start QEMU with a
-temporary disk snapshot, capture `build/boot_c_init.png`, and compare the
+temporary disk snapshot, capture `build/boot_openicestaros.png`, and compare the
 guest's loaded kernel intervals with the compiled patches. Inspect the image
 to confirm desktop rendering. This smoke test does not validate every driver
 or application, and unrecovered code still comes from the original disk.
@@ -292,7 +292,7 @@ reset order, and missing digits for negative scores. Interrupts use identical
 test callbacks; actual OS loading and rendering require the separate QEMU
 integration check. The complete verification suite passed on 2026-10-27.
 
-`make run-c-snake` boots `build/IceStarOS_c_snake.vhd`, which installs the
+`make run-c-snake` boots `build/OpenIceStarOS_c_snake.vhd`, which installs the
 compiled Snake into its existing FAT16 cluster chain. `apps/snake_image.json`
 records the original file hash and explicit short-name path. The installer
 preserves both FAT copies, directory entries, allocation slack, and every byte
@@ -337,7 +337,7 @@ drawing, and callback mutations of the active surface and window record.
 Only the OS services themselves use shared test callbacks. This checkpoint
 builds and differentially verifies COLOR; guest installation follows separately.
 
-`make run-c-apps` boots `build/IceStarOS_c_apps.vhd` with recovered Snake,
+`make run-c-apps` boots `build/OpenIceStarOS_c_apps.vhd` with recovered Snake,
 Color, MOV, and StarScr installed from `apps/images.json`. The earlier Snake-only image is
 retained as a separate checkpoint. The five installer tests restore every
 replaced file and require the complete restored disk to match its source;
@@ -1591,7 +1591,7 @@ the previous full-suite and QEMU results still describe the 209-interval
 images until the new integration/regression runs finish.
 
 `make smoke-surface-scale` builds a separate diagnostic-only image,
-`build/IceStarOS_scale_diagnostic.vhd`, by replacing only the existing
+`build/OpenIceStarOS_scale_diagnostic.vhd`, by replacing only the existing
 COLOR.X file extents with `tests/surface_scale_guest.c`. The production
 application images retain the recovered Color. The real CMD loads this
 type-0x0a X through the normal loader; 47 absolute relocations and the guest
@@ -1965,7 +1965,7 @@ This normal 32-bit display boot does not execute the 8-bit palette-construction
 path; that path is covered by the differential fixtures above.
 
 Evidence: `build/startup_boot_smoke.log`, `build/entry_execution.json`,
-`build/entry_guest.trace`, `build/boot_c_init.png`, `build/input_cpuid.png`,
+`build/entry_guest.trace`, `build/boot_openicestaros.png`, `build/openicestaros_input_cpuid.png`,
 `build/color_launched.png` and `build/color_closed.png`. These are focused
 installation and boot checks; the complete 224-interval regression recorded
 above is not a full regression of the new 231-interval image.
@@ -5024,7 +5024,7 @@ PS/2 CMD opening, `cpuid`, prompt reuse, RAM/heap checks and actual task-switch
 checks. All 349 installed kernel intervals matched guest memory. The command
 result screenshot was visually inspected. Evidence: `build/stage3_source_build.log`,
 `build/stage3_source_boot.log`, `build/boot_video_installed_summary.json`,
-`build/boot_stage3_summary.json` and `build/input_cpuid.png`. Original
+`build/boot_stage3_summary.json` and `build/openicestaros_input_cpuid.png`. Original
 INIT/kernel/driver/application components still remain; this removes the
 third-stage binary dependency and does not complete OS recovery.
 
@@ -5102,7 +5102,7 @@ unmapped relocation targets are not executed. Evidence:
 
 ### X loader integrated boot and full regression (2026-10-28)
 
-The C loader is linked into `icestar_c.x`, and the combined production image
+The C loader is linked into `openicestaros_kernel.x`, and the combined production image
 installs that kernel alongside the five rebuilt applications. The complete
 `make verify` run passes, including the installed loader differential test,
 all existing kernel and application checks, whole-kernel disk comparison,
@@ -5110,7 +5110,7 @@ application extent comparison, and inventory validation. The inventory now
 records 352 kernel replacement intervals; this count does not measure semantic
 completion.
 
-`python3 tools/boot_smoke.py build/IceStarOS_c_apps.vhd --cursor-check
+`python3 tools/boot_smoke.py build/OpenIceStarOS_c_apps.vhd --cursor-check
 --memory-check --task-check --input-check` boots the combined image in QEMU
 snapshot mode. It opens CMD using PS/2, executes `cpuid`, launches the original
 `DEVMGR.X` through the C X loader, verifies its resizable window and cursor
@@ -5119,3 +5119,20 @@ intervals. Evidence: `build/x_loader_full_verify.log`,
 `build/x_loader_installed_test.log`, `build/cursor_smoke.json`, and
 `build/cursor_*.png`. The applications and drivers not listed as rebuilt in
 the recovery inventory remain original binaries.
+
+### OpenIceStarOS build names (2026-10-28)
+
+The C boot menu, generated VHD names, candidate kernel name and source include
+guards now use OpenIceStarOS. Original disk names, FAT paths and the extracted
+`build/icestar.x` differential reference retain their compatibility names.
+The root Makefile remains a byte-exact assembly reconstruction of the original
+boot sectors, including its original menu; use `rewrite/Makefile` for the
+OpenIceStarOS system.
+
+The renamed combined image builds, and installed boot-video (168 scenarios,
+672 executions), stage-three (27 scenarios, 81 executions) and X-loader
+(430 scenarios, 1,290 executions) differential checks pass. Evidence:
+`build/branding_names_validation.log`. This checkpoint covers build/source
+names only: inherited CMD/kernel/taskbar/resource display strings still need
+an explicit installation step. The previously interrupted renamed full-suite
+run is not recorded as a pass.

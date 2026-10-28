@@ -48,7 +48,7 @@ def check_entry_execution(root, image, trace):
     source = root.parent / "IceStarOS_x86_32M.vhd"
     original = build / "entry_boot_original.x"
     original.write_bytes(Fat16(source.read_bytes()).read_kernel())
-    candidate = build / "icestar_c.x"
+    candidate = build / "openicestaros_kernel.x"
     expected_calls, installed_calls = calls(original), calls(candidate)
     for name in expected_calls:
         if [target for _, target in installed_calls[name]] != [

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_DRAW_H
-#define ICESTAR_KERNEL_SURFACE_DRAW_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_DRAW_H
+#define OPENICESTAR_KERNEL_SURFACE_DRAW_H
 #include <stdint.h>
 
 uint32_t kernel_surface_draw8(uint32_t layer, uint32_t x, uint32_t y,

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_JPEG_DECODE_H
-#define ICESTAR_KERNEL_JPEG_DECODE_H
+#ifndef OPENICESTAR_KERNEL_JPEG_DECODE_H
+#define OPENICESTAR_KERNEL_JPEG_DECODE_H
 #include <stdint.h>
 uint32_t kernel_jpeg_info_83a70f(uint32_t workspace,uint32_t info,uint32_t length,uint32_t input);
 uint32_t kernel_jpeg_decode_83a7a1(uint32_t workspace,uint32_t length,uint32_t input,

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_ICON_PIXELS_H
-#define ICESTAR_KERNEL_ICON_PIXELS_H
+#ifndef OPENICESTAR_KERNEL_ICON_PIXELS_H
+#define OPENICESTAR_KERNEL_ICON_PIXELS_H
 #include <stdint.h>
 
 void kernel_icon_put8_81b37c(uint32_t surface, uint32_t x, uint32_t y,

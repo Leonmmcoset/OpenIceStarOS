@@ -1,5 +1,5 @@
-#ifndef ICESTAR_LEGACY_IMAGE_API_H
-#define ICESTAR_LEGACY_IMAGE_API_H
+#ifndef OPENICESTAR_LEGACY_IMAGE_API_H
+#define OPENICESTAR_LEGACY_IMAGE_API_H
 #include <stdint.h>
 
 uint32_t legacy_image_create(uint32_t window, uint32_t x, uint32_t y,

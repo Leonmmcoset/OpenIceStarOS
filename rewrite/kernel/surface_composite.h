@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_COMPOSITE_H
-#define ICESTAR_KERNEL_SURFACE_COMPOSITE_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_COMPOSITE_H
+#define OPENICESTAR_KERNEL_SURFACE_COMPOSITE_H
 #include <stdint.h>
 
 /* This routine clips its caller's argument words in place. */

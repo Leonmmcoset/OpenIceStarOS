@@ -47,7 +47,7 @@ static int candidate(uint32_t address, void (*function)(void))
 {
 #ifdef KERNEL_LINKED_TEST
     (void)function;
-    if (!load_kernel("build/icestar_c.x")) return 0;
+    if (!load_kernel("build/openicestaros_kernel.x")) return 0;
     ((void (*)(void))(uintptr_t)address)();
 #else
     (void)address;

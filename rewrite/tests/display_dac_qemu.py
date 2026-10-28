@@ -60,7 +60,7 @@ SECTIONS {
     preview = bytearray(original)
     preview[0x1ad6e:0x1ae14] = body + b"\x90" * (166 - len(body))
     (BUILD / "display_dac_preview.x").write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else BUILD / "display_dac_preview.x"
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else BUILD / "display_dac_preview.x"
     (BUILD / "display_dac_fixture_candidate.x").write_bytes(candidate.read_bytes())
     symbols = {0x81a24a: "kernel_read_flags", 0x81a242: "kernel_disable_interrupts",
                0x81a24d: "kernel_write_flags", 0x81a261: "kernel_write_port_byte"}

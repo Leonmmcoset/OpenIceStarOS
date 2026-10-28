@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SERVICE_OPTIONAL_H
-#define ICESTAR_KERNEL_SERVICE_OPTIONAL_H
+#ifndef OPENICESTAR_KERNEL_SERVICE_OPTIONAL_H
+#define OPENICESTAR_KERNEL_SERVICE_OPTIONAL_H
 #include <stdint.h>
 
 /* Names record verified table slots; application-level meanings are not yet

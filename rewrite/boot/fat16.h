@@ -1,5 +1,5 @@
-#ifndef ICESTAR_FAT16_H
-#define ICESTAR_FAT16_H
+#ifndef OPENICESTAR_FAT16_H
+#define OPENICESTAR_FAT16_H
 
 #include <stdint.h>
 

@@ -61,7 +61,7 @@ def main():
         preview[start-0x800000:end-0x800000] = body + b"\x90" * (end-start-len(body))
         sizes[section] = {"compiled_bytes": len(body), "slot_bytes": end-start}
     (BUILD / "object_registry_preview.x").write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else BUILD / "object_registry_preview.x"
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else BUILD / "object_registry_preview.x"
     patches = []
     for name, path in (("original", BUILD / "object_registry_original.x"), ("candidate", candidate)):
         assembly = run(["objdump", "-D", "-b", "binary", "-m", "i386", "--adjust-vma=0x800000",

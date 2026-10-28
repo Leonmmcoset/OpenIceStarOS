@@ -14,7 +14,7 @@ def check_icon_dib_execution(root, image, trace):
     body = (build / patch["binary"]).read_bytes()
     if not body or len(body) > end - start:
         raise RuntimeError("DIB compiled body is empty or exceeds its slot")
-    kernel = (build / "icestar_c.x").read_bytes()
+    kernel = (build / "openicestaros_kernel.x").read_bytes()
     expected = body + b"\x90" * (end - start - len(body))
     if kernel[start - BASE:end - BASE] != expected:
         raise RuntimeError("installed DIB slot differs from compiled body and NOP padding")

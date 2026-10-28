@@ -99,7 +99,7 @@ def main():
     preview[START-0x800000:END-0x800000] = slot
     preview_path = BUILD / "icon_dib_preview.x"
     preview_path.write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else preview_path
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else preview_path
     if candidate.read_bytes()[START-0x800000:END-0x800000] != slot:
         raise RuntimeError("installed DIB slot does not match independently linked source")
     patches = []

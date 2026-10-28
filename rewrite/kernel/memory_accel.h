@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_MEMORY_ACCEL_H
-#define ICESTAR_KERNEL_MEMORY_ACCEL_H
+#ifndef OPENICESTAR_KERNEL_MEMORY_ACCEL_H
+#define OPENICESTAR_KERNEL_MEMORY_ACCEL_H
 #include <stdint.h>
 
 void kernel_copy_dwords_sse(uint32_t destination, uint32_t source, int32_t count);

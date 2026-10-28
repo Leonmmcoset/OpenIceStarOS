@@ -153,7 +153,7 @@ static int run(void)
     for(r=0;r<COUNT(starts);++r)if(!map(starts[r],0x1000))return 1;
     if(!map(0x900000,0x40000)||!load("build/icestar.x",0x900000))return 2;
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 3;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 3;
 #endif
     for(pattern=0;pattern<2;++pattern)for(alignment=0;alignment<4;++alignment)
     for(alias=0;alias<6;++alias)for(rect=0;rect<COUNT(requests);++rect)

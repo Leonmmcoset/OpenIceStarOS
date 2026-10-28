@@ -1,4 +1,4 @@
-"""Build IceStarOS flat X applications from linked ELF32 and retained relocations.
+"""Build OpenIceStarOS flat X applications from linked ELF32 and retained relocations.
 
 Loader evidence: kernel 0x80229a..0x8024aa. Types 0x0a and 0x50 use the same
 relocation and clear algorithm, with different task startup selectors.

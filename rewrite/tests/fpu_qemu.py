@@ -10,7 +10,7 @@ def main():
     flags = ["-m32", "-march=i386", "-Os", "-ffreestanding", "-fno-pic",
              "-fno-pie", "-fno-stack-protector", "-fno-asynchronous-unwind-tables",
              "-Wall", "-Wextra", "-Werror"]
-    subprocess.run(["make", "build/icestar_c.x"], cwd=ROOT, check=True)
+    subprocess.run(["make", "build/openicestaros_kernel.x"], cwd=ROOT, check=True)
     for source in ("fpu_qemu.c", "fpu_qemu_entry.S"):
         output = BUILD / (source.replace(".S", ".o").replace(".c", ".o"))
         subprocess.run(["gcc", *flags, "-c", "tests/" + source, "-o", str(output)], cwd=ROOT, check=True)

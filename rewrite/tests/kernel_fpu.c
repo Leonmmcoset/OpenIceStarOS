@@ -442,7 +442,7 @@ static int run_test(void)
         !map_memory(0x800000, 0x40000, 7, 0x32) ||
         !map_memory(0x900000, 0x40000, 7, 0x32) ||
         !load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 1;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 1;
     for (function_index = 5; function_index < 13; ++function_index)
         for (index = 0; index < sizes[function_index - 5]; ++index) {
 #ifdef KERNEL_LINKED_TEST

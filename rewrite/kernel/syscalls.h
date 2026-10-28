@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SYSCALLS_H
-#define ICESTAR_KERNEL_SYSCALLS_H
+#ifndef OPENICESTAR_KERNEL_SYSCALLS_H
+#define OPENICESTAR_KERNEL_SYSCALLS_H
 #include <stdint.h>
 
 /* PUSHAD's stack order, passed directly by the two interrupt entries. EBX

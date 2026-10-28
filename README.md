@@ -1,4 +1,4 @@
-# IceStarOS x86 反编译与源码恢复
+# OpenIceStarOS x86 反编译与源码恢复
 
 原始磁盘为 `IceStarOS_x86_32M.vhd`。FAT16 文件已提取到本地的
 `IceStarOS_x86_32M_extracted/`；提取结果和构建产物由 Git 忽略。
@@ -27,7 +27,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 # 依赖：GCC/binutils（支持 i386）、make、Python 3、QEMU；硬件交接测试另需 GDB。
 mkdir -p rewrite/build
 python3 -m pip install --target rewrite/build/test-deps -r rewrite/tests/requirements.txt
-make -C rewrite build/IceStarOS_c_apps.vhd
+make -C rewrite build/OpenIceStarOS_c_apps.vhd
 make -C rewrite test-boot-video test-boot-stage3
 make -C rewrite test-boot-stage3-qemu
 make -C rewrite verify
@@ -47,5 +47,5 @@ python3 rewrite/tools/boot_smoke.py --vga cirrus --input-check
 截图、内存转储和 JSON 证据位于 `rewrite/build/`。
 
 根目录的 `make verify` 是较早的前两阶段逐字节汇编恢复，构建
-`build/IceStarOS_mbr_rebuilt.vhd`；当前源码恢复与集成请使用
+`build/OpenIceStarOS_mbr_rebuilt.vhd`；OpenIceStarOS 的当前源码恢复与集成请使用
 `make -C rewrite ...`。Git 仓库位于根目录，每个验证后的步骤分别提交。

@@ -67,7 +67,7 @@ def main():
             raise RuntimeError("unexpected original boundary call: " + name)
     preview_path = BUILD / "raster_preview.x"
     preview_path.write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else preview_path
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else preview_path
     for _, _, start, end in SLOTS:
         if candidate.read_bytes()[start-0x800000:end-0x800000] != preview[start-0x800000:end-0x800000]:
             raise RuntimeError("installed slot differs from independently linked source")
@@ -75,7 +75,7 @@ def main():
                                "kernel/raster_line.c", "kernel/raster_line.h",
                                "tests/kernel_raster.py", "tests/raster_abi.S", "tests/raster_fixture.h",
                                "tests/kernel_icon_pixels.py", "tests/kernel_raster_line.c")]
-    production = BUILD / "icestar_c.x"
+    production = BUILD / "openicestaros_kernel.x"
     chain_candidate = bytearray(production.read_bytes())
     for _, _, start, end in SLOTS:
         chain_candidate[start-0x800000:end-0x800000] = preview[start-0x800000:end-0x800000]

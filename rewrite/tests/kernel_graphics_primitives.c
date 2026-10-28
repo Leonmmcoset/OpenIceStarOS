@@ -177,7 +177,7 @@ static int run_test(void)
     syscall3(75, 4, (unsigned)(uintptr_t)limits, 0);
     if (!map_memory(0x500000, 0x10000, 3) || !map_memory(0x800000, 0x40000, 7) ||
         !map_memory(0x900000, 0x40000, 7) || !load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 1;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 1;
     depth = 32;
     for (a = 0; a < 256; ++a)
         for (first = 0; first < 256; ++first)

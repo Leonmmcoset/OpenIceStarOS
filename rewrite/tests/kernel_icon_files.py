@@ -64,7 +64,7 @@ def main():
     elf = BUILD / "icon_files_preview.elf"
     run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), *objects])
     preview, sizes = bytearray(original), {}
-    candidate = BUILD / ("icestar_c.x" if args.installed else "icon_files_preview.x")
+    candidate = BUILD / ("openicestaros_kernel.x" if args.installed else "icon_files_preview.x")
     installed = candidate.read_bytes() if args.installed else None
     for section, symbol, start, end in SLOTS:
         binary = BUILD / f"icon_files_preview.{section}.bin"

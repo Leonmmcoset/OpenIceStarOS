@@ -140,7 +140,7 @@ KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BU
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
-all: $(BUILD)/IceStarOS_c_mbr.vhd
+all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
 
 .PHONY: test-boot-video-preview
 test-boot-video-preview:
@@ -153,10 +153,10 @@ test-boot-video: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
 test-boot-stage3: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
 	python3 tests/boot_stage3.py
 
-test-boot-stage3-qemu: $(BUILD)/IceStarOS_c_init.vhd
+test-boot-stage3-qemu: $(BUILD)/OpenIceStarOS_c_init.vhd
 	python3 tests/boot_stage3_qemu.py
 
-test-x-loader: $(BUILD)/icestar_c.x
+test-x-loader: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_x_loader.py --installed
 
 verify: test-x-loader
@@ -190,7 +190,7 @@ $(BUILD)/menu.bin: $(BUILD)/menu_entry.o $(BUILD)/menu.o boot/menu.ld
 $(BUILD)/menu_hybrid.bin: $(BUILD)/menu_entry.o $(BUILD)/menu_hybrid.o boot/menu.ld
 	$(LD) -m elf_i386 -T boot/menu.ld -o $@ $(BUILD)/menu_entry.o $(BUILD)/menu_hybrid.o
 
-$(BUILD)/IceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin
+$(BUILD)/OpenIceStarOS_c_mbr.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu.bin
 	cp $(IMAGE) $@
 	dd if=$(BUILD)/mbr.bin of=$@ bs=512 count=1 conv=notrunc status=none
 	dd if=$(BUILD)/menu.bin of=$@ bs=512 seek=1 count=3 conv=notrunc status=none
@@ -236,7 +236,7 @@ $(BUILD)/stage3_c_init.elf: $(BUILD)/stage3_c_init.o $(BUILD)/stage3_load_c_init
 $(BUILD)/stage3_%.bin: $(BUILD)/stage3_%.elf
 	$(OBJCOPY) -O binary $< $@
 
-$(BUILD)/IceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin
+$(BUILD)/OpenIceStarOS_c_fat16.vhd: $(IMAGE) $(BUILD)/mbr.bin $(BUILD)/menu_hybrid.bin $(BUILD)/stage3_hybrid.bin
 	cp $(IMAGE) $@
 	dd if=$(BUILD)/mbr.bin of=$@ bs=512 count=1 conv=notrunc status=none
 	dd if=$(BUILD)/menu_hybrid.bin of=$@ bs=512 seek=1 count=3 conv=notrunc status=none
@@ -455,7 +455,7 @@ $(BUILD)/kernel_patch.elf: $(KERNEL_OBJECTS) kernel/patches.ld
 $(BUILD)/kernel.%.bin: $(BUILD)/kernel_patch.elf
 	$(OBJCOPY) -O binary --only-section=.$* $< $@
 
-$(BUILD)/icestar_c.x: $(IMAGE) $(KERNEL_PATCHES) kernel/patches.json tools/kernel_image.py
+$(BUILD)/openicestaros_kernel.x: $(IMAGE) $(KERNEL_PATCHES) kernel/patches.json tools/kernel_image.py
 	python3 tools/kernel_image.py patch $(IMAGE) kernel/patches.json $(BUILD) $@
 
 $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
@@ -464,37 +464,37 @@ $(BUILD)/kernel_reset_test: tests/kernel_reset.c kernel/reset.c | $(BUILD)
 $(BUILD)/kernel_state_test: tests/kernel_state.c kernel/state.c kernel/reset.c kernel/api_table.c kernel/service_table.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_linked_test: tests/kernel_state.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_linked_test: tests/kernel_state.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/state.c kernel/reset.c kernel/api_table.c kernel/service_table.c -o $@
 
 $(BUILD)/kernel_events_test: tests/kernel_events.c kernel/events.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_events_linked_test: tests/kernel_events.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_events_linked_test: tests/kernel_events.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/events.c -o $@
 
 $(BUILD)/kernel_poll_test: tests/kernel_poll.c kernel/poll.c kernel/events.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_poll_linked_test: tests/kernel_poll.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_poll_linked_test: tests/kernel_poll.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/poll.c kernel/events.c -o $@
 
 $(BUILD)/kernel_pointer_test: tests/kernel_pointer.c kernel/pointer.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_pointer_linked_test: tests/kernel_pointer.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_pointer_linked_test: tests/kernel_pointer.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/pointer.c -o $@
 
 $(BUILD)/kernel_queue_test: tests/kernel_queue.c kernel/queue.c kernel/pointer_decode.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_queue_linked_test: tests/kernel_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_queue_linked_test: tests/kernel_queue.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/queue.c kernel/pointer_decode.c -o $@
 
 $(BUILD)/kernel_input_test: tests/kernel_queue.c kernel/input_queue.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DQUEUE_INPUT_TEST -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_input_linked_test: tests/kernel_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_input_linked_test: tests/kernel_queue.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DQUEUE_INPUT_TEST -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/input_queue.c -o $@
 
 $(BUILD)/kernel_pointer_init_test: tests/kernel_pointer_init.c kernel/pointer_init.c | $(BUILD)
@@ -503,203 +503,203 @@ $(BUILD)/kernel_pointer_init_test: tests/kernel_pointer_init.c kernel/pointer_in
 $(BUILD)/kernel_keyboard_init_test: tests/kernel_keyboard_init.c kernel/keyboard_init.c | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start $^ -o $@
 
-$(BUILD)/kernel_keyboard_init_linked_test: tests/kernel_keyboard_init.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_keyboard_init_linked_test: tests/kernel_keyboard_init.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/keyboard_init.c -o $@
 
-$(BUILD)/kernel_keyboard_test: tests/kernel_keyboard.c kernel/keyboard.c kernel/input_queue.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_keyboard_test: tests/kernel_keyboard.c kernel/keyboard.c kernel/input_queue.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -Wl,-e,_start tests/kernel_keyboard.c kernel/keyboard.c kernel/input_queue.c -o $@
 
-$(BUILD)/kernel_keyboard_linked_test: tests/kernel_keyboard.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_keyboard_linked_test: tests/kernel_keyboard.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/keyboard.c kernel/input_queue.c -o $@
 
-$(BUILD)/kernel_pointer_init_linked_test: tests/kernel_pointer_init.c $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_pointer_init_linked_test: tests/kernel_pointer_init.c $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) -m32 -march=i386 -Os -ffreestanding -nostdlib -static -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -DKERNEL_LINKED_TEST -Wl,-e,_start $< kernel/pointer_init.c -o $@
 
-$(BUILD)/kernel_service_forward_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_service_forward_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
 
-$(BUILD)/kernel_service_forward_linked_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_service_forward_linked_test: tests/kernel_service_forward.c kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_forward.c kernel/service_forward.c -o $@
 
-$(BUILD)/kernel_service_optional_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_service_optional_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_service_optional.c kernel/service_optional.c -o $@
 
-$(BUILD)/kernel_service_optional_linked_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_service_optional_linked_test: tests/kernel_service_optional.c kernel/service_optional.c kernel/service_optional.h kernel/service_optional.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_service_optional.c kernel/service_optional.c -o $@
 
-$(BUILD)/kernel_runtime_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_runtime_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_runtime.c kernel/runtime.c -o $@
 
-$(BUILD)/kernel_runtime_linked_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_runtime_linked_test: tests/kernel_runtime.c kernel/runtime.c kernel/runtime.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_runtime.c kernel/runtime.c -o $@
 
-$(BUILD)/kernel_tasks_test: tests/kernel_tasks.c kernel/tasks.c kernel/runtime.h kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_tasks_test: tests/kernel_tasks.c kernel/tasks.c kernel/runtime.h kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_tasks.c kernel/tasks.c kernel/service_forward.c -o $@
 
-$(BUILD)/kernel_tasks_linked_test: tests/kernel_tasks.c kernel/tasks.c kernel/runtime.h kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_tasks_linked_test: tests/kernel_tasks.c kernel/tasks.c kernel/runtime.h kernel/service_forward.c kernel/service_forward.h kernel/service_forward.def $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_tasks.c kernel/tasks.c kernel/service_forward.c -o $@
 
-$(BUILD)/kernel_task_create_test: tests/kernel_task_create.c kernel/task_create.c kernel/tasks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_task_create_test: tests/kernel_task_create.c kernel/task_create.c kernel/tasks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_task_create.c kernel/task_create.c -o $@
 
-$(BUILD)/kernel_task_create_linked_test: tests/kernel_task_create.c kernel/task_create.c kernel/tasks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_task_create_linked_test: tests/kernel_task_create.c kernel/task_create.c kernel/tasks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_task_create.c kernel/task_create.c -o $@
 
-$(BUILD)/kernel_task_lifecycle_test: tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c kernel/tasks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_task_lifecycle_test: tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c kernel/tasks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c -o $@
 
-$(BUILD)/kernel_task_lifecycle_linked_test: tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c kernel/tasks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_task_lifecycle_linked_test: tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c kernel/tasks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_task_lifecycle.c kernel/task_lifecycle.c kernel/task_create.c -o $@
 
-$(BUILD)/kernel_helpers_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_helpers_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_helpers.c kernel/segments.c kernel/strings.c -o $@
 
-$(BUILD)/kernel_helpers_linked_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_helpers_linked_test: tests/kernel_helpers.c kernel/segments.c kernel/strings.c kernel/helpers.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_helpers.c kernel/segments.c kernel/strings.c -o $@
 
-$(BUILD)/kernel_memory_test: tests/kernel_memory.c kernel/memory.c kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_test: tests/kernel_memory.c kernel/memory.c kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_memory.c kernel/memory.c -o $@
 
-$(BUILD)/kernel_memory_linked_test: tests/kernel_memory.c kernel/memory.c kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_linked_test: tests/kernel_memory.c kernel/memory.c kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory.c kernel/memory.c -o $@
 
-$(BUILD)/kernel_memory_init_test: tests/kernel_memory_init.c kernel/memory_init.c kernel/memory_init.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_init_test: tests/kernel_memory_init.c kernel/memory_init.c kernel/memory_init.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_memory_init.c kernel/memory_init.c -o $@
 
-$(BUILD)/kernel_memory_init_linked_test: tests/kernel_memory_init.c kernel/memory_init.c kernel/memory_init.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_init_linked_test: tests/kernel_memory_init.c kernel/memory_init.c kernel/memory_init.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory_init.c kernel/memory_init.c -o $@
 
-$(BUILD)/kernel_memory_ops_test: tests/kernel_memory_ops.c kernel/memory_ops.c kernel/memory_ops.h kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_ops_test: tests/kernel_memory_ops.c kernel/memory_ops.c kernel/memory_ops.h kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_memory_ops.c kernel/memory_ops.c -o $@
 
-$(BUILD)/kernel_memory_ops_linked_test: tests/kernel_memory_ops.c kernel/memory_ops.c kernel/memory_ops.h kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_ops_linked_test: tests/kernel_memory_ops.c kernel/memory_ops.c kernel/memory_ops.h kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory_ops.c kernel/memory_ops.c -o $@
 
-$(BUILD)/kernel_memory_accel_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_accel_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c -o $@
 
-$(BUILD)/kernel_memory_accel_linked_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_memory_accel_linked_test: tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c kernel/memory_accel.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_memory_accel.c kernel/memory_accel.c kernel/memory_transfers.c -o $@
 
-$(BUILD)/kernel_graphics_primitives_test: tests/kernel_graphics_primitives.c kernel/graphics_primitives.c kernel/graphics_primitives.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_graphics_primitives_test: tests/kernel_graphics_primitives.c kernel/graphics_primitives.c kernel/graphics_primitives.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_graphics_primitives.c kernel/graphics_primitives.c -o $@
 
-$(BUILD)/kernel_graphics_primitives_linked_test: tests/kernel_graphics_primitives.c kernel/graphics_primitives.c kernel/graphics_primitives.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_graphics_primitives_linked_test: tests/kernel_graphics_primitives.c kernel/graphics_primitives.c kernel/graphics_primitives.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_graphics_primitives.c kernel/graphics_primitives.c -o $@
 
-$(BUILD)/kernel_cpuid_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_cpuid_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_cpuid.c kernel/cpuid.c -o $@
 
-$(BUILD)/kernel_cpuid_linked_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_cpuid_linked_test: tests/kernel_cpuid.c kernel/cpuid.c kernel/cpuid.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_cpuid.c kernel/cpuid.c -o $@
 
-$(BUILD)/kernel_fpu_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_fpu_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c -o $@
 
-$(BUILD)/kernel_fpu_linked_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_fpu_linked_test: tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c kernel/fpu.h kernel/cpuid.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_fpu.c kernel/fpu.c kernel/fpu_state.c kernel/cpuid.c kernel/cpu.c -o $@
 
-$(BUILD)/kernel_interrupts_test: tests/kernel_interrupts.c kernel/interrupts.c kernel/interrupts.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_interrupts_test: tests/kernel_interrupts.c kernel/interrupts.c kernel/interrupts.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_interrupts.c kernel/interrupts.c -o $@
 
-$(BUILD)/kernel_interrupts_linked_test: tests/kernel_interrupts.c kernel/interrupts.c kernel/interrupts.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_interrupts_linked_test: tests/kernel_interrupts.c kernel/interrupts.c kernel/interrupts.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_interrupts.c kernel/interrupts.c -o $@
 
-$(BUILD)/kernel_interrupt_callbacks_test: tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c kernel/interrupt_callbacks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_interrupt_callbacks_test: tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c kernel/interrupt_callbacks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c -o $@
 
-$(BUILD)/kernel_interrupt_callbacks_linked_test: tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c kernel/interrupt_callbacks.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_interrupt_callbacks_linked_test: tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c kernel/interrupt_callbacks.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_interrupt_callbacks.c kernel/interrupt_callbacks.c -o $@
 
-$(BUILD)/kernel_syscalls_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscalls_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_syscalls.c kernel/syscalls.c -o $@
 
-$(BUILD)/kernel_syscalls_linked_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscalls_linked_test: tests/kernel_syscalls.c kernel/syscalls.c kernel/syscalls.h kernel/service_forward.h kernel/service_forward.def kernel/runtime.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_syscalls.c kernel/syscalls.c -o $@
 
-$(BUILD)/kernel_syscall_services_test: tests/kernel_syscall_services.c kernel/syscall_services.c kernel/syscall_services.h kernel/syscalls.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscall_services_test: tests/kernel_syscall_services.c kernel/syscall_services.c kernel/syscall_services.h kernel/syscalls.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_syscall_services.c kernel/syscall_services.c -o $@
 
-$(BUILD)/kernel_syscall_services_linked_test: tests/kernel_syscall_services.c kernel/syscall_services.c kernel/syscall_services.h kernel/syscalls.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscall_services_linked_test: tests/kernel_syscall_services.c kernel/syscall_services.c kernel/syscall_services.h kernel/syscalls.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_syscall_services.c kernel/syscall_services.c -o $@
 
-$(BUILD)/kernel_syscall_surface_test: tests/kernel_syscall_surface.c kernel/syscall_surface.c kernel/syscall_surface.h kernel/syscalls.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscall_surface_test: tests/kernel_syscall_surface.c kernel/syscall_surface.c kernel/syscall_surface.h kernel/syscalls.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_syscall_surface.c kernel/syscall_surface.c -o $@
 
-$(BUILD)/kernel_syscall_surface_linked_test: tests/kernel_syscall_surface.c kernel/syscall_surface.c kernel/syscall_surface.h kernel/syscalls.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_syscall_surface_linked_test: tests/kernel_syscall_surface.c kernel/syscall_surface.c kernel/syscall_surface.h kernel/syscalls.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_syscall_surface.c kernel/syscall_surface.c -o $@
 
-$(BUILD)/kernel_surface_refresh_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_refresh_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_refresh.c kernel/surface_refresh.c -o $@
 
-$(BUILD)/kernel_surface_refresh_linked_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_refresh_linked_test: tests/kernel_surface_refresh.c kernel/surface_refresh.c kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_refresh.c kernel/surface_refresh.c -o $@
 
-$(BUILD)/kernel_surface_composite_test: tests/kernel_surface_composite.c kernel/surface_composite.c kernel/surface_composite.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_composite_test: tests/kernel_surface_composite.c kernel/surface_composite.c kernel/surface_composite.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_composite.c kernel/surface_composite.c -o $@
 
-$(BUILD)/kernel_surface_composite_linked_test: tests/kernel_surface_composite.c kernel/surface_composite.c kernel/surface_composite.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_composite_linked_test: tests/kernel_surface_composite.c kernel/surface_composite.c kernel/surface_composite.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_composite.c kernel/surface_composite.c -o $@
 
-$(BUILD)/kernel_surface_present_test: tests/kernel_surface_present.c kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_present_test: tests/kernel_surface_present.c kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_present.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_present_linked_test: tests/kernel_surface_present.c kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_present_linked_test: tests/kernel_surface_present.c kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_present.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_draw_test: tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_draw.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_draw_test: tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_draw.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_draw_linked_test: tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_draw.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_draw_linked_test: tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_draw.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_draw.c kernel/surface_draw.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_alpha_test: tests/kernel_surface_alpha.c kernel/surface_alpha.c kernel/surface_alpha.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_alpha_test: tests/kernel_surface_alpha.c kernel/surface_alpha.c kernel/surface_alpha.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_alpha.c kernel/surface_alpha.c -o $@
 
-$(BUILD)/kernel_surface_alpha_linked_test: tests/kernel_surface_alpha.c kernel/surface_alpha.c kernel/surface_alpha.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_alpha_linked_test: tests/kernel_surface_alpha.c kernel/surface_alpha.c kernel/surface_alpha.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_alpha.c kernel/surface_alpha.c -o $@
 
-$(BUILD)/kernel_surface_draw32_test: tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_draw.h kernel/surface_alpha.c kernel/surface_alpha.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_draw32_test: tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_draw.h kernel/surface_alpha.c kernel/surface_alpha.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_alpha.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_draw32_linked_test: tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_draw.h kernel/surface_alpha.c kernel/surface_alpha.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_draw32_linked_test: tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_draw.h kernel/surface_alpha.c kernel/surface_alpha.h kernel/surface_present.c kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_draw32.c kernel/surface_draw32.c kernel/surface_alpha.c kernel/surface_present.c -o $@
 
-$(BUILD)/kernel_surface_move_test: tests/kernel_surface_move.c kernel/surface_move.c kernel/surface_move.h kernel/surface_composite.h kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_move_test: tests/kernel_surface_move.c kernel/surface_move.c kernel/surface_move.h kernel/surface_composite.h kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_move.c kernel/surface_move.c -o $@
 
-$(BUILD)/kernel_surface_move_linked_test: tests/kernel_surface_move.c kernel/surface_move.c kernel/surface_move.h kernel/surface_composite.h kernel/surface_present.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_move_linked_test: tests/kernel_surface_move.c kernel/surface_move.c kernel/surface_move.h kernel/surface_composite.h kernel/surface_present.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_move.c kernel/surface_move.c -o $@
 
-$(BUILD)/kernel_surface_scale_test: tests/kernel_surface_scale.c kernel/surface_scale.c kernel/surface_scale.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_scale_test: tests/kernel_surface_scale.c kernel/surface_scale.c kernel/surface_scale.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_scale.c kernel/surface_scale.c -o $@
 
-$(BUILD)/kernel_surface_scale_linked_test: tests/kernel_surface_scale.c kernel/surface_scale.c kernel/surface_scale.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_scale_linked_test: tests/kernel_surface_scale.c kernel/surface_scale.c kernel/surface_scale.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_scale.c kernel/surface_scale.c -o $@
 
-$(BUILD)/kernel_surface_lifecycle_test: tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c kernel/surface_lifecycle.h kernel/surface_refresh.h kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_lifecycle_test: tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c kernel/surface_lifecycle.h kernel/surface_refresh.h kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c -o $@
 
-$(BUILD)/kernel_surface_lifecycle_linked_test: tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c kernel/surface_lifecycle.h kernel/surface_refresh.h kernel/memory.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_lifecycle_linked_test: tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c kernel/surface_lifecycle.h kernel/surface_refresh.h kernel/memory.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_lifecycle.c kernel/surface_lifecycle.c -o $@
 
-$(BUILD)/kernel_surface_order_test: tests/kernel_surface_order.c kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_order_test: tests/kernel_surface_order.c kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fwrapv-pointer -nostdlib -static -Wl,-e,_start tests/kernel_surface_order.c kernel/surface_order.c -o $@
 
-$(BUILD)/kernel_surface_order_linked_test: tests/kernel_surface_order.c kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_surface_order_linked_test: tests/kernel_surface_order.c kernel/surface_order.c kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fwrapv-pointer -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_surface_order.c kernel/surface_order.c -o $@
 
-$(BUILD)/kernel_cursor_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_cursor_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -Wl,-e,_start tests/kernel_cursor.c kernel/cursor.c -o $@
 
-$(BUILD)/kernel_cursor_linked_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/icestar_c.x | $(BUILD)
+$(BUILD)/kernel_cursor_linked_test: tests/kernel_cursor.c kernel/cursor.c kernel/cursor.h kernel/surface_order.h kernel/surface_refresh.h $(BUILD)/openicestaros_kernel.x | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -nostdlib -static -DKERNEL_LINKED_TEST -Wl,-e,_start tests/kernel_cursor.c kernel/cursor.c -o $@
 
 $(BUILD)/init_c.bin: $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o init/init.ld
 	$(LD) -m elf_i386 -T init/init.ld -o $@ $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o
 
-$(BUILD)/IceStarOS_c_init.vhd: $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin $(BUILD)/icestar_c.x tools/kernel_image.py
-	python3 tools/kernel_image.py install $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/icestar_c.x $@
+$(BUILD)/OpenIceStarOS_c_init.vhd: $(BUILD)/OpenIceStarOS_c_fat16.vhd $(BUILD)/stage3_c_init.bin $(BUILD)/init_c.bin $(BUILD)/openicestaros_kernel.x tools/kernel_image.py
+	python3 tools/kernel_image.py install $(BUILD)/OpenIceStarOS_c_fat16.vhd $(BUILD)/openicestaros_kernel.x $@
 	dd if=$(BUILD)/stage3_c_init.bin of=$@ bs=512 seek=5 count=8 conv=notrunc status=none
 	dd if=$(BUILD)/init_c.bin of=$@ bs=512 seek=13 count=4 conv=notrunc status=none
 
@@ -718,15 +718,15 @@ $(BUILD)/init_transfer_test: tests/init_transfer.c boot/init_transfer.c boot/ini
 $(BUILD)/pci_test: tests/pci.c boot/pci.c boot/pci.h | $(BUILD)
 	$(CC) -std=c11 -Wall -Wextra -Werror -DPCI_HOST_TEST -Iboot tests/pci.c boot/pci.c -o $@
 
-verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test $(BUILD)/kernel_linked_test $(BUILD)/kernel_events_test $(BUILD)/kernel_events_linked_test $(BUILD)/kernel_poll_test $(BUILD)/kernel_poll_linked_test $(BUILD)/kernel_pointer_test $(BUILD)/kernel_pointer_linked_test $(BUILD)/kernel_queue_test $(BUILD)/kernel_queue_linked_test $(BUILD)/kernel_pointer_init_test $(BUILD)/kernel_pointer_init_linked_test
+verify: $(BUILD)/OpenIceStarOS_c_mbr.vhd $(BUILD)/OpenIceStarOS_c_fat16.vhd $(BUILD)/OpenIceStarOS_c_init.vhd $(BUILD)/fat16.o $(BUILD)/fat16_image $(BUILD)/init_entry.o $(BUILD)/init_directory.o $(BUILD)/init_clusters.o $(BUILD)/init_directory_test $(BUILD)/init_clusters_test $(BUILD)/init_entry_test $(BUILD)/init_transfer_test $(BUILD)/pci_test $(BUILD)/kernel_reset_test $(BUILD)/kernel_state_test $(BUILD)/kernel_linked_test $(BUILD)/kernel_events_test $(BUILD)/kernel_events_linked_test $(BUILD)/kernel_poll_test $(BUILD)/kernel_poll_linked_test $(BUILD)/kernel_pointer_test $(BUILD)/kernel_pointer_linked_test $(BUILD)/kernel_queue_test $(BUILD)/kernel_queue_linked_test $(BUILD)/kernel_pointer_init_test $(BUILD)/kernel_pointer_init_linked_test
 	test "$$(wc -c < $(BUILD)/mbr.bin)" -eq 512
 	test "$$(wc -c < $(BUILD)/menu.bin)" -eq 1536
 	cmp -i 446:446 -n 66 $(IMAGE) $(BUILD)/mbr.bin
-	cmp -i 2048:2048 $(IMAGE) $(BUILD)/IceStarOS_c_mbr.vhd
+	cmp -i 2048:2048 $(IMAGE) $(BUILD)/OpenIceStarOS_c_mbr.vhd
 	test "$$(wc -c < $(BUILD)/stage3_hybrid.bin)" -eq 4096
-	cmp -i 6656:6656 $(IMAGE) $(BUILD)/IceStarOS_c_fat16.vhd
+	cmp -i 6656:6656 $(IMAGE) $(BUILD)/OpenIceStarOS_c_fat16.vhd
 	test "$$(wc -c < $(BUILD)/init_c.bin)" -eq 2048
-	python3 tools/kernel_image.py verify $(IMAGE) $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/icestar_c.x kernel/patches.json $(BUILD)
+	python3 tools/kernel_image.py verify $(IMAGE) $(BUILD)/OpenIceStarOS_c_init.vhd $(BUILD)/openicestaros_kernel.x kernel/patches.json $(BUILD)
 	$(BUILD)/fat16_image $(IMAGE) $(BUILD)/init.x
 	printf '%s  %s\n' 0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007 $(BUILD)/init.x | sha256sum -c -
 	$(BUILD)/init_entry_test
@@ -872,10 +872,10 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/mov.py
 	python3 tests/starscr.py
 	python3 tests/clock.py
-	python3 tests/clock.py --kernel $(BUILD)/icestar_c.x
+	python3 tests/clock.py --kernel $(BUILD)/openicestaros_kernel.x
 	python3 tests/app_image.py
-	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
-	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/app_image.py verify $(BUILD)/OpenIceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/OpenIceStarOS_c_snake.vhd
+	python3 tools/app_image.py verify $(BUILD)/OpenIceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/binary_inventory.py --check
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
@@ -916,16 +916,16 @@ verify: $(BUILD)/color.x
 verify: $(BUILD)/mov.x
 verify: $(BUILD)/starscr.x
 verify: $(BUILD)/clock.x
-verify: $(BUILD)/IceStarOS_c_snake.vhd
-verify: $(BUILD)/IceStarOS_c_apps.vhd
+verify: $(BUILD)/OpenIceStarOS_c_snake.vhd
+verify: $(BUILD)/OpenIceStarOS_c_apps.vhd
 
-run: $(BUILD)/IceStarOS_c_mbr.vhd
+run: $(BUILD)/OpenIceStarOS_c_mbr.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
 
-run-hybrid: $(BUILD)/IceStarOS_c_fat16.vhd
+run-hybrid: $(BUILD)/OpenIceStarOS_c_fat16.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
 
-run-c-init: $(BUILD)/IceStarOS_c_init.vhd
+run-c-init: $(BUILD)/OpenIceStarOS_c_init.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
 
 $(BUILD)/snake.o: apps/snake.c apps/snake.h apps/xapi.h apps/xapi.def | $(BUILD)
@@ -940,13 +940,13 @@ $(BUILD)/snake.elf: $(BUILD)/snake.o $(BUILD)/xapi.o apps/snake.ld
 $(BUILD)/snake.x: $(BUILD)/snake.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --file-size 0xb24 --metadata $(BUILD)/snake.symbols.json
 
-$(BUILD)/IceStarOS_c_snake.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x apps/snake_image.json tools/app_image.py tools/kernel_image.py
+$(BUILD)/OpenIceStarOS_c_snake.vhd: $(BUILD)/OpenIceStarOS_c_init.vhd $(BUILD)/snake.x apps/snake_image.json tools/app_image.py tools/kernel_image.py
 	python3 tools/app_image.py install $< apps/snake_image.json $(BUILD) $@
 
-run-c-snake: $(BUILD)/IceStarOS_c_snake.vhd
+run-c-snake: $(BUILD)/OpenIceStarOS_c_snake.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
 
-smoke-snake: $(BUILD)/IceStarOS_c_snake.vhd
+smoke-snake: $(BUILD)/OpenIceStarOS_c_snake.vhd
 	python3 tools/boot_smoke.py --snake-check
 
 $(BUILD)/color.o: apps/color.c apps/color.h apps/legacy_api.h | $(BUILD)
@@ -1000,13 +1000,13 @@ $(BUILD)/clock.elf: $(BUILD)/clock.o $(BUILD)/legacy_api.o $(BUILD)/legacy_image
 $(BUILD)/clock.x: $(BUILD)/clock.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x3cd8 --metadata $(BUILD)/clock.symbols.json
 
-$(BUILD)/IceStarOS_c_apps.vhd: $(BUILD)/IceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x $(BUILD)/starscr.x $(BUILD)/clock.x apps/images.json tools/app_image.py tools/kernel_image.py
+$(BUILD)/OpenIceStarOS_c_apps.vhd: $(BUILD)/OpenIceStarOS_c_init.vhd $(BUILD)/snake.x $(BUILD)/color.x $(BUILD)/mov.x $(BUILD)/starscr.x $(BUILD)/clock.x apps/images.json tools/app_image.py tools/kernel_image.py
 	python3 tools/app_image.py install $< apps/images.json $(BUILD) $@
 
-run-c-apps: $(BUILD)/IceStarOS_c_apps.vhd
+run-c-apps: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	qemu-system-i386 -machine pc -m 128 -drive file=$<,format=raw,snapshot=on -boot c
 
-smoke-color: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-color: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --color-check
 
 $(BUILD)/surface_scale_guest.o: tests/surface_scale_guest.c | $(BUILD)
@@ -1018,147 +1018,147 @@ $(BUILD)/surface_scale_guest.elf: $(BUILD)/surface_scale_guest.o tests/surface_s
 $(BUILD)/surface_scale_guest.x: $(BUILD)/surface_scale_guest.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/surface_scale_guest.symbols.json
 
-$(BUILD)/IceStarOS_scale_diagnostic.vhd: $(BUILD)/IceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x tools/surface_scale_smoke.py tools/kernel_image.py
-	python3 tools/surface_scale_smoke.py $(BUILD)/IceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x $@
+$(BUILD)/OpenIceStarOS_scale_diagnostic.vhd: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x tools/surface_scale_smoke.py tools/kernel_image.py
+	python3 tools/surface_scale_smoke.py $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/surface_scale_guest.x $@
 
 .PHONY: smoke-surface-scale
-smoke-surface-scale: $(BUILD)/IceStarOS_scale_diagnostic.vhd
+smoke-surface-scale: $(BUILD)/OpenIceStarOS_scale_diagnostic.vhd
 	python3 tools/boot_smoke.py --surface-scale-check
 
 .PHONY: smoke-surface-lifecycle
-smoke-surface-lifecycle: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-surface-lifecycle: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --surface-lifecycle-check --memory-check --task-check --color-check
 
 .PHONY: smoke-surface-order
-smoke-surface-order: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-surface-order: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --surface-order-check --memory-check --task-check --color-check
 
 .PHONY: smoke-cursor
-smoke-cursor: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-cursor: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --cursor-check --memory-check --task-check --color-check
 
 .PHONY: test-firmware-scan-preview
-test-firmware-scan-preview: $(BUILD)/icestar_c.x
+test-firmware-scan-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/firmware_scan_qemu.py
 
 .PHONY: test-firmware-scan
-test-firmware-scan: $(BUILD)/icestar_c.x
+test-firmware-scan: $(BUILD)/openicestaros_kernel.x
 	python3 tests/firmware_scan_qemu.py --installed
 
 .PHONY: smoke-firmware
-smoke-firmware: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-firmware: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --firmware-check --memory-check --task-check --input-check --color-check
 
 .PHONY: test-kernel-entry-preview test-kernel-entry smoke-kernel-entry
 test-kernel-entry-preview:
 	python3 tests/kernel_entry.py
 
-test-kernel-entry: $(BUILD)/icestar_c.x
+test-kernel-entry: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_entry.py --installed
 
-smoke-kernel-entry: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-kernel-entry: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --entry-check --memory-check --task-check --input-check --color-check
 
-smoke-tasks: $(BUILD)/IceStarOS_c_init.vhd
+smoke-tasks: $(BUILD)/OpenIceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --task-check --input-check
 
-smoke-memory: $(BUILD)/IceStarOS_c_init.vhd
+smoke-memory: $(BUILD)/OpenIceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --memory-check --task-check --input-check
 
-smoke-mov: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-mov: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --mov-check
 
-smoke-starscr: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-starscr: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --starscr-check
 
 .PHONY: smoke-clock
-smoke-clock: $(BUILD)/IceStarOS_c_apps.vhd
+smoke-clock: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/boot_smoke.py --clock-check
 
 smoke-starscr-reference:
 	python3 tools/boot_smoke.py --starscr-check --starscr-reference
 
 .PHONY: test-startup-state test-startup-apps test-display-palette test-display-dac test-paging test-startup-desktop test-startup-ui
-test-startup-state: $(BUILD)/icestar_c.x
+test-startup-state: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_startup_state.py --installed
 
-test-startup-apps: $(BUILD)/icestar_c.x
+test-startup-apps: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_startup_apps.py --installed
 
-test-display-palette: $(BUILD)/icestar_c.x
+test-display-palette: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_display_palette.py --installed
 
-test-display-dac: $(BUILD)/icestar_c.x
+test-display-dac: $(BUILD)/openicestaros_kernel.x
 	python3 tests/display_dac_qemu.py --installed
 
-test-paging: $(BUILD)/icestar_c.x
+test-paging: $(BUILD)/openicestaros_kernel.x
 	python3 tests/paging_qemu.py --installed
 
-test-startup-desktop: $(BUILD)/icestar_c.x
+test-startup-desktop: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_startup_desktop.py --installed
 
-test-startup-ui: $(BUILD)/icestar_c.x
+test-startup-ui: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_startup_ui.py --installed
 
 .PHONY: test-object-registry
-test-object-registry: $(BUILD)/icestar_c.x
+test-object-registry: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_object_registry.py --installed
 
 .PHONY: test-timer-objects test-clock-display test-timer-flags test-cmos-fields
 
-test-timer-objects: $(BUILD)/icestar_c.x
+test-timer-objects: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_timer_objects.py --installed
 
-test-clock-display: $(BUILD)/icestar_c.x
+test-clock-display: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_clock_display.py --installed
 
-test-timer-flags: $(BUILD)/icestar_c.x
+test-timer-flags: $(BUILD)/openicestaros_kernel.x
 	python3 tests/timer_flags_qemu.py --installed
 
-test-cmos-fields: $(BUILD)/icestar_c.x
+test-cmos-fields: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_cmos_fields.py --installed
 
 .PHONY: test-icon-directory
-test-icon-directory: $(BUILD)/icestar_c.x
+test-icon-directory: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_icon_directory.py --installed
 
 .PHONY: test-icon-files
-test-icon-files: $(BUILD)/icestar_c.x
+test-icon-files: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_icon_files.py --installed
 
 .PHONY: test-icon-dib
-test-icon-dib: $(BUILD)/icestar_c.x
+test-icon-dib: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_icon_dib.py --installed
 
 .PHONY: smoke-icon-dib
-smoke-icon-dib: $(BUILD)/IceStarOS_c_init.vhd
+smoke-icon-dib: $(BUILD)/OpenIceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --icon-dib-check --memory-check --task-check --input-check
 
 .PHONY: test-icon-pixels test-icon-render
-test-icon-pixels: $(BUILD)/icestar_c.x
+test-icon-pixels: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_icon_pixels.py --installed
 
-test-icon-render: $(BUILD)/icestar_c.x
+test-icon-render: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_icon_render.py --installed
 
 .PHONY: smoke-icon-render
-smoke-icon-render: $(BUILD)/IceStarOS_c_init.vhd
+smoke-icon-render: $(BUILD)/OpenIceStarOS_c_init.vhd
 	python3 tools/boot_smoke.py --icon-render-check --memory-check --task-check --input-check
 
 .PHONY: test-pixel-access
-test-pixel-access: $(BUILD)/icestar_c.x
+test-pixel-access: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_pixel_access.py --installed
 
 .PHONY: test-raster
-test-raster: $(BUILD)/icestar_c.x
+test-raster: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster.py --installed
 
 .PHONY: test-raster-fill
-test-raster-fill: $(BUILD)/icestar_c.x
+test-raster-fill: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_fill.py --installed
 
 .PHONY: test-raster-outline
-test-raster-outline: $(BUILD)/icestar_c.x
+test-raster-outline: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_outline.py --installed
 
 .PHONY: inventory inventory-check
@@ -1169,143 +1169,143 @@ inventory-check:
 	python3 tools/binary_inventory.py --check
 
 .PHONY: test-raster-circle test-raster-disc test-raster-disc-preview
-test-raster-circle: $(BUILD)/icestar_c.x
+test-raster-circle: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_circle.py --installed
 
-test-raster-disc: $(BUILD)/icestar_c.x
+test-raster-disc: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_disc.py --installed
 
-test-raster-disc-preview: $(BUILD)/icestar_c.x
+test-raster-disc-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_disc.py
 
 .PHONY: test-raster-gradient test-raster-gradient-preview
-test-raster-gradient: $(BUILD)/icestar_c.x
+test-raster-gradient: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_gradient.py --installed
 
-test-raster-gradient-preview: $(BUILD)/icestar_c.x
+test-raster-gradient-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_gradient.py
 
 .PHONY: test-raster-brush test-raster-brush-preview
-test-raster-brush: $(BUILD)/icestar_c.x
+test-raster-brush: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_brush.py --installed
 
-test-raster-brush-preview: $(BUILD)/icestar_c.x
+test-raster-brush-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_brush.py
 
 .PHONY: test-raster-rounded test-raster-rounded-preview
-test-raster-rounded: $(BUILD)/icestar_c.x
+test-raster-rounded: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_rounded.py --installed
 
-test-raster-rounded-preview: $(BUILD)/icestar_c.x
+test-raster-rounded-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_raster_rounded.py
 
 .PHONY: test-text-glyph test-text-glyph-preview
-test-text-glyph: $(BUILD)/icestar_c.x
+test-text-glyph: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_glyph.py --installed
 
-test-text-glyph-preview: $(BUILD)/icestar_c.x
+test-text-glyph-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_glyph.py
 
 .PHONY: test-text-wide test-text-wide-preview
-test-text-wide: $(BUILD)/icestar_c.x
+test-text-wide: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_wide.py --installed
 
-test-text-wide-preview: $(BUILD)/icestar_c.x
+test-text-wide-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_wide.py
 
 .PHONY: test-text-run test-text-run-preview
-test-text-run: $(BUILD)/icestar_c.x
+test-text-run: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_run.py --installed
 
-test-text-run-preview: $(BUILD)/icestar_c.x
+test-text-run-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_run.py
 
 .PHONY: test-text-number test-text-number-preview
-test-text-number: $(BUILD)/icestar_c.x
+test-text-number: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_number.py --installed
 
-test-text-number-preview: $(BUILD)/icestar_c.x
+test-text-number-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_number.py
 
 .PHONY: test-text-format test-text-format-preview
-test-text-format: $(BUILD)/icestar_c.x
+test-text-format: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_format.py --installed
 
-test-text-format-preview: $(BUILD)/icestar_c.x
+test-text-format-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_text_format.py
 
 .PHONY: test-bitmap test-bitmap-preview
-test-bitmap: $(BUILD)/icestar_c.x
+test-bitmap: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap.py --installed
 
-test-bitmap-preview: $(BUILD)/icestar_c.x
+test-bitmap-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap.py
 
 .PHONY: test-bitmap-files test-bitmap-files-preview
-test-bitmap-files: $(BUILD)/icestar_c.x
+test-bitmap-files: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_files.py --installed
 
-test-bitmap-files-preview: $(BUILD)/icestar_c.x
+test-bitmap-files-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_files.py
 
 .PHONY: test-bitmap-fit test-bitmap-fit-preview
-test-bitmap-fit: $(BUILD)/icestar_c.x
+test-bitmap-fit: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_fit.py --installed
 
-test-bitmap-fit-preview: $(BUILD)/icestar_c.x
+test-bitmap-fit-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_fit.py
 
 .PHONY: test-bitmap-surface-fit test-bitmap-surface-fit-preview
-test-bitmap-surface-fit: $(BUILD)/icestar_c.x
+test-bitmap-surface-fit: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_surface_fit.py --installed
 
-test-bitmap-surface-fit-preview: $(BUILD)/icestar_c.x
+test-bitmap-surface-fit-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_surface_fit.py
 
 .PHONY: test-bitmap-key test-bitmap-key-preview
-test-bitmap-key: $(BUILD)/icestar_c.x
+test-bitmap-key: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_key.py --installed
 
-test-bitmap-key-preview: $(BUILD)/icestar_c.x
+test-bitmap-key-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_bitmap_key.py
 
 .PHONY: test-jpeg-bits test-jpeg-bits-preview
-test-jpeg-bits: $(BUILD)/icestar_c.x
+test-jpeg-bits: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_bits.py --installed
 
-test-jpeg-bits-preview: $(BUILD)/icestar_c.x
+test-jpeg-bits-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_bits.py
 
 .PHONY: test-jpeg-frame test-jpeg-frame-preview test-jpeg-tables test-jpeg-tables-preview
-test-jpeg-frame: $(BUILD)/icestar_c.x
+test-jpeg-frame: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_frame.py --installed
 
-test-jpeg-frame-preview: $(BUILD)/icestar_c.x
+test-jpeg-frame-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_frame.py
 
-test-jpeg-tables: $(BUILD)/icestar_c.x
+test-jpeg-tables: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_tables.py --installed
 
-test-jpeg-tables-preview: $(BUILD)/icestar_c.x
+test-jpeg-tables-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_tables.py
 
 .PHONY: test-string-extra test-string-extra-preview
-test-string-extra: $(BUILD)/icestar_c.x
+test-string-extra: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_string_extra.py --installed
 
-test-string-extra-preview: $(BUILD)/icestar_c.x
+test-string-extra-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_string_extra.py
 
 .PHONY: test-jpeg-huffman test-jpeg-huffman-preview
-test-jpeg-huffman: $(BUILD)/icestar_c.x
+test-jpeg-huffman: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_huffman.py --installed
 
-test-jpeg-huffman-preview: $(BUILD)/icestar_c.x
+test-jpeg-huffman-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_huffman.py
 
 .PHONY: test-jpeg-scan test-jpeg-scan-preview
-test-jpeg-scan: $(BUILD)/icestar_c.x
+test-jpeg-scan: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_scan.py --installed
 
-test-jpeg-scan-preview: $(BUILD)/icestar_c.x
+test-jpeg-scan-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_scan.py

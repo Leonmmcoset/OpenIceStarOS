@@ -252,7 +252,7 @@ static int run_test(void)
         0x46, 0xe0, 0xe1, 0, 0x13, 0xffffffff};
     if (!map_memory(0x1a000, 0x5000, 3) ||
         !load_kernel(0x900000, "build/icestar.x") ||
-        !load_kernel(0x800000, "build/icestar_c.x")) return 1;
+        !load_kernel(0x800000, "build/openicestaros_kernel.x")) return 1;
     for (kind = 0; kind < 2; ++kind)
         for (pattern = 0; pattern < 3; ++pattern)
             for (flags = 0; flags < (kind ? 64u : 32u); ++flags)

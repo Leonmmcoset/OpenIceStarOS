@@ -17,7 +17,7 @@ def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument("--installed", action="store_true")
     args = parser.parse_args()
-    subprocess.run(["make", "build/icestar_c.x"], cwd=ROOT, check=True)
+    subprocess.run(["make", "build/openicestaros_kernel.x"], cwd=ROOT, check=True)
     original = Fat16((ROOT.parent / "IceStarOS_x86_32M.vhd").read_bytes()).read_kernel()
     if hashlib.sha256(original).hexdigest() != ORIGINAL_SHA256:
         raise RuntimeError("original kernel hash mismatch")
@@ -49,7 +49,7 @@ def main():
                "seconds": round(time.monotonic() - start, 3), "output": output, "stderr": result.stderr}
     summary["sha256"] = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                          for p in (ROOT / "kernel/firmware_scan.c", elf,
-                                   BUILD / "firmware_scan_original.x", BUILD / "icestar_c.x")}
+                                   BUILD / "firmware_scan_original.x", BUILD / "openicestaros_kernel.x")}
     (BUILD / f"firmware_scan_{label}_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(output, end="")
     if result.returncode != 33 or "PASS: " not in output:

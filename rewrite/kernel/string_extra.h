@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_STRING_EXTRA_H
-#define ICESTAR_KERNEL_STRING_EXTRA_H
+#ifndef OPENICESTAR_KERNEL_STRING_EXTRA_H
+#define OPENICESTAR_KERNEL_STRING_EXTRA_H
 #include <stdint.h>
 uint32_t kernel_string_upper_82a531(uint32_t);
 uint32_t kernel_string_find_82a57d(uint32_t,uint32_t);

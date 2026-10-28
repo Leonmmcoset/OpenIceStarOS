@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_ALPHA_H
-#define ICESTAR_KERNEL_SURFACE_ALPHA_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_ALPHA_H
+#define OPENICESTAR_KERNEL_SURFACE_ALPHA_H
 #include <stdint.h>
 
 /* Original 0x818134: destination, source and four signed DWORD weights. */

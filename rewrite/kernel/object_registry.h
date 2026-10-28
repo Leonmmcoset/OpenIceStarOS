@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_OBJECT_REGISTRY_H
-#define ICESTAR_KERNEL_OBJECT_REGISTRY_H
+#ifndef OPENICESTAR_KERNEL_OBJECT_REGISTRY_H
+#define OPENICESTAR_KERNEL_OBJECT_REGISTRY_H
 #include <stdint.h>
 
 /* Original object names live at offset 0x10. Zero means no name match. */

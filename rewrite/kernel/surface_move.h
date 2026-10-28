@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_MOVE_H
-#define ICESTAR_KERNEL_SURFACE_MOVE_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_MOVE_H
+#define OPENICESTAR_KERNEL_SURFACE_MOVE_H
 #include <stdint.h>
 
 /* Redraw a moved layer and the exposed old rectangle. Coordinates are

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_MEMORY_OPS_H
-#define ICESTAR_KERNEL_MEMORY_OPS_H
+#ifndef OPENICESTAR_KERNEL_MEMORY_OPS_H
+#define OPENICESTAR_KERNEL_MEMORY_OPS_H
 #include <stdint.h>
 
 uint32_t kernel_move_bytes(uint32_t destination, uint32_t source, uint32_t size);

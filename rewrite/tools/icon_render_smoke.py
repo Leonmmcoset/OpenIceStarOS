@@ -75,7 +75,7 @@ def check_icon_render_execution(root, image, trace):
     build = root / "build"
     manifest = json.loads((root / "kernel/patches.json").read_text())
     by_binary = {item["binary"]: item for item in manifest}
-    kernel = (build / "icestar_c.x").read_bytes()
+    kernel = (build / "openicestaros_kernel.x").read_bytes()
     if Fat16(image.read_bytes()).read_kernel() != kernel:
         raise RuntimeError("boot image kernel differs from the production kernel")
     counts = Counter()

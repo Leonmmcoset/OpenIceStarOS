@@ -1,5 +1,5 @@
-#ifndef ICESTAR_LEGACY_CLOCK_API_H
-#define ICESTAR_LEGACY_CLOCK_API_H
+#ifndef OPENICESTAR_LEGACY_CLOCK_API_H
+#define OPENICESTAR_LEGACY_CLOCK_API_H
 #include <stdint.h>
 uint32_t legacy_character(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, int32_t);
 uint32_t legacy_chinese(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, const char *);

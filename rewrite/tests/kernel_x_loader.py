@@ -87,7 +87,7 @@ def compile_variants(original, installed):
                 candidate[start-0x800000:end-0x800000]=body+b"\x90"*(end-start-len(body))
                 sizes[section]=dict(compiled_bytes=len(body),slot_bytes=end-start)
             if installed:
-                production=(BUILD/"icestar_c.x").read_bytes()
+                production=(BUILD/"openicestaros_kernel.x").read_bytes()
                 for _,_,start,end in SLOTS:
                     assert production[start-0x800000:end-0x800000]==candidate[start-0x800000:end-0x800000], "installed bytes differ"
                 candidate=bytearray(production)

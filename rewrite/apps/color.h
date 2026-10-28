@@ -1,5 +1,5 @@
-#ifndef ICESTAR_COLOR_H
-#define ICESTAR_COLOR_H
+#ifndef OPENICESTAR_COLOR_H
+#define OPENICESTAR_COLOR_H
 #include <stdint.h>
 
 struct color_state {

@@ -41,7 +41,7 @@ def main():
     run(["objcopy", "-O", "binary", "-j", ".jpeg_tables", str(elf), str(binary)])
     body = binary.read_bytes()
     assert 0 < len(body) <= 404
-    production = BUILD / "icestar_c.x"
+    production = BUILD / "openicestaros_kernel.x"
     candidate = bytearray(production.read_bytes())
     replacement = body + b"\x90" * (404-len(body))
     if args.installed:

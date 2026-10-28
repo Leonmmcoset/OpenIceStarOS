@@ -143,7 +143,7 @@ void _start(void)
     REQUIRE(map(BASE,REGION)&&map(0x800000,0x40000)&&map(0x900000,0x40000),"mmap");
     REQUIRE(load("build/icon_pixels_original.x",0x900000),"original load");
 #ifdef TEST_INSTALLED
-    REQUIRE(load("build/icestar_c.x",0x800000),"installed load");
+    REQUIRE(load("build/openicestaros_kernel.x",0x800000),"installed load");
 #else
     REQUIRE(load("build/icon_pixels_preview.x",0x800000),"preview load");
 #endif

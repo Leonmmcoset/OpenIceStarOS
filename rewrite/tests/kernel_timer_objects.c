@@ -250,7 +250,7 @@ static int run(void)
     if (!map(0x900000, 0x40000) || !map(0x800000, 0x40000) ||
         !load("build/timer_objects_original.x", 0x900000)) return 2;
 #ifdef TEST_INSTALLED
-    if (!load("build/icestar_c.x", 0x800000)) return 3;
+    if (!load("build/openicestaros_kernel.x", 0x800000)) return 3;
 #else
     if (!load("build/timer_objects_preview.x", 0x800000)) return 3;
 #endif

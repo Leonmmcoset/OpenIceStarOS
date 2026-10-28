@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_HELPERS_H
-#define ICESTAR_KERNEL_HELPERS_H
+#ifndef OPENICESTAR_KERNEL_HELPERS_H
+#define OPENICESTAR_KERNEL_HELPERS_H
 #include <stdint.h>
 
 void kernel_set_segment_descriptor(uint32_t address, uint32_t limit,

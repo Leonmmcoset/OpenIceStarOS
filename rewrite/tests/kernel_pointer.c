@@ -41,7 +41,7 @@ static void jump(uint32_t address, uintptr_t target)
 
 static int load_kernel(int rewritten)
 {
-    const char *path = rewritten ? "build/icestar_c.x" : "build/icestar.x";
+    const char *path = rewritten ? "build/openicestaros_kernel.x" : "build/icestar.x";
     int fd = syscall3(5, (unsigned)(uintptr_t)path, 0, 0);
     int count;
     if (fd < 0) return 0;

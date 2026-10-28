@@ -127,7 +127,7 @@ static int run_test(void)
     if (!map_memory(0x1a000, 0x5000, 3) ||
         !load_kernel(0x900000, "build/icestar.x")) return 1;
 #ifdef KERNEL_LINKED_TEST
-    if (!load_kernel(0x800000, "build/icestar_c.x")) return 1;
+    if (!load_kernel(0x800000, "build/openicestaros_kernel.x")) return 1;
 #endif
     for (pattern = 0; pattern < 3; ++pattern)
         for (delay = 0; delay < 4; ++delay)

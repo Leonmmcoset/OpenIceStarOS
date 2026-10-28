@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_INTERRUPTS_H
-#define ICESTAR_KERNEL_INTERRUPTS_H
+#ifndef OPENICESTAR_KERNEL_INTERRUPTS_H
+#define OPENICESTAR_KERNEL_INTERRUPTS_H
 #include <stdint.h>
 void kernel_init_interrupts(void);
 void kernel_install_interrupt_gate(uint32_t handler, uint32_t selector,

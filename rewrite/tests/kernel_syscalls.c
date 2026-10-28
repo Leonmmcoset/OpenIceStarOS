@@ -229,7 +229,7 @@ static int run(void)
     if(!map(0x603000,0x3000)||syscall3(125,0x603000,0x1000,0)||syscall3(125,0x605000,0x1000,0))return 3;
     redirect(0x900000);
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 2;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 2;
     redirect(0x800000);
 #endif
     for(group=0;group<2;++group)for(op=0;op<(group?6+COUNT(invalid41):20+COUNT(invalid));++op){

@@ -59,7 +59,7 @@ def main():
         preview[start-0x800000:end-0x800000] = body
         sizes[section] = {"bytes": len(body), "exact_original": True}
     (BUILD / "cmos_fields_preview.x").write_bytes(preview)
-    candidate = BUILD / ("icestar_c.x" if args.installed else "cmos_fields_preview.x")
+    candidate = BUILD / ("openicestaros_kernel.x" if args.installed else "cmos_fields_preview.x")
     candidate_bytes = candidate.read_bytes()
     for section, symbol, start, end in SLOTS:
         if candidate_bytes[start-0x800000:end-0x800000] != original[start-0x800000:end-0x800000]:

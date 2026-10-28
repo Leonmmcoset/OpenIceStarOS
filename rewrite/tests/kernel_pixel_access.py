@@ -64,7 +64,7 @@ def main():
             raise RuntimeError("unexpected original boundary call: " + name)
     preview_path = BUILD / "pixel_access_preview.x"
     preview_path.write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else preview_path
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else preview_path
     for _, _, start, end in SLOTS:
         if candidate.read_bytes()[start-0x800000:end-0x800000] != preview[start-0x800000:end-0x800000]:
             raise RuntimeError("installed slot differs from independently linked source")
@@ -90,7 +90,7 @@ def main():
 
     # Preserve the surrounding production code so this fixture exercises its
     # recovered service initializer and forwarders with the four new bodies.
-    production = BUILD / "icestar_c.x"
+    production = BUILD / "openicestaros_kernel.x"
     chain_candidate = bytearray(production.read_bytes())
     for _, _, start, end in SLOTS:
         chain_candidate[start-0x800000:end-0x800000] = preview[start-0x800000:end-0x800000]

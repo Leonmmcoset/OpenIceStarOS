@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_MEMORY_INIT_H
-#define ICESTAR_KERNEL_MEMORY_INIT_H
+#ifndef OPENICESTAR_KERNEL_MEMORY_INIT_H
+#define OPENICESTAR_KERNEL_MEMORY_INIT_H
 #include <stdint.h>
 
 uint32_t kernel_probe_memory(void);

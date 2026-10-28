@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_DISPLAY_DAC_H
-#define ICESTAR_KERNEL_DISPLAY_DAC_H
+#ifndef OPENICESTAR_KERNEL_DISPLAY_DAC_H
+#define OPENICESTAR_KERNEL_DISPLAY_DAC_H
 #include <stdint.h>
 
 /* Original 0x81ad6e: inclusive signed index range, 8-bit RGB input. */

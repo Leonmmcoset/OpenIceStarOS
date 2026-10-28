@@ -7,7 +7,7 @@ BUILD = ROOT / "build"
 
 
 def main():
-    subprocess.run(["make", "build/icestar_c.x"], cwd=ROOT, check=True)
+    subprocess.run(["make", "build/openicestaros_kernel.x"], cwd=ROOT, check=True)
     flags = ["-m32", "-march=i386", "-Os", "-ffreestanding", "-fno-pic",
              "-fno-pie", "-fno-stack-protector", "-fno-asynchronous-unwind-tables",
              "-Wall", "-Wextra", "-Werror"]

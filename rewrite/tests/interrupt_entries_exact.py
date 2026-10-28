@@ -24,7 +24,7 @@ def main():
                     "-fno-pie", "-fno-stack-protector", "-fno-asynchronous-unwind-tables",
                     "-ffunction-sections", "-fdata-sections", "-Wall", "-Wextra", "-Werror",
                     "-c", "kernel/interrupt_entries.c", "-o", str(obj)], cwd=ROOT, check=True)
-    installed = (build / "icestar_c.x").read_bytes() if "--installed" in sys.argv else None
+    installed = (build / "openicestaros_kernel.x").read_bytes() if "--installed" in sys.argv else None
     previous = 0x8371a0
     for name, start, end in entries:
         start, end = int(start, 16), int(end, 16)

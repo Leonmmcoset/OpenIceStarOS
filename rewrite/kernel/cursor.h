@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_CURSOR_H
-#define ICESTAR_KERNEL_CURSOR_H
+#ifndef OPENICESTAR_KERNEL_CURSOR_H
+#define OPENICESTAR_KERNEL_CURSOR_H
 #include <stdint.h>
 
 uint32_t kernel_cursor_show(void);

@@ -209,7 +209,7 @@ static int run_test(void)
     if (!map_memory(0x600000, 0x2000, 3) || !map_memory(0x602000, 0x1000, 0) ||
         !map_memory(0x800000, 0x40000, 7) || !map_memory(0x900000, 0x40000, 7) ||
         !load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 1;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 1;
     for (path = 0; path < 8; ++path) {
         cases = 0;
         if (path == 0) {

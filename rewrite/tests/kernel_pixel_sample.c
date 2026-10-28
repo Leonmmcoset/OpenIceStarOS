@@ -73,7 +73,7 @@ void _start(void)
 {
     mappings();REQUIRE(load("build/raster_original.x",0x900000),"original load");
 #ifdef TEST_INSTALLED
-    REQUIRE(load("build/icestar_c.x",0x800000),"installed load");
+    REQUIRE(load("build/openicestaros_kernel.x",0x800000),"installed load");
 #else
     REQUIRE(load("build/raster_preview.x",0x800000),"preview load");
 #endif

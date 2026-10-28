@@ -1,5 +1,5 @@
-#ifndef ICESTAR_TEXT_WIDE_H
-#define ICESTAR_TEXT_WIDE_H
+#ifndef OPENICESTAR_TEXT_WIDE_H
+#define OPENICESTAR_TEXT_WIDE_H
 #include <stdint.h>
 uint32_t kernel_text_wide8_81e106(uint32_t id,uint32_t x,uint32_t y,
     uint32_t foreground,uint32_t background,uint32_t text);

@@ -60,7 +60,7 @@ static uint32_t run(void)
     if(!map(0x17000,0x5000)||!map(0x70000,0x1000)||!map(0x900000,0x40000)||!load("build/icestar.x",0x900000))return 1;
     jump(0x937131,(uint32_t)kernel_boot_code_selector);jump(0x9370d2,(uint32_t)kernel_install_interrupt_gate);
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 2;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 2;
     jump(0x837131,(uint32_t)kernel_boot_code_selector);jump(0x8370d2,(uint32_t)kernel_install_interrupt_gate);
 #endif
     for(pattern=0;pattern<3;++pattern)for(s=0;s<COUNT(selectors);++s)for(mutation=0;mutation<4;++mutation){

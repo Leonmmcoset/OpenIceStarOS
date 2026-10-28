@@ -75,7 +75,7 @@ SECTIONS {
     preview = bytearray(original)
     preview[0x37448:0x374b2] = body + b"\x90"*(106-len(body))
     (BUILD / "paging_preview.x").write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else BUILD / "paging_preview.x"
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else BUILD / "paging_preview.x"
     candidate_data = candidate.read_bytes()
     (BUILD / "paging_fixture_candidate.x").write_bytes(candidate_data)
     wrapper = BUILD / "paging_standalone_wrapper.bin"

@@ -1,5 +1,5 @@
-#ifndef ICESTAR_INIT_ENTRY_H
-#define ICESTAR_INIT_ENTRY_H
+#ifndef OPENICESTAR_INIT_ENTRY_H
+#define OPENICESTAR_INIT_ENTRY_H
 
 #include <stdint.h>
 

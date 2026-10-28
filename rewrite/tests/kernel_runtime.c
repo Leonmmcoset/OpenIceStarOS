@@ -176,7 +176,7 @@ static int run_test(void)
     if (!map_memory(0x1b000, 0x1000, 3) || !map_memory(0x600000, 0x8000, 3) ||
         !map_memory(0x800000, 0x40000, 7) || !map_memory(0x900000, 0x40000, 7)) return 1;
     if (!load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 2;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 2;
     redirect_yield(0x81434a);
     redirect_yield(0x91434a);
     result = test_palette();

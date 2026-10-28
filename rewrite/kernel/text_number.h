@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_TEXT_NUMBER_H
-#define ICESTAR_KERNEL_TEXT_NUMBER_H
+#ifndef OPENICESTAR_KERNEL_TEXT_NUMBER_H
+#define OPENICESTAR_KERNEL_TEXT_NUMBER_H
 #include <stdint.h>
 uint32_t kernel_text_number8_81eaf2(uint32_t, uint32_t, uint32_t, uint32_t,
                                  uint32_t, uint32_t, uint32_t);

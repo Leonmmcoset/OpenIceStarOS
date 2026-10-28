@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_TASKS_H
-#define ICESTAR_KERNEL_TASKS_H
+#ifndef OPENICESTAR_KERNEL_TASKS_H
+#define OPENICESTAR_KERNEL_TASKS_H
 #include <stdint.h>
 #include "helpers.h"
 #include "memory.h"

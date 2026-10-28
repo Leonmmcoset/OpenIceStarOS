@@ -110,7 +110,7 @@ static int run(void)
     if(!map(0x900000,0x40000)||!load("build/icestar.x",0x900000))return 2;
     jump(0x91905e,(uint32_t)kernel_syscall_target_81905e);
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 3;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 3;
     jump(0x81905e,(uint32_t)kernel_syscall_target_81905e);
 #endif
     for(pattern=0;pattern<2;++pattern)for(n=0;n<COUNT(indices);++n)for(wrap=0;wrap<4;++wrap)

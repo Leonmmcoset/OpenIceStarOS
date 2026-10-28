@@ -1,5 +1,5 @@
-#ifndef ICESTAR_CMOS_FIELDS_H
-#define ICESTAR_CMOS_FIELDS_H
+#ifndef OPENICESTAR_CMOS_FIELDS_H
+#define OPENICESTAR_CMOS_FIELDS_H
 #include <stdint.h>
 uint32_t kernel_cmos_seconds(void);
 uint32_t kernel_cmos_minutes(void);

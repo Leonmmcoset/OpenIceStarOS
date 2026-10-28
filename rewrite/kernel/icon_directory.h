@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_ICON_DIRECTORY_H
-#define ICESTAR_KERNEL_ICON_DIRECTORY_H
+#ifndef OPENICESTAR_KERNEL_ICON_DIRECTORY_H
+#define OPENICESTAR_KERNEL_ICON_DIRECTORY_H
 #include <stdint.h>
 
 void kernel_icon_draw_id(uint32_t surface_id, uint32_t x, uint32_t y,

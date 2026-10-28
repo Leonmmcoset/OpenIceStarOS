@@ -1,5 +1,5 @@
-#ifndef ICESTAR_CLOCK_H
-#define ICESTAR_CLOCK_H
+#ifndef OPENICESTAR_CLOCK_H
+#define OPENICESTAR_CLOCK_H
 #include <stdint.h>
 struct clock_state { uint32_t record, window, surface, unused; };
 struct clock_data {

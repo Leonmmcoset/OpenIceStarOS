@@ -17,7 +17,7 @@ SNAKE = (b"ICESTAR    ", b"GAMES      ", b"SNAKE   X  ")
 class ApplicationImageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.source = (ROOT / "build/IceStarOS_c_init.vhd").read_bytes()
+        cls.source = (ROOT / "build/OpenIceStarOS_c_init.vhd").read_bytes()
         cls.manifest = ROOT / "apps/images.json"
         cls.build = ROOT / "build"
         cls.result = installed(cls.source, cls.manifest, cls.build)
@@ -73,7 +73,7 @@ class ApplicationImageTests(unittest.TestCase):
         replacement = bytearray((self.build / "snake.x").read_bytes())
         replacement[0] = 0x0a
         manifest = json.loads(self.manifest.read_text())
-        with tempfile.TemporaryDirectory(prefix="icestar-app-type-") as temporary:
+        with tempfile.TemporaryDirectory(prefix="openicestaros-app-type-") as temporary:
             build = Path(temporary)
             (build / manifest[0]["binary"]).write_bytes(replacement)
             with self.assertRaisesRegex(ValueError, "application type/memory/stack contract changed"):

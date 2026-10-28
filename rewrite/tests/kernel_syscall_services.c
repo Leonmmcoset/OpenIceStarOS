@@ -78,7 +78,7 @@ static int run(void)
     jump(0x93734a,(uint32_t)kernel_timestamp_low);
 #ifdef KERNEL_LINKED_TEST
     (void)candidates;
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 2;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 2;
     jump(0x83734a,(uint32_t)kernel_timestamp_low);
 #endif
     for(f=0;f<3;++f)for(p=0;p<3;++p)for(index=0;index<COUNT(indices);++index)

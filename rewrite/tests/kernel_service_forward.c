@@ -186,7 +186,7 @@ static int run_test(void)
     if (!map_memory(0x1b000, 0x1000, 3) || !map_memory(0x600000, 0x4000, 3) ||
         !map_memory(0x800000, 0x40000, 7) || !map_memory(0x900000, 0x40000, 7)) return 1;
     if (!load_kernel("build/icestar.x", 0x900000) ||
-        !load_kernel("build/icestar_c.x", 0x800000)) return 2;
+        !load_kernel("build/openicestaros_kernel.x", 0x800000)) return 2;
     for (function = 0; function < sizeof(functions) / sizeof(functions[0]); ++function)
         for (pattern = 0; pattern < 2; ++pattern)
             for (mode = 0; mode < 4; ++mode) {

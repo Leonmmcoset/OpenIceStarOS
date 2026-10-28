@@ -1,5 +1,5 @@
-#ifndef ICESTAR_TEXT_GLYPH_H
-#define ICESTAR_TEXT_GLYPH_H
+#ifndef OPENICESTAR_TEXT_GLYPH_H
+#define OPENICESTAR_TEXT_GLYPH_H
 #include <stdint.h>
 #define GLYPH_PARAMETERS uint32_t id,uint32_t x,uint32_t y, \
     uint32_t foreground,uint32_t background,uint32_t character

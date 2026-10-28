@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_SURFACE_SCALE_H
-#define ICESTAR_KERNEL_SURFACE_SCALE_H
+#ifndef OPENICESTAR_KERNEL_SURFACE_SCALE_H
+#define OPENICESTAR_KERNEL_SURFACE_SCALE_H
 #include <stdint.h>
 
 /* Scale a whole source layer into a destination rectangle. Only matching

@@ -15,7 +15,7 @@ BUILD = ROOT / "build"
 def check(case, image, stop, entry):
     name, cpu, vga, requested, depth, sse = case
     prefix = BUILD / f"boot_stage3_qemu_{name}"
-    with tempfile.TemporaryDirectory(prefix="icestar-stage3-") as directory:
+    with tempfile.TemporaryDirectory(prefix="openicestaros-stage3-") as directory:
         remote = Path(directory) / "gdb.sock"
         with prefix.with_suffix(".qemu.log").open("w") as log:
             process = subprocess.Popen(["qemu-system-i386", "-machine", "pc", "-m", "128",
@@ -79,7 +79,7 @@ def check(case, image, stop, entry):
 
 def main():
     started = time.monotonic()
-    image = BUILD / "IceStarOS_c_init.vhd"
+    image = BUILD / "OpenIceStarOS_c_init.vhd"
     elf = BUILD / "stage3_c_init.elf"
     symbols = {line.split()[-1]:int(line.split()[0],16)
                for line in subprocess.check_output(["nm",str(elf)],text=True).splitlines()}

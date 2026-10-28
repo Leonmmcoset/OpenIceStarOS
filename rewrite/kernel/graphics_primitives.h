@@ -1,5 +1,5 @@
-#ifndef ICESTAR_KERNEL_GRAPHICS_PRIMITIVES_H
-#define ICESTAR_KERNEL_GRAPHICS_PRIMITIVES_H
+#ifndef OPENICESTAR_KERNEL_GRAPHICS_PRIMITIVES_H
+#define OPENICESTAR_KERNEL_GRAPHICS_PRIMITIVES_H
 #include <stdint.h>
 
 uint32_t kernel_blend_color(uint32_t foreground, uint32_t background,

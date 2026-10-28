@@ -249,7 +249,7 @@ static int run(void)
     for(i=0;i<4;++i)if(!map(regions[i][0],0x1000))return 1;
     if(!map(0x630000,0x1000)||!map(0x900000,0x40000)||!load("build/icestar.x",0x900000))return 2;
 #ifdef KERNEL_LINKED_TEST
-    if(!map(0x800000,0x40000)||!load("build/icestar_c.x",0x800000))return 3;
+    if(!map(0x800000,0x40000)||!load("build/openicestaros_kernel.x",0x800000))return 3;
 #endif
     for(wi=0;wi<15;++wi)for(hi=0;hi<15;++hi)for(depth=0;depth<2;++depth)
     for(align=0;align<4;++align)for(alias=0;alias<6;++alias)for(origin=0;origin<3;++origin)

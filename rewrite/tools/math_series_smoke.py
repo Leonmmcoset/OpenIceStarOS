@@ -19,7 +19,7 @@ TRACE_FILTER = ",".join(f"{a:#x}..{b-1:#x}" for a,b in SLOTS.values())
 
 def check_math_execution(root,image,trace):
     build=root/"build"
-    kernel=(build/"icestar_c.x").read_bytes()
+    kernel=(build/"openicestaros_kernel.x").read_bytes()
     require(Fat16(image.read_bytes()).read_kernel()==kernel,"math disk/production kernel mismatch")
     manifest=json.loads((root/"kernel/patches.json").read_text())
     by_binary={p["binary"]:p for p in manifest}

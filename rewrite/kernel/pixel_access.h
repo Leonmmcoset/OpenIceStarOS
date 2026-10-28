@@ -1,5 +1,5 @@
-#ifndef ICESTAR_PIXEL_ACCESS_H
-#define ICESTAR_PIXEL_ACCESS_H
+#ifndef OPENICESTAR_PIXEL_ACCESS_H
+#define OPENICESTAR_PIXEL_ACCESS_H
 #include <stdint.h>
 
 void kernel_pixel_put8_81b26e(uint32_t id, uint32_t x, uint32_t y, uint32_t color);

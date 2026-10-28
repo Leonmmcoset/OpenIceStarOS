@@ -64,7 +64,7 @@ def main():
         preview[start-0x800000:end-0x800000] = body + b"\x90" * (end-start-len(body))
         sizes[section] = {"compiled_bytes": len(body), "slot_bytes": end-start}
     (BUILD / "icon_directory_preview.x").write_bytes(preview)
-    candidate = BUILD / "icestar_c.x" if args.installed else BUILD / "icon_directory_preview.x"
+    candidate = BUILD / "openicestaros_kernel.x" if args.installed else BUILD / "icon_directory_preview.x"
     patches = []
     for label, path, base in (("original", BUILD / "icon_directory_original.x", 0x900000),
                               ("candidate", candidate, 0x800000)):
