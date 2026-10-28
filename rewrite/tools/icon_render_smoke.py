@@ -47,6 +47,9 @@ SLOTS = {
     "text_vertical8": (0x81e87c, 0x81e952),
     "text_run32": (0x81e952, 0x81ea1c),
     "text_vertical32": (0x81ea1c, 0x81eaf2),
+    "text_number8": (0x81eaf2, 0x81ec98),
+    "text_number32": (0x81ec98, 0x81ee3e),
+    "number_digits": (0x81ee3e, 0x81ee7e),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

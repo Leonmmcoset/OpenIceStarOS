@@ -567,6 +567,12 @@ SECTIONS
     ASSERT(kernel_text_run32_81e952 == 0x81e952 && ADDR(.text_run32) + SIZEOF(.text_run32) <= 0x81ea1c, "text_run32 overflow")
     .text_vertical32 0x81ea1c : SUBALIGN(1) { *kernel_text_run.o(.text.kernel_text_vertical32_81ea1c) }
     ASSERT(kernel_text_vertical32_81ea1c == 0x81ea1c && ADDR(.text_vertical32) + SIZEOF(.text_vertical32) <= 0x81eaf2, "text_vertical32 overflow")
+    .text_number8 0x81eaf2 : SUBALIGN(1) { *kernel_text_number.o(.text.kernel_text_number8_81eaf2) }
+    ASSERT(kernel_text_number8_81eaf2 == 0x81eaf2 && ADDR(.text_number8) + SIZEOF(.text_number8) <= 0x81ec98, "text_number8 overflow")
+    .text_number32 0x81ec98 : SUBALIGN(1) { *kernel_text_number.o(.text.kernel_text_number32_81ec98) }
+    ASSERT(kernel_text_number32_81ec98 == 0x81ec98 && ADDR(.text_number32) + SIZEOF(.text_number32) <= 0x81ee3e, "text_number32 overflow")
+    .number_digits 0x81ee3e : SUBALIGN(1) { *kernel_text_number.o(.text.kernel_number_digits_81ee3e) }
+    ASSERT(kernel_number_digits_81ee3e == 0x81ee3e && ADDR(.number_digits) + SIZEOF(.number_digits) <= 0x81ee7e, "number_digits overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }

@@ -4086,3 +4086,28 @@ Evidence: `build/text_number_direct_preview_summary.json`,
 `build/text_number_preview.elf` and `build/text_number_candidate.x`.
 Production remains at 313 intervals at this source checkpoint. Complete
 OS recovery remains unfinished.
+
+### Unsigned radix drawing installation checkpoint (2026-10-28)
+
+All three number entries are installed in the production kernel and three
+disks, bringing the manifest to 316 intervals. Every preceding 313 interval
+remains byte-identical; only 883 kernel bytes change. Production equals the
+source preview exactly. Whole-disk checks confirm that each disk differs
+from the recorded 313 baseline only in its kernel.
+
+Installed number fixtures, startup UI, clock display, linked startup/runtime
+and inventory checks pass. A production CLOCK QEMU boot passes rendering,
+close/input, heap, task and all 316 loaded-interval checks. Execution traces
+observe `text_number32` (53 entry / 64 body records) and `number_digits`
+(53 / 5); 8-bit drawing is covered by the direct and real initialized-table
+fixtures. The CLOCK screenshot was visually inspected. Kernel and disk
+hashes remain unchanged through validation and boot.
+
+Evidence: `build/text_number_316_final_summary.json`,
+`build/text_number_316_validation_summary.json`,
+`build/text_number_316_app_boots.json` and `build/text_number_316_evidence/`.
+The kernel SHA-256 is
+`e50c9b5efcc24c7ec9b6d8e7b08df623096c65a749cc152e040038ff0fd0878f`.
+The latest complete `make verify` checkpoint remains 305; subsequent 313
+and 316 checkpoints use focused regression and recorded QEMU boots. Complete
+OS source recovery remains unfinished.
