@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 325 declared kernel intervals and
+original VHD. The current build installs 326 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4534,37 +4534,6 @@ returns. Evidence: `build/string_extra_preview_summary.json`,
 and `build/string_extra_candidate.x`. Production remains at 325 intervals
 at this source checkpoint. Full OS source recovery remains unfinished.
 
-### JPEG quantization parser source checkpoint (2026-10-28)
-
-`kernel/jpeg_tables.c` recovers `0x83aae7..0x83ac7b` in 342/404 bytes.
-The low three flag bits select one of eight table offsets; any upper flag
-bit selects a two-byte input stride. That path retains only the first
-byte of each pair. Positive payload lengths always process a complete
-64-entry table even when the declared payload is shorter. Lengths zero
-and one retain wrapped arithmetic; truncation sets the cursor to the
-declared end. Table three overwrites the maximum-table field. The byte
-path preserves the original captured context for its post-store cursor
-increment, while the two-byte path reloads the live context.
-
-`python3 tests/kernel_jpeg_tables.py` passes 9,331 scenarios / 27,993
-original/ordinary-C/fixed-address-C executions. Its bounded bytewise oracle
-excludes 34 unsafe/excessive-loop scenarios. Coverage includes all flag
-bytes, 17 declared lengths, eight input limits, signed initial maxima,
-unaligned context/source aliases, 504,000 table entries, 2,893 truncations,
-1,030,201 stores, 7,271 wide-table paths, 4,082 undersized declared tables,
-48 changed source headers and three changed caller-word scenarios.
-All context/source bytes, six incoming words, EAX and the preserved
-register/canary contract are compared.
-
-Forks reproduce 12 source/wrapped-pointer/short-table faults and six safe
-truncated/empty returns. Two full real JPEG info/decode executions compare
-all output pixels/slack and the 64 KiB workspace without helper substitutions.
-Evidence: `build/jpeg_tables_preview_summary.json`,
-`build/jpeg_tables_preview_test.log`, `build/jpeg_tables_original.disasm`
-and `build/jpeg_tables_candidate.x`. Production remains at 326 intervals
-at this source checkpoint. Remaining JPEG routines and complete OS source
-recovery are unfinished.
-
 ### JPEG bit reader installation checkpoint (2026-10-28)
 
 `kernel/jpeg_bits.c` recovers `0x83a835..0x83a919` in 196/228 bytes.
@@ -4634,3 +4603,52 @@ parser; other JPEG routines remain original. Evidence:
 `build/jpeg_frame_preview_test.log`, `build/jpeg_frame_original.disasm`
 and `build/jpeg_frame_candidate.x`. Production remains at 326 intervals
 at this source checkpoint. Full OS source recovery remains unfinished.
+
+### JPEG quantization parser source checkpoint (2026-10-28)
+
+`kernel/jpeg_tables.c` recovers `0x83aae7..0x83ac7b` in 342/404 bytes.
+The low three flag bits select one of eight table offsets; any upper flag
+bit selects a two-byte input stride. That path retains only the first
+byte of each pair. Positive payload lengths always process a complete
+64-entry table even when the declared payload is shorter. Lengths zero
+and one retain wrapped arithmetic; truncation sets the cursor to the
+declared end. Table three overwrites the maximum-table field. The byte
+path preserves the original captured context for its post-store cursor
+increment, while the two-byte path reloads the live context.
+
+`python3 tests/kernel_jpeg_tables.py` passes 9,331 scenarios / 27,993
+original/ordinary-C/fixed-address-C executions. Its bounded bytewise oracle
+excludes 34 unsafe/excessive-loop scenarios. Coverage includes all flag
+bytes, 17 declared lengths, eight input limits, signed initial maxima,
+unaligned context/source aliases, 504,000 table entries, 2,893 truncations,
+1,030,201 stores, 7,271 wide-table paths, 4,082 undersized declared tables,
+48 changed source headers and three changed caller-word scenarios.
+All context/source bytes, six incoming words, EAX and the preserved
+register/canary contract are compared.
+
+Forks reproduce 12 source/wrapped-pointer/short-table faults and six safe
+truncated/empty returns. Two full real JPEG info/decode executions compare
+all output pixels/slack and the 64 KiB workspace without helper substitutions.
+Evidence: `build/jpeg_tables_preview_summary.json`,
+`build/jpeg_tables_preview_test.log`, `build/jpeg_tables_original.disasm`
+and `build/jpeg_tables_candidate.x`. Production remains at 326 intervals
+at this source checkpoint. Remaining JPEG routines and complete OS source
+recovery are unfinished.
+
+### 326-interval complete verification recipe checkpoint (2026-10-28)
+
+Every command in the 326-interval `make verify` recipe has now passed.
+The main run was terminated with exit code 143 after reaching the first
+CLOCK test, after all preceding native/installed kernel checks, QEMU
+hardware checks, math tests, X-format tests and the first four application
+tests passed. The remaining six commands were executed separately: both
+55,576-scenario CLOCK variants, application-image unit tests, both entire
+application-disk checks and inventory consistency all pass. This is
+complete recipe coverage across two runs; the interrupted `make verify`
+process itself did not return zero. The 326 kernel and all three disk
+hashes are unchanged from the saved QEMU boot checkpoint.
+
+Evidence: `build/jpeg_bits_326_verify_main.log`,
+`build/jpeg_bits_326_verify_tail.log` and
+`build/jpeg_bits_326_verify_tail_summary.json`. Complete OS source recovery
+remains unfinished.
