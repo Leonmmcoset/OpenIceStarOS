@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 335 declared kernel intervals and
+original VHD. The current build installs 336 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4745,3 +4745,29 @@ pixels/slack and workspace without helper substitutions. Evidence:
 `build/jpeg_huffman_preview_test.log`, `build/jpeg_huffman_original.disasm`
 and `build/jpeg_huffman_candidate.x`. Production remains at 335 intervals
 at this source checkpoint. Full JPEG and OS source recovery are unfinished.
+
+### JPEG Huffman table installation checkpoint (2026-10-28)
+
+The Huffman table parser is now installed at its original address, bringing
+production to 336 declared intervals. `make test-jpeg-huffman` passes all
+5,277 scenarios / 15,831 original/ordinary-C/fixed-address-C executions,
+including the fault/loop probes and complete original JPEG decoding. Both
+installed and preview targets are available; the installed check is included
+in `make verify`.
+
+The preceding 335 intervals and all other kernel bytes are unchanged;
+665 kernel bytes change. Whole boot/application disk reconstruction and
+inventory consistency pass. A production QEMU CLOCK boot passes rendering,
+three changing complete frames, PS/2 close, task exit, CMD reuse, RAM/heap
+checks and real task switching. All 336 loaded intervals match production;
+the CLOCK screenshot was visually inspected.
+
+Evidence: `build/jpeg_huffman_336_build.log`,
+`build/jpeg_huffman_installed_summary.json`,
+`build/jpeg_huffman_336_integrity_summary.json`,
+`build/jpeg_huffman_336_boot.log` and `build/jpeg_huffman_336_evidence/`.
+Kernel SHA-256:
+`cfa3907c977e632a038af2737a90ed7a7088960c0e8447d2edc6a56dcbdee490`.
+A full 336-interval `make verify` run is in progress in
+`build/jpeg_huffman_336_verify.log`; the latest completed full recipe coverage
+remains 326 at this checkpoint. Complete JPEG and OS recovery are unfinished.

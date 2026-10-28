@@ -333,5 +333,6 @@
   {"name": "FPU fault", "binary": "kernel.fpu_fault.bin", "start": "0x8380e1", "end": "0x8380ef"},
   {"name": "JPEG bit reservoir reader", "binary": "kernel.jpeg_bits.bin", "start": "0x83a835", "end": "0x83a919"},
   {"name": "JPEG frame marker parser", "binary": "kernel.jpeg_frame.bin", "start": "0x83a919", "end": "0x83aae7"},
-  {"name": "JPEG quantization marker parser", "binary": "kernel.jpeg_tables.bin", "start": "0x83aae7", "end": "0x83ac7b"}
+  {"name": "JPEG quantization marker parser", "binary": "kernel.jpeg_tables.bin", "start": "0x83aae7", "end": "0x83ac7b"},
+  {"name": "JPEG Huffman table parser", "binary": "kernel.jpeg_huffman.bin", "start": "0x83ac7b", "end": "0x83af27"}
 ]

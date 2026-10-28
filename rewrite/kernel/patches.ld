@@ -869,6 +869,8 @@ SECTIONS
     ASSERT(kernel_jpeg_frame_83a919 == 0x83a919 && ADDR(.jpeg_frame) + SIZEOF(.jpeg_frame) <= 0x83aae7, "jpeg frame layout overflow")
     .jpeg_tables 0x83aae7 : { *kernel_jpeg_tables.o(.text.kernel_jpeg_tables_83aae7) }
     ASSERT(kernel_jpeg_tables_83aae7 == 0x83aae7 && ADDR(.jpeg_tables) + SIZEOF(.jpeg_tables) <= 0x83ac7b, "jpeg quantization layout overflow")
+    .jpeg_huffman 0x83ac7b : { *kernel_jpeg_huffman.o(.text.kernel_jpeg_huffman_83ac7b) }
+    ASSERT(kernel_jpeg_huffman_83ac7b == 0x83ac7b && ADDR(.jpeg_huffman) + SIZEOF(.jpeg_huffman) <= 0x83af27, "jpeg Huffman layout overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
