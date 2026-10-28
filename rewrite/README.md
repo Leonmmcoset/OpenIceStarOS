@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 298 declared kernel intervals and
+original VHD. The current build installs 324 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4438,3 +4438,37 @@ The kernel SHA-256 is
 `99a9962c69ec5e0036350e17a9ed4b6dec31ace05d8d68b15a420bf97717ca5a`.
 The latest complete regression remains 305; later checkpoints use focused
 checks and recorded guest boots. Full OS source recovery remains unfinished.
+
+### Color-key BMP drawing source checkpoint (2026-10-28)
+
+`kernel/bitmap_key.c` recovers `0x821446..0x821624` as 372 bytes of C in
+its original 478-byte interval. It draws 24-bit or indexed 8-bit source
+pixels onto 32-bit surfaces, skipping full-width color-key matches. Source
+rows advance forward while destination Y runs backward. Header dimensions,
+file offsets and incoming arguments remain live across writes. The 24-bit
+path keeps the original DWORD source overread and always renders the fixed
+literal `t=` at `(10,10)` afterward, including for an empty image. Its text
+colors come from the captured color-table pointer after image drawing.
+The original unused diagnostic vararg is not read by that literal formatter;
+C supplies zero when no image pixel has been read.
+
+`python3 tests/kernel_bitmap_key.py` passes 10,634 scenarios / 31,902
+original/ordinary-C/fixed-address-C executions in 3.520 seconds. The independent
+bytewise oracle composes image drawing, clipping and both real text glyphs.
+The real pixel, formatter, glyph and service-initializer bodies execute without
+helper substitutions, including slot 78 dispatch across six display depths
+and both CPU feature choices. Checks compare 32 KiB of state, six caller
+words, raw EAX, registers/canaries, 4 KiB of globals and 320 service words.
+
+Coverage includes 1,439 key matches, 59,534 image pixel calls, 111,616 text
+stores, 29,824 stores into font memory, 32 subsequent changed font-byte reads,
+96 changed text-color cases, 909 changed caller words, 167 changed keys and
+193 changed bitmap arguments. The bounded oracle excludes 3,670 unsafe
+scenarios before execution, including 260 exceeding its iteration budget.
+Forks reproduce 12 DWORD-overread/empty-image diagnostic faults and six
+safe early returns that avoid invalid image/color memory.
+
+Evidence: `build/bitmap_key_preview_summary.json`,
+`build/bitmap_key_preview_test.log`, `build/bitmap_key_original.disasm` and
+`build/bitmap_key_candidate.x`. Production remains at 324 intervals at this
+source checkpoint. Full OS source recovery remains unfinished.
