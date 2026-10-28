@@ -4771,3 +4771,38 @@ Kernel SHA-256:
 A full 336-interval `make verify` run is in progress in
 `build/jpeg_huffman_336_verify.log`; the latest completed full recipe coverage
 remains 326 at this checkpoint. Complete JPEG and OS recovery are unfinished.
+
+### JPEG scan and symbol source checkpoint (2026-10-28)
+
+`kernel/jpeg_scan.c` recovers the marker dispatcher at `0x83af27..0x83b233`
+(738/780 bytes), scan preparation at `0x83b233..0x83b351` (241/286 bytes)
+and Huffman symbol lookup at `0x83b351..0x83b41b` (144/202 bytes).
+The dispatcher resets the original ten fields, invokes the original helper
+boundaries, ignores their return values, reads restart intervals and SOS
+selectors, and skips unknown segments by their raw length. It retains
+unchecked trailing SOS-byte advancement and zero-length segment loops.
+Preparation retains signed/live loop limits, overlapping component arrays,
+first matching component IDs, untouched fields on missing IDs, wrapped MCU
+dimensions, the 4,096-word fill, unchecked buffer-pointer writes and the
+original raw EAX count. Symbol lookup captures the selected table, reads
+one bit per length, scans length/code entries without consulting the count,
+and returns the first matching byte or `UINT32_MAX` after sixteen lengths.
+
+`python3 tests/kernel_jpeg_scan.py` passes 3,803 scenarios / 11,409
+original/ordinary-C/fixed-address-C executions: 1,903 dispatcher, 488
+preparation and 1,412 symbol scenarios. Tests compare all 128 KiB of context,
+8 KiB of source, six incoming words, raw EAX and preserved registers/stack
+canaries. Coverage includes every marker and symbol byte, four alignments,
+truncated headers, 255-component scans, duplicate/missing IDs, signed counts,
+source/context/caller aliases, every position of a complete 8-bit canonical
+codebook, refill/stuffing/EOF and full-nibble table selectors. Forked probes
+compare 39 fault, 12 alarm-terminated loop and 42 successful executions.
+Fault probes compare termination, rather than claiming a memory oracle for
+the faulting paths. No helper bodies are substituted.
+
+Two complete real JPEG information/decode executions compare every output
+pixel/slack byte and all 128 KiB of workspace. Evidence:
+`build/jpeg_scan_preview_summary.json`, `build/jpeg_scan_preview_test.log`,
+`build/jpeg_scan_original.disasm` and `build/jpeg_scan_candidate.x`.
+Production remains at 336 intervals at this source checkpoint. The inverse
+transform and remaining JPEG/OS routines are still unrecovered.
