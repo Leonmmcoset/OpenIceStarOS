@@ -3948,3 +3948,45 @@ Evidence: `build/text_wide_direct_preview_summary.json`,
 checkpoint was verified while the full 305-interval production regression
 was running; the wide glyphs are not yet installed. Complete OS recovery
 remains unfinished.
+
+### Mixed text-run source checkpoint (2026-10-28)
+
+`kernel/text_run.c/.h` recovers horizontal 8-bit text at
+`0x81e7b2..0x81e87c`, vertical 8-bit text at `0x81e87c..0x81e952`, horizontal
+32-bit text at `0x81e952..0x81ea1c`, and vertical 32-bit text at
+`0x81ea1c..0x81eaf2`. All four C bodies use 155 bytes, within slots of
+202, 214, 202 and 214 bytes. The combined preview also installs the four
+preceding wide glyph sources, so the fixed-address composition executes
+real recovered single/two-byte glyph bodies throughout.
+
+Runs consume one byte for values below 0xa0 and two for all other values,
+even when a child rejects an invalid character or a pair's second byte is
+zero. The return is bytes consumed. The next byte is read before checking
+index <=254, including at index 255 or 256. Vertical runs rotate only
+single-byte characters and use ordinary wide glyphs at descending Y positions.
+Outer ID/coordinates/colors/text remain live after every glyph call; each
+child receives a separate argument snapshot. All original calls are retained.
+
+`python3 tests/kernel_text_run.py` passes 29,167 direct scenarios / 87,501
+original/ordinary-C/fixed-address-C executions (11.789 seconds), plus 1,488
+real table scenarios / 2,976 executions (0.445 seconds). The composed oracle
+compares 32 KiB of mapped state, the entire 284 KiB font region, six incoming
+words, EAX, saved registers and stack canaries. It covers every leading byte,
+threshold/invalid/truncated pairs, lengths 0..257, wrapped/negative geometry,
+unaligned records/text/output, mutable future text and metadata/caller/font
+aliases. It observes 482,008 ASCII and 236,467 wide calls, 33,358 text stores,
+5,616 ASCII-font stores, 227,399 metadata stores, 592 caller stores and 226
+changed incoming words. There are 328 returns of 255 and 120 returns of 256.
+
+Twenty-four separate child-process guard probes verify SIGSEGV at the required
+index-255/256 read for all four original/ordinary-C/fixed-address-C entries.
+The bounded model excludes 7,209 unsafe direct scenarios and 48 unsafe table
+scenarios before executing either implementation. Original unchecked behavior
+remains in C. The table fixture compares all 320 words for six depths, both
+CPU choices and slots 8/13. No CALL targets are substituted.
+
+Evidence: `build/text_run_direct_preview_summary.json`,
+`build/text_run_chain_preview_summary.json`, `build/text_run_preview_test.log`,
+`build/text_run_preview.elf` and `build/text_run_candidate.x`. These eight
+wide-glyph/run slots remain a source preview while the full 305-interval
+production regression runs. Complete OS source recovery remains unfinished.
