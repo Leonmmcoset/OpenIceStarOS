@@ -2324,42 +2324,6 @@ subdirectories. Kernel SHA-256:
 Combined-application disk SHA-256:
 `07771e8e045f98372a6980abf4c46c902d37a7c0cbceb74ae9bd9ee7d3cdbe01`.
 
-### Timer, clock display and CMOS installation (2026-10-28)
-
-The four timer object functions, two packed clock display wrappers and seven
-CMOS field readers are installed at their original entries, increasing the
-manifest from 239 to 252 intervals. The 802 changed kernel bytes are confined
-to the six new C slots; all seven CMOS instruction bodies match the original
-bytes exactly. Every previous interval remains unchanged. Complete-disk
-reconstruction passes for all three production images, whose differences from
-the 239-interval baseline are restricted to the existing kernel file.
-
-All four installed fixtures pass: 178,032 timer scenarios / 534,096 executions
-(90.909 s), 139,520 display scenarios / 418,560 executions (2.106 s), 48 real
-CPL0 interrupt-flag scenarios / 144 executions (0.195 s including setup), and
-67,072 CMOS scenarios / 201,216 executions (0.139 s including setup).
-Production hashes remain unchanged throughout those tests.
-
-Independent QEMU snapshot boots pass Color (29.770 s), Snake (34.536 s), MOV
-(32.772 s) and STARSCR (26.399 s), including startup execution, all 252 loaded
-intervals, allocator/task state and real PS/2 input. Palette/closure, game
-movement/restart, animation frames/cleanup and screensaver phases/cleanup
-checks pass, and representative screenshots have been visually checked.
-These tests do not establish execution of every replacement function.
-STARSCR's previously documented post-exit mouse/timer stall remains; desktop
-reuse after its exit is not established.
-
-Evidence: `build/timer_clock_252_installation_summary.json`,
-`build/timer_clock_252_focused_summary.json`,
-`build/timer_clock_252_build.log`, `build/timer_clock_252_disk_verify.log`,
-the four installed fixture summaries and
-`build/timer_clock_252_evidence/results.json` with per-application evidence.
-Kernel SHA-256:
-`1936688b6d6a640f4008068fb5aac01e12ab2fa4ab0185fcb4c7da636922c7ff`.
-Combined-application disk SHA-256:
-`aea1371afeb6a959fd786d630eb4c316e47e8f0aea373dc9e6fd8fa6e61c7b66`.
-This installation has focused and boot coverage; a complete 252-interval
-regression has not yet been run.
 The full 239-interval regression is recorded separately when it completes.
 
 ### Timer object source checkpoint (2026-10-28)
@@ -2473,3 +2437,73 @@ Evidence: `build/verify_object_registry.log`,
 `36f706a4a4440a8d6d0fd854b2f6c03a7a7c49f056ef4d90264ac775e9ccc116`.
 Combined-application disk SHA-256:
 `07771e8e045f98372a6980abf4c46c902d37a7c0cbceb74ae9bd9ee7d3cdbe01`.
+
+### Timer, clock display and CMOS installation (2026-10-28)
+
+The four timer object functions, two packed clock display wrappers and seven
+CMOS field readers are installed at their original entries, increasing the
+manifest from 239 to 252 intervals. The 802 changed kernel bytes are confined
+to the six new C slots; all seven CMOS instruction bodies match the original
+bytes exactly. Every previous interval remains unchanged. Complete-disk
+reconstruction passes for all three production images, whose differences from
+the 239-interval baseline are restricted to the existing kernel file.
+
+All four installed fixtures pass: 178,032 timer scenarios / 534,096 executions
+(90.909 s), 139,520 display scenarios / 418,560 executions (2.106 s), 48 real
+CPL0 interrupt-flag scenarios / 144 executions (0.195 s including setup), and
+67,072 CMOS scenarios / 201,216 executions (0.139 s including setup).
+Production hashes remain unchanged throughout those tests.
+
+Independent QEMU snapshot boots pass Color (29.770 s), Snake (34.536 s), MOV
+(32.772 s) and STARSCR (26.399 s), including startup execution, all 252 loaded
+intervals, allocator/task state and real PS/2 input. Palette/closure, game
+movement/restart, animation frames/cleanup and screensaver phases/cleanup
+checks pass, and representative screenshots have been visually checked.
+These tests do not establish execution of every replacement function.
+STARSCR's previously documented post-exit mouse/timer stall remains; desktop
+reuse after its exit is not established.
+
+Evidence: `build/timer_clock_252_installation_summary.json`,
+`build/timer_clock_252_focused_summary.json`,
+`build/timer_clock_252_build.log`, `build/timer_clock_252_disk_verify.log`,
+the four installed fixture summaries and
+`build/timer_clock_252_evidence/results.json` with per-application evidence.
+Kernel SHA-256:
+`1936688b6d6a640f4008068fb5aac01e12ab2fa4ab0185fcb4c7da636922c7ff`.
+Combined-application disk SHA-256:
+`aea1371afeb6a959fd786d630eb4c316e47e8f0aea373dc9e6fd8fa6e61c7b66`.
+This installation has focused and boot coverage; a complete 252-interval
+regression has not yet been run.
+
+### ICO directory source checkpoint (2026-10-28)
+
+`kernel/icon_directory.c/.h` recovers the surface-ID wrapper at
+`0x82af08..0x82af4c`, centered selection at `0x82af4c..0x82b004` and frame
+dispatch at `0x82b004..0x82b0a0`. Selection uses the largest width only,
+retains the first tie and immediately selects a zero width as 256. It uses
+that width for both unsigned centered coordinates, ignoring entry heights.
+Frame validation preserves the original signed comparison, including negative
+frames and wrapped 32-bit indexing. Two zero dimension bytes select the PNG
+decoder; all other pairs select the DIB decoder. Both decoders remain original.
+The four original ICO resources independently confirm these payload formats.
+
+`python3 tests/kernel_icon_directory.py` passes 235,066 scenarios / 705,198
+original-x86, ordinary-C and fixed-address-C executions in 11.867 seconds.
+The bytewise oracle covers all 65,536 width/height pairs through both direct
+and ID APIs, all 65,536 ordered width pairs in four-entry selection sequences,
+36,864 centering cases, signed/wrapped frames and table IDs, unaligned records,
+zero/high counts with immediate termination, callbacks that mutate shared
+metadata, and every frame of all four original resource directories. It checks
+decoder choice/arguments, all 16 KiB of fixture memory, callee-saved registers,
+stack balance and canaries. The 32 generated unmapped frame entries are excluded
+before execution and are not counted as passing. Decoder pixel output is
+outside this dispatch fixture's scope; only decoder CALL operands are redirected,
+while both internal frame calls execute normally.
+
+Compiled bodies occupy 41/68, 99/184 and 97/156 bytes, with linker assertions
+for entry addresses, sizes and unexpected sections. Evidence:
+`build/icon_directory_preview_test.log`,
+`build/icon_directory_preview_summary.json`, `build/icon_directory_calls.h`,
+`build/icon_directory_resources.h` and `build/icon_directory_preview.elf`.
+This source checkpoint leaves all four production artifact hashes unchanged
+at the 252-interval installation.
