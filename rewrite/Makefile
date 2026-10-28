@@ -30,12 +30,15 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_firmware_scan.o \
                   $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o \
                   $(BUILD)/kernel_display_dac.o $(BUILD)/kernel_paging.o \
-                  $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o
+                  $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
+                  $(BUILD)/kernel_object_registry.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
                   $(BUILD)/kernel.display_dac.bin $(BUILD)/kernel.identity_paging.bin \
                   $(BUILD)/kernel.startup_desktop.bin $(BUILD)/kernel.startup_ui.bin \
+                  $(BUILD)/kernel.object_find_name.bin $(BUILD)/kernel.object_set_state.bin \
+                  $(BUILD)/kernel.object_registry_add.bin $(BUILD)/kernel.object_registry_remove.bin \
                   $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -210,6 +213,9 @@ $(BUILD)/kernel_startup_desktop.o: kernel/startup_desktop.c kernel/startup_deskt
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_startup_ui.o: kernel/startup_ui.c kernel/startup_ui.h kernel/runtime.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_object_registry.o: kernel/object_registry.c kernel/object_registry.h kernel/helpers.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_startup_apps.o: kernel/runtime.h
@@ -635,6 +641,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/paging_qemu.py --installed
 	python3 tests/kernel_startup_desktop.py --installed
 	python3 tests/kernel_startup_ui.py --installed
+	python3 tests/kernel_object_registry.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -847,3 +854,7 @@ test-startup-desktop: $(BUILD)/icestar_c.x
 
 test-startup-ui: $(BUILD)/icestar_c.x
 	python3 tests/kernel_startup_ui.py --installed
+
+.PHONY: test-object-registry
+test-object-registry: $(BUILD)/icestar_c.x
+	python3 tests/kernel_object_registry.py --installed

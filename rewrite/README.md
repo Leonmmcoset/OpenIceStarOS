@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 235 declared kernel intervals and
+original VHD. The current build installs 239 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2292,3 +2292,35 @@ assertions enforce original entries and slot bounds. Evidence:
 `build/object_registry_preview_summary.json`, `build/object_registry_calls.h`
 and `build/object_registry_preview.elf`. This source checkpoint does not
 change the production disk images.
+
+### Object registry installation (2026-10-28)
+
+The four object registry helpers are now installed at their original entries,
+increasing the production manifest from 235 to 239 intervals. Their C bodies
+occupy 71/128, 31/46, 88/142 and 104/158 bytes. Every prior interval remains
+unchanged; the 450 changed kernel bytes are confined to these four new slots.
+Complete-disk reconstruction checks pass for the kernel/init, Snake and
+combined-application images, and disk differences are restricted to the
+existing kernel file. The installed differential fixture passes the same
+61,474 scenarios / 184,422 executions as the source checkpoint.
+
+Four independent QEMU snapshot boots pass Color (29.734 s), Snake (34.699 s),
+MOV (32.537 s) and STARSCR (26.778 s) checks. Each verifies startup execution,
+all 239 guest-memory intervals, allocator/task state and real PS/2 input.
+Color verifies 600 palette probes and closure; Snake verifies movement,
+game-over, restart and directional input; MOV verifies four decoded animation
+frames, transitions and cleanup; STARSCR verifies four display phases and
+task/window cleanup. Representative screenshots have been visually checked.
+These traces establish startup execution, not explicit execution of every
+registry helper. STARSCR's previously documented post-exit mouse/timer stall
+remains, and desktop reuse after it is not established.
+
+Evidence: `build/object_registry_installation_summary.json`,
+`build/object_registry_installed_summary.json`,
+`build/object_registry_install_build.log` and
+`build/object_registry_evidence/results.json` with per-application evidence
+subdirectories. Kernel SHA-256:
+`36f706a4a4440a8d6d0fd854b2f6c03a7a7c49f056ef4d90264ac775e9ccc116`.
+Combined-application disk SHA-256:
+`07771e8e045f98372a6980abf4c46c902d37a7c0cbceb74ae9bd9ee7d3cdbe01`.
+The full 239-interval regression is recorded separately when it completes.

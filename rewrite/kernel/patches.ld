@@ -102,6 +102,14 @@ SECTIONS
     ASSERT(kernel_syscall_target_810448 == 0x810448 && ADDR(.syscall_object_field12) + SIZEOF(.syscall_object_field12) <= 0x810478, "object field12 overflow")
     .syscall_object_field4 0x810478 : { *kernel_syscall_services.o(.text.kernel_syscall_target_810478) }
     ASSERT(kernel_syscall_target_810478 == 0x810478 && ADDR(.syscall_object_field4) + SIZEOF(.syscall_object_field4) <= 0x8104a0, "object field4 overflow")
+    .object_find_name 0x8104a0 : { *kernel_object_registry.o(.text.kernel_object_find_name) }
+    ASSERT(kernel_object_find_name == 0x8104a0 && ADDR(.object_find_name) + SIZEOF(.object_find_name) <= 0x810520, "object name lookup overflow")
+    .object_set_state 0x810520 : { *kernel_object_registry.o(.text.kernel_object_set_state) }
+    ASSERT(kernel_object_set_state == 0x810520 && ADDR(.object_set_state) + SIZEOF(.object_set_state) <= 0x81054e, "object state assignment overflow")
+    .object_registry_add 0x81054e : { *kernel_object_registry.o(.text.kernel_object_registry_add) }
+    ASSERT(kernel_object_registry_add == 0x81054e && ADDR(.object_registry_add) + SIZEOF(.object_registry_add) <= 0x8105dc, "object registry insertion overflow")
+    .object_registry_remove 0x8105dc : { *kernel_object_registry.o(.text.kernel_object_registry_remove) }
+    ASSERT(kernel_object_registry_remove == 0x8105dc && ADDR(.object_registry_remove) + SIZEOF(.object_registry_remove) <= 0x81067a, "object registry removal overflow")
     .startup_ui 0x81067a : SUBALIGN(1) {
         *kernel_startup_ui.o(.text.kernel_startup_ui)
         *kernel_startup_ui.o(.text.relative_rectangle .rodata*)
