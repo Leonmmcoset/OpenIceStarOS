@@ -3905,3 +3905,46 @@ real 8-bit entries. No CALL targets are substituted. Evidence:
 `build/text_glyph_preview.elf` and `build/text_glyph_candidate.x`. Production
 remains at 301 intervals at this source checkpoint. Complete OS source
 recovery remains unfinished.
+
+### 16x16 two-byte glyph source checkpoint (2026-10-28)
+
+`kernel/text_wide.c/.h` recovers opaque 8-bit glyphs at
+`0x81e106..0x81e2cc`, masked 8-bit glyphs at `0x81e2cc..0x81e45a`, opaque
+32-bit glyphs at `0x81e45a..0x81e624` and masked 32-bit glyphs at
+`0x81e624..0x81e7b2`. All drawing and control flow are C. Compiled bodies use
+323/454, 321/398, 320/458 and 301/398 bytes.
+
+Both input bytes are read before testing surface bounds. The accepted range
+is 0xa0..0xfe for each byte, including the negative font indices allowed by
+0xa0. The captured tile is `0x20200 + ((high-161)*94 + low-161)*32`.
+Every visible pixel re-reads its font byte; this differs from the captured
+8x16 rows. The transparent variants omit zero bits. Descriptor identity and
+tile offset remain captured, while geometry/colors/descriptor fields remain
+live after stores. Negative coordinates are not clipped.
+
+`python3 tests/kernel_text_wide.py` passes 73,167 direct scenarios / 219,501
+original/ordinary-C/fixed-address-C executions (29.122 seconds), plus 3,072
+real initialized-table scenarios / 6,144 executions (0.892 seconds). The
+independent row-mask/widened-address oracle compares all 32 KiB of mapped
+state, the entire separately mapped 284 KiB font region, six caller words,
+EAX, saved registers and stack canaries. It covers all 9,025 accepted byte
+pairs in each of the four variants, every byte value in each position,
+wrapped dimensions/IDs, unaligned metadata/input/output and aliases of
+metadata, ID slots, caller words, encoded text and live font bits. Font
+memory includes the accepted below-base tiles. No CALL targets are replaced.
+
+Observed coverage includes 33,923 metadata stores, 336 caller stores, 192
+encoded-byte stores, 27,456 font stores, 378 changed incoming words and
+19,584 font-byte reads changed by previous pixel output. There are 3,544
+accepted cases below the nominal font base. The bounded model excludes
+2,585 unsafe scenarios before execution; unchecked behavior remains in C.
+The table fixture compares all 320 words for six display depths, both CPU
+choices and slots 7/14, including retention of seeded real 8-bit entries at
+unsupported depths.
+
+Evidence: `build/text_wide_direct_preview_summary.json`,
+`build/text_wide_chain_preview_summary.json`, `build/text_wide_preview_test.log`,
+`build/text_wide_preview.elf` and `build/text_wide_candidate.x`. This source
+checkpoint was verified while the full 305-interval production regression
+was running; the wide glyphs are not yet installed. Complete OS recovery
+remains unfinished.
