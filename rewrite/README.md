@@ -4111,3 +4111,42 @@ The kernel SHA-256 is
 The latest complete `make verify` checkpoint remains 305; subsequent 313
 and 316 checkpoints use focused regression and recorded QEMU boots. Complete
 OS source recovery remains unfinished.
+
+### Variadic text formatting source checkpoint (2026-10-28)
+
+`kernel/text_format.c/.h` recovers the 8-bit formatter at
+`0x81ee7e..0x81f384`, 32-bit formatter at `0x81f384..0x81f88a`, and
+service-dispatched formatter at `0x81f88a..0x81fd90`. Each pure C body is
+944 bytes within its 1,286-byte original slot. They retain real glyph,
+wide-glyph, run, radix and service-forwarder calls. The raw return is the
+address of the terminating format byte, not a character count.
+
+The original c/C, d/D, u/U, x/X and s/S behavior is preserved. Only one-digit
+widths 2..9 followed by d/D/x/X are recognized. Unknown '%' forms consume
+only the '%' byte, so `%%` draws two percent signs. CR resets X, while LF
+adds 16 to Y without resetting X. X/Y, colors, ID and format pointer remain
+live incoming words; varargs retain their initial cursor. Signed magnitudes
+are captured before drawing a minus/padding; unsigned/hex values are read
+again after padding, including when output changes the argument word.
+
+`python3 tests/kernel_text_format.py` passes 7,513 scenarios / 22,539
+original/ordinary-C/fixed-address-C executions (2.762 seconds). Each execution
+loads a full original or candidate kernel at its real address and invokes
+the real initializer. The composed oracle compares 32 KiB of state, all
+284 KiB of font memory, eight incoming words, raw EAX, registers, canaries
+and all 320 initialized service entries. It covers every literal/specifier/
+width byte, signed/unsigned edge values, upper/lower case, malformed widths,
+strings, CR/LF, unaligned/aliased metadata/input/output, caller/vararg/font
+stores and wrapped geometry. Lengths through 300 verify that this outer
+formatter has no 255-byte limit. The bounded oracle excludes 323 unsafe
+scenarios before execution; C retains the original unchecked behavior.
+
+Coverage includes 4,761 padding calls, 960 negative-number dispatches, 374
+string dispatches, 3,409 unknown forms and 39 changed format-pointer words.
+An included 192-scenario service composition covers six depths and both CPU
+choices, retaining seeded 8-bit entries at unsupported depths. No CALL
+targets are replaced. Evidence: `build/text_format_direct_preview_summary.json`,
+`build/text_format_preview_test.log`, `build/text_format_original.disasm`,
+`build/text_format_preview.elf` and `build/text_format_candidate.x`.
+Production remains at 316 intervals at this source checkpoint. Complete
+OS source recovery remains unfinished.
