@@ -2190,3 +2190,19 @@ The caller and relative-rectangle helper occupy 813/1,744 bytes, enforced by
 linker entry/size assertions. Evidence: `build/startup_ui_preview_test.log`,
 `build/startup_ui_preview_summary.json`, `build/startup_ui_calls.h` and
 `build/startup_ui_preview.elf`. Production images remain unchanged here.
+
+### Complete 231-interval regression (2026-10-28)
+
+The uninterrupted `make -j4 verify` baseline passes with exit 0 in 952.084
+seconds. It covers the ordinary-C and fixed-address kernel tests, installed
+startup/entry/palette tests, the firmware QEMU fixture, exact timestamp test,
+all four application suites, image-tool tests and complete-disk reconstruction.
+All four production artifacts have identical SHA-256 hashes before and after
+the run. The four preview source checkpoints awaiting installation are not
+part of this 231-interval baseline.
+
+Evidence: `build/verify_startup.log`, `build/verify_startup.exit` and
+`build/verify_startup_summary.json`. Kernel SHA-256:
+`0f28ad0eeafa9a97fe368cc84d2ca09afa1d1584c1e758c6c1df712af9cb6382`.
+Combined-application disk SHA-256:
+`fd413dfa25246c1e6867ff0336e61c2aedb094728859d8dfb77af95912eb2b95`.
