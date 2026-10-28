@@ -3086,3 +3086,35 @@ Combined-application disk SHA-256:
 The latest complete `make verify` remains the successful 262-interval run;
 271 has the focused/runtime coverage described here. The complete OS still
 requires unrecovered original components.
+
+### Rectangle outline source checkpoint (2026-10-28)
+
+`kernel/raster_outline.c/.h` recovers the unclipped 8/32-bit borders at
+`0x81c058..0x81c1e4` and `0x81c1e4..0x81c396`. Signed endpoint ordering,
+inclusive edges, repeated corner/degenerate-edge stores, wrapped indexing and
+live ID/color/table/width/pixel reads are retained. Horizontal edges execute
+first; xmin is then recaptured from live incoming X arguments before vertical
+edges, while xmax and Y bounds remain captured. Neither routine checks surface
+depth or height. The raw EAX return is the completed vertical row value.
+
+`python3 tests/kernel_raster_outline.py` passes 42,338 direct scenarios /
+127,014 original-x86, ordinary-C and fixed-address-C executions (7.921 s).
+The independent widened/bytewise oracle checks all 32 KiB of mapped memory,
+incoming words, raw return, callee-saved state and stack/canaries. Coverage
+includes four alignments, wrapped IDs/full-DWORD pitch, signed coordinates,
+colors with high bytes, 623 metadata/table stores, 2,176 caller-word stores,
+16 changed/recaptured left edges and 35,050 degenerate-edge scenarios.
+There are 6,408 generated scenarios excluded before execution for large loops
+or accesses outside controlled mappings; no clipping is added to the source.
+
+The real initializer/mode-selection/slot-three forwarder fixture passes 7,764
+scenarios / 15,528 original and candidate chains (1.861 s), with 3,672
+large/unmapped executions excluded. It calls `0x8005aa` and `0x837589`, checks
+the mode-selected target and complete dispatch table, and substitutes no CALL.
+Both recovered bodies have no CALL and fit at 316/396 and 300/434 bytes.
+Evidence: `build/raster_outline_preview_test.log`,
+`build/raster_outline_direct_preview_summary.json`,
+`build/raster_outline_chain_preview_summary.json`,
+`build/raster_outline_preview.elf` and `build/raster_outline_candidate.x`.
+This preview overlays only the two borders on the 271-interval production
+kernel; the production images still contain 271 intervals at this checkpoint.
