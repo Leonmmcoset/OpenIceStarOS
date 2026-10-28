@@ -3343,6 +3343,32 @@ Combined-application disk SHA-256:
 `8c7a140dba6f9d90043fa1bddc1fbe6dff033fffe9682f3b5810d07d909d611e`.
 The full boot/kernel/application/driver recovery remains incomplete.
 
+### SIMD instruction boundaries source checkpoint (2026-10-28)
+
+`kernel/simd.c/.h` recovers four 16-byte vector leaves at
+`0x81ab34..0x81acc4`: byte add, subtract, multiply and four-pixel blend.
+Named inline assembly inside naked C definitions preserves their all-GPR,
+EFLAGS and XMM-output ABI and unaligned, read-before-store memory contract.
+The 36/36/74/254 compiled bytes exactly match the original instructions;
+no binary body is included. [SIMD arithmetic notes](recovery/SIMD.md) describe
+the recovered lane formulas, alpha handling and original CPU requirements.
+In particular, signed saturation after multiplication makes `255 * 255`
+produce zero. Multiply requires SSE4.1; the other leaves require SSE2.
+
+`python3 tests/kernel_simd.py` passes 426,368 direct scenarios, each executing
+original, ordinary and fixed-address builds, plus 192 complete initialized
+service-table scenarios: 1,279,488 machine executions in 1.305 seconds. An
+independent byte oracle covers every input-byte pair, every ordinary weight
+and complementary pixel value, random full-width weights, all 32-by-32-by-32
+overlap offsets, every alignment and valid vectors against unmapped guard
+pages. The fixture compares the complete output region, all GPRs, incoming
+arguments/canaries, flags, all XMM registers, x87 state and MXCSR. Real service
+cases run the original/candidate table initializers and the actual initialized
+slot 18 without call substitutions. Evidence: `build/simd_preview_summary.json`,
+`build/simd_preview_test.log`, `build/simd_preview.elf` and
+`build/simd_candidate.x`. Production remains at 285 intervals at this source
+checkpoint; full OS recovery remains incomplete.
+
 ### Remaining scalar math source checkpoint (2026-10-28)
 
 `kernel/math_extra.c/.h` recovers acos `0x81a3f6`, round `0x81a4fc`, absolute
