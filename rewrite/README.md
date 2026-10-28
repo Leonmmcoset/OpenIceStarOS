@@ -2806,3 +2806,23 @@ Evidence: `build/pixel_access_preview_test.log`,
 `build/pixel_access_preview_summary.json`, `build/pixel_access_preview.elf`
 and `build/pixel_access_preview.x`. This source checkpoint leaves production
 at 262 installed intervals; these four additional slots are not yet installed.
+
+### Pixel service routing checkpoint (2026-10-28)
+
+`tests/kernel_pixel_access.py` now also runs a complete service-chain fixture.
+The original image and a preview based on the current 262-interval production
+kernel execute 4,608 scenarios / 9,216 chains in 0.589 seconds. Each chain runs
+the real service initializer at `0x8005aa`, selects 8/32-bit setter/getter
+targets, then calls the real point-write and point-read forwarders at
+`0x8374cf` and `0x837939`. The preview overlays only the four newly compiled
+pixel API slots; no CALL is redirected. Cases cover signed dimensions,
+coordinates, wrapped IDs and alignments. All 12 KiB of table/data memory,
+getter results, ABI state and the separate 4 KiB dispatch table agree with
+the oracle. Both modes execute writes, accepted negative-coordinate reads
+and rejected reads. The standalone 557,312-case fixture also passes again
+(42.547 s).
+
+Evidence: `build/pixel_access_chain_preview_summary.json`,
+`build/pixel_access_chain_candidate.x`,
+`build/kernel_pixel_access_chain_preview_test` and the combined
+`build/pixel_access_preview_test.log`. Production remains at 262 intervals.

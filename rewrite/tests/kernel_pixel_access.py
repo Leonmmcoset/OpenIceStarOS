@@ -88,6 +88,31 @@ def main():
     if result.returncode or "surface-ID services verified against 12 KiB memory/ABI oracle" not in result.stdout:
         raise RuntimeError(f"surface-ID pixel fixture failed: {result.returncode}")
 
+    # Preserve the surrounding production code so this fixture exercises its
+    # recovered service initializer and forwarders with the four new bodies.
+    production = BUILD / "icestar_c.x"
+    chain_candidate = bytearray(production.read_bytes())
+    for _, _, start, end in SLOTS:
+        chain_candidate[start-0x800000:end-0x800000] = preview[start-0x800000:end-0x800000]
+    chain_path = BUILD / "pixel_access_chain_candidate.x"
+    chain_path.write_bytes(chain_candidate)
+    chain_executable = BUILD / f"kernel_pixel_access_chain_{label}_test"
+    run(["gcc", *FLAGS, "-nostdlib", "-static", "-Wl,-e,_start",
+         "tests/kernel_pixel_access_chain.c", "tests/icon_pixels_abi.S",
+         "kernel/pixel_access.c", "-o", str(chain_executable)])
+    start = time.monotonic()
+    chain_result = subprocess.run([str(chain_executable)], cwd=ROOT, capture_output=True, text=True, timeout=180)
+    chain_summary = dict(installed=args.installed, exit_code=chain_result.returncode,
+                         seconds=round(time.monotonic()-start, 3), boundary_substitutions=0,
+                         stdout=chain_result.stdout, stderr=chain_result.stderr,
+                         sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                                 for p in [*paths, ROOT / "tests/kernel_pixel_access_chain.c",
+                                           production, chain_path, chain_executable]})
+    (BUILD / f"pixel_access_chain_{label}_summary.json").write_text(json.dumps(chain_summary, indent=2)+"\n")
+    print(json.dumps(chain_summary, indent=2))
+    if chain_result.returncode or "real initializer/mode selection/forwarders/pixel services verified" not in chain_result.stdout:
+        raise RuntimeError(f"pixel service chain failed: {chain_result.returncode}")
+
 
 if __name__ == "__main__":
     main()
