@@ -6,5 +6,8 @@
   "evidence/2026-10-28-branding/04-c-clock.png": "9391c5e2460f6b5abaf0cf5ff0e33e893b45bc306cf74fd4dfa9e195f82d236d",
   "evidence/2026-10-28-branding/03-cmd-cpuid.png": "5d49c1209cd3e457c5d5b506cabcb6479f7d9d3b5b8b6b586febf0a92ccdb4c2",
   "evidence/2026-10-28-branding/openicestaros_clock_boot.log": "856d5350f95c5c3175fbf1406fb6b5bb859635c9cda57382622b2311ec21d5be",
-  "build/OpenIceStarOS_c_apps.vhd": "e010dc0df368ba8ba13d313ab6552401cd28df682271b321c93170d9133f0da6"
+  "build/OpenIceStarOS_c_apps.vhd": "e010dc0df368ba8ba13d313ab6552401cd28df682271b321c93170d9133f0da6",
+  "evidence/2026-10-28-branding/full-352-verify.log": "c59dd737f91173532b2f638950650263709977c3a8b6688c9655af07051c9f35",
+  "evidence/2026-10-28-branding/full-352-verification.json": "a1e9dca2842e3e17e8cc4bd98816405efedb9a3e36c66a16cf11816b1ff439a1",
+  "evidence/2026-10-28-branding/retained-logo.json": "a12fa854f320a16c2ce50de2c9548e4b5e58e2fd955b9f3ca73760e23e1bba2d"
 }

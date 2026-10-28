@@ -8,5 +8,6 @@
   "evidence/2026-10-28-fat-files/fat_files_install_checks.log": "23cbdde14d82b5fb227ac49eda7b6619f323e11c8e4a4174561e5fccfb86748e",
   "evidence/2026-10-28-fat-files/c-clock.png": "927c92b704da77aa9f840684117190ff35c81281416611ff0b2ee30f268d41d0",
   "build/OpenIceStarOS_c_apps.vhd": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
-  "build/openicestaros_kernel.x": "979df96b0d2cd093e72b80005b24cd06e8b4266657c13e60862072b61098b8e5"
+  "build/openicestaros_kernel.x": "979df96b0d2cd093e72b80005b24cd06e8b4266657c13e60862072b61098b8e5",
+  "evidence/2026-10-28-fat-files/fat_files_delta.json": "1e3e68628ab30a2d32f66dd42f3e0d8131acaf44391ed138f81f3064e30408b6"
 }

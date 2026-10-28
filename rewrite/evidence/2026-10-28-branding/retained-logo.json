@@ -1,0 +1,33 @@
+{
+  "path": "/ICESTAR/IMAGE/STAR24.JPG",
+  "classification": "explicit-user-request-to-preserve-original-logo",
+  "original_logo_sha256": "ff8e4cc71ec251ed8ac763f1364463f32c5ebd6fbe5e358a08f85b3edb4d7db7",
+  "replacement_removed": true,
+  "images": [
+    {
+      "path": "build/OpenIceStarOS_c_apps.vhd",
+      "image_sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+      "logo_matches_original": true
+    },
+    {
+      "path": "build/OpenIceStarOS_c_fat16.vhd",
+      "image_sha256": "b3f1f6822dce5a1ac01eaa70e953023cb81d11f5d30dac41046e7477d5e6299d",
+      "logo_matches_original": true
+    },
+    {
+      "path": "build/OpenIceStarOS_c_init.vhd",
+      "image_sha256": "995823d5117f3e3736328de4936e0fc139e34f0329be5e540a7a7c75c522907b",
+      "logo_matches_original": true
+    },
+    {
+      "path": "build/OpenIceStarOS_c_mbr.vhd",
+      "image_sha256": "77d38adc340b02c5291235af58f439a6bc0905c3de49a0c901b4355b8571ef90",
+      "logo_matches_original": true
+    },
+    {
+      "path": "build/OpenIceStarOS_c_snake.vhd",
+      "image_sha256": "342eb17816564cf36d48157b83e70312919a20e4438d2fb75460ee51133bd03e",
+      "logo_matches_original": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "old_intervals": 352,
+  "new_intervals": 358,
+  "existing_kernel_bytes_unchanged": true,
+  "old_image_sha256": "e010dc0df368ba8ba13d313ab6552401cd28df682271b321c93170d9133f0da6",
+  "new_image_sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "only_new_kernel_slots_changed": true,
+  "added_intervals": [
+    {
+      "name": "FAT directory-record allocating reader",
+      "binary": "kernel.fat_read_alloc.bin",
+      "start": "0x827454",
+      "end": "0x82760c"
+    },
+    {
+      "name": "FAT directory-record buffered reader",
+      "binary": "kernel.fat_read_into.bin",
+      "start": "0x82760c",
+      "end": "0x827798"
+    },
+    {
+      "name": "FAT pathname allocating reader",
+      "binary": "kernel.fat_read_name_alloc.bin",
+      "start": "0x827798",
+      "end": "0x8277dc"
+    },
+    {
+      "name": "FAT pathname buffered reader",
+      "binary": "kernel.fat_read_name_into.bin",
+      "start": "0x8277dc",
+      "end": "0x827826"
+    },
+    {
+      "name": "FAT relative program-header reader",
+      "binary": "kernel.fat_header_relative.bin",
+      "start": "0x827826",
+      "end": "0x8278f4"
+    },
+    {
+      "name": "FAT record program-header reader",
+      "binary": "kernel.fat_header_path.bin",
+      "start": "0x8278f4",
+      "end": "0x82798c"
+    }
+  ]
+}

@@ -5149,3 +5149,15 @@ inventory checks pass. A fresh QEMU boot executes the new C readers while
 loading the desktop, CMD and rebuilt CLOCK; all 358 slots match guest memory.
 Read behavior, exceptional cases, observed/unobserved entries and validation
 limits are recorded in `recovery/FAT_FILES.md`. The complete OS remains unfinished.
+
+### Branding regression and retained logo (2026-10-28)
+
+The complete renamed 352-interval `make verify` run finished with exit 0,
+including both surface lifecycle variants, all remaining kernel/application
+checks, exact disk verification and inventory validation. The original startup
+logo is intentionally retained at the user's request; its experimental replacement
+and generator were removed. See `branding/README.md` and
+`evidence/2026-10-28-branding/full-352-verification.json` for the exception and
+precise regression scope. The later 358-interval image reproduces the separately
+validated FAT-reader build byte for byte; only its six added kernel intervals
+differ from the fully regressed image. This does not complete OS recovery.

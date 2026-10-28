@@ -39,6 +39,14 @@ The original VHD, extracted files, `reverse/`, original differential kernel
 the original byte-exact assembly reference, including its old menu. Current
 OpenIceStarOS builds use `rewrite/Makefile`.
 
+At the user's explicit request on 2026-10-28, the original startup logo
+`/ICESTAR/IMAGE/STAR24.JPG`, including its rasterized IceStarOS lettering,
+is preserved unchanged. Its SHA-256 is
+`ff8e4cc71ec251ed8ac763f1364463f32c5ebd6fbe5e358a08f85b3edb4d7db7`.
+The experimental replacement image, generator and installation changes were
+removed. Every current OpenIceStarOS VHD was checked against the original logo.
+This is an intentional branding exception; the string scan does not perform OCR.
+
 Actual QEMU menu, desktop, branded CMD with `cpuid`, and rebuilt CLOCK captures
 are committed in `../evidence/2026-10-28-branding/`. PNGs are direct conversions
 of monitor screendumps, with no image editing. The desktop wallpaper is an
@@ -46,5 +54,9 @@ unchanged inherited resource. Runtime checks passed for 128 MiB RAM, 59 heap
 headers, real TSS task switching, PS/2 CMD/cursor behavior, all 352 installed
 kernel intervals, changing CLOCK frames, window close, task exit and CMD reuse.
 
-This closes the display-branding checkpoint. It does not complete OS recovery;
-the full regression is recorded separately when it finishes.
+The complete renamed 352-interval `make verify` regression now passes (exit 0).
+Its log and hashes are in `../evidence/2026-10-28-branding/`. The later 358-interval
+image has separate FAT-reader differential, exact installation and QEMU evidence;
+the 352-interval full-suite result is not a full regression of that newer image.
+The display-branding checkpoint retains the original logo by request. The
+complete operating-system recovery remains unfinished.

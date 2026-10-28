@@ -1,0 +1,12 @@
+{
+  "command": "make -C rewrite verify",
+  "exit_code": 0,
+  "installed_kernel_intervals": 352,
+  "kernel_and_makefile_revision": "b5cf586",
+  "source_only_recovery_commit": "215b579",
+  "kernel_sha256": "eaaaf728f3a0eb83ea1191e3df8153a018016f8b02e531919eed08b65a4a67cc",
+  "combined_image_sha256": "e010dc0df368ba8ba13d313ab6552401cd28df682271b321c93170d9133f0da6",
+  "log_sha256": "c59dd737f91173532b2f638950650263709977c3a8b6688c9655af07051c9f35",
+  "complete_os_recovery": false,
+  "limitation": "Full regression covers the branded 352-interval build. The 358-interval FAT-reader build has separate focused differential, exact disk and QEMU checks."
+}
