@@ -5,6 +5,14 @@
 所有测试镜像均写入 `build/` 或 `rewrite/build/`，运行时使用 QEMU
 快照。原始 VHD 保留作为反编译和差分验证的参考。
 
+许可范围见 [LICENSE](LICENSE)：自主编写且有权许可的 C 重写代码、
+反编译辅助脚本及其他原创代码采用
+[Apache License 2.0](LICENSES/Apache-2.0.txt)；原 VHD、非原创的
+反编译／反汇编还原代码等材料保留原权利，原产权人为大虾
+（All rights reserved），其他第三方权利仍归各自权利人。
+原产权人如不允许公开相关还原代码，可向
+[leonmmcoset@outlook.com](mailto:leonmmcoset@outlook.com) 发送关闭仓库请求。
+
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
 内核有 358 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
