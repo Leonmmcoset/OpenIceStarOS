@@ -3690,3 +3690,46 @@ Kernel SHA-256:
 Combined-application disk SHA-256:
 `21099ca67908f80c7be06cfb82ba57548500527aed50354b0184be79d90017a9`.
 Complete boot/kernel/application/driver source recovery remains unfinished.
+
+### Palette and square-brush source checkpoint (2026-10-28)
+
+`kernel/raster_brush.c/.h` recovers five routines: palette DWORD lookup at
+`0x81b714..0x81b734`, square brush at `0x81d032..0x81d070`, square-stamped
+DDA line at `0x81d070..0x81d1fc`, square-stamped circle at
+`0x81d1fc..0x81d4e6`, and quadrant-selected circle pairs at
+`0x81d4e6..0x81d6c2`. They preserve wrapped indexing, ten-bit DDA positions,
+signed division/truncation, asymmetric thick-circle octants, quadrant bit
+order, duplicated points and the original separate service calls. All brush
+math and control flow are C. A 15-byte ABI entry retains the original
+zero-radius thick-circle return without changing incoming EAX, then jumps
+to the C body for nonzero radii. The square uses the original six-word
+outgoing frame so the underlying 32-bit fill's expired-frame EAX is also
+preserved. GCC reserves EBX/ESI/EDI for this translation unit to achieve that
+frame without extra save slots. Compiled slot usage is respectively
+18/32, 39/62, 316/396, 659/746 and 419/476 bytes.
+
+`python3 tests/kernel_raster_brush.py` passes 46,904 original/ordinary-C/
+fixed-address-C scenarios / 140,712 executions (7.848 seconds). A separate
+fixture runs the real initializer, selects common slots 237..241 and executes
+the entire fill/pixel/copy chains for 2,560 scenarios / 5,120 original/candidate
+executions (0.353 seconds). Both display modes and both CPU copy selections
+are covered. There are no substituted CALL targets. The independent widened
+coordinate/byte-address models compare all 32 KiB of mapped state, eight live
+incoming words, raw EAX, callee-saved registers and stack canaries.
+
+The direct matrix has 64 palette, 17,788 square, 17,880 line, 4,572 thick-circle
+and 6,600 quadrant-circle scenarios. It covers wrapped/unaligned palette reads,
+ID aliases, signed dimensions, reversed and overflowed line geometry,
+zero/negative square sizes and radii, all low quadrant masks and unused high
+bits. It observes 12,722 metadata stores, 2,640 caller stores, 920 changed
+incoming words, 576 zero-radius EAX cases, 612 packed-byte blocks and 32,232
+real row copies. The bounded model excludes 4,736 unsafe or large generated
+scenarios before execution; source retains unchecked original behavior.
+An optional incoming-EAX seed was added to the raster ABI bridge; without
+that option its assembly bytes are identical to the preceding version.
+
+Evidence: `build/raster_brush_direct_preview_summary.json`,
+`build/raster_brush_chain_preview_summary.json`,
+`build/raster_brush_preview_test.log`, `build/raster_brush_preview.elf` and
+`build/raster_brush_candidate.x`. Production remains at 294 intervals at this
+source checkpoint. Complete OS source recovery remains unfinished.

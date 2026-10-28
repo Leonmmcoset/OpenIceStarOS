@@ -32,7 +32,13 @@ raster_checked_call:
     movl $0x55667788, %ebx
     movl $0x99aabbcc, %esi
     movl $0xddeeff00, %edi
+#ifdef RASTER_INCOMING_EAX
+    movl %eax, %ecx
+    movl $RASTER_INCOMING_EAX, %eax
+    call *%ecx
+#else
     call *%eax
+#endif
     movl %eax, raster_raw_result
     cmpl $0x640f60, %esp
     jne 1f
