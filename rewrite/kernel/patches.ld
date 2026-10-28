@@ -521,6 +521,10 @@ SECTIONS
     ASSERT(kernel_raster_circle8_81c396 == 0x81c396 && ADDR(.raster_circle8) + SIZEOF(.raster_circle8) <= 0x81c6f2, "raster_circle8 overflow")
     .raster_circle32 0x81c6f2 : SUBALIGN(1) { *kernel_raster_circle.o(.text.kernel_raster_circle32_81c6f2) }
     ASSERT(kernel_raster_circle32_81c6f2 == 0x81c6f2 && ADDR(.raster_circle32) + SIZEOF(.raster_circle32) <= 0x81ca82, "raster_circle32 overflow")
+    .raster_disc8 0x81ca82 : SUBALIGN(1) { *kernel_raster_disc.o(.text.kernel_raster_disc8_81ca82) }
+    ASSERT(kernel_raster_disc8_81ca82 == 0x81ca82 && ADDR(.raster_disc8) + SIZEOF(.raster_disc8) <= 0x81cd50, "raster_disc8 overflow")
+    .raster_disc32 0x81cd50 : SUBALIGN(1) { *kernel_raster_disc.o(.text.kernel_raster_disc32_81cd50) }
+    ASSERT(kernel_raster_disc32_81cd50 == 0x81cd50 && ADDR(.raster_disc32) + SIZEOF(.raster_disc32) <= 0x81d032, "raster_disc32 overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }

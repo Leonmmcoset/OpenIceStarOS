@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 291 declared kernel intervals and
+original VHD. The current build installs 293 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3578,3 +3578,38 @@ Evidence: `build/raster_disc_direct_preview_summary.json`,
 `build/raster_disc_preview.elf` and `build/raster_disc_candidate.x`.
 Production still has 291 intervals at this source checkpoint. Complete OS
 source recovery remains unfinished.
+
+### Filled-circle production installation (2026-10-28)
+
+The two decimal-root filled-circle bodies are installed at their original
+addresses. Production now declares 293 kernel intervals. All 291 preceding
+intervals are byte-identical to the saved baseline; 1,409 kernel bytes change
+inside the two new slots only. The complete kernel matches its independent
+source preview. All three rebuilt disks differ from the previous checkpoint
+only in that kernel file; whole-disk INIT/kernel/application reconstruction
+checks pass.
+
+Installed filled-circle original/ordinary/fixed-address tests and actual
+initialized service calls pass, including the isolated stall probes.
+Installed circle, rectangle-border/fill, line/sampler, pixel-access and icon
+pixel regressions also pass, together with startup/table initialization and
+the updated binary inventory. `make verify` includes the installed disc test;
+`make test-raster-disc` runs it separately. The latest complete regression
+remains the 285-interval run; this checkpoint has the focused checks below.
+
+Five normal production QEMU boots pass CLOCK, Color, Snake, MOV and STARSCR
+checks, memory/task checks and all 293 loaded kernel interval comparisons.
+CLOCK also passes its math trace; the other four pass ordered startup traces.
+CLOCK and Color screenshots were visually inspected. The original STARSCR
+post-exit input stall remains. These boots do not establish execution of every
+filled-circle body; the separate fixed-address differential fixture does.
+
+Evidence: `build/raster_disc_293_installation_summary.json`,
+`build/raster_disc_293_validation_summary.json`,
+`build/raster_disc_293_app_boots.json`, `build/raster_disc_293_evidence/` and
+`build/raster_disc_291_baseline/`.
+Kernel SHA-256:
+`93dc8d69aa20820ce3b00dbf6c3f48bb5d4063053bb32644f32e443aced2c848`.
+Combined-application disk SHA-256:
+`fab48e34cc985e2cea1fb71e08bb97ae9915a28e63c5f0951b1fbf57926a9948`.
+Complete boot/kernel/application/driver source recovery remains unfinished.

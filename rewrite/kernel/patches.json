@@ -158,6 +158,8 @@
   {"name": "32-bit unclipped rectangle outline", "binary": "kernel.raster_outline32.bin", "start": "0x81c1e4", "end": "0x81c396"},
   {"name": "8-bit asymmetric circle outline", "binary": "kernel.raster_circle8.bin", "start": "0x81c396", "end": "0x81c6f2"},
   {"name": "32-bit asymmetric circle outline", "binary": "kernel.raster_circle32.bin", "start": "0x81c6f2", "end": "0x81ca82"},
+  {"name": "8-bit decimal-root filled circle", "binary": "kernel.raster_disc8.bin", "start": "0x81ca82", "end": "0x81cd50"},
+  {"name": "32-bit decimal-root filled circle", "binary": "kernel.raster_disc32.bin", "start": "0x81cd50", "end": "0x81d032"},
   {"name": "ordered-dither palette quantizer", "binary": "kernel.icon_quantize.bin", "start": "0x81fd90", "end": "0x81fec2"},
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},
