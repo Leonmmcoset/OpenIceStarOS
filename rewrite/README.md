@@ -4375,3 +4375,40 @@ and `build/bitmap_fit_323_evidence/`. The kernel SHA-256 is
 The latest complete regression remains 305; subsequent checkpoints use
 focused checks and recorded guest boots. Full bootloader/kernel/driver/
 application source recovery remains unfinished.
+
+### Direct-surface BMP fitting source checkpoint (2026-10-28)
+
+`kernel/bitmap_surface_fit.c` recovers `0x820d66..0x821446` in 980/1,760
+bytes of C. This entry takes a surface pointer directly, captures its output
+buffer once and writes pixels without the ID table or clipped pixel helpers.
+Surface/bitmap arguments and geometry remain live; the captured buffer stays
+fixed even when output changes the surface's buffer field. It preserves the
+preceding fitting algorithm's signed wrapped percent steps, asymmetric
+repetition, source clamps, 8-bit captured source/dither phase and DWORD
+overread in 32-bit mode. The 8-bit path reads the buffer before rejecting
+an unsupported source depth; the 32-bit path rejects it before that read.
+
+`python3 tests/kernel_bitmap_surface_fit.py` passes 27,079 scenarios / 81,237
+original/ordinary-C/fixed-address-C executions in 10.932 seconds. The shared
+bytewise/bounded fitting oracle now supports direct surface records and
+captured-buffer stores. It compares 32 KiB of state, six incoming words,
+EAX, registers/canaries, 4 KiB of globals and all 320 service words through
+the real initializer/slot 77 across six display depths and both CPU choices.
+Real quantizer code executes without helper substitutions. The oracle
+excludes 2,245 unsafe scenarios, including 398 exceeding its iteration budget.
+
+Coverage includes 276,360 stores, 630 changed caller words, 20 changed bitmap
+arguments, nine changed surface pointers, 4,681 stores after the buffer field
+changes, 580 captured-source duplicates and 49,897 distinct dither phases.
+Forks reproduce 15 source faults, three zero-step loops, three successful
+three-byte reads, three required-global faults and 12 buffer-read-order
+probes. Six executions succeed with the ID table mapping removed. The
+preceding installed ID-based fitting suite passes again with its exact
+26,940-scenario counts after sharing the fixture.
+
+Evidence: `build/bitmap_surface_fit_preview_summary.json`,
+`build/bitmap_surface_fit_preview_test.log`,
+`build/bitmap_surface_fit_original.disasm`,
+`build/bitmap_surface_fit_previous_regression.log` and
+`build/bitmap_surface_fit_candidate.x`. Production remains at 323 intervals
+at this source checkpoint. Complete OS source recovery is unfinished.

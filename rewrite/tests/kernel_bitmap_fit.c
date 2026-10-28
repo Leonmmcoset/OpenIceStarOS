@@ -1,12 +1,34 @@
 #define BITMAP_CHAIN
 #include "kernel_bitmap.c"
 #undef BITMAP_CHAIN
+#ifdef FIT_SURFACE
+#define FIT_FUNCTION kernel_bitmap_surface_fit_820d66
+#define FIT_ENTRY 0x820d66u
+#define FIT_SLOT 77u
+#define FIT_ORIGINAL "build/bitmap_surface_fit_original.x"
+#define FIT_CANDIDATE "build/bitmap_surface_fit_candidate.x"
+static uint32_t fit_buffer,fit_buffer_changes,fit_buffer_guards,fit_changed_surface,fit_table_bypass;
+#else
+#define FIT_FUNCTION kernel_bitmap_fit_8204ac
+#define FIT_ENTRY 0x8204acu
+#define FIT_SLOT 76u
+#define FIT_ORIGINAL "build/bitmap_fit_original.x"
+#define FIT_CANDIDATE "build/bitmap_fit_candidate.x"
+#endif
 static uint32_t fit_paths[2],fit_skip_x,fit_repeat_x,fit_skip_y,fit_repeat_y,
     fit_clamps,fit_budget_exclusions,fit_faults,fit_loops,fit_reads,fit_globals;
 static uint32_t fit_captured_duplicates,fit_dither_phase;
+static int fit_record(uint32_t *value)
+{
+#ifdef FIT_SURFACE
+    *value=incoming(0);return 1;
+#else
+    return record(incoming(0),value);
+#endif
+}
 static int field(unsigned offset,uint32_t *value)
 {
-    uint32_t s;if(!record(incoming(0),&s)||!valid(s+offset,4))return 0;
+    uint32_t s;if(!fit_record(&s)||!valid(s+offset,4))return 0;
     *value=read_bytes(s+offset,4);return 1;
 }
 static int rgb_source(uint32_t file,uint32_t header,uint32_t x,uint32_t y,uint32_t *p)
@@ -20,7 +42,14 @@ static int fit_emit(uint32_t p,uint32_t x,uint32_t y,uint32_t dither_x,unsigned 
 {
     unsigned bytes=mode?3u:4u;if(!valid(p,bytes))return 0;
     uint32_t color=mode?quantize(read_bytes(p+2u,1),read_bytes(p+1u,1),read_bytes(p,1),dither_x,y):read_bytes(p,4)%0x1000000u;
+#ifdef FIT_SURFACE
+    uint32_t w,buffer;if(!field(12,&w)||!field(0,&buffer))return 0;
+    if(buffer!=fit_buffer)++fit_buffer_changes;
+    uint32_t output=(uint32_t)((uint64_t)fit_buffer+((uint64_t)w*y+x)*(mode?1u:4u));
+    return write_bytes(output,color,mode?1u:4u);
+#else
     return pixel(incoming(0),x,y,color,mode?1u:4u);
+#endif
 }
 static int ratio(uint32_t source,uint32_t destination,uint32_t *out)
 {
@@ -47,11 +76,17 @@ static int fit_model(uint32_t *result)
     uint32_t file=args[1],header=file+14u,iw,ih,w,h,rx,ry,s;
     if(!valid(header+4u,4)||!valid(header+8u,4)||!field(12,&w)||!field(16,&h))return 0;
     iw=read_bytes(header+4u,4);ih=read_bytes(header+8u,4);
-    if(!ratio(iw,w,&rx)||!ratio(ih,h,&ry)||!record(incoming(0),&s)||!valid(s+36u,4))return 0;
+    if(!ratio(iw,w,&rx)||!ratio(ih,h,&ry)||!fit_record(&s)||!valid(s+36u,4))return 0;
     uint32_t depth=read_bytes(s+36u,4),mode;
     if(depth!=32u&&depth!=8u){*result=s;return 1;}
+#ifdef FIT_SURFACE
+    if(depth==8u){if(!valid(s,4))return 0;fit_buffer=read_bytes(s,4);}
+#endif
     if(!valid(header+14u,2))return 0;
     if(read_bytes(header+14u,2)!=24u){*result=header;return 1;}
+#ifdef FIT_SURFACE
+    if(depth==32u){if(!valid(s,4))return 0;fit_buffer=read_bytes(s,4);}
+#endif
     mode=depth==8u;uint32_t row=0,sy=0,ycount=1,budget=0;
 #define FIT_STEP() do{if(++budget>4096u){++fit_budget_exclusions;return 0;}}while(0)
 #define FIT_DIM(offset,value) do{if(!field(offset,&value))return 0;}while(0)
@@ -109,9 +144,15 @@ static int fit_oracle(uint32_t *value)
     uint32_t *counters[]={&writes,&bitmap_stores,&metadata_stores,&caller_stores,&skipped_pixels,
         &fit_paths[0],&fit_paths[1],&fit_skip_x,&fit_repeat_x,&fit_skip_y,&fit_repeat_y,&fit_clamps,
         &fit_captured_duplicates,&fit_dither_phase};
+#ifdef FIT_SURFACE
+    uint32_t saved_buffer_changes=fit_buffer_changes;
+#endif
     uint32_t saved[sizeof(counters)/sizeof(counters[0])];
     for(unsigned i=0;i<sizeof(counters)/sizeof(counters[0]);++i)saved[i]=*counters[i];
     if(fit_model(value))return 1;
+#ifdef FIT_SURFACE
+    fit_buffer_changes=saved_buffer_changes;
+#endif
     for(unsigned i=0;i<sizeof(counters)/sizeof(counters[0]);++i)*counters[i]=saved[i];
     return 0;
 }
@@ -121,6 +162,9 @@ static void fit_setup(uint32_t width,uint32_t height,uint32_t depth,uint32_t bit
 {
     args[0]=ids[cases%16u];args[1]=0;args[2]=0;
     setup(width,height,depth,bits,image_width,image_height,destination);
+#ifdef FIT_SURFACE
+    args[0]=surface;
+#endif
     args[1]=args[3];for(unsigned i=2;i<6;++i)args[i]=random32();
 }
 static void fit_exercise(void)
@@ -129,12 +173,12 @@ static void fit_exercise(void)
     if(!fit_oracle(&value)){++skipped;return;}
     static const uint32_t depths[]={0,8,15,16,24,32};
     for(implementation=0;implementation<3;++implementation){
-        REQUIRE(load(implementation?"build/bitmap_fit_candidate.x":"build/bitmap_fit_original.x",0x800000),"fit images");
+        REQUIRE(load(implementation?FIT_CANDIDATE:FIT_ORIGINAL,0x800000),"fit images");
         *(volatile uint32_t *)0x1b0e4=0x620000;*(volatile uint32_t *)0x1b034=0x610000;
         *(volatile uint32_t *)0x610024=depths[cases%6u];*(volatile uint32_t *)0x1a868=cases/6u%2u?1u<<25:0;
         for(unsigned i=0;i<320;++i)*(volatile uint32_t *)(0x620000u+i*4u)=i*0x1234567u+cases;
         ((void (*)(void))0x8005aa)();
-        REQUIRE(*(volatile uint32_t *)(0x620000u+76u*4u)==0x8204acu,"fit initialized slot");
+        REQUIRE(*(volatile uint32_t *)(0x620000u+FIT_SLOT*4u)==FIT_ENTRY,"fit initialized slot");
         for(unsigned i=0;i<320;++i){
             uint32_t entry=*(volatile uint32_t *)(0x620000u+i*4u);
             if(!implementation)fit_table[i]=entry;
@@ -142,13 +186,16 @@ static void fit_exercise(void)
         }
         for(unsigned i=0;i<4096;++i)globals_initial[i]=*(volatile uint8_t *)(0x1b000u+i);
         reset();uint32_t actual[7];
-        const void *fn=implementation==1u?(void *)kernel_bitmap_fit_8204ac:(void *)(uintptr_t)*(volatile uint32_t *)(0x620000u+76u*4u);
+        const void *fn=implementation==1u?(void *)FIT_FUNCTION:(void *)(uintptr_t)*(volatile uint32_t *)(0x620000u+FIT_SLOT*4u);
         REQUIRE(!raster_checked_call(fn,args,actual),"fit ABI");compare(actual,value);
         for(unsigned i=0;i<320;++i)REQUIRE(*(volatile uint32_t *)(0x620000u+i*4u)==fit_table[i],"fit table mutation");
         for(unsigned i=0;i<4096;++i)REQUIRE(*(volatile uint8_t *)(0x1b000u+i)==globals_initial[i],"fit globals");
     }
     for(unsigned i=0;i<6;++i)if(incoming(i)!=args[i])++changed_caller;
     if(incoming(1)!=args[1])++changed_bitmap;
+#ifdef FIT_SURFACE
+    if(incoming(0)!=args[0])++fit_changed_surface;
+#endif
     ++cases;
 }
 static void fit_guards(void)
@@ -159,12 +206,12 @@ static void fit_guards(void)
         fit_setup(probe==6u?2u:1u,1,mode,24,probe==6u?1000u:1u,1,DATA+0x2000u);
         if(probe<6u)REQUIRE(put(initial,bitmap_base+10u,DATA+16384u-trailing-bitmap_base,4),"fit fetch guard");
         for(implementation=0;implementation<3;++implementation){
-            REQUIRE(load(implementation?"build/bitmap_fit_candidate.x":"build/bitmap_fit_original.x",0x800000),"fit guard image");
+            REQUIRE(load(implementation?FIT_CANDIDATE:FIT_ORIGINAL,0x800000),"fit guard image");
             reset();int pid=syscall3(2,0,0,0);REQUIRE(pid>=0,"fit guard fork");
             if(!pid){
                 if(probe==6u)syscall3(27,1,0,0);
                 if(probe==7u)REQUIRE(!syscall3(91,0x1b000,4096,0),"fit global unmap");
-                uint32_t actual[7];const void *fn=implementation==1u?(void *)kernel_bitmap_fit_8204ac:(void *)0x8204ac;
+                uint32_t actual[7];const void *fn=implementation==1u?(void *)FIT_FUNCTION:(void *)FIT_ENTRY;
                 raster_checked_call(fn,args,actual);syscall3(1,0,0,0);
             }
             uint32_t status=0;REQUIRE(syscall3(7,(uint32_t)pid,(uint32_t)&status,0)==pid,"fit guard wait");
@@ -175,6 +222,38 @@ static void fit_guards(void)
             else{REQUIRE(signal==11u,"fit source fetch fault");++fit_faults;}
         }
     }
+#ifdef FIT_SURFACE
+    for(unsigned probe=0;probe<4;++probe){
+        fit_setup(1,1,probe%2u?8u:32u,probe<2u?0u:24u,1,1,DATA+0x2000u);
+        args[0]=DATA-12u;
+        REQUIRE(put(initial,DATA,1,4)&&put(initial,DATA+4u,1,4)&&put(initial,DATA+24u,probe%2u?8u:32u,4),"surface buffer-read guard");
+        for(implementation=0;implementation<3;++implementation){
+            REQUIRE(load(implementation?FIT_CANDIDATE:FIT_ORIGINAL,0x800000),"surface buffer guard image");
+            reset();int pid=syscall3(2,0,0,0);REQUIRE(pid>=0,"surface buffer guard fork");
+            if(!pid){
+                uint32_t actual[7];const void *fn=implementation==1u?(void *)FIT_FUNCTION:(void *)FIT_ENTRY;
+                raster_checked_call(fn,args,actual);
+                syscall3(1,actual[0]==bitmap_base+14u?0u:1u,0,0);
+            }
+            uint32_t status=0;REQUIRE(syscall3(7,(uint32_t)pid,(uint32_t)&status,0)==pid,"surface buffer guard wait");
+            REQUIRE(probe?(status&127u)==11u:!status,"8/32-bit buffer read ordering");++fit_buffer_guards;
+        }
+    }
+    for(unsigned depth=0;depth<2;++depth){
+        fit_setup(1,1,depth?8u:32u,24,1,1,DATA+0x2000u);
+        for(implementation=0;implementation<3;++implementation){
+            REQUIRE(load(implementation?FIT_CANDIDATE:FIT_ORIGINAL,0x800000),"table bypass image");
+            reset();int pid=syscall3(2,0,0,0);REQUIRE(pid>=0,"table bypass fork");
+            if(!pid){
+                REQUIRE(!syscall3(91,TABLE,8192,0),"ID table unmap");
+                uint32_t actual[7];const void *fn=implementation==1u?(void *)FIT_FUNCTION:(void *)FIT_ENTRY;
+                raster_checked_call(fn,args,actual);syscall3(1,actual[0]==1u?0u:1u,0,0);
+            }
+            uint32_t status=0;REQUIRE(syscall3(7,(uint32_t)pid,(uint32_t)&status,0)==pid,"table bypass wait");
+            REQUIRE(!status,"direct stores bypass ID table");++fit_table_bypass;
+        }
+    }
+#endif
 }
 void _start(void)
 {
@@ -210,7 +289,15 @@ void _start(void)
         REQUIRE(put(initial,bitmap_base+0x1000u+i,0,1)&&
             put(initial,DATA+0x1410u+i,0,1),"captured 8-bit duplicate source");
     }
-    fit_exercise();fit_guards();
+    fit_exercise();
+#ifdef FIT_SURFACE
+    stage=6;fit_setup(2,1,32,24,2,1,ARGUMENTS);
+    REQUIRE(put(initial,bitmap_base+0x1000u,DATA+0x201u,4)&&
+        put(initial,DATA+0x201u,DATA+0x2800u,4)&&put(initial,DATA+0x20du,1,4)&&
+        put(initial,DATA+0x211u,1,4),"live surface pointer mutation");
+    fit_exercise();
+#endif
+    fit_guards();
     REQUIRE(fit_paths[0]&&fit_paths[1]&&fit_skip_x&&fit_repeat_x&&fit_skip_y&&fit_repeat_y&&fit_clamps&&changed_caller&&changed_bitmap,"fit coverage");
     PRINT("Bitmap fit scenarios/executions/excluded unsafe/budget exclusions: ");number(cases);PRINT(" ");number(cases*3u);PRINT(" ");number(skipped);PRINT(" ");number(fit_budget_exclusions);
     PRINT("; modes/skip X/repeat X/skip Y/repeat Y/clamps: ");number(fit_paths[0]);PRINT(" ");number(fit_paths[1]);PRINT(" ");number(fit_skip_x);PRINT(" ");number(fit_repeat_x);PRINT(" ");number(fit_skip_y);PRINT(" ");number(fit_repeat_y);PRINT(" ");number(fit_clamps);
@@ -218,6 +305,13 @@ void _start(void)
     PRINT("; source faults/zero-ratio loops/three-byte reads/required global faults: ");number(fit_faults);PRINT(" ");number(fit_loops);PRINT(" ");number(fit_reads);PRINT(" ");number(fit_globals);
     PRINT("; captured source duplicates/distinct dither phases: ");number(fit_captured_duplicates);PRINT(" ");number(fit_dither_phase);
     REQUIRE(fit_captured_duplicates&&fit_dither_phase,"8-bit captured source/previous-column dither coverage");
+#ifdef FIT_SURFACE
+    PRINT("; stores after buffer changed/buffer-read guards: ");number(fit_buffer_changes);PRINT(" ");number(fit_buffer_guards);
+    PRINT("; changed surface pointers/ID table bypasses: ");number(fit_changed_surface);PRINT(" ");number(fit_table_bypass);
+    REQUIRE(fit_buffer_changes&&fit_buffer_guards==12u&&fit_changed_surface&&fit_table_bypass==6u,"captured buffer/live surface/direct store coverage");
+    PRINT("; bitmap fit verified with direct stores/real quantizer/initializer/slot 77/320 service words/caller/EAX/ABI; no helper substitutions\n");
+#else
     PRINT("; bitmap fit verified with real pixel/quantizer/initializer/slot 76/320 service words/caller/EAX/ABI; no helper substitutions\n");
+#endif
     syscall3(1,0,0,0);
 }
