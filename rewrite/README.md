@@ -4150,3 +4150,34 @@ targets are replaced. Evidence: `build/text_format_direct_preview_summary.json`,
 `build/text_format_preview.elf` and `build/text_format_candidate.x`.
 Production remains at 316 intervals at this source checkpoint. Complete
 OS source recovery remains unfinished.
+
+### Variadic text formatting installation checkpoint (2026-10-28)
+
+All three formatters are installed in the production kernel and three
+disks, bringing the manifest to 319 intervals. All preceding 316 intervals
+remain byte-identical; only 3,726 kernel bytes change. Production equals the
+independently linked source preview, and each disk differs from the recorded
+316 baseline only in its kernel.
+
+Installed formatter and radix fixtures, startup UI, clock display, linked
+startup/runtime, inventory and whole-disk scope checks pass. CLOCK, Color,
+Snake, MOV and STARSCR pass QEMU loaded-code, heap, task and application
+checks. CLOCK and Color screenshots were visually inspected. The normal
+CLOCK trace does not observe any of the three formatter entries: their
+execution evidence comes from the composed original/native/fixed-address
+fixtures, while the guest verifies all 319 installed byte ranges. The first
+runner incorrectly required an observed formatter after the successful
+CLOCK boot; the report records this observation limit and retains that
+boot's artifacts without repeating it. STARSCR retains its known original
+post-exit input stall.
+
+Kernel and disk hashes remain unchanged throughout validation and boots.
+Evidence: `build/text_format_319_final_summary.json`,
+`build/text_format_319_validation_summary.json`,
+`build/text_format_319_app_boots.json` and `build/text_format_319_evidence/`.
+The kernel SHA-256 is
+`c895124fba0f8051d6383f870f481353a92167c0af635409eb26114e6e700bd7`.
+The latest complete `make verify` checkpoint remains 305; 313, 316 and 319
+use focused regression and recorded guest boots. Five applications are
+rebuilt, while INIT/kernel are partial and 32 original program paths remain
+unrecovered. Complete OS source recovery is unfinished.

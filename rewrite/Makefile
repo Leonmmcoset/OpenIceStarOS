@@ -34,7 +34,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_object_registry.o \
                   $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o \
                   $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o \
-                  $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o $(BUILD)/kernel_raster_fill.o $(BUILD)/kernel_raster_outline.o $(BUILD)/kernel_raster_circle.o $(BUILD)/kernel_raster_disc.o $(BUILD)/kernel_raster_gradient.o $(BUILD)/kernel_raster_brush.o $(BUILD)/kernel_raster_rounded.o $(BUILD)/kernel_text_glyph.o $(BUILD)/kernel_text_wide.o $(BUILD)/kernel_text_run.o $(BUILD)/kernel_text_number.o $(BUILD)/kernel_math_series.o $(BUILD)/kernel_math_extra.o $(BUILD)/kernel_math_format.o $(BUILD)/kernel_simd.o
+                  $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o $(BUILD)/kernel_raster_fill.o $(BUILD)/kernel_raster_outline.o $(BUILD)/kernel_raster_circle.o $(BUILD)/kernel_raster_disc.o $(BUILD)/kernel_raster_gradient.o $(BUILD)/kernel_raster_brush.o $(BUILD)/kernel_raster_rounded.o $(BUILD)/kernel_text_glyph.o $(BUILD)/kernel_text_wide.o $(BUILD)/kernel_text_run.o $(BUILD)/kernel_text_number.o $(BUILD)/kernel_text_format.o $(BUILD)/kernel_math_series.o $(BUILD)/kernel_math_extra.o $(BUILD)/kernel_math_format.o $(BUILD)/kernel_simd.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
@@ -54,6 +54,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.text_glyph8.bin $(BUILD)/kernel.text_rotated8.bin $(BUILD)/kernel.text_glyph32.bin $(BUILD)/kernel.text_rotated32.bin \
                   $(BUILD)/kernel.text_wide8.bin $(BUILD)/kernel.text_wide8_mask.bin $(BUILD)/kernel.text_wide32.bin $(BUILD)/kernel.text_wide32_mask.bin $(BUILD)/kernel.text_run8.bin $(BUILD)/kernel.text_vertical8.bin $(BUILD)/kernel.text_run32.bin $(BUILD)/kernel.text_vertical32.bin \
                   $(BUILD)/kernel.text_number8.bin $(BUILD)/kernel.text_number32.bin $(BUILD)/kernel.number_digits.bin \
+                  $(BUILD)/kernel.text_format8.bin $(BUILD)/kernel.text_format32.bin $(BUILD)/kernel.text_format.bin \
                   $(BUILD)/kernel.raster_fill8.bin $(BUILD)/kernel.raster_fill32.bin \
                   $(BUILD)/kernel.raster_gradient32.bin \
                   $(BUILD)/kernel.raster_outline8.bin $(BUILD)/kernel.raster_outline32.bin \
@@ -312,6 +313,9 @@ $(BUILD)/kernel_text_run.o: kernel/text_run.c kernel/text_run.h kernel/text_glyp
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_text_number.o: kernel/text_number.c kernel/text_number.h kernel/text_run.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_text_format.o: kernel/text_format.c kernel/text_format.h kernel/text_glyph.h kernel/text_wide.h kernel/text_run.h kernel/text_number.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_icon_files.o: kernel/icon_files.c kernel/icon_files.h kernel/icon_directory.h kernel/x_icon.h kernel/helpers.h kernel/memory.h Makefile | $(BUILD)
@@ -766,6 +770,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_text_wide.py --installed
 	python3 tests/kernel_text_run.py --installed
 	python3 tests/kernel_text_number.py --installed
+	python3 tests/kernel_text_format.py --installed
 	python3 tests/kernel_simd.py --installed
 	python3 tests/kernel_math_series.py --installed
 	python3 tests/kernel_math_extra.py --installed
@@ -1133,3 +1138,10 @@ test-text-number: $(BUILD)/icestar_c.x
 
 test-text-number-preview: $(BUILD)/icestar_c.x
 	python3 tests/kernel_text_number.py
+
+.PHONY: test-text-format test-text-format-preview
+test-text-format: $(BUILD)/icestar_c.x
+	python3 tests/kernel_text_format.py --installed
+
+test-text-format-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_text_format.py
