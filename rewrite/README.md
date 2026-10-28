@@ -2420,3 +2420,19 @@ instruction sequences are checked separately for exact equality.
 Evidence: `build/cmos_fields_preview_test.log`,
 `build/cmos_fields_preview_summary.json` and `build/cmos_fields_preview.elf`.
 Production remains at 239 intervals pending the ongoing baseline regression.
+
+### Complete 239-interval regression (2026-10-28)
+
+The uninterrupted `make -j4 verify` passes with exit 0 in 1,007.966 seconds.
+It checks the ordinary-source and fixed-address kernel fixtures, installed
+startup/object-registry routines, hardware QEMU fixtures, all four application
+suites, image-tool tests and complete-disk reconstruction. The kernel and all
+three production disks retain identical SHA-256 hashes before and after the
+run. The timer/clock/CMOS source checkpoints are not installed in this baseline.
+
+Evidence: `build/verify_object_registry.log`,
+`build/verify_object_registry.exit` and
+`build/verify_object_registry_summary.json`. Kernel SHA-256:
+`36f706a4a4440a8d6d0fd854b2f6c03a7a7c49f056ef4d90264ac775e9ccc116`.
+Combined-application disk SHA-256:
+`07771e8e045f98372a6980abf4c46c902d37a7c0cbceb74ae9bd9ee7d3cdbe01`.
