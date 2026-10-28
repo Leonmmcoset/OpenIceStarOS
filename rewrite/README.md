@@ -4046,3 +4046,43 @@ and `build/text_run_313_evidence/`. The kernel SHA-256 is
 `45e4db3790a4115c33d4fad81901e6abdf7526ea4df2fe0b8edf54a930b851fe`;
 kernel and three disk hashes remain unchanged throughout testing and boots.
 Complete bootloader/kernel/driver/application source recovery is unfinished.
+
+### Unsigned radix drawing source checkpoint (2026-10-28)
+
+`kernel/text_number.c/.h` recovers 8-bit number drawing at
+`0x81eaf2..0x81ec98`, 32-bit number drawing at `0x81ec98..0x81ee3e`, and
+digit count at `0x81ee3e..0x81ee7e`. These are pure C, using 147/422,
+147/422 and 39/64 bytes. Drawing converts an unsigned value into a local
+256-byte buffer and calls the real recovered mixed-text renderer. The
+signed-byte comparison used to adjust digits is preserved for large bases,
+including byte wrap, embedded zero and possible two-byte glyph sequences.
+Zero prints/counts as one digit for every base. Nonzero base-zero division
+faults and base-one nontermination are retained.
+
+`python3 tests/kernel_text_number.py` passes 34,515 direct scenarios /
+103,545 original/ordinary-C/fixed-address-C executions (22.085 seconds).
+An independent increasing-power conversion model composes real glyph
+semantics and compares 32 KiB of state, all 284 KiB of font memory, eight
+incoming words (seven arguments plus a spare), EAX, registers and canaries.
+Rendering snapshots its outer arguments before entering the text-run child;
+190 changed caller words verify that later glyphs use that copied frame.
+Coverage includes radices 2..40, every possible low output-byte remainder,
+32-bit edge values and bases, unaligned metadata/output, wrapped coordinates,
+metadata/ID/caller/font aliases, 1,252 wrapped digit bytes, six early-zero
+strings and 732 wide-pair dispatches. The model excludes 331 unsafe cases,
+including strings that would run into uninitialized trailing stack bytes;
+the recovered C adds no such input guards.
+
+Eighteen child-process probes reproduce nine SIGFPE base-zero faults and
+nine base-one loops terminated by SIGALRM across all three implementations.
+A separate real-initializer fixture passes 1,536 scenarios / 3,072 executions
+(0.472 seconds), comparing all 320 service words for six depths, two CPU
+choices and slots 9/242. It retains seeded 8-bit entries at unsupported
+depths. Real fixed-address text/glyph callees execute without CALL patches.
+
+Evidence: `build/text_number_direct_preview_summary.json`,
+`build/text_number_chain_preview_summary.json`,
+`build/text_number_preview_test.log`, `build/text_number_original.disasm`,
+`build/text_number_preview.elf` and `build/text_number_candidate.x`.
+Production remains at 313 intervals at this source checkpoint. Complete
+OS recovery remains unfinished.
