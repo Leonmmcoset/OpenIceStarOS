@@ -3370,3 +3370,36 @@ no CALL is substituted. Code sizes are 252/262, 51/60, 37/48, 93/100, 95/102,
 intervals. Evidence: `build/math_extra_preview_summary.json`,
 `build/math_extra_preview_test.log`, `build/math_extra_preview.elf` and
 `build/math_extra_candidate.x`. Overall recovery remains unfinished.
+
+### Float-formatting service source checkpoint (2026-10-28)
+
+`kernel/math_format.c/.h` recovers slot 254 at `0x81a634..0x81a9ee` as C,
+returning the end pointer without a NUL terminator. Its signed-64-bit FISTPLL
+results are deliberately reduced to their low DWORD; its decimal digit
+buffers, flag-dependent sign/padding order, live incoming width and precision,
+unconditional '.', fractional digit reversal and trailing zeros follow the
+original. For example, original precision-two output for 1.05 is `1.50`,
+and zero padding precedes the sign (`00000-2.`). No ISO formatter substitutes
+for these behaviors. Code fits at 802/954 bytes and calls the real recovered
+power and round helpers with separate cdecl argument storage.
+
+`python3 tests/kernel_math_format.py` passes 179,860 scenarios / 527,292
+executions, including 12,288 complete original/candidate initialized-slot-254
+chains with no CALL substitutions. It compares the entire 1 KiB output region,
+end pointer, six incoming words, 128 bytes beyond incoming args, exception
+flags, CW, empty x87 stack, callee-saved registers and canaries. Independent
+literal byte/end/no-NUL oracles check the quirks above; an output alias onto
+the incoming width verifies live parameter behavior. Coverage includes every
+low-byte flag combination and random high flags, positive/negative/zero
+precisions and widths, 32/64-bit conversion limits, signed special values,
+random binary64 inputs and four alignments at all twelve precision/rounding
+combinations. Tests exclude huge field widths/precisions from their bounded
+output fixture; source adds no bound or clamp.
+
+The independent preview links both the formatter and its recovered round
+helper; the production power helper is unchanged. Evidence:
+`build/math_format_preview_summary.json`, `build/math_format_preview_test.log`,
+`build/math_format_preview.elf` and `build/math_format_candidate.x`.
+At this source checkpoint production remains at 277 intervals; the seven
+scalar services and formatter are not installed yet. Overall OS recovery
+remains incomplete.
