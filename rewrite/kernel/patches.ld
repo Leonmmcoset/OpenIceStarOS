@@ -592,6 +592,8 @@ SECTIONS
     ASSERT(kernel_bitmap_fit_file_82040c == 0x82040c && ADDR(.bitmap_fit_file) + SIZEOF(.bitmap_fit_file) <= 0x8204ac, "bitmap_fit_file overflow")
     .bitmap_fit 0x8204ac : SUBALIGN(1) { *kernel_bitmap_fit.o(.text.kernel_bitmap_fit_8204ac) }
     ASSERT(kernel_bitmap_fit_8204ac == 0x8204ac && ADDR(.bitmap_fit) + SIZEOF(.bitmap_fit) <= 0x820d66, "bitmap_fit overflow")
+    .bitmap_surface_fit 0x820d66 : SUBALIGN(1) { *kernel_bitmap_surface_fit.o(.text.kernel_bitmap_surface_fit_820d66) }
+    ASSERT(kernel_bitmap_surface_fit_820d66 == 0x820d66 && ADDR(.bitmap_surface_fit) + SIZEOF(.bitmap_surface_fit) <= 0x821446, "bitmap_surface_fit overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
     ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
     .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }

@@ -4412,3 +4412,29 @@ Evidence: `build/bitmap_surface_fit_preview_summary.json`,
 `build/bitmap_surface_fit_previous_regression.log` and
 `build/bitmap_surface_fit_candidate.x`. Production remains at 323 intervals
 at this source checkpoint. Complete OS source recovery is unfinished.
+
+### Direct-surface BMP fitting installation checkpoint (2026-10-28)
+
+The new body is installed in the production kernel and all three disks,
+bringing the manifest to 324 intervals. All preceding 323 intervals remain
+byte-identical; only 1,715 kernel bytes change. Production equals the source
+preview, and each disk differs from its recorded 323 baseline only in the
+kernel. `make test-bitmap-surface-fit` and `make verify` include the installed
+direct-surface fixture.
+
+Installed direct/ID-based fitting fixtures, startup UI, clock display, linked
+startup/runtime, inventory and whole-disk checks pass. A production CLOCK
+QEMU boot passes rendering, close/input, memory, task and all 324 loaded
+interval checks; its screenshot was visually inspected. Normal CLOCK
+execution does not observe this direct-surface entry; execution evidence
+comes from the original/native/fixed-address and real initialized-service
+fixtures. Kernel and disk hashes remain unchanged throughout validation
+and boot.
+
+Evidence: `build/bitmap_surface_fit_324_final_summary.json`,
+`build/bitmap_surface_fit_324_validation_summary.json`,
+`build/bitmap_surface_fit_324_app_boots.json` and `build/bitmap_surface_fit_324_evidence/`.
+The kernel SHA-256 is
+`99a9962c69ec5e0036350e17a9ed4b6dec31ace05d8d68b15a420bf97717ca5a`.
+The latest complete regression remains 305; later checkpoints use focused
+checks and recorded guest boots. Full OS source recovery remains unfinished.
