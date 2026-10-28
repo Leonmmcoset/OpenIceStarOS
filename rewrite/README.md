@@ -2891,3 +2891,44 @@ Combined-application disk SHA-256:
 The latest complete regression remains the successful 262-interval run;
 266 has the focused and runtime coverage described here. The overall OS
 recovery remains incomplete and continues to require original components.
+
+### Layer sampling and DDA line source checkpoint (2026-10-28)
+
+`kernel/pixel_sample.c/.h` recovers `0x81b514..0x81b714`: capture the subject's
+order position minus one, traverse positive signed positions in descending
+order, test open rectangle edges, read a DWORD pixel and skip an exact DWORD
+color key. The sample ignores each layer's declared depth and the order-list
+count, retains wrapped coordinates/table indices and repeated volatile reads,
+and returns `0xffffffff` when no opaque candidate is found.
+
+`kernel/raster_line.c/.h` recovers the 8/32-bit lines at
+`0x81b734..0x81b8dc` and `0x81b8dc..0x81ba8a`. They retain the inclusive
+major-axis count, ten-bit fixed-point coordinates, wrapped absolute differences
+and shifts, signed minor-step division toward zero and arithmetic position
+shifts. Bounds and surface depth are not checked. Table, width, pixel-base and
+incoming ID/color words stay live across pixel stores; the remaining geometry
+is captured before drawing. Negative signed counts draw nothing. The raw EAX
+return is the completed count, or zero when no iteration runs.
+
+`python3 tests/kernel_raster.py` passes 90,976 sampler scenarios / 272,928
+original-x86, ordinary-C and fixed-address-C executions (16.195 s), plus
+61,700 line scenarios / 185,100 executions (10.135 s). Sampler coverage
+includes every rejection branch, full DWORD geometry, color-key/alpha values,
+ignored depths, four alignments, wrapped IDs/order positions and guarded
+short-circuit reads. No sampler scenarios are excluded. Line coverage includes
+all octants, zero-length lines, fixed-point truncation/wrap, full DWORD pitch,
+unclipped signed coordinates, 126 no-draw counts, 296 metadata/table writes
+and 304 incoming-argument writes. Before execution, 2,114 generated line
+fixtures are excluded for large loops or accesses outside controlled mappings.
+This exclusion is a fixture limit, not clipping added to the recovered code.
+
+The entire 32 KiB mapped memory, raw returns, six live caller words,
+callee-saved registers, stack balance and canaries agree. A fixed mapped call
+frame permits real stores into incoming arguments. The line oracle uses
+widened arithmetic and shift/subtract division; no CALL is substituted.
+These fixtures do not establish safety for arbitrary pointers or large loops.
+Bodies occupy 358/512, 304/424 and 304/430 bytes. Evidence:
+`build/raster_preview_test.log`, `build/raster_sample_preview_summary.json`,
+`build/raster_line_preview_summary.json`, `build/raster_preview.elf` and
+`build/raster_preview.x`. Production remains at 266 intervals at this source
+checkpoint; none of the three new slots is installed yet.
