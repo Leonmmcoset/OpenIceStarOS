@@ -9,7 +9,6 @@ PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
 PROVIDE(kernel_syscall_target_808378 = 0x808378);
 PROVIDE(kernel_syscall_target_81021c = 0x81021c);
 PROVIDE(kernel_syscall_target_807a0a = 0x807a0a);
-PROVIDE(kernel_startup_launch_image = 0x802282);
 PROVIDE(kernel_startup_lookup_8263c0 = 0x8263c0);
 PROVIDE(kernel_startup_jpeg_823120 = 0x823120);
 PROVIDE(kernel_startup_png_82443e = 0x82443e);
@@ -22,6 +21,14 @@ PROVIDE(kernel_startup_text_8376d3 = 0x8376d3);
 PROVIDE(kernel_startup_read_alloc_827454 = 0x827454);
 PROVIDE(kernel_startup_read_into_82760c = 0x82760c);
 PROVIDE(kernel_startup_load_image_80214c = 0x80214c);
+PROVIDE(kernel_x_find_relative_825c8e = 0x825c8e);
+PROVIDE(kernel_x_header_relative_827826 = 0x827826);
+PROVIDE(kernel_x_read_relative_826ade = 0x826ade);
+PROVIDE(kernel_x_find_path_8263c0 = 0x8263c0);
+PROVIDE(kernel_x_header_path_8278f4 = 0x8278f4);
+PROVIDE(kernel_x_read_path_82760c = 0x82760c);
+PROVIDE(kernel_x_dialog_811a42 = 0x811a42);
+PROVIDE(kernel_x_show_dialog_8082c6 = 0x8082c6);
 PROVIDE(kernel_bitmap_lookup_relative_825c8e = 0x825c8e);
 PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
@@ -98,6 +105,12 @@ SECTIONS
     .pointer_input 0x801454 : SUBALIGN(1) {
         *kernel_pointer.o(.text.kernel_handle_pointer_input)
     }
+    .x_load_relative 0x8020a6 : SUBALIGN(1) { *kernel_x_loader.o(.text.kernel_x_load_relative_8020a6) }
+    ASSERT(kernel_x_load_relative_8020a6 == 0x8020a6 && ADDR(.x_load_relative) + SIZEOF(.x_load_relative) <= 0x80214c, "relative X loader overflow")
+    .x_load_path 0x80214c : SUBALIGN(1) { *kernel_x_loader.o(.text.kernel_x_load_path_80214c) }
+    ASSERT(kernel_x_load_path_80214c == 0x80214c && ADDR(.x_load_path) + SIZEOF(.x_load_path) <= 0x802282, "path X loader overflow")
+    .x_launch 0x802282 : SUBALIGN(1) { *kernel_x_loader.o(.text.kernel_startup_launch_image) }
+    ASSERT(kernel_startup_launch_image == 0x802282 && ADDR(.x_launch) + SIZEOF(.x_launch) <= 0x80252a, "X launch overflow")
     ASSERT(kernel_handle_pointer_input == 0x801454, "pointer input entry moved")
     ASSERT(ADDR(.pointer_input) + SIZEOF(.pointer_input) <= 0x801632, "pointer input slot overflow")
     .syscall_surface 0x81017c : { *kernel_syscall_surface.o(.text.kernel_syscall_target_81017c) }

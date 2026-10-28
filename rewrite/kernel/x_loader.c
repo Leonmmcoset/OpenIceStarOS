@@ -40,7 +40,8 @@ uint32_t kernel_x_load_relative_8020a6(uint32_t name)
 
 uint32_t kernel_x_load_path_80214c(uint32_t name)
 {
-    uint8_t record[40];
+    /* FAT lookup returns one complete 32-byte directory record. */
+    uint8_t record[32];
     uint32_t result = 0;
     if (kernel_x_find_path_8263c0(name, (uint32_t)(uintptr_t)record) > 0) {
         kernel_x_header_path_8278f4((uint32_t)(uintptr_t)record, HEADER);

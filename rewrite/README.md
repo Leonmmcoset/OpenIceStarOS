@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 349 declared kernel intervals and
+original VHD. The current build installs 352 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5082,16 +5082,19 @@ boundaries. It retains type `0x0a` and `0x50` loading, original allocation
 sizes/alignment, BSS/relocation-table/stack clearing, live relocation-table
 reads, selectors, duplicate-load dialogs and cursor transitions. The public
 X header, relocation and startup contract is documented in `tools/xformat.py`.
-This source preview has not yet been installed in production.
+The path loader's stack record is the 32-byte FAT directory entry copied by
+the original filesystem lookup. The three C bodies are installed in the
+fixed-address production kernel image.
 
-`python3 tests/kernel_x_loader.py` links ordinary and fixed-address C and
-compares both with original x86 in Unicorn: 430 scenarios / 1,290 executions.
+`make test-x-loader` links ordinary and fixed-address C and compares both with
+original x86 in Unicorn: 430 scenarios / 1,290 executions. The installed-mode
+test also verifies the compiled production bytes at all three original entry
+addresses.
 Coverage includes both loader formats, allocation and read branches, shared
 header mutation, relocation table/target aliasing, duplicate launch, CPU
 registers/stack and every byte of the checked low-memory/arena regions. The
 fixture extracts every supported original `.X` program and runs loader/launch
 cases for each file at aligned and unaligned bases. Filesystem, memory
-allocation, task and UI helpers are deterministic callbacks; production boot
-will exercise these against the recovered real subsystems. Invalid and
+allocation, task and UI helpers are deterministic callbacks. Invalid and
 unmapped relocation targets are not executed. Evidence:
-`build/x_loader_preview_summary.json` and `build/x_loader_preview_test.log`.
+`build/x_loader_installed_summary.json` and `/tmp/x-loader-installed.log`.

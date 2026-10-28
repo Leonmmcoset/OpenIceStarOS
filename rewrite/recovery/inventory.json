@@ -693,10 +693,10 @@
           "kernel/patches.ld",
           "kernel/"
         ],
-        "declared_intervals": 349,
-        "declared_slot_bytes": 83502,
+        "declared_intervals": 352,
+        "declared_slot_bytes": 84658,
         "exact_instruction_intervals": 77,
-        "retained_payload_bytes": 166533,
+        "retained_payload_bytes": 165377,
         "note": "Slot bytes include padding and exact hardware instructions; these are not semantic completion percentages."
       }
     },
@@ -990,9 +990,11 @@
         "sources": [
           "init/entry.c",
           "init/directory.c",
-          "init/clusters.c"
+          "init/clusters.c",
+          "boot/fat16.c",
+          "boot/fat16.h"
         ],
-        "note": "Recovered startup/filesystem paths still execute within original INIT."
+        "note": "Recovered startup/filesystem paths execute as a rewritten boot stage and four-sector INIT block."
       }
     }
   ]

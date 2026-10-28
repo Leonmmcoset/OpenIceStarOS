@@ -28,7 +28,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_surface_move.o $(BUILD)/kernel_surface_scale.o \
                   $(BUILD)/kernel_surface_lifecycle.o $(BUILD)/kernel_surface_order.o $(BUILD)/kernel_cursor.o \
                   $(BUILD)/kernel_firmware_scan.o \
-                  $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o \
+                  $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_x_loader.o $(BUILD)/kernel_display_palette.o \
                   $(BUILD)/kernel_display_dac.o $(BUILD)/kernel_paging.o \
                   $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
                   $(BUILD)/kernel_object_registry.o \
@@ -72,6 +72,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.dispatch_slot2.bin $(BUILD)/kernel.dispatch_slot3.bin $(BUILD)/kernel.pointer_input.bin \
                   $(BUILD)/kernel.queue_write.bin $(BUILD)/kernel.queue_read.bin \
                   $(BUILD)/kernel.queue_available.bin $(BUILD)/kernel.pointer_decode.bin \
+                  $(BUILD)/kernel.x_load_relative.bin $(BUILD)/kernel.x_load_path.bin $(BUILD)/kernel.x_launch.bin \
                   $(BUILD)/kernel.pointer_init.bin $(BUILD)/kernel.ps2_ready.bin \
                   $(BUILD)/kernel.input_write.bin $(BUILD)/kernel.input_read.bin \
                   $(BUILD)/kernel.input_available.bin $(BUILD)/kernel.ascii_upper.bin \
@@ -138,7 +139,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
 
-.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
+.PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/IceStarOS_c_mbr.vhd
 
 .PHONY: test-boot-video-preview
@@ -154,6 +155,11 @@ test-boot-stage3: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
 
 test-boot-stage3-qemu: $(BUILD)/IceStarOS_c_init.vhd
 	python3 tests/boot_stage3_qemu.py
+
+test-x-loader: $(BUILD)/icestar_c.x
+	python3 tests/kernel_x_loader.py --installed
+
+verify: test-x-loader
 
 verify: test-boot-video test-boot-stage3
 
@@ -259,6 +265,9 @@ $(BUILD)/kernel_startup_state.o: kernel/startup_state.c kernel/startup_state.h M
 
 $(BUILD)/kernel_startup_apps.o: kernel/startup_apps.c kernel/startup_apps.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_x_loader.o: kernel/x_loader.c kernel/x_loader.h kernel/memory.h kernel/memory_ops.h kernel/tasks.h kernel/cursor.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_display_palette.o: kernel/display_palette.c kernel/display_palette.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@

@@ -3,10 +3,9 @@
 #include <stdint.h>
 #include "runtime.h"
 #include "startup_apps.h"
+#include "x_loader.h"
 
 #define DWORD(address) (*(volatile uint32_t *)(uintptr_t)(address))
-
-void kernel_startup_launch_image(uint32_t first, uint32_t second);
 
 void kernel_startup_applications(void)
 {

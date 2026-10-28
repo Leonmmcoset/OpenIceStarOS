@@ -55,8 +55,11 @@ def inventory():
             recovery = dict(state="unrecovered", sources=[])
             if full_path == (b"INIT    X  ",):
                 role = "init"
-                recovery = dict(state="partial", sources=["init/entry.c", "init/directory.c", "init/clusters.c"],
-                                note="Recovered startup/filesystem paths still execute within original INIT.")
+                init_sources = ["init/entry.c", "init/directory.c", "init/clusters.c"]
+                if all((ROOT/p).is_file() for p in ("boot/fat16.c", "boot/fat16.h")):
+                    init_sources.extend(["boot/fat16.c", "boot/fat16.h"])
+                recovery = dict(state="partial", sources=init_sources,
+                                note="Recovered startup/filesystem paths execute as a rewritten boot stage and four-sector INIT block.")
             elif full_path == (b"ICESTAR    ", b"ICESTAR X  "):
                 role = "kernel"
                 previous = BASE + 64
