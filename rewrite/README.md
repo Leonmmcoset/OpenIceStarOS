@@ -2607,3 +2607,36 @@ Combined-application disk SHA-256:
 `3cad3adf5f9a9dae1cdafdb767e3f3510b0171ebc21e3cc46e749c03727bb0bf`.
 This is focused and boot coverage. The latest complete regression remains the
 239-interval checkpoint; a complete 258-interval regression has not been run.
+
+### DIB icon decoder source checkpoint (2026-10-28)
+
+`kernel/icon_dib.c/.h` recovers the renderer at `0x82b20c..0x82b678`.
+It retains packed bottom-up pixel rows, a mask stride selected by halved image
+height rather than width, and the original extra per-pixel mask-byte advance
+in the 32-to-8-bit path. Only 8- and 32-bit source and destination depths draw.
+The destination depth is a full DWORD; 32-to-32-bit output clears alpha, while
+8-to-32-bit palette output preserves it. Quantizer coordinates are local and
+drawing coordinates include the caller's offset with 32-bit wrapping. Callback
+changes to pixel, palette and mask memory remain visible; captured dimensions
+and depth branches remain fixed. No general BMP layout correction, validation
+or clipping is added.
+
+`python3 tests/kernel_icon_dib.py` passes 79,233 scenarios / 237,699 original-x86,
+ordinary-C and fixed-address-C executions in 13.155 seconds. Coverage includes
+all source WORD depths, high destination-depth bits, four conversion paths,
+every mask byte and individual mask positions, unaligned and rectangular
+images, height 47/48, odd doubled heights, palette indices and alpha bytes,
+coordinate wrapping, and callback mutations. Seventy-one real non-PNG frames
+cover four standalone ICO files and four X-file embedded directories, including
+the unsupported 4-bit frame. Ordered helper events, all 32 KiB of fixture
+memory, callee-saved registers, stack balance and canaries agree.
+
+The compiled body occupies 468 of its 1,132-byte original slot. Only the put8,
+put32 and quantizer CALL boundaries are substituted by this fixture; their
+actual implementations are not recovered or verified here. Patterned mapped
+memory beyond resource payloads models original out-of-payload reads and does
+not establish safety for arbitrary invalid pointers. Evidence:
+`build/icon_dib_preview_test.log`, `build/icon_dib_preview_summary.json`,
+`build/icon_dib_preview.elf`, `build/icon_dib_calls.h` and
+`build/icon_dib_resources.h`. This source checkpoint leaves production at
+258 installed intervals with unchanged kernel and disk images.
