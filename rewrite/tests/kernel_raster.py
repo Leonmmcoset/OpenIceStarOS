@@ -29,7 +29,7 @@ def run(command, **kwargs):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument("--installed", action="store_true")
-    parser.add_argument("--component", choices=("all", "sample", "line"), default="all")
+    parser.add_argument("--component", choices=("all", "sample", "line", "chain"), default="all")
     args = parser.parse_args()
     BUILD.mkdir(exist_ok=True)
     original = Fat16((ROOT.parent / "IceStarOS_x86_32M.vhd").read_bytes()).read_kernel()
@@ -74,11 +74,18 @@ def main():
     paths = [ROOT / p for p in ("kernel/pixel_sample.c", "kernel/pixel_sample.h",
                                "kernel/raster_line.c", "kernel/raster_line.h",
                                "tests/kernel_raster.py", "tests/raster_abi.S", "tests/raster_fixture.h",
-                               "tests/kernel_icon_pixels.py")]
+                               "tests/kernel_icon_pixels.py", "tests/kernel_raster_line.c")]
+    production = BUILD / "icestar_c.x"
+    chain_candidate = bytearray(production.read_bytes())
+    for _, _, start, end in SLOTS:
+        chain_candidate[start-0x800000:end-0x800000] = preview[start-0x800000:end-0x800000]
+    chain_path = BUILD / "raster_chain_candidate.x"
+    chain_path.write_bytes(chain_candidate)
     label = "installed" if args.installed else "preview"
     for component, source, phrase in (
         ("sample", "kernel_pixel_sample.c", "sampler verified against 32 KiB memory/return/ABI oracle"),
         ("line", "kernel_raster_line.c", "lines verified against 32 KiB memory/return/live-argument/ABI oracle"),
+        ("chain", "kernel_raster_chain.c", "real initializer/mode selection/forwarder/line chain verified"),
     ):
         if args.component not in ("all", component):
             continue
@@ -92,7 +99,8 @@ def main():
                        seconds=round(time.monotonic()-start, 3), slots=sizes, boundary_substitutions=0,
                        stdout=result.stdout, stderr=result.stderr,
                        sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
-                               for p in [*paths, ROOT / "tests" / source, elf, executable, candidate]})
+                               for p in [*paths, ROOT / "tests" / source, elf, executable,
+                                         *([production, chain_path] if component == "chain" else [candidate])]})
         (BUILD / f"raster_{component}_{label}_summary.json").write_text(json.dumps(summary, indent=2)+"\n")
         print(json.dumps(summary, indent=2), flush=True)
         if result.returncode or phrase not in result.stdout:

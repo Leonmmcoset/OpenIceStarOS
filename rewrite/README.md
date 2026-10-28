@@ -2932,3 +2932,20 @@ Bodies occupy 358/512, 304/424 and 304/430 bytes. Evidence:
 `build/raster_line_preview_summary.json`, `build/raster_preview.elf` and
 `build/raster_preview.x`. Production remains at 266 intervals at this source
 checkpoint; none of the three new slots is installed yet.
+
+### DDA service-chain checkpoint (2026-10-28)
+
+`tests/kernel_raster_chain.c` executes the real service initializer at
+`0x8005aa`, checks its 8/32-bit line target in slot one, and invokes the real
+six-argument forwarder at `0x837501`. The untouched original kernel and a
+266-interval production preview with the three raster slots overlaid pass
+3,584 scenarios / 7,168 chains in 0.659 seconds. There are 608 excluded
+large/unmapped executions across the two implementations. The complete
+32 KiB fixture memory, raw return, caller words, ABI and separate 4 KiB
+dispatch table agree; no CALL is substituted. The sampler and standalone
+line fixtures also pass again (16.217 s and 10.119 s).
+
+Evidence: `build/raster_preview_test.log`,
+`build/raster_chain_preview_summary.json`, `build/raster_chain_candidate.x`
+and `build/kernel_raster_chain_preview_test`. The production build still has
+266 installed intervals at this checkpoint.
