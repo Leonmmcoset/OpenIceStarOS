@@ -3,7 +3,7 @@
 #include "../kernel/raster_circle.h"
 #include "raster_fixture.h"
 static uint32_t format,alignment,counts[2],store_count[2],caller_stores,
-    metadata_stores,asymmetric_stores,negative_radii;
+    metadata_stores,asymmetric_stores,negative_radii,changed_colors;
 static int valid(uint32_t address,unsigned bytes)
 {
     for(unsigned i=0;i<bytes;++i)if(index_of(address+i)==UINT32_MAX)return 0;
@@ -44,7 +44,9 @@ static int point(uint32_t x,uint32_t y,unsigned positive_x,unsigned positive_y)
     if(!surface(&record)||!valid(record,4)||!valid(record+12u,4))return 0;
     uint64_t offset=(uint64_t)y*get32(expected,record+12u)+x;
     uint32_t address=(uint32_t)((uint64_t)get32(expected,record)+offset*(format?4u:1u));
-    if(!put(expected,address,get32(expected,ARGUMENTS+16u),format?4u:1u))return 0;
+    uint32_t color=get32(expected,ARGUMENTS+16u);
+    if(!put(expected,address,color,format?4u:1u))return 0;
+    if(get32(expected,ARGUMENTS+16u)!=color)++changed_colors;
     ++store_count[format];
     if(address-ARGUMENTS<24u)++caller_stores;
     if(address-DATA<0x1000u||address-0x500000u<4096u)++metadata_stores;
@@ -76,10 +78,10 @@ static int oracle_body(uint32_t *result)
 static int oracle(uint32_t *result)
 {
     uint32_t *counters[]={&store_count[0],&store_count[1],&caller_stores,
-        &metadata_stores,&asymmetric_stores,&negative_radii},saved[6];
-    for(unsigned i=0;i<6;++i)saved[i]=*counters[i];
+        &metadata_stores,&asymmetric_stores,&negative_radii,&changed_colors},saved[7];
+    for(unsigned i=0;i<7;++i)saved[i]=*counters[i];
     if(oracle_body(result))return 1;
-    for(unsigned i=0;i<6;++i)*counters[i]=saved[i];
+    for(unsigned i=0;i<7;++i)*counters[i]=saved[i];
     return 0;
 }
 static void run(void)
@@ -132,6 +134,12 @@ void _start(void)
         uint32_t color=a==0?DATA+0x2801u+alignment:a>=6u?DATA+0x201u+alignment:4u;
         setup(0,3,3,1,1,0,dest,color);run();
       }
+    /* DWORD output straddles radius/color or color/the extra incoming word.
+     * Subsequent octants must observe the new color, not an entry snapshot. */
+    for(format=0;format<2;++format)for(alignment=0;alignment<4;++alignment)
+      for(unsigned offset=12;offset<=17;++offset){
+        setup(0,0,8,1,1,0,ARGUMENTS+offset,0x12345678u);run();
+      }
     stage=5;
     for(format=0;format<2;++format)for(alignment=0;alignment<4;++alignment)
       for(unsigned color=0;color<256;++color){
@@ -144,12 +152,13 @@ void _start(void)
         uint32_t record=DATA+16384u-16u;
         REQUIRE(put(initial,0x500000u,record,4)&&put(initial,record+12u,0x80000000u,4),"guard record");run();
     }
-    REQUIRE(caller_stores&&metadata_stores&&asymmetric_stores&&negative_radii,"missing circle coverage");
+    REQUIRE(caller_stores&&metadata_stores&&asymmetric_stores&&negative_radii&&changed_colors,"missing circle coverage");
     PRINT("Circle cases8/32: ");number(counts[0]);PRINT(" ");number(counts[1]);
     PRINT("; executions: ");number(cases*3u);PRINT("; excluded large/unmapped scenarios: ");number(skipped);
     PRINT("; stores8/32: ");number(store_count[0]);PRINT(" ");number(store_count[1]);
     PRINT("; caller/metadata/asymmetric stores: ");number(caller_stores);PRINT(" ");number(metadata_stores);
     PRINT(" ");number(asymmetric_stores);PRINT("; negative radii: ");number(negative_radii);
+    PRINT("; live color changes: ");number(changed_colors);
     PRINT("; circle outlines verified against 32 KiB memory/return/live-argument/ABI oracle; no CALL substitutions\n");
     syscall3(1,0,0,0);
 }

@@ -3471,15 +3471,16 @@ ID, center and color words remain live across stores, while the radius and
 each iteration's eight coordinates are captured at the original points.
 Compiled bodies fit their slots at 824/860 and 805/912 bytes.
 
-`python3 tests/kernel_raster_circle.py` passes 32,998 direct scenarios / 98,994
-executions against original x86, ordinary C and fixed-address C (6.021 s),
+`python3 tests/kernel_raster_circle.py` passes 33,042 direct scenarios / 99,126
+executions against original x86, ordinary C and fixed-address C (6.093 s),
 plus 3,104 actual original/candidate initialized-service/forwarder executions
-(0.358 s). The independent octant model compares 32 KiB of mapped memory,
+(0.357 s). The independent octant model compares 32 KiB of mapped memory,
 raw returns, six incoming words, canaries and callee-saved registers. Coverage
 includes unaligned descriptors, wrapped IDs and geometry, signed dimension
 extremes, zero/negative radii, all color bytes, caller/metadata aliases, 56,528
 asymmetric coordinate stores and a descriptor whose height field is unmapped.
-The bounded fixture excludes 5,036 direct scenarios with large/unmapped
+Straddling output stores change the live incoming color 28 times, and later
+octants observe it. The bounded fixture excludes 5,040 direct scenarios with large/unmapped
 accesses; it does not establish safety for all inputs. Source adds no clamp.
 The service cases use the real mode-selected slot 4 and five-argument
 forwarder, with no call substitutions.
