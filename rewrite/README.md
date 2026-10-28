@@ -4571,3 +4571,35 @@ Evidence: `build/jpeg_bits_installed_summary.json`,
 and `build/jpeg_bits_326_evidence/`. Kernel SHA-256:
 `02e1af5c1d57557047ceab75eb92955db055f040126b2f55b2815233f760c871`.
 The JPEG decoder as a whole and full OS source recovery remain unfinished.
+
+### JPEG frame parser source checkpoint (2026-10-28)
+
+`kernel/jpeg_frame.c` recovers `0x83a919..0x83aae7` as 402 bytes of C
+inside its original 462-byte slot. It parses big-endian height/width,
+component IDs, raw sampling bytes, horizontal/vertical sampling nibbles
+and quantization-table selectors. Signed comparisons update the maximum
+sampling factors. It ignores segment length/precision, accepts more than
+three components (overlapping its adjacent arrays), and keeps source,
+context and destination fields live across stores. Truncated payloads
+advance the cursor to the declared end; wrapped pointer checks and
+unchecked source faults retain the original behavior.
+
+`python3 tests/kernel_jpeg_frame.py` passes 2,297 scenarios / 6,891
+original/ordinary-C/fixed-address-C executions, with no excluded scenarios.
+The separate bytewise bounded oracle compares all 64 KiB of context,
+8 KiB of source, six incoming words, EAX, preserved registers and canaries.
+It covers 15 component counts through 255, 11 input lengths, all 256
+sampling bytes, four alignments, signed initial maxima, 18 source aliases,
+and truncated cursors overlapping incoming words. Coverage includes 9,924
+parsed components, 537 truncations, 71,136 state stores, 368 changed source
+headers and three changed caller-word scenarios.
+
+Forked probes reproduce six unchecked/wrapped-source faults and three
+safe truncated returns. Two real information/decode executions of the
+original 260-by-260 JPEG compare the complete output/slack and 64 KiB
+workspace. No helper bodies are substituted. This recovers only the frame
+parser; other JPEG routines remain original. Evidence:
+`build/jpeg_frame_preview_summary.json`,
+`build/jpeg_frame_preview_test.log`, `build/jpeg_frame_original.disasm`
+and `build/jpeg_frame_candidate.x`. Production remains at 326 intervals
+at this source checkpoint. Full OS source recovery remains unfinished.
