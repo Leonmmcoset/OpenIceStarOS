@@ -34,7 +34,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_object_registry.o \
                   $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o \
                   $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o $(BUILD)/kernel_icon_pixels.o $(BUILD)/kernel_pixel_access.o \
-                  $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o
+                  $(BUILD)/kernel_pixel_sample.o $(BUILD)/kernel_raster_line.o $(BUILD)/kernel_raster_fill.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
@@ -49,6 +49,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.icon_dib.bin $(BUILD)/kernel.icon_put8.bin $(BUILD)/kernel.icon_put32.bin $(BUILD)/kernel.icon_quantize.bin \
                   $(BUILD)/kernel.pixel_put8.bin $(BUILD)/kernel.pixel_put32.bin $(BUILD)/kernel.pixel_get8.bin $(BUILD)/kernel.pixel_get32.bin \
                   $(BUILD)/kernel.pixel_sample.bin $(BUILD)/kernel.raster_line8.bin $(BUILD)/kernel.raster_line32.bin \
+                  $(BUILD)/kernel.raster_fill8.bin $(BUILD)/kernel.raster_fill32.bin \
                   $(BUILD)/kernel.cmos_seconds.bin $(BUILD)/kernel.cmos_minutes.bin $(BUILD)/kernel.cmos_hours.bin $(BUILD)/kernel.cmos_weekday.bin $(BUILD)/kernel.cmos_day.bin $(BUILD)/kernel.cmos_month.bin $(BUILD)/kernel.cmos_year.bin \
                   $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
@@ -254,6 +255,9 @@ $(BUILD)/kernel_pixel_sample.o: kernel/pixel_sample.c kernel/pixel_sample.h Make
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_raster_line.o: kernel/raster_line.c kernel/raster_line.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_raster_fill.o: kernel/raster_fill.c kernel/raster_fill.h kernel/service_forward.h kernel/service_forward.def Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_icon_files.o: kernel/icon_files.c kernel/icon_files.h kernel/icon_directory.h kernel/x_icon.h kernel/helpers.h kernel/memory.h Makefile | $(BUILD)
@@ -697,6 +701,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_icon_render.py --installed
 	python3 tests/kernel_pixel_access.py --installed
 	python3 tests/kernel_raster.py --installed
+	python3 tests/kernel_raster_fill.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -962,3 +967,7 @@ test-pixel-access: $(BUILD)/icestar_c.x
 .PHONY: test-raster
 test-raster: $(BUILD)/icestar_c.x
 	python3 tests/kernel_raster.py --installed
+
+.PHONY: test-raster-fill
+test-raster-fill: $(BUILD)/icestar_c.x
+	python3 tests/kernel_raster_fill.py --installed

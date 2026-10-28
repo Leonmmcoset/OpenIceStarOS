@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 269 declared kernel intervals and
+original VHD. The current build installs 271 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3040,3 +3040,49 @@ Bodies fit at 489/668 and 387/554 bytes. Evidence:
 `build/raster_fill_preview.elf` and `build/raster_fill_candidate.x`.
 Production remains at 269 intervals at this source checkpoint; the preview
 overlays only the two new fill slots on that production kernel.
+
+### Rectangle fill installation (2026-10-28)
+
+Both fill routines are installed at their original addresses, increasing
+production from 269 to 271 intervals. All previous 269 intervals retain
+identical bytes. The 1,167 changed kernel bytes are confined to the two new
+slots; the three production disks pass complete reconstruction and differ
+from their predecessors only inside the existing kernel file. The complete
+kernel equals the independently linked source preview.
+
+Installed checks pass all 44,446 direct fill scenarios / 133,338 executions
+(11.329 s) and 13,760 complete service scenarios / 27,520 chains (4.788 s).
+The preceding fixture limits still apply. Sampler (16.308 s), line (10.283 s)
+and complete line-service (0.680 s) regressions pass against this kernel.
+Fixed-address startup/table, service-forwarder, scalar-memory and accelerated
+memory regressions also pass. Complete chains retain real CALL boundaries.
+
+Independent QEMU snapshot checks pass Color (29.747 s), Snake (33.716 s),
+MOV (32.511 s) and STARSCR (26.704 s), including startup execution, all
+271 loaded intervals, heap/tasks, PS/2 input and the respective application
+checks. Representative screenshots were visually inspected. STARSCR's
+documented original post-exit mouse/timer stall is still present.
+
+A separate normal boot/input trace observes the new 32-bit fill (7,414 entry /
+130,773 body records), the 32-bit line (ten / 20), DIB decoder (two /
+1,396,945), direct writer (1,396,882 / 13), surface-ID setter (31,822 / eight)
+and getter (5,203 / four). All thirteen monitored compiled bodies/padding
+match the disk kernel, and all 271 intervals match guest memory. The desktop
+and returned CPUID prompt were visually inspected. The 8-bit fill, sampler
+and 8-bit line remain unobserved in this boot. TB chaining prevents treating
+trace records as exact call counts; no diagnostic guest or CALL substitution
+is used.
+
+Evidence: `build/raster_fill_271_installation_summary.json`,
+`build/raster_fill_271_build.log`, `build/raster_fill_271_disk_verify.log`,
+`build/raster_fill_271_validation.log`, `build/raster_fill_271_evidence/`
+and the preserved `build/raster_fill_271_baseline/` and
+`build/raster_fill_271_source_evidence/`. Natural and differential artifacts
+include SHA-256 manifests. All four production hashes remain unchanged
+through validation. Kernel SHA-256:
+`3b2ea0c312ec23bc7204fdf05fc107d87d229181bec32e32e4ebaaefa66d1e02`.
+Combined-application disk SHA-256:
+`fc84f908009d471348d5477f80cddb9994eaac0575f68e178a94e1f00fa1e726`.
+The latest complete `make verify` remains the successful 262-interval run;
+271 has the focused/runtime coverage described here. The complete OS still
+requires unrecovered original components.
