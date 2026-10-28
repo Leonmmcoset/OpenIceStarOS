@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "../kernel/jpeg_scan.h"
+#include "../kernel/jpeg_basis.h"
 #define CONTEXT 0x1000000u
 #define SOURCE 0x1100000u
 #define ARGUMENTS 0x640f60u
@@ -13,7 +14,8 @@
 static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[0x100000];
 static uint8_t reference_context[CONTEXT_BYTES];
 static uint32_t args[6],stage,scenario,implementation,cases,kind;
-static uint32_t per_kind[3],faults,loops,safe_probes,caller_changes;
+static uint32_t per_kind[4],faults,loops,safe_probes,caller_changes;
+static uint8_t basis_oracle[16384];
 static uint32_t state=0x13a984c7u;
 extern uint32_t raster_checked_call(const void *,const uint32_t *,uint32_t *);
 static int syscall3(int n,uint32_t a,uint32_t b,uint32_t c)
@@ -43,8 +45,8 @@ static void setup(unsigned alignment)
 }
 static void capture(void)
 {
-    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351};
-    const uint32_t original[]={0x83af27,0x83b233,0x83b351};
+    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b};
+    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b};
     uint32_t actual[7];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
     for(unsigned i=0;i<BYTES;++i)*(volatile uint8_t *)(SHARED+i)=*(volatile uint8_t *)address(i);
     for(unsigned i=0;i<7;++i)D(SHARED+BYTES+i*4u)=actual[i];
@@ -65,7 +67,7 @@ static void exercise(unsigned forked)
         REQUIRE(status==first_status,"original/C probe termination differs");
         if(status){REQUIRE((status&127u)==11u||(status&127u)==14u,"expected fault or bounded loop");continue;}
         REQUIRE(!D(SHARED+BYTES+28u),"preserved registers/stack/canaries");
-        for(unsigned i=0;i<SNAPSHOT;++i){uint8_t v=*(volatile uint8_t *)(SHARED+i);if(!implementation)reference[i]=v;else REQUIRE(v==reference[i],"state/source/caller/EAX comparison");}
+        for(unsigned i=0;i<SNAPSHOT;++i){uint8_t v=*(volatile uint8_t *)(SHARED+i);if(!implementation)reference[i]=v;else if(v!=reference[i]){PRINT("first difference offset/expected/actual: ");number(i);PRINT(" ");number(reference[i]);PRINT(" ");number(v);PRINT("\n");REQUIRE(0,"state/source/caller/EAX comparison");}}
     }
     if(first_status){if((first_status&127u)==11u)faults+=3u;else loops+=3u;}
     else{
@@ -171,6 +173,20 @@ static void probes(void)
     }
     for(unsigned o=0;o<6;++o){setup(0);args[0]=ARGUMENTS+o*4u;exercise(1);}
 }
+static void basis(void)
+{
+    stage=8;kind=3;
+    int fd=syscall3(5,(uint32_t)"build/jpeg_basis_oracle.bin",0,0);REQUIRE(fd>=0,"basis oracle open");
+    REQUIRE(syscall3(3,fd,(uint32_t)basis_oracle,sizeof(basis_oracle))==sizeof(basis_oracle),"basis oracle read");syscall3(6,fd,0,0);
+    for(unsigned a=0;a<16;++a){
+        setup(a);exercise(0);
+        for(unsigned i=0;i<sizeof(basis_oracle);++i)REQUIRE(reference[args[0]-CONTEXT+i]==basis_oracle[i],"mathematical cosine basis oracle");
+    }
+    for(unsigned a=0;a<4;++a){
+        setup(a);args[0]=CONTEXT+CONTEXT_BYTES-16384u+a;exercise(1);
+        setup(a);args[0]=ARGUMENTS+a*4u;exercise(1);
+    }
+}
 static void composed(void)
 {
     stage=7;REQUIRE(map(SOURCE,65536,0)&&map(0x1200000,0x100000,0),"composition mappings");
@@ -193,10 +209,10 @@ static void composed(void)
 void _start(void)
 {
     REQUIRE(map(CONTEXT,CONTEXT_BYTES,0)&&map(SOURCE,SOURCE_BYTES,0)&&map(0x640000,4096,0)&&map(0x800000,0x40000,0)&&map(SHARED,0x23000,1),"mappings");
-    markers();preparation();symbols();probes();composed();
+    markers();preparation();symbols();probes();basis();composed();
     REQUIRE(faults&&safe_probes&&per_kind[0]&&per_kind[1]&&per_kind[2],"coverage");
     PRINT("JPEG scan scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
-    PRINT("; dispatcher/prepare/symbol scenarios: ");for(unsigned i=0;i<3;++i){number(per_kind[i]);PRINT(" ");}
+    PRINT("; dispatcher/prepare/symbol/basis scenarios: ");for(unsigned i=0;i<4;++i){number(per_kind[i]);PRINT(" ");}
     PRINT("; fault/loop/safe probe executions/caller changes: ");number(faults);PRINT(" ");number(loops);PRINT(" ");number(safe_probes);PRINT(" ");number(caller_changes);
     PRINT("; real JPEG info/decode executions: 2; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
     syscall3(1,0,0,0);

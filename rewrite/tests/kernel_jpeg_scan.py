@@ -2,7 +2,9 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
+import struct
 import subprocess
 import sys
 import time
@@ -18,6 +20,7 @@ SLOTS = [
     ("jpeg_scan", "kernel_jpeg_scan_83af27", 0x83af27, 0x83b233),
     ("jpeg_prepare", "kernel_jpeg_prepare_83b233", 0x83b233, 0x83b351),
     ("jpeg_symbol", "kernel_jpeg_symbol_83b351", 0x83b351, 0x83b41b),
+    ("jpeg_basis", "kernel_jpeg_basis_83b41b", 0x83b41b, 0x83b653),
 ]
 
 
@@ -37,13 +40,16 @@ def main():
     original_path.write_bytes(original)
     obj, elf, linker = (BUILD / ("jpeg_scan_preview" + s) for s in (".o", ".elf", ".ld"))
     run(["gcc", *FLAGS, "-c", "kernel/jpeg_scan.c", "-o", str(obj)])
+    basis_obj = BUILD / "jpeg_basis_preview.o"
+    run(["gcc", *FLAGS, "-c", "kernel/jpeg_basis.c", "-o", str(basis_obj)])
     linker.write_text("OUTPUT_FORMAT(elf32-i386)\nENTRY(kernel_jpeg_scan_83af27)\nSECTIONS {\n" +
-        "\n".join(f" .{name} {start:#x} : SUBALIGN(1) {{ *(.text.{symbol}) }}\n"
+        "\n".join(f" .{name} {start:#x} : SUBALIGN(1) {{ *(.text.{symbol}) " +
+                    ("*jpeg_basis_preview.o(.rodata*) " if name == "jpeg_basis" else "") + "}\n" +
                     f" ASSERT({symbol} == {start:#x} && SIZEOF(.{name}) <= {end-start}, \"slot overflow\")"
                     for name, symbol, start, end in SLOTS) +
         "\n /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n"
         " .unexpected : { *(*) }\n ASSERT(SIZEOF(.unexpected) == 0, \"unexpected sections\")\n}\n")
-    run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj)])
+    run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj), str(basis_obj)])
     production = BUILD / "icestar_c.x"
     # Original neighbours isolate the new source; the installed check also
     # exercises all previously recovered JPEG helpers in the production image.
@@ -62,12 +68,19 @@ def main():
     candidate_path = BUILD / "jpeg_scan_candidate.x"
     candidate_path.write_bytes(candidate)
     disassembly = run(["objdump", "-D", "-b", "binary", "-mi386", "-Mintel",
-        "--adjust-vma=0x800000", "--start-address=0x83af27", "--stop-address=0x83b41b",
+        "--adjust-vma=0x800000", "--start-address=0x83af27", "--stop-address=0x83b653",
         str(original_path)], capture_output=True, text=True).stdout
     (BUILD / "jpeg_scan_original.disasm").write_text(disassembly)
     jpeg = disk.read_file(b"ICESTAR    ", b"IMAGE      ", b"STAR24  JPG")
     fixture = BUILD / "jpeg_scan_fixture.jpg"
     fixture.write_bytes(jpeg)
+    # Independent mathematical oracle: quantize cosines from libm, then build
+    # every basis coefficient, without reading constants from the recovery.
+    cosine = [round(32768*math.cos(math.pi*i/16)) for i in range(32)]
+    basis = [cosine[((2*x+1)*u) % 32 if u else 4] *
+             cosine[((2*y+1)*v) % 32 if v else 4] >> 15
+             for u in range(8) for v in range(8) for x in range(8) for y in range(8)]
+    (BUILD / "jpeg_basis_oracle.bin").write_bytes(struct.pack("<4096i", *basis))
     offset = 2
     while jpeg[offset+1] != 0xc0:
         assert jpeg[offset] == 0xff
@@ -78,10 +91,11 @@ def main():
     executable = BUILD / f"kernel_jpeg_scan_{label}_test"
     run(["gcc", *FLAGS, f"-DJPEG_FILE_BYTES={len(jpeg)}", f"-DJPEG_WIDTH={width}",
         f"-DJPEG_HEIGHT={height}", "-nostdlib", "-static", "-Wl,-e,_start,--gc-sections",
-        "tests/kernel_jpeg_scan.c", "tests/raster_abi.S", str(obj), "-o", str(executable)])
+        "tests/kernel_jpeg_scan.c", "tests/raster_abi.S", str(obj), str(basis_obj), "-o", str(executable)])
     started = time.monotonic()
     result = subprocess.run([str(executable)], cwd=ROOT, capture_output=True, text=True, timeout=240)
     paths = [ROOT / p for p in ("kernel/jpeg_scan.c", "kernel/jpeg_scan.h",
+        "kernel/jpeg_basis.c", "kernel/jpeg_basis.h",
         "tests/kernel_jpeg_scan.c", "tests/kernel_jpeg_scan.py", "tests/raster_abi.S")]
     summary = dict(installed=args.installed, exit_code=result.returncode,
         seconds=round(time.monotonic()-started, 3), slots=sizes, helper_substitutions=0,

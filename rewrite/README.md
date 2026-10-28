@@ -4806,3 +4806,24 @@ pixel/slack byte and all 128 KiB of workspace. Evidence:
 `build/jpeg_scan_original.disasm` and `build/jpeg_scan_candidate.x`.
 Production remains at 336 intervals at this source checkpoint. The inverse
 transform and remaining JPEG/OS routines are still unrecovered.
+
+### JPEG cosine basis source checkpoint (2026-10-28)
+
+`kernel/jpeg_basis.c` recovers `0x83b41b..0x83b653` in 331/568 bytes,
+including its 32 cosine constants. It generates all 4,096 signed fixed-point
+basis coefficients, retains the zero-frequency `cos(pi/4)` factor and
+arithmetic truncation, and reloads the destination for every store. The
+original raw EAX is the address of its final stack counter; the recovered
+routine preserves that address using its frame pointer. It does not expose
+a pointer to a C local whose lifetime has ended.
+
+The expanded scan fixture now passes 3,827 scenarios / 11,481 executions,
+including 24 basis cases. Sixteen destination offsets compare every basis
+coefficient with an independent Python/libm cosine calculation. Guard-page
+and incoming-word destinations compare original/C fault or success status;
+the combined probes cover 60 fault, 12 alarm-terminated loop and 45 successful
+executions. Complete real JPEG decoding still matches every output/slack
+and workspace byte with no helper substitutions. Evidence is in the updated
+`build/jpeg_scan_preview_summary.json` and `build/jpeg_basis_oracle.bin`.
+Production remains at 336 intervals; transform accumulation and the remaining
+JPEG/OS routines are still unrecovered.
