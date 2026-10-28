@@ -15,6 +15,9 @@ SLOTS = {
     "pixel_put32": (0x81b2f4, 0x81b37c),
     "pixel_get8": (0x81b406, 0x81b486),
     "pixel_get32": (0x81b486, 0x81b514),
+    "pixel_sample": (0x81b514, 0x81b714),
+    "raster_line8": (0x81b734, 0x81b8dc),
+    "raster_line32": (0x81b8dc, 0x81ba8a),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 266 declared kernel intervals and
+original VHD. The current build installs 269 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2949,3 +2949,50 @@ Evidence: `build/raster_preview_test.log`,
 `build/raster_chain_preview_summary.json`, `build/raster_chain_candidate.x`
 and `build/kernel_raster_chain_preview_test`. The production build still has
 266 installed intervals at this checkpoint.
+
+### Layer sampling and DDA installation (2026-10-28)
+
+The sampler and both DDA line routines are installed at their original
+addresses, increasing production from 266 to 269 intervals. All previous
+266 intervals retain identical bytes. The 1,303 changed kernel bytes are
+confined to the three new slots; all three production disks pass complete
+reconstruction and differ from their predecessors only in the existing kernel
+file. Bodies occupy 358/512, 304/424 and 304/430 bytes with NOP padding.
+
+Installed differential checks pass 90,976 sampler scenarios (16.342 s),
+61,700 line scenarios (10.158 s) and 3,584 complete line-service scenarios
+(0.684 s). The surface-ID pixel regression passes 557,312 scenarios
+(42.855 s) and 4,608 complete service scenarios (0.550 s); the complete DIB
+chain passes 9,288 scenarios (2.821 s). Startup state/table and service
+forwarder regressions also pass. The earlier source-checkpoint fixture
+exclusions still apply; complete chains use actual calls with no substitutions.
+The independent 68-million-case pixel-helper fixture was not rerun here.
+
+Independent QEMU snapshot checks pass Color (29.596 s), Snake (33.975 s),
+MOV (32.489 s) and STARSCR (26.489 s), including startup execution, all
+269 loaded intervals, heap/tasks, PS/2 input and the respective application
+checks. Representative application screenshots were visually inspected.
+The original STARSCR post-exit mouse/timer stall remains documented.
+
+A separate normal boot/input trace observes the new 32-bit line routine
+(10 entry / 11 body records), alongside the DIB decoder (two / 1,496,477),
+direct 32-bit writer (1,496,442 / ten), surface-ID setter (31,981 / nine)
+and getter (5,202 / four). The eleven monitored compiled bodies and padding
+match the disk kernel, and all installed intervals match guest memory.
+The desktop and returned CPUID prompt were visually inspected. The sampler
+and 8-bit line are unobserved in this boot; their differential evidence is
+separate. TB chaining means trace records are not exact call counts.
+No diagnostic guest or CALL substitution is used for this boot.
+
+Evidence: `build/raster_269_installation_summary.json`,
+`build/raster_269_build.log`, `build/raster_269_disk_verify.log`,
+`build/raster_269_validation.log` and `build/raster_269_evidence/`, including
+application captures and archived `natural/` and `differential/` artifacts
+with SHA-256 manifests. The kernel and three disk hashes remain unchanged
+through validation. Kernel SHA-256:
+`874f262f8a3465366473e2c8fd248188d1c9cccae78eb8f8a633f0c77ee87d13`.
+Combined-application disk SHA-256:
+`d348e4d1b12174f6377db9c7c54d8887fcef66fef65485f069e98223276bbfb3`.
+The latest complete `make verify` remains the successful 262-interval run;
+269 has the focused and runtime coverage described above. Recovery of the
+entire OS is still incomplete.
