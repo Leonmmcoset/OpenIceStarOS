@@ -120,7 +120,7 @@ static void run(void)
         (void *)kernel_text_wide32_81e45a,(void *)kernel_text_wide32_mask_81e624};
     const void *functions[]={(void *)(uintptr_t)(entries[kind]+0x100000u),native[kind],(void *)(uintptr_t)entries[kind]};
     for(implementation=0;implementation<3;++implementation){
-        reset();font_reset();uint32_t actual[7];
+        reset();font_reset();uint32_t actual[RASTER_ARGUMENT_WORDS+1];
         REQUIRE(!raster_checked_call(functions[implementation],args,actual),"wide ABI");
         compare(actual,value);font_compare();
     }

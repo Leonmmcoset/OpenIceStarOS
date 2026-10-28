@@ -122,7 +122,7 @@ static void run_case(void)
         (void *)kernel_text_run32_81e952,(void *)kernel_text_vertical32_81ea1c};
     const void *functions[]={(void *)(uintptr_t)(run_entries[kind]+0x100000u),native[kind],(void *)(uintptr_t)run_entries[kind]};
     for(implementation=0;implementation<3;++implementation){
-        reset();font_reset();*(volatile uint32_t *)0x1b020=ascii_font_base;uint32_t actual[7];
+        reset();font_reset();*(volatile uint32_t *)0x1b020=ascii_font_base;uint32_t actual[RASTER_ARGUMENT_WORDS+1];
         REQUIRE(!raster_checked_call(functions[implementation],args,actual),"text run ABI");
         compare(actual,value);font_compare();
         REQUIRE(*(volatile uint32_t *)0x1b020==ascii_font_base,"run font global");
@@ -144,7 +144,7 @@ static void read_limit_guards(void)
         for(implementation=0;implementation<3;++implementation){
             reset();*(volatile uint32_t *)0x1b020=ascii_font_base;
             int pid=syscall3(2,0,0,0);REQUIRE(pid>=0,"run guard fork");
-            if(!pid){uint32_t actual[7];raster_checked_call(functions[implementation],args,actual);syscall3(1,0,0,0);}
+            if(!pid){uint32_t actual[RASTER_ARGUMENT_WORDS+1];raster_checked_call(functions[implementation],args,actual);syscall3(1,0,0,0);}
             uint32_t status=0;REQUIRE(syscall3(7,(uint32_t)pid,(uint32_t)&status,0)==pid,"run guard wait");
             REQUIRE((status&127u)==11u,"mandatory byte read before index limit");++guard_faults;
         }
