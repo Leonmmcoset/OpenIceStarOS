@@ -5048,3 +5048,28 @@ loaded intervals match. A separate Cirrus boot also passes the same desktop,
 PS/2 and CMD checks. Both screenshots were inspected. Evidence:
 `build/boot_stage3_qemu_summary.json`, `build/boot_stage3_qemu_*.gdb.log`
 and `build/stage3_source_evidence/{std32,std8,cirrus}/`.
+
+### Complete source-built-boot regression (2026-10-28)
+
+The uninterrupted `make verify` finishes with exit code 0 at 349 installed
+kernel intervals and five rebuilt applications. This includes both new
+boot differential checks and every existing native/fixed-address comparison,
+QEMU hardware fixture, JPEG corpus comparison, application check, entire-disk
+reconstruction and recovery inventory check. The separate four-configuration
+real-BIOS matrix also passes. A production CLOCK boot passes three changing
+complete frames, PS/2 close, task exit, CMD reuse, heap/RAM and real TSS-switch
+checks; every loaded kernel interval matches. The CLOCK frame was inspected.
+The kernel and all five application binaries remain identical to the
+pre-boot-change baseline; production disk hashes remain stable throughout
+verification and snapshot boots. The original VHD also retains its recorded
+SHA-256.
+
+Evidence is preserved in `build/stage3_source_evidence/`, including
+`stage3_full_verify.log`, `stage3_clock_boot.log`, the three desktop/input
+captures and hardware-matrix summaries. `build/stage3_source_integrity_summary.json`
+records the final hashes and outcomes. Third-stage SHA-256:
+`52523573d544a5b14327a49117dc7cef1c09237bf2591980eff692e1b1f8fbd4`.
+Kernel SHA-256 remains
+`4fe8ecf13e88a193f200cbec53506659e498660da529a6c29e5bc3d771c77ed5`.
+This completes the third-stage source replacement checkpoint. Complete
+recovery of INIT, the kernel, drivers and remaining applications is unfinished.
