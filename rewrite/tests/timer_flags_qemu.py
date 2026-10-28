@@ -10,7 +10,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
 sys.path.insert(0, str(ROOT))
-from tools.kernel_image import ORIGINAL_SHA256  # noqa: E402
+from tools.kernel_image import Fat16, ORIGINAL_SHA256  # noqa: E402
 
 
 def run(command):
@@ -22,9 +22,12 @@ def main():
     parser.add_argument("--installed", action="store_true")
     args = parser.parse_args()
     candidate = BUILD / ("icestar_c.x" if args.installed else "timer_objects_preview.x")
+    BUILD.mkdir(exist_ok=True)
     original = BUILD / "timer_objects_original.x"
-    if hashlib.sha256(original.read_bytes()).hexdigest() != ORIGINAL_SHA256:
-        raise RuntimeError("original timer kernel hash mismatch; run kernel_timer_objects.py first")
+    original_data = Fat16((ROOT.parent / "IceStarOS_x86_32M.vhd").read_bytes()).read_kernel()
+    if hashlib.sha256(original_data).hexdigest() != ORIGINAL_SHA256:
+        raise RuntimeError("original timer kernel hash mismatch")
+    original.write_bytes(original_data)
     # The original helper bytes are already installed in the production kernel.
     # A standalone preview supplies the same original helper bytes verbatim.
     data = candidate.read_bytes()

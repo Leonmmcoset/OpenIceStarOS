@@ -446,6 +446,32 @@ SECTIONS
     ASSERT(kernel_display_select_depth == 0x81afbc && ADDR(.display_colors) + SIZEOF(.display_colors) <= 0x81b26e, "display_colors slot overflow")
     .object_table_state 0x82aa0f : SUBALIGN(1) { *kernel_startup_state.o(.text.kernel_init_object_table_state) }
     ASSERT(kernel_init_object_table_state == 0x82aa0f && ADDR(.object_table_state) + SIZEOF(.object_table_state) <= 0x82aa33, "object_table_state slot overflow")
+    .timer_find_free 0x82aa33 : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_find_free) }
+    ASSERT(kernel_timer_find_free == 0x82aa33 && ADDR(.timer_find_free) + SIZEOF(.timer_find_free) <= 0x82aaad, "timer_find_free layout overflow")
+    .timer_create 0x82aaad : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_create) }
+    ASSERT(kernel_timer_create == 0x82aaad && ADDR(.timer_create) + SIZEOF(.timer_create) <= 0x82abaf, "timer_create layout overflow")
+    .timer_delete 0x82abaf : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_delete) }
+    ASSERT(kernel_timer_delete == 0x82abaf && ADDR(.timer_delete) + SIZEOF(.timer_delete) <= 0x82ac21, "timer_delete layout overflow")
+    .timer_rearm 0x82ac21 : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_rearm) }
+    ASSERT(kernel_timer_rearm == 0x82ac21 && ADDR(.timer_rearm) + SIZEOF(.timer_rearm) <= 0x82ac53, "timer_rearm layout overflow")
+    .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
+    ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
+    .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }
+    ASSERT(kernel_draw_clock_date == 0x82acdd && ADDR(.clock_draw_date) + SIZEOF(.clock_draw_date) <= 0x82ad81, "clock_draw_date layout overflow")
+    .cmos_seconds 0x82adab : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_seconds) }
+    ASSERT(kernel_cmos_seconds == 0x82adab && ADDR(.cmos_seconds) + SIZEOF(.cmos_seconds) == 0x82adc5, "cmos_seconds layout overflow")
+    .cmos_minutes 0x82adc5 : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_minutes) }
+    ASSERT(kernel_cmos_minutes == 0x82adc5 && ADDR(.cmos_minutes) + SIZEOF(.cmos_minutes) == 0x82addf, "cmos_minutes layout overflow")
+    .cmos_hours 0x82addf : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_hours) }
+    ASSERT(kernel_cmos_hours == 0x82addf && ADDR(.cmos_hours) + SIZEOF(.cmos_hours) == 0x82adf9, "cmos_hours layout overflow")
+    .cmos_weekday 0x82adf9 : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_weekday) }
+    ASSERT(kernel_cmos_weekday == 0x82adf9 && ADDR(.cmos_weekday) + SIZEOF(.cmos_weekday) == 0x82ae13, "cmos_weekday layout overflow")
+    .cmos_day 0x82ae13 : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_day) }
+    ASSERT(kernel_cmos_day == 0x82ae13 && ADDR(.cmos_day) + SIZEOF(.cmos_day) == 0x82ae2d, "cmos_day layout overflow")
+    .cmos_month 0x82ae2d : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_month) }
+    ASSERT(kernel_cmos_month == 0x82ae2d && ADDR(.cmos_month) + SIZEOF(.cmos_month) == 0x82ae47, "cmos_month layout overflow")
+    .cmos_year 0x82ae47 : SUBALIGN(1) { *kernel_cmos_fields.o(.text.kernel_cmos_year) }
+    ASSERT(kernel_cmos_year == 0x82ae47 && ADDR(.cmos_year) + SIZEOF(.cmos_year) == 0x82ae84, "cmos_year layout overflow")
     .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
     ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
     .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }

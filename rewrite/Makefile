@@ -31,7 +31,8 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_startup_state.o $(BUILD)/kernel_startup_apps.o $(BUILD)/kernel_display_palette.o \
                   $(BUILD)/kernel_display_dac.o $(BUILD)/kernel_paging.o \
                   $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
-                  $(BUILD)/kernel_object_registry.o
+                  $(BUILD)/kernel_object_registry.o \
+                  $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
@@ -39,6 +40,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.startup_desktop.bin $(BUILD)/kernel.startup_ui.bin \
                   $(BUILD)/kernel.object_find_name.bin $(BUILD)/kernel.object_set_state.bin \
                   $(BUILD)/kernel.object_registry_add.bin $(BUILD)/kernel.object_registry_remove.bin \
+                  $(BUILD)/kernel.timer_find_free.bin $(BUILD)/kernel.timer_create.bin $(BUILD)/kernel.timer_delete.bin $(BUILD)/kernel.timer_rearm.bin \
+                  $(BUILD)/kernel.clock_draw_time.bin $(BUILD)/kernel.clock_draw_date.bin \
+                  $(BUILD)/kernel.cmos_seconds.bin $(BUILD)/kernel.cmos_minutes.bin $(BUILD)/kernel.cmos_hours.bin $(BUILD)/kernel.cmos_weekday.bin $(BUILD)/kernel.cmos_day.bin $(BUILD)/kernel.cmos_month.bin $(BUILD)/kernel.cmos_year.bin \
                   $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
                   $(BUILD)/kernel.queue_request.bin $(BUILD)/kernel.event_loop.bin \
@@ -216,6 +220,15 @@ $(BUILD)/kernel_startup_ui.o: kernel/startup_ui.c kernel/startup_ui.h kernel/run
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_object_registry.o: kernel/object_registry.c kernel/object_registry.h kernel/helpers.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_timer_objects.o: kernel/timer_objects.c kernel/timer_objects.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_clock_display.o: kernel/clock_display.c kernel/clock_display.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_cmos_fields.o: kernel/cmos_fields.c kernel/cmos_fields.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_startup_apps.o: kernel/runtime.h
@@ -642,6 +655,10 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_startup_desktop.py --installed
 	python3 tests/kernel_startup_ui.py --installed
 	python3 tests/kernel_object_registry.py --installed
+	python3 tests/kernel_timer_objects.py --installed
+	python3 tests/kernel_clock_display.py --installed
+	python3 tests/timer_flags_qemu.py --installed
+	python3 tests/kernel_cmos_fields.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -858,3 +875,17 @@ test-startup-ui: $(BUILD)/icestar_c.x
 .PHONY: test-object-registry
 test-object-registry: $(BUILD)/icestar_c.x
 	python3 tests/kernel_object_registry.py --installed
+
+.PHONY: test-timer-objects test-clock-display test-timer-flags test-cmos-fields
+
+test-timer-objects: $(BUILD)/icestar_c.x
+	python3 tests/kernel_timer_objects.py --installed
+
+test-clock-display: $(BUILD)/icestar_c.x
+	python3 tests/kernel_clock_display.py --installed
+
+test-timer-flags: $(BUILD)/icestar_c.x
+	python3 tests/timer_flags_qemu.py --installed
+
+test-cmos-fields: $(BUILD)/icestar_c.x
+	python3 tests/kernel_cmos_fields.py --installed
