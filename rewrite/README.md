@@ -4241,3 +4241,38 @@ and `build/bitmap_320_evidence/`. The kernel SHA-256 is
 `b4cf03fa96980fc96e45600a5c97bda9da262260e3b2b167f8c53d9ad5752afb`.
 The latest complete regression remains 305; later checkpoints use focused
 checks and recorded QEMU boots. Complete OS source recovery is unfinished.
+
+### BMP file wrapper source checkpoint (2026-10-28)
+
+`kernel/bitmap_files.c/.h` recovers file drawing at `0x81fec2..0x81ffc4`
+and the file-to-fit wrapper at `0x82040c..0x8204ac`, in 220/258 and 134/160
+bytes. Logic is C, with the same instruction-free incoming-EAX binding on
+negative-X rejection. Initial signed coordinate clipping, wrapped surface
+lookup, C..F uppercase absolute-drive detection, unchecked path lookahead,
+live caller arguments and captured loaded-buffer identity are retained.
+Absolute resolution requires a signed result greater than zero; relative
+lookup accepts zero. Null buffers stop without drawing/freeing. Successful
+loads draw before freeing and leave the free callee's raw EAX as the result.
+
+`python3 tests/kernel_bitmap_files.py` passes 30,306 scenarios / 90,918
+original/ordinary-C/fixed-address-C executions in 6.810 seconds. It compares
+callback arguments/order, a complete copied 32-byte directory record, all
+32 KiB of state, six incoming words, EAX, registers/canaries, 4 KiB of
+globals and all 320 initialized service words. Coverage includes every byte
+at all three drive-prefix positions, signed/wrapped coordinate and lookup
+extremes, null/opaque buffers, 85,824 caller-word mutations and 35,196
+directory-record reads. All six display depths and two CPU choices execute
+through the real initializer, with fixed-address dispatch via slots 74/140.
+Twelve child SIGSEGV probes preserve the unchecked lookahead; rejected first
+bytes also execute safely at the end of a mapped page.
+
+The fixture explicitly detours seven filesystem/draw/free helper entries.
+For 96 composition scenarios it restores the BMP renderer entry inside the
+recording callback and executes the actual original/recovered renderer and
+pixel/quantizer bodies, producing 288 real-renderer executions across four
+conversion modes. Filesystem/free and scaled drawing remain test boundaries;
+this does not establish real filesystem integration. Evidence:
+`build/bitmap_files_preview_summary.json`, `build/bitmap_files_preview_test.log`,
+`build/bitmap_draw_file_original.disasm`, `build/bitmap_fit_file_original.disasm`
+and `build/bitmap_files_candidate.x`. Production remains at 320 intervals
+at this source checkpoint. Complete OS source recovery is unfinished.
