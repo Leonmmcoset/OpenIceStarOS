@@ -38,7 +38,7 @@ headers are in [inventory.json](inventory.json).
 | `/ICESTAR/GAMES/NES/NES.X` | 57,680 | application | unrecovered |
 | `/ICESTAR/GAMES/PUSHBOX.X` | 68,046 | application | unrecovered |
 | `/ICESTAR/GAMES/SNAKE.X` | 2,852 | application | rebuilt |
-| `/ICESTAR/ICESTAR.X` | 250,099 | kernel | partial; 294 declared intervals |
+| `/ICESTAR/ICESTAR.X` | 250,099 | kernel | partial; 298 declared intervals |
 | `/ICESTAR/MACBAR.X` | 27,758 | application | unrecovered |
 | `/ICESTAR/MPLAY.X` | 31,564 | application | unrecovered |
 | `/ICESTAR/NOTEPAD.X` | 62,326 | application | unrecovered |

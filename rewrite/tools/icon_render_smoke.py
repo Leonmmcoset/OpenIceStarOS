@@ -16,6 +16,7 @@ SLOTS = {
     "pixel_get8": (0x81b406, 0x81b486),
     "pixel_get32": (0x81b486, 0x81b514),
     "pixel_sample": (0x81b514, 0x81b714),
+    "palette_color": (0x81b714, 0x81b734),
     "raster_line8": (0x81b734, 0x81b8dc),
     "raster_line32": (0x81b8dc, 0x81ba8a),
     "raster_fill8": (0x81ba8a, 0x81bd26),
@@ -27,6 +28,10 @@ SLOTS = {
     "raster_circle32": (0x81c6f2, 0x81ca82),
     "raster_disc8": (0x81ca82, 0x81cd50),
     "raster_disc32": (0x81cd50, 0x81d032),
+    "brush_square": (0x81d032, 0x81d070),
+    "brush_line": (0x81d070, 0x81d1fc),
+    "brush_circle": (0x81d1fc, 0x81d4e6),
+    "circle_quadrants": (0x81d4e6, 0x81d6c2),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

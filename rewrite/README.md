@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 294 declared kernel intervals and
+original VHD. The current build installs 298 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3711,10 +3711,10 @@ frame without extra save slots. Compiled slot usage is respectively
 39/62, 316/396, 659/746 and 419/476 bytes.
 
 `python3 tests/kernel_raster_brush.py` passes 46,904 original/ordinary-C/
-fixed-address-C scenarios / 140,712 executions (7.848 seconds). A separate
+fixed-address-C scenarios / 140,712 executions (7.844 seconds). A separate
 fixture runs the real initializer, selects common slots 237..241 and executes
 the entire fill/pixel/copy chains for 2,560 scenarios / 5,120 original/candidate
-executions (0.353 seconds). Both display modes and both CPU copy selections
+executions (0.356 seconds). Both display modes and both CPU copy selections
 are covered. There are no substituted CALL targets. The independent widened
 coordinate/byte-address models compare all 32 KiB of mapped state, eight live
 incoming words, raw EAX, callee-saved registers and stack canaries.
@@ -3735,3 +3735,45 @@ Evidence: `build/raster_brush_direct_preview_summary.json`,
 `build/raster_brush_preview_test.log`, `build/raster_brush_preview.elf` and
 `build/raster_brush_candidate.x`. Production remains at 294 intervals at this
 source checkpoint. Complete OS source recovery remains unfinished.
+
+### Square-brush production installation (2026-10-28)
+
+The four square-brush and quadrant-circle routines are installed at their
+original entries, increasing production from 294 to 298 declared intervals.
+All preceding 294 intervals, including the already recovered palette lookup,
+remain byte-identical. The palette fixture now reuses `kernel/runtime.c`;
+no duplicate palette implementation is installed. Only 1,589 kernel bytes
+change inside the four new slots. Production exactly matches the independent
+source preview, and all three rebuilt disks change only in the kernel file.
+Whole-disk INIT/kernel/application reconstruction checks pass.
+
+Installed brush direct and initialized-service fixtures pass all 140,712
+and 5,120 executions. Installed fill, pixel-access and periodic-color rectangle
+fixtures also pass, as do fixed-address startup/table initialization, the
+existing palette/tick-wait fixture (4,224 / 2,304 cases) and inventory checks.
+`make verify` includes the installed brush test; `make test-raster-brush` runs
+it separately. The latest complete regression remains the successful
+285-interval run; this checkpoint has the focused and guest checks here.
+
+Five ordinary production QEMU boots pass CLOCK, Color, Snake, MOV and
+STARSCR checks, live heap/task checks and every one of the 298 loaded kernel
+interval comparisons. CLOCK's graphics trace observes entry and compiled
+body execution of all four new routines: square 5,647 / 5,646 records, line
+15 / 1,382, thick circle 5 / 4,330 and quadrant circle 4 / 45. These QEMU
+translation-block records are not exact function-call counts. The palette
+lookup is unobserved in that run; its separate direct/service fixtures cover
+execution. CLOCK verifies three complete changing frames, closure and CMD
+reuse; its screenshot was visually inspected. The other four boots also pass
+ordered startup traces. STARSCR retains its original post-exit input stall.
+
+Evidence: `build/raster_brush_298_final_summary.json`,
+`build/raster_brush_298_installation_summary.json`,
+`build/raster_brush_298_validation_summary.json`,
+`build/raster_brush_298_app_boots.json`, `build/raster_brush_298_evidence/`
+and `build/raster_brush_294_baseline/`. Kernel and all three disk hashes remain
+unchanged throughout validation and guest boots.
+Kernel SHA-256:
+`25aba3010273d3f684c869eabc75a32d3ff309f118f0821dab6f96d741cea3b4`.
+Combined-application disk SHA-256:
+`4a2079effd16dc6b5bd0fa6d0e5827315b8d4e86a9fdf74243d3148b4080f370`.
+Complete boot/kernel/application/driver source recovery remains unfinished.

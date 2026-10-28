@@ -527,6 +527,16 @@ SECTIONS
     ASSERT(kernel_raster_disc8_81ca82 == 0x81ca82 && ADDR(.raster_disc8) + SIZEOF(.raster_disc8) <= 0x81cd50, "raster_disc8 overflow")
     .raster_disc32 0x81cd50 : SUBALIGN(1) { *kernel_raster_disc.o(.text.kernel_raster_disc32_81cd50) }
     ASSERT(kernel_raster_disc32_81cd50 == 0x81cd50 && ADDR(.raster_disc32) + SIZEOF(.raster_disc32) <= 0x81d032, "raster_disc32 overflow")
+    .brush_square 0x81d032 : SUBALIGN(1) { *kernel_raster_brush.o(.text.kernel_brush_square_81d032) }
+    ASSERT(kernel_brush_square_81d032 == 0x81d032 && ADDR(.brush_square) + SIZEOF(.brush_square) <= 0x81d070, "brush_square overflow")
+    .brush_line 0x81d070 : SUBALIGN(1) { *kernel_raster_brush.o(.text.kernel_brush_line_81d070) }
+    ASSERT(kernel_brush_line_81d070 == 0x81d070 && ADDR(.brush_line) + SIZEOF(.brush_line) <= 0x81d1fc, "brush_line overflow")
+    .brush_circle 0x81d1fc : SUBALIGN(1) {
+        *kernel_raster_brush.o(.text.kernel_brush_circle_81d1fc .text.kernel_brush_circle_body)
+    }
+    ASSERT(kernel_brush_circle_81d1fc == 0x81d1fc && ADDR(.brush_circle) + SIZEOF(.brush_circle) <= 0x81d4e6, "brush_circle overflow")
+    .circle_quadrants 0x81d4e6 : SUBALIGN(1) { *kernel_raster_brush.o(.text.kernel_circle_quadrants_81d4e6) }
+    ASSERT(kernel_circle_quadrants_81d4e6 == 0x81d4e6 && ADDR(.circle_quadrants) + SIZEOF(.circle_quadrants) <= 0x81d6c2, "circle_quadrants overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
