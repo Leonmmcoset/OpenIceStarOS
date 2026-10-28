@@ -141,6 +141,10 @@ KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
 
+.PHONY: test-boot-video-preview
+test-boot-video-preview:
+	python3 tests/boot_video.py
+
 $(BUILD):
 	mkdir -p $@
 

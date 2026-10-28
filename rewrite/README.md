@@ -4967,3 +4967,23 @@ focused installed regression and a recorded production boot. Malformed MCU
 paths using uninitialized coefficients remain outside established equivalence.
 Original boot/INIT/kernel/driver/application components still remain; all
 five rebuilt applications are unchanged. Complete OS recovery is unfinished.
+
+### Third-stage VBE source checkpoint (2026-10-28)
+
+`boot/stage3_video.c` recovers the original real-mode selector at stage
+offsets `0x189..0x2c3`. Assembly boundaries issue INT 10h and access the
+ES=0 controller/mode buffers and mode table. Selection retains the original
+32-bit enumeration, requested-mode sentinel `0x105`, last 1024-by-768
+fallback, truncated table offsets, unchecked mode-set status and VGA mode
+13h fallback. This source checkpoint is not yet installed into the boot disk.
+
+`make test-boot-video-preview` compares 168 scenarios / 336 original and
+compiled executions in Unicorn, including 40,428 ordered BIOS requests.
+It compares every boot-header byte and all 64 KiB of low memory except
+private stack scratch. Cases cover controller/version failures, missing and
+invalid modes, final-query and mode-set failures, nonzero counters, table
+wrap and randomized mode lists. INT 10h uses a deterministic model; real
+firmware execution requires a separate QEMU integration check. Install the
+pinned dependency with `python3 -m pip install --target build/test-deps -r
+tests/requirements.txt`. Evidence is `build/boot_video_summary.json`.
+The production stage still includes original code at this checkpoint.
