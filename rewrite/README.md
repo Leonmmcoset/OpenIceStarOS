@@ -4181,3 +4181,39 @@ The latest complete `make verify` checkpoint remains 305; 313, 316 and 319
 use focused regression and recorded guest boots. Five applications are
 rebuilt, while INIT/kernel are partial and 32 original program paths remain
 unrecovered. Complete OS source recovery is unfinished.
+
+### BMP drawing source checkpoint (2026-10-28)
+
+`kernel/bitmap.c/.h` recovers `0x81ffc4..0x82040c` in 847/1,096 bytes.
+Drawing and control flow are C; an instruction-free EAX output binding
+preserves the incoming register on negative-X rejection. The implementation
+retains signed clipping, unsigned crop selection, captured file/header/palette
+identities, live input and geometry between calls, and the required unused
+global read. It calls the real pixel writers and ordered-dither quantizer.
+
+This legacy renderer does not validate BMP signatures/compression or apply
+standard row padding. Four-bit images use a byte-per-column source stride,
+draw the low nibble first, reload addressing/data after that store and draw
+the second pixel even at odd cropped widths. The 24-to-32-bit path reads a
+full DWORD before masking, retaining its fourth-byte overread. The 24-to-8-bit
+path passes local column/row coordinates to the quantizer.
+
+`python3 tests/kernel_bitmap.py` passes 11,108 direct scenarios / 33,324
+original/ordinary-C/fixed-address-C executions in 2.990 seconds. Its bounded
+oracle compares 32 KiB of state, 4 KiB of globals, all six incoming words,
+raw EAX, saved registers and canaries, excluding 2,716 unsafe scenarios
+before execution. Coverage includes 54,380 stores, 224 bitmap stores, 593
+metadata stores, 196 changed caller words, 20 changed bitmap arguments,
+15 output-dependent nibble reloads and 1,153 odd-width pairs. Nine child
+SIGSEGV probes confirm the four-byte fetch. No CALL targets are substituted.
+
+A separate real-initializer composition passes 1,344 scenarios / 2,688
+executions in 0.241 seconds, with 192 unsafe cases excluded. It compares
+all 320 service words and executes slot 75 across six display depths and
+two CPU choices; surface depth varies independently. The original VHD
+contains no BMP resources, so these use generated/aliased image fixtures.
+Evidence: `build/bitmap_direct_preview_summary.json`,
+`build/bitmap_chain_preview_summary.json`, `build/bitmap_preview_test.log`,
+`build/bitmap_original.disasm` and `build/bitmap_candidate.x`. Production
+remains at 319 intervals at this source checkpoint. Complete OS recovery
+is unfinished.
