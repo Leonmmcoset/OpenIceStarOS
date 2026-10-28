@@ -1,5 +1,5 @@
-/* Startup drawing/resource orchestration at 0x81067a..0x810d4a. The image,
- * drawing and file-loading bodies remain original address-named boundaries. */
+/* Startup drawing/resource orchestration at 0x81067a..0x810d4a. Address-named
+ * dependencies resolve to C where installed, including FAT file readers. */
 #include <stdint.h>
 #include "startup_ui.h"
 #include "runtime.h"

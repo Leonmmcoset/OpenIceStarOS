@@ -1,0 +1,73 @@
+{
+  "image_sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "trace_sha256": "cb296cb100fe18f914d00e4f4449463711b4b13b93aa3b2282efc28f5fd72dd5",
+  "functions": {
+    "allocate_record": {
+      "entry": "0x827454",
+      "entry_events": 78,
+      "body_events": 701,
+      "executed_blocks": [
+        "0x827454",
+        "0x82748f",
+        "0x8274a3",
+        "0x8274bd",
+        "0x8274c9",
+        "0x827556",
+        "0x82755e",
+        "0x827566",
+        "0x8275a5",
+        "0x8275b3"
+      ]
+    },
+    "read_record": {
+      "entry": "0x82760c",
+      "entry_events": 6,
+      "body_events": 87,
+      "executed_blocks": [
+        "0x82760c",
+        "0x827656",
+        "0x827660",
+        "0x8276f0",
+        "0x8276f8",
+        "0x827700",
+        "0x82773f",
+        "0x82774d"
+      ]
+    },
+    "allocate_path": {
+      "entry": "0x827798",
+      "entry_events": 34,
+      "body_events": 72,
+      "executed_blocks": [
+        "0x827798",
+        "0x8277ab",
+        "0x8277b2",
+        "0x8277b8",
+        "0x8277bd"
+      ]
+    },
+    "read_path": {
+      "entry": "0x8277dc",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_relative": {
+      "entry": "0x827826",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_record": {
+      "entry": "0x8278f4",
+      "entry_events": 4,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x8278f4",
+        "0x82797a"
+      ]
+    }
+  },
+  "installed_intervals": 358,
+  "scope": "Production boot and CMD/application paths; unobserved entries require differential fixtures."
+}

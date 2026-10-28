@@ -1,5 +1,5 @@
 /* Startup caller 0x810f38..0x810f78. The image-launching callee at
- * 0x802282 is still original code; only this orchestration is recovered. */
+ * 0x802282 is recovered in x_loader.c. */
 #include <stdint.h>
 #include "runtime.h"
 #include "startup_apps.h"

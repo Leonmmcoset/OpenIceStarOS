@@ -43,3 +43,28 @@ Preview evidence: `build/fat_files_summary.json`, `build/fat_files_preview.log`.
 This checkpoint verifies source recovery; production installation and real boot
 validation are recorded next. It does not recover the underlying disk controller
 or pathname-lookup implementations, and does not complete the OS.
+
+## Integrated validation
+
+The production manifest now installs all six intervals, taking the total from
+352 to 358. `make test-fat-files test-x-loader` verifies the actual installed
+slots, including overflow assertions and exact agreement with the independent
+preview link. Kernel whole-disk verification, five application installer tests,
+whole-application disk comparison, six branding safety tests, residual scan and
+inventory check pass in a fresh worktree build. The inventory retains five
+rebuilt applications, two partial programs and 32 unrecovered program paths.
+
+`tools/boot_smoke.py build/OpenIceStarOS_c_apps.vhd --clock-check
+--fat-files-check --memory-check --task-check` boots the installed image. QEMU
+records C entry/body execution for allocating a directory record (78 entries),
+reading a record (6), allocating by path (34) and reading a program-header
+sector (4). Named buffered reads and relative headers are not observed in this
+boot; their differential fixtures remain the evidence for those two entries.
+The 128 MiB RAM/59-header heap, real TSS switches, branded CMD/cpuid, changing
+CLOCK frames, PS/2 close, task exit and CMD reuse all pass, and all 358 installed
+intervals match live guest memory. CMD and CLOCK screenshots were inspected.
+
+Evidence is committed in `../evidence/2026-10-28-fat-files/`. Underlying pathname
+lookup and hardware sector readers remain original code. This is a focused
+358-interval integration check, distinct from the separate full 352-interval
+branding regression.

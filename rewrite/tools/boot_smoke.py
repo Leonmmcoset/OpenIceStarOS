@@ -76,11 +76,19 @@ def main():
                         help="load the C screen saver, verify four phases, and exit with Esc")
     parser.add_argument("--clock-check", action="store_true",
                         help="load C CLOCK, verify changing hands/face, close it and reuse CMD")
+    parser.add_argument("--fat-files-check", action="store_true",
+                        help="trace recovered FAT readers during boot and CMD/application loading")
     parser.add_argument("--math-check", action="store_true",
                         help="trace the installed C factorial/power/trig series during --clock-check")
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.fat_files_check and any((arguments.starscr_reference, arguments.math_check,
+            arguments.entry_check, arguments.icon_dib_check, arguments.icon_render_check,
+            arguments.surface_move_check, arguments.surface_scale_check,
+            arguments.surface_lifecycle_check, arguments.surface_order_check,
+            arguments.cursor_check, arguments.firmware_check)):
+        parser.error("--fat-files-check requires its own compiled-kernel execution trace")
     if arguments.math_check:
         if not arguments.clock_check:
             parser.error("--math-check requires --clock-check")
@@ -150,6 +158,10 @@ def main():
         command = ["qemu-system-i386", "-machine", "pc", "-m", "128", "-drive",
                    f"file={image},format=raw,snapshot=on", "-boot", "c", "-display", "none",
                    "-vga", arguments.vga, "-monitor", f"unix:{monitor},server=on,wait=off"]
+        if arguments.fat_files_check:
+            trace = build / "fat_files_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x827454..0x82798b", "-D", str(trace), "-d", "exec"])
         if arguments.surface_move_check:
             trace = build / "surface_move_guest.trace"
             trace.unlink(missing_ok=True)
@@ -245,7 +257,7 @@ def main():
                             arguments.mov_check or arguments.starscr_check or arguments.clock_check or arguments.surface_scale_check):
                         if (arguments.surface_move_check or arguments.surface_scale_check or
                                 arguments.surface_lifecycle_check or arguments.surface_order_check or
-                                arguments.cursor_check):
+                                arguments.cursor_check or arguments.fat_files_check):
                             # Trace after boot/RAM probing; disabling TB chaining
                             # during early memory initialization distorts timing.
                             execute("log exec,nochain")
@@ -294,6 +306,9 @@ def main():
     if arguments.entry_check:
         from entry_smoke import check_entry_execution
         check_entry_execution(root, image, trace)
+    if arguments.fat_files_check:
+        from fat_files_smoke import check_fat_execution
+        check_fat_execution(root, image, trace)
     if arguments.icon_dib_check:
         from icon_dib_smoke import check_icon_dib_execution
         check_icon_dib_execution(root, image, trace)

@@ -138,6 +138,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_files.o
+KERNEL_PATCHES += $(foreach name,fat_read_alloc fat_read_into fat_read_name_alloc fat_read_name_into fat_header_relative fat_header_path,$(BUILD)/kernel.$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
@@ -167,6 +169,12 @@ test-branding: $(BUILD)/OpenIceStarOS_c_apps.vhd
 	python3 tools/branding.py scan $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/branding_residuals.json
 
 verify: test-branding
+
+.PHONY: test-fat-files
+test-fat-files: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_fat_files.py --installed
+
+verify: test-fat-files
 
 verify: test-boot-video test-boot-stage3
 
@@ -265,6 +273,9 @@ $(BUILD)/init_clusters.o: init/clusters.c init/clusters.h init/entry.h | $(BUILD
 
 $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+
+$(BUILD)/kernel_fat_files.o: kernel/fat_files.c kernel/fat_files.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_entry.o: kernel/entry.c kernel/entry.h kernel/entry_boundaries.def Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@

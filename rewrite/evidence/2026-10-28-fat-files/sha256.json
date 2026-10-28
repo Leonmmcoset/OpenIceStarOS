@@ -1,0 +1,12 @@
+{
+  "evidence/2026-10-28-fat-files/fat_files_branding.json": "de834e01c44f7de91d5378a6911a2a85eddfa821fedb7e363f24a88429df7191",
+  "evidence/2026-10-28-fat-files/fat_files_execution.json": "e0e0edeef643e9dc2402c425d73467816955a4bf2844ccc8b8ea24c4d192eb1d",
+  "evidence/2026-10-28-fat-files/fat_files_boot.log": "936029e650cf6b50b3c69bb614a33014da7e17e3f6b13b9241acfd342a8632ee",
+  "evidence/2026-10-28-fat-files/fat_files_disk_verify.log": "1cb40ea83b40249ddb2b0d82a719e8603798a5aa52add5baa0dcba5d6121da95",
+  "evidence/2026-10-28-fat-files/cmd-cpuid.png": "48d1c921513a6ec0d91bcc2bdeedea5fa0edd37fc5841e88af12e5e909267ad1",
+  "evidence/2026-10-28-fat-files/fat_files_summary.json": "eb16bd96f2e42fa41d3cd0cbba0674a31f12faf5791b3337a0e05bad8fb31a7c",
+  "evidence/2026-10-28-fat-files/fat_files_install_checks.log": "23cbdde14d82b5fb227ac49eda7b6619f323e11c8e4a4174561e5fccfb86748e",
+  "evidence/2026-10-28-fat-files/c-clock.png": "927c92b704da77aa9f840684117190ff35c81281416611ff0b2ee30f268d41d0",
+  "build/OpenIceStarOS_c_apps.vhd": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "build/openicestaros_kernel.x": "979df96b0d2cd093e72b80005b24cd06e8b4266657c13e60862072b61098b8e5"
+}

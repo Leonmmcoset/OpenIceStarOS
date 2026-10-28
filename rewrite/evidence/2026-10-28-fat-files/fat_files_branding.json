@@ -1,0 +1,664 @@
+{
+  "image": "OpenIceStarOS_c_apps.vhd",
+  "sha256": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+  "unclassified": 0,
+  "retained": [
+    {
+      "path": "<boot>",
+      "offset": "0x1e03",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "]\ufffd\ufffd\ufffdICESTAR\u0000DAT.BIN\u0000ICESTAR.X\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "<boot>",
+      "offset": "0x1e13",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "BIN\u0000ICESTAR.X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "/INIT.X",
+      "offset": "0x68ad",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "BIN\u0000ICESTAR.X\u0000ICESTAR\u0000\u0000\u0000"
+    },
+    {
+      "path": "/INIT.X",
+      "offset": "0x68b7",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "R.X\u0000ICESTAR\u0000\u0000\u0000"
+    },
+    {
+      "path": "/ICESTAR/DAT.BIN",
+      "offset": "0x35e7",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp4.jpg\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "/ICESTAR/DAT.BIN",
+      "offset": "0x36e6",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\TASKBAR.X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "/ICESTAR/DAT.BIN",
+      "offset": "0x3766",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\DESKTOP.X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "/ICESTAR/DAT.BIN",
+      "offset": "0x38e6",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\TASKBAR.X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x5c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\pcmgr.x;\t//\ufffd\ufffd\ufffd\ufffd\r\nstartme"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x87",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\pcmgr.x;\r\nstartmenu_name"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0xd1",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\paint.x;\t\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstart"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0xfe",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\paint.x;\r\nstartmenu_name"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x14b",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstar"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x179",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\nstartmenu_na"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x1c7",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\cmd.x;\t\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstartme"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x1f2",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\cmd.x;\r\nstartmenu_name4="
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x23c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\scrnset.x;\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstar"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x26a",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\scrnset.x;\r\nstartmenu_na"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x2b8",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\theme.x;\t\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstart"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x2e5",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\theme.x;\r\nstartmenu_name"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x32f",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\calc.x;\t\t\t//\ufffd\ufffd\ufffd\ufffd\r\nstartm"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x35b",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\calc.x;\r\nstartmenu_name7"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x3a2",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\mine.x;\t//\ufffd\ufffd\ufffd\ufffd\r\nst"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x3d2",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\mine.x;\r\nX  =\ufffd\ufffd\ufffd\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x479",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\notepad.x;\r\n.PNGP=c:\\ice"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x496",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\n.JPGP=c:\\ice"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x4b3",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\n.BMPP=c:\\ice"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x4d0",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\n.ICOP=c:\\ice"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x4ed",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\n.TTFP=c:\\ice"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x50a",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\ttfview.x;\r\n040300=C:\\IC"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x528",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=C:\\ICESTAR\\DRIVERS\\HDA.DX;\t//HDA\ufffd\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x55d",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=C:\\ICESTAR\\DRIVERS\\AC97.DX;\t//AC97\ufffd"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x594",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=C:\\ICESTAR\\DRIVERS\\E1000.DX;\t//\ufffd\ufffd\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x5ed",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\mine.x;\r\npro_path1"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x611",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\elsfk.x;\r\npro_path"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x636",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\invader.x;\r\npro_pa"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x65d",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\pushbox.x;\r\npro_pa"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x684",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\glass.x;\r\npro_path"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x6a9",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\snake.x;\r\npro_path"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x6ce",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\nes\\nes.x;\r\npro_pa"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x6f5",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\games\\mov\\mov.x;\r\npro_pa"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x71c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\calc.x;\r\npro_path9=c:\\ic"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x73a",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\cmd.x;\r\npro_path10=c:\\ic"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x758",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\paint.x;\r\npro_path11=c:\\"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x778",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\notepad.x;\r\npro_path12=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x79a",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\picview.x;\r\npro_path13=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x7bc",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\ttfview.x;\r\npro_path14=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x7de",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\mplay.x;\r\npro_path15=c:\\"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x7fe",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\theme.x;\r\npro_path16=c:\\"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x81e",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\scrnset.x;\r\npro_path17=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x868",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\clock.x;\r\npro_path19=c:\\"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x888",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\starscr.x;\r\npro_path20=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x8aa",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\taskmgr.x;\r\npro_path21=c"
+    },
+    {
+      "path": "/ICESTAR/SYSREG.DAT",
+      "offset": "0x8f4",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "=c:\\icestar\\chat.x;\r\n"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "offset": "0x3ccca",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\IMAGE\\STAR24.JPG\u0000OpenIce"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "offset": "0x3ccf9",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\GB.BIN\u0000C:\\ICESTAR\\HZK16."
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "offset": "0x3cd0b",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\HZK16.FNT\u0000C:\\ICESTAR\\SYS"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "offset": "0x3cd20",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\SYSREG.DAT\u0000C:\\ICESTAR\\FO"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "offset": "0x3cd36",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\FONT\\FIRA.TTF\u0000bkground\u0000d"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "offset": "0x399c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\GAMES\\MOV\\MOV0.JPG\u0000C:\\IC"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "offset": "0x39ba",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\GAMES\\MOV\\MOV1.JPG\u0000C:\\IC"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "offset": "0x39d8",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\GAMES\\MOV\\MOV2.JPG\u0000C:\\IC"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "offset": "0x39f6",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\GAMES\\MOV\\MOV3.JPG\u0000\u0000\u0000\u0000[\u0000"
+    },
+    {
+      "path": "/ICESTAR/TASKBAR.X",
+      "offset": "0xc553",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\ICO\\TASKBAR.ICO\u0000<\u0000>\u0000*\u0000\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/AREOBAR.X",
+      "offset": "0xb3cb",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\ICO\\STAR.ICO\u0000sndwin\u0000\ufffd\ufffd\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/MACBAR.X",
+      "offset": "0x6776",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\ICO\\STAR.ICO\u0000\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5a83",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp.jpg\u0000c:\\icesta"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5a9d",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp1.jpg\u0000c:\\icest"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5ab8",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp2.jpg\u0000c:\\icest"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5ad3",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp3.jpg\u0000c:\\icest"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5aee",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp4.jpg\u0000c:\\icest"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5b09",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp5.jpg\u0000c:\\icest"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5b24",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000c:\\icestar\\image\\bjtp6.jpg\u0000C:\\ICEST"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5b3f",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\TASKBAR.X\u0000C:\\ICESTAR\\ARE"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5b54",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\AREOBAR.X\u0000C:\\ICESTAR\\MAC"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5b69",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\MACBAR.X\u0000\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0000\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0000\ufffd"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "offset": "0x5c14",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\DAT.BIN\u0000\u0000\u0000\u0001\u0000\u0005\u0000@@\u0000\u0000\u0001\u0000\b\u0000(\u0016"
+    },
+    {
+      "path": "/ICESTAR/SCRNSET.X",
+      "offset": "0x4fb7",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\SCR.BIN\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0005\u0000@@\u0000\u0000\u0001\u0000\b"
+    },
+    {
+      "path": "/ICESTAR/PCMGR.X",
+      "offset": "0x6f3c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\ICO\\DISK.ICO\u0000\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0000<\ufffd"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "offset": "0x5ae3",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\PCMGR.X\u0000\\\u0000C:\\ICESTAR\\DEV"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "offset": "0x5af8",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\DEVMGR.X\u0000C:\\ICESTAR\\THEM"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "offset": "0x5b0c",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\THEME.X\u0000C:\\ICESTAR\\SCRNS"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "offset": "0x5b1f",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\SCRNSET.X\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u000f\u0000\u0018\u0018\u0000\u0000\u0001"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/NETWORK.X",
+      "offset": "0x7883",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\DAT.BIN\u0000\u00000123456789ABCDE"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/DEVTEST.X",
+      "offset": "0x4cb7",
+      "encoding": "ascii",
+      "classification": "compatibility-path",
+      "context": "\u0000C:\\ICESTAR\\DAT.BIN\u0000\u0000\u0000\u0000\u0001\u0000\u0005\u0000@@\u0000\u0000\u0001\u0000\b\u0000("
+    }
+  ],
+  "raw_display_residuals": [
+    {
+      "offset": "0x707e0",
+      "cluster": 52,
+      "classification": "file-slack",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x708f3",
+      "cluster": 52,
+      "classification": "file-slack",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x10a9b4c",
+      "cluster": 2129,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x10a9c3b",
+      "cluster": 2129,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x10fe7ec",
+      "cluster": 2171,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x10fe963",
+      "cluster": 2171,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x115bb4c",
+      "cluster": 2218,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x115bc3b",
+      "cluster": 2218,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x1197b4c",
+      "cluster": 2248,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    },
+    {
+      "offset": "0x1197c3b",
+      "cluster": 2248,
+      "classification": "free-cluster",
+      "retained_original_bytes": true
+    }
+  ]
+}

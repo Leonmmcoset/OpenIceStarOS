@@ -32,6 +32,8 @@ PROVIDE(kernel_x_show_dialog_8082c6 = 0x8082c6);
 PROVIDE(kernel_bitmap_lookup_relative_825c8e = 0x825c8e);
 PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
+PROVIDE(kernel_fat_read_sectors_8254ca = 0x8254ca);
+PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -910,6 +912,18 @@ SECTIONS
     ASSERT(kernel_jpeg_color_83bc15 == 0x83bc15 && ADDR(.jpeg_color) + SIZEOF(.jpeg_color) <= 0x83be59, "jpeg color layout overflow")
     .jpeg_image 0x83be59 : SUBALIGN(1) { *kernel_jpeg_decode.o(.text.kernel_jpeg_image_83be59 .rodata*) }
     ASSERT(kernel_jpeg_image_83be59 == 0x83be59 && ADDR(.jpeg_image) + SIZEOF(.jpeg_image) <= 0x83c02f, "jpeg image layout overflow")
+    .fat_read_alloc 0x827454 : { *kernel_fat_files.o(.text.kernel_fat_read_alloc_827454) }
+    ASSERT(kernel_fat_read_alloc_827454 == 0x827454 && ADDR(.fat_read_alloc) + SIZEOF(.fat_read_alloc) <= 0x82760c, "fat_read_alloc overflow")
+    .fat_read_into 0x82760c : { *kernel_fat_files.o(.text.kernel_x_read_path_82760c) }
+    ASSERT(kernel_x_read_path_82760c == 0x82760c && ADDR(.fat_read_into) + SIZEOF(.fat_read_into) <= 0x827798, "fat_read_into overflow")
+    .fat_read_name_alloc 0x827798 : { *kernel_fat_files.o(.text.kernel_icon_read_absolute_827798) }
+    ASSERT(kernel_icon_read_absolute_827798 == 0x827798 && ADDR(.fat_read_name_alloc) + SIZEOF(.fat_read_name_alloc) <= 0x8277dc, "fat_read_name_alloc overflow")
+    .fat_read_name_into 0x8277dc : { *kernel_fat_files.o(.text.kernel_fat_read_named_8277dc) }
+    ASSERT(kernel_fat_read_named_8277dc == 0x8277dc && ADDR(.fat_read_name_into) + SIZEOF(.fat_read_name_into) <= 0x827826, "fat_read_name_into overflow")
+    .fat_header_relative 0x827826 : { *kernel_fat_files.o(.text.kernel_x_header_relative_827826) }
+    ASSERT(kernel_x_header_relative_827826 == 0x827826 && ADDR(.fat_header_relative) + SIZEOF(.fat_header_relative) <= 0x8278f4, "fat_header_relative overflow")
+    .fat_header_path 0x8278f4 : { *kernel_fat_files.o(.text.kernel_x_header_path_8278f4) }
+    ASSERT(kernel_x_header_path_8278f4 == 0x8278f4 && ADDR(.fat_header_path) + SIZEOF(.fat_header_path) <= 0x82798c, "fat_header_path overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

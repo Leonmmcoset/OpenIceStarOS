@@ -1,0 +1,39 @@
+{
+  "installed": true,
+  "scenarios": 692,
+  "executions": 2076,
+  "corpus_paths": 39,
+  "slots": {
+    "fat_read_alloc": {
+      "compiled_bytes": 362,
+      "slot_bytes": 440
+    },
+    "fat_read_into": {
+      "compiled_bytes": 332,
+      "slot_bytes": 396
+    },
+    "fat_read_name_alloc": {
+      "compiled_bytes": 42,
+      "slot_bytes": 68
+    },
+    "fat_read_name_into": {
+      "compiled_bytes": 46,
+      "slot_bytes": 74
+    },
+    "fat_header_relative": {
+      "compiled_bytes": 202,
+      "slot_bytes": 206
+    },
+    "fat_header_path": {
+      "compiled_bytes": 142,
+      "slot_bytes": 152
+    }
+  },
+  "seconds": 3.09,
+  "boundary_scope": "allocation, pathname lookup and hardware sector reads only",
+  "sha256": {
+    "kernel/fat_files.c": "172186c9118b11acd1b774fcbdd7c5d4041fbb89a849526ebdd0cdefc25f715a",
+    "kernel/fat_files.h": "f70f1593e63d1ceff9a0c3cf4aa39ac3d3ef874f9ebffa684d08c37ed0b40809",
+    "tests/kernel_fat_files.py": "636bf091f3ad7f86d029a29f2e9b2b3a07cbd0cd3a6b8553cf4ddba9f4832e17"
+  }
+}

@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 352 declared kernel intervals and
+original IceStarOS VHD. The current build installs 358 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5136,3 +5136,16 @@ The renamed combined image builds, and installed boot-video (168 scenarios,
 names only: inherited CMD/kernel/taskbar/resource display strings still need
 an explicit installation step. The previously interrupted renamed full-suite
 run is not recorded as a pass.
+
+### FAT16 file and program-header readers (2026-10-28)
+
+Six recovered C functions now implement directory-record allocation/reading,
+pathname read wrappers and relative/record program-header sector reads. The
+production kernel contains 358 declared source intervals. Original/C/fixed-C
+comparison passes 692 scenarios / 2,076 executions, including all 39 original
+program paths with real FAT chains and disk-sector contents. Installed X-loader
+regression, exact kernel/application disk verification, branding checks and
+inventory checks pass. A fresh QEMU boot executes the new C readers while
+loading the desktop, CMD and rebuilt CLOCK; all 358 slots match guest memory.
+Read behavior, exceptional cases, observed/unobserved entries and validation
+limits are recorded in `recovery/FAT_FILES.md`. The complete OS remains unfinished.
