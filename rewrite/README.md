@@ -5097,4 +5097,25 @@ fixture extracts every supported original `.X` program and runs loader/launch
 cases for each file at aligned and unaligned bases. Filesystem, memory
 allocation, task and UI helpers are deterministic callbacks. Invalid and
 unmapped relocation targets are not executed. Evidence:
-`build/x_loader_installed_summary.json` and `/tmp/x-loader-installed.log`.
+`build/x_loader_installed_summary.json` and
+`build/x_loader_installed_test.log`.
+
+### X loader integrated boot and full regression (2026-10-28)
+
+The C loader is linked into `icestar_c.x`, and the combined production image
+installs that kernel alongside the five rebuilt applications. The complete
+`make verify` run passes, including the installed loader differential test,
+all existing kernel and application checks, whole-kernel disk comparison,
+application extent comparison, and inventory validation. The inventory now
+records 352 kernel replacement intervals; this count does not measure semantic
+completion.
+
+`python3 tools/boot_smoke.py build/IceStarOS_c_apps.vhd --cursor-check
+--memory-check --task-check --input-check` boots the combined image in QEMU
+snapshot mode. It opens CMD using PS/2, executes `cpuid`, launches the original
+`DEVMGR.X` through the C X loader, verifies its resizable window and cursor
+behavior, closes it, and confirms memory, scheduling, and loaded C kernel
+intervals. Evidence: `build/x_loader_full_verify.log`,
+`build/x_loader_installed_test.log`, `build/cursor_smoke.json`, and
+`build/cursor_*.png`. The applications and drivers not listed as rebuilt in
+the recovery inventory remain original binaries.
