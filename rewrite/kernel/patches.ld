@@ -863,6 +863,10 @@ SECTIONS
     ASSERT(kernel_fpu_mark_lazy == 0x8380c9 && ADDR(.fpu_mark_lazy) + SIZEOF(.fpu_mark_lazy) <= 0x8380e1, "fpu_mark_lazy layout overflow")
     .fpu_fault 0x8380e1 : { *kernel_fpu.o(.text.kernel_fpu_fault) }
     ASSERT(kernel_fpu_fault == 0x8380e1 && ADDR(.fpu_fault) + SIZEOF(.fpu_fault) <= 0x8380ef, "fpu_fault layout overflow")
+    .jpeg_info 0x83a70f : { *kernel_jpeg_decode.o(.text.kernel_jpeg_info_83a70f) }
+    ASSERT(kernel_jpeg_info_83a70f == 0x83a70f && ADDR(.jpeg_info) + SIZEOF(.jpeg_info) <= 0x83a7a1, "jpeg info layout overflow")
+    .jpeg_decode 0x83a7a1 : { *kernel_jpeg_decode.o(.text.kernel_jpeg_decode_83a7a1) }
+    ASSERT(kernel_jpeg_decode_83a7a1 == 0x83a7a1 && ADDR(.jpeg_decode) + SIZEOF(.jpeg_decode) <= 0x83a835, "jpeg decode layout overflow")
     .jpeg_bits 0x83a835 : { *kernel_jpeg_bits.o(.text.kernel_jpeg_bits_83a835) }
     ASSERT(kernel_jpeg_bits_83a835 == 0x83a835 && ADDR(.jpeg_bits) + SIZEOF(.jpeg_bits) <= 0x83a919, "jpeg bit reader layout overflow")
     .jpeg_frame 0x83a919 : { *kernel_jpeg_frame.o(.text.kernel_jpeg_frame_83a919) }
@@ -871,6 +875,28 @@ SECTIONS
     ASSERT(kernel_jpeg_tables_83aae7 == 0x83aae7 && ADDR(.jpeg_tables) + SIZEOF(.jpeg_tables) <= 0x83ac7b, "jpeg quantization layout overflow")
     .jpeg_huffman 0x83ac7b : { *kernel_jpeg_huffman.o(.text.kernel_jpeg_huffman_83ac7b) }
     ASSERT(kernel_jpeg_huffman_83ac7b == 0x83ac7b && ADDR(.jpeg_huffman) + SIZEOF(.jpeg_huffman) <= 0x83af27, "jpeg Huffman layout overflow")
+    .jpeg_scan 0x83af27 : { *kernel_jpeg_scan.o(.text.kernel_jpeg_scan_83af27) }
+    ASSERT(kernel_jpeg_scan_83af27 == 0x83af27 && ADDR(.jpeg_scan) + SIZEOF(.jpeg_scan) <= 0x83b233, "jpeg scan layout overflow")
+    .jpeg_prepare 0x83b233 : { *kernel_jpeg_scan.o(.text.kernel_jpeg_prepare_83b233) }
+    ASSERT(kernel_jpeg_prepare_83b233 == 0x83b233 && ADDR(.jpeg_prepare) + SIZEOF(.jpeg_prepare) <= 0x83b351, "jpeg prepare layout overflow")
+    .jpeg_symbol 0x83b351 : { *kernel_jpeg_scan.o(.text.kernel_jpeg_symbol_83b351) }
+    ASSERT(kernel_jpeg_symbol_83b351 == 0x83b351 && ADDR(.jpeg_symbol) + SIZEOF(.jpeg_symbol) <= 0x83b41b, "jpeg symbol layout overflow")
+    .jpeg_basis 0x83b41b : SUBALIGN(1) { *kernel_jpeg_basis.o(.text.kernel_jpeg_basis_83b41b .rodata*) }
+    ASSERT(kernel_jpeg_basis_83b41b == 0x83b41b && ADDR(.jpeg_basis) + SIZEOF(.jpeg_basis) <= 0x83b653, "jpeg basis layout overflow")
+    .jpeg_transform 0x83b653 : { *kernel_jpeg_transform.o(.text.kernel_jpeg_transform_83b653) }
+    ASSERT(kernel_jpeg_transform_83b653 == 0x83b653 && ADDR(.jpeg_transform) + SIZEOF(.jpeg_transform) <= 0x83b73f, "jpeg transform layout overflow")
+    .jpeg_magnitude 0x83b73f : { *kernel_jpeg_transform.o(.text.kernel_jpeg_magnitude_83b73f) }
+    ASSERT(kernel_jpeg_magnitude_83b73f == 0x83b73f && ADDR(.jpeg_magnitude) + SIZEOF(.jpeg_magnitude) <= 0x83b7ab, "jpeg magnitude layout overflow")
+    .jpeg_block 0x83b7ab : { *kernel_jpeg_block.o(.text.kernel_jpeg_block_83b7ab) }
+    ASSERT(kernel_jpeg_block_83b7ab == 0x83b7ab && ADDR(.jpeg_block) + SIZEOF(.jpeg_block) <= 0x83b96d, "jpeg block layout overflow")
+    .jpeg_expand 0x83b96d : { *kernel_jpeg_output.o(.text.kernel_jpeg_expand_83b96d) }
+    ASSERT(kernel_jpeg_expand_83b96d == 0x83b96d && ADDR(.jpeg_expand) + SIZEOF(.jpeg_expand) <= 0x83ba4f, "jpeg expansion layout overflow")
+    .jpeg_mcu 0x83ba4f : { *kernel_jpeg_decode.o(.text.kernel_jpeg_mcu_83ba4f) }
+    ASSERT(kernel_jpeg_mcu_83ba4f == 0x83ba4f && ADDR(.jpeg_mcu) + SIZEOF(.jpeg_mcu) <= 0x83bc15, "jpeg MCU layout overflow")
+    .jpeg_color 0x83bc15 : { *kernel_jpeg_output.o(.text.kernel_jpeg_color_83bc15) }
+    ASSERT(kernel_jpeg_color_83bc15 == 0x83bc15 && ADDR(.jpeg_color) + SIZEOF(.jpeg_color) <= 0x83be59, "jpeg color layout overflow")
+    .jpeg_image 0x83be59 : SUBALIGN(1) { *kernel_jpeg_decode.o(.text.kernel_jpeg_image_83be59 .rodata*) }
+    ASSERT(kernel_jpeg_image_83be59 == 0x83be59 && ADDR(.jpeg_image) + SIZEOF(.jpeg_image) <= 0x83c02f, "jpeg image layout overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

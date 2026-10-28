@@ -135,6 +135,9 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.cursor_select.bin $(BUILD)/kernel.cursor_move.bin \
                   $(BUILD)/kernel.scan_acpi.bin $(BUILD)/kernel.scan_pmid.bin
 
+KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
+KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory
 all: $(BUILD)/IceStarOS_c_mbr.vhd
 
@@ -348,6 +351,9 @@ $(BUILD)/kernel_jpeg_tables.o: kernel/jpeg_tables.c kernel/jpeg_tables.h Makefil
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_jpeg_huffman.o: kernel/jpeg_huffman.c kernel/jpeg_huffman.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o): $(BUILD)/kernel_jpeg_%.o: kernel/jpeg_%.c kernel/jpeg_%.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_string_extra.o: kernel/string_extra.c kernel/string_extra.h kernel/helpers.h Makefile | $(BUILD)
@@ -812,6 +818,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_jpeg_frame.py --installed
 	python3 tests/kernel_jpeg_tables.py --installed
 	python3 tests/kernel_jpeg_huffman.py --installed
+	python3 tests/kernel_jpeg_scan.py --installed
 	python3 tests/kernel_string_extra.py --installed
 	python3 tests/kernel_simd.py --installed
 	python3 tests/kernel_math_series.py --installed
@@ -1256,3 +1263,10 @@ test-jpeg-huffman: $(BUILD)/icestar_c.x
 
 test-jpeg-huffman-preview: $(BUILD)/icestar_c.x
 	python3 tests/kernel_jpeg_huffman.py
+
+.PHONY: test-jpeg-scan test-jpeg-scan-preview
+test-jpeg-scan: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_scan.py --installed
+
+test-jpeg-scan-preview: $(BUILD)/icestar_c.x
+	python3 tests/kernel_jpeg_scan.py

@@ -331,8 +331,21 @@
   {"name": "FPU restore task", "binary": "kernel.fpu_restore_task.bin", "start": "0x837ffd", "end": "0x8380c9"},
   {"name": "FPU mark lazy", "binary": "kernel.fpu_mark_lazy.bin", "start": "0x8380c9", "end": "0x8380e1"},
   {"name": "FPU fault", "binary": "kernel.fpu_fault.bin", "start": "0x8380e1", "end": "0x8380ef"},
+  {"name": "JPEG information entry", "binary": "kernel.jpeg_info.bin", "start": "0x83a70f", "end": "0x83a7a1"},
+  {"name": "JPEG decode entry", "binary": "kernel.jpeg_decode.bin", "start": "0x83a7a1", "end": "0x83a835"},
   {"name": "JPEG bit reservoir reader", "binary": "kernel.jpeg_bits.bin", "start": "0x83a835", "end": "0x83a919"},
   {"name": "JPEG frame marker parser", "binary": "kernel.jpeg_frame.bin", "start": "0x83a919", "end": "0x83aae7"},
   {"name": "JPEG quantization marker parser", "binary": "kernel.jpeg_tables.bin", "start": "0x83aae7", "end": "0x83ac7b"},
-  {"name": "JPEG Huffman table parser", "binary": "kernel.jpeg_huffman.bin", "start": "0x83ac7b", "end": "0x83af27"}
+  {"name": "JPEG Huffman table parser", "binary": "kernel.jpeg_huffman.bin", "start": "0x83ac7b", "end": "0x83af27"},
+  {"name": "JPEG marker dispatcher", "binary": "kernel.jpeg_scan.bin", "start": "0x83af27", "end": "0x83b233"},
+  {"name": "JPEG scan preparation", "binary": "kernel.jpeg_prepare.bin", "start": "0x83b233", "end": "0x83b351"},
+  {"name": "JPEG Huffman symbol lookup", "binary": "kernel.jpeg_symbol.bin", "start": "0x83b351", "end": "0x83b41b"},
+  {"name": "JPEG cosine basis generation", "binary": "kernel.jpeg_basis.bin", "start": "0x83b41b", "end": "0x83b653"},
+  {"name": "JPEG inverse transform accumulation", "binary": "kernel.jpeg_transform.bin", "start": "0x83b653", "end": "0x83b73f"},
+  {"name": "JPEG magnitude extension", "binary": "kernel.jpeg_magnitude.bin", "start": "0x83b73f", "end": "0x83b7ab"},
+  {"name": "JPEG entropy block decode", "binary": "kernel.jpeg_block.bin", "start": "0x83b7ab", "end": "0x83b96d"},
+  {"name": "JPEG component expansion", "binary": "kernel.jpeg_expand.bin", "start": "0x83b96d", "end": "0x83ba4f"},
+  {"name": "JPEG MCU component assembly", "binary": "kernel.jpeg_mcu.bin", "start": "0x83ba4f", "end": "0x83bc15"},
+  {"name": "JPEG color conversion", "binary": "kernel.jpeg_color.bin", "start": "0x83bc15", "end": "0x83be59"},
+  {"name": "JPEG image traversal", "binary": "kernel.jpeg_image.bin", "start": "0x83be59", "end": "0x83c02f"}
 ]

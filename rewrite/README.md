@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 336 declared kernel intervals and
+original VHD. The current build installs 349 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4935,3 +4935,35 @@ covering the tested cases. Evidence: `build/jpeg_scan_preview_summary.json`,
 `build/jpeg_scan_preview_test.log`, `build/jpeg_corpus/` and
 `build/jpeg_basis_oracle.bin`. Production remains at 336 intervals here;
 the complete operating system remains unfinished.
+
+### Seventeen-routine JPEG installation checkpoint (2026-10-28)
+
+All thirteen new entries are installed alongside the four previously
+recovered JPEG routines, bringing production to 349 declared intervals.
+The seventeen contiguous JPEG slots cover `0x83a70f..0x83c02f`; every
+routine and its constant tables are compiled from recovered sources.
+`make test-jpeg-scan` passes all 6,751 scenarios / 20,253 executions and
+108 complete information/decode executions across all twelve disk JPEGs
+against the combined production kernel. The four earlier installed JPEG
+fixtures also pass with their original counts and complete decoder checks.
+`test-jpeg-scan-preview` and the installed `make verify` check are available.
+
+All preceding 336 intervals and every other kernel byte remain unchanged;
+4,385 kernel bytes change. Each production disk differs from the saved
+336-interval disk only in its kernel. Entire boot/application disk
+reconstruction and inventory checks pass. A production QEMU CLOCK boot
+passes three changing complete frames, PS/2 close, task exit, CMD reuse,
+RAM/heap and real task-switch checks. All 349 loaded intervals match
+production; the CLOCK screenshot was visually inspected. Kernel and disk
+hashes remain unchanged during validation and boot.
+
+Evidence: `build/jpeg_complete_349_build.log`,
+`build/jpeg_complete_349_validation.log`, `build/jpeg_scan_installed_summary.json`,
+`build/jpeg_complete_349_boot.log`, `build/jpeg_complete_349_final_summary.json`
+and `build/jpeg_complete_349_evidence/`. Kernel SHA-256:
+`4fe8ecf13e88a193f200cbec53506659e498660da529a6c29e5bc3d771c77ed5`.
+The latest full recipe run passed at 336 intervals; this checkpoint uses
+focused installed regression and a recorded production boot. Malformed MCU
+paths using uninitialized coefficients remain outside established equivalence.
+Original boot/INIT/kernel/driver/application components still remain; all
+five rebuilt applications are unchanged. Complete OS recovery is unfinished.
