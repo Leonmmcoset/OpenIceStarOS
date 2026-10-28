@@ -513,6 +513,8 @@ SECTIONS
     ASSERT(kernel_raster_fill8_81ba8a == 0x81ba8a && ADDR(.raster_fill8) + SIZEOF(.raster_fill8) <= 0x81bd26, "raster_fill8 overflow")
     .raster_fill32 0x81bd26 : SUBALIGN(1) { *kernel_raster_fill.o(.text.kernel_raster_fill32_81bd26) }
     ASSERT(kernel_raster_fill32_81bd26 == 0x81bd26 && ADDR(.raster_fill32) + SIZEOF(.raster_fill32) <= 0x81bf50, "raster_fill32 overflow")
+    .raster_gradient32 0x81bf50 : SUBALIGN(1) { *kernel_raster_gradient.o(.text.kernel_raster_gradient32_81bf50) }
+    ASSERT(kernel_raster_gradient32_81bf50 == 0x81bf50 && ADDR(.raster_gradient32) + SIZEOF(.raster_gradient32) <= 0x81c058, "raster_gradient32 overflow")
     .raster_outline8 0x81c058 : SUBALIGN(1) { *kernel_raster_outline.o(.text.kernel_raster_outline8_81c058) }
     ASSERT(kernel_raster_outline8_81c058 == 0x81c058 && ADDR(.raster_outline8) + SIZEOF(.raster_outline8) <= 0x81c1e4, "raster_outline8 overflow")
     .raster_outline32 0x81c1e4 : SUBALIGN(1) { *kernel_raster_outline.o(.text.kernel_raster_outline32_81c1e4) }

@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 293 declared kernel intervals and
+original VHD. The current build installs 294 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3650,3 +3650,43 @@ Evidence: `build/raster_gradient_direct_preview_summary.json`,
 `build/raster_gradient_preview_test.log` and
 `build/raster_disc_shared_fixture_check.log`. Production remains at 293
 intervals at this checkpoint. Complete OS source recovery remains unfinished.
+
+### Periodic-color rectangle production installation (2026-10-28)
+
+The recovered periodic-color rectangle is installed at `0x81bf50..0x81c058`,
+increasing production to 294 declared intervals. All 293 preceding intervals
+remain byte-identical. Only 256 kernel bytes change, inside this new slot,
+and the kernel matches the independently built source preview. All three
+production disks differ from their saved 293-interval predecessors only in
+the kernel file. Complete disk reconstruction checks pass.
+
+Installed gradient direct and real initialized-table fixtures pass, as do
+filled circles and their stall probes, circle outlines, rectangle borders and
+fills, line/sampler, pixel access, icon pixels, fixed-address startup/table
+initialization and inventory checks. The default six-word ABI bridge remains
+byte-identical after adding the separate eight-word mode. `make verify` now
+runs the installed gradient fixture; `make test-raster-gradient` runs it alone.
+The latest complete regression remains the successful 285-interval run;
+this installation has the focused and guest checks recorded here.
+
+Five normal production QEMU boots pass CLOCK, Color, Snake, MOV and STARSCR,
+heap/task checks and all 294 loaded interval comparisons. CLOCK also passes
+its math trace; Snake, MOV and STARSCR pass startup traces. Color's normal
+production graphics trace observes both the new gradient entry and compiled
+body (4 entry / 15 body records). The tracing report now includes the two
+circle and two disc slots, which were unobserved in that boot; their separate
+fixed-address differential fixtures cover execution. QEMU translation-block
+records are not exact function-call counts. CLOCK and Color screenshots were
+visually inspected. STARSCR retains its original post-exit input stall.
+
+Evidence: `build/raster_gradient_294_final_summary.json`,
+`build/raster_gradient_294_installation_summary.json`,
+`build/raster_gradient_294_validation_summary.json`,
+`build/raster_gradient_294_app_boots.json`, `build/raster_gradient_294_evidence/`
+and `build/raster_gradient_293_baseline/`. Production hashes remain unchanged
+during validation and guest boots.
+Kernel SHA-256:
+`6740e4d1a0096e7a4e0f3c1849da083ad639d44b03ef79835d18cc4a4387885c`.
+Combined-application disk SHA-256:
+`21099ca67908f80c7be06cfb82ba57548500527aed50354b0184be79d90017a9`.
+Complete boot/kernel/application/driver source recovery remains unfinished.

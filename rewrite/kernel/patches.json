@@ -154,6 +154,7 @@
   {"name": "32-bit fixed-point line drawing", "binary": "kernel.raster_line32.bin", "start": "0x81b8dc", "end": "0x81ba8a"},
   {"name": "8-bit clipped rectangle fill", "binary": "kernel.raster_fill8.bin", "start": "0x81ba8a", "end": "0x81bd26"},
   {"name": "32-bit clipped rectangle fill", "binary": "kernel.raster_fill32.bin", "start": "0x81bd26", "end": "0x81bf50"},
+  {"name": "32-bit periodic-color rectangle fill", "binary": "kernel.raster_gradient32.bin", "start": "0x81bf50", "end": "0x81c058"},
   {"name": "8-bit unclipped rectangle outline", "binary": "kernel.raster_outline8.bin", "start": "0x81c058", "end": "0x81c1e4"},
   {"name": "32-bit unclipped rectangle outline", "binary": "kernel.raster_outline32.bin", "start": "0x81c1e4", "end": "0x81c396"},
   {"name": "8-bit asymmetric circle outline", "binary": "kernel.raster_circle8.bin", "start": "0x81c396", "end": "0x81c6f2"},
