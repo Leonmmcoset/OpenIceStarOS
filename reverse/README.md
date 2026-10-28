@@ -3,6 +3,8 @@
 This directory documents the initial byte-exact assembly recovery. Continued
 C recovery, fixed-address kernel replacements, application sources and current
 verification results are documented in [`../rewrite/README.md`](../rewrite/README.md).
+All original program files and remaining recovery work are listed in the
+[binary inventory](../rewrite/recovery/INVENTORY.md).
 The root Makefile and the separate `rewrite/Makefile` produce different images.
 
 The input is a fixed VHD with an MBR and a FAT16 partition starting at LBA 17.

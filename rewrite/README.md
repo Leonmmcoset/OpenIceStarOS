@@ -7,6 +7,10 @@ the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
 verification checkpoint.
 
+The [binary recovery inventory](recovery/INVENTORY.md) lists every original
+`.X`/`.DX` path, its current recovery status and boot-stage dependencies.
+`make inventory` regenerates it; `make inventory-check` rejects stale records.
+
 From the repository root, `make -C rewrite verify` builds and checks the C
 images, and `make -C rewrite run-c-apps` starts the combined application image
 in QEMU. Generated images and detailed test evidence are in `rewrite/build/`.
@@ -3163,3 +3167,21 @@ Combined-application disk SHA-256:
 The latest complete `make verify` remains the successful 262-interval run;
 273 has the focused/runtime coverage described above. The overall OS recovery
 remains incomplete.
+
+### Original binary inventory checkpoint (2026-10-28)
+
+`tools/binary_inventory.py` traverses the original FAT16 filesystem and records
+all 39 `.X`/`.DX` paths, original SHA-256 values, file sizes, raw header fields,
+roles, source/output references and recovery status in `recovery/inventory.json`
+and `recovery/INVENTORY.md`. There are 37 distinct binaries: CMD and TASKMGR each
+appear in two paths. Four application paths are rebuilt, INIT and the kernel
+are partially recovered, and 33 paths still use original programs. The four
+drivers remain unrecovered. The third boot stage retains original bytes
+through its hybrid assembly's `incbin` and is explicitly listed as partial.
+
+Every inventory path/hash matches the independent extracted filesystem.
+Generation is deterministic and `make inventory-check` passes. This check is
+also included in `make verify` to detect stale status after future manifest
+changes. Kernel slot bytes include padding/exact hardware boundaries and are
+reported as physical coverage, not a semantic completion percentage. This
+inventory checkpoint changes no production image.

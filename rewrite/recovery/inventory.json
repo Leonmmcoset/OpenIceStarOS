@@ -1,0 +1,988 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "IceStarOS_x86_32M.vhd",
+    "bytes": 33554944,
+    "sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  },
+  "scope": "Original FAT16 .X/.DX program files and separately listed boot regions.",
+  "complete": false,
+  "counts": {
+    "files": 67,
+    "directories": 11,
+    "program_paths": 39,
+    "unique_program_binaries": 37,
+    "roles": {
+      "application": 33,
+      "driver": 4,
+      "init": 1,
+      "kernel": 1
+    },
+    "recovery": {
+      "partial": 2,
+      "rebuilt": 4,
+      "unrecovered": 33
+    }
+  },
+  "duplicate_binaries": [
+    {
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+      "paths": [
+        "/ADMIN/DESKTOP/CMD.X",
+        "/ICESTAR/CMD.X"
+      ]
+    },
+    {
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "paths": [
+        "/ADMIN/DESKTOP/TASKMGR.X",
+        "/ICESTAR/TASKMGR.X"
+      ]
+    }
+  ],
+  "boot": [
+    {
+      "region": "MBR",
+      "offset": "0x0",
+      "bytes": 512,
+      "recovery": "C implementation with assembly entry and retained partition data",
+      "sources": [
+        "boot/mbr.c",
+        "boot/mbr_entry.S"
+      ]
+    },
+    {
+      "region": "menu",
+      "offset": "0x200",
+      "bytes": 1536,
+      "recovery": "C implementation using BIOS tick polling in place of original RTC handler",
+      "sources": [
+        "boot/menu.c",
+        "boot/menu_entry.S"
+      ]
+    },
+    {
+      "region": "third stage",
+      "offset": "0xa00",
+      "bytes": 2054,
+      "recovery": "partial hybrid; original video/mode setup and other bytes remain via incbin",
+      "sources": [
+        "boot/stage3_hybrid.S",
+        "boot/stage3_load.c",
+        "boot/fat16.c",
+        "boot/pci.c"
+      ]
+    }
+  ],
+  "programs": [
+    {
+      "path": "/ADMIN/DESKTOP/CMD.X",
+      "short_names": [
+        "ADMIN      ",
+        "DESKTOP    ",
+        "CMD     X  "
+      ],
+      "role": "application",
+      "bytes": 65492,
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 730,
+        "relocation_offset": "0xf46c",
+        "bss_bytes": 96
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ADMIN/DESKTOP/DEVTEST.X",
+      "short_names": [
+        "ADMIN      ",
+        "DESKTOP    ",
+        "DEVTEST X  "
+      ],
+      "role": "application",
+      "bytes": 34586,
+      "sha256": "37a9e541a35202265f99f5af13f1fbed32d0eb7648e3ded3b6005bb99d3c0255",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 21,
+        "relocation_offset": "0x86c6",
+        "bss_bytes": 288
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ADMIN/DESKTOP/NETWORK.X",
+      "short_names": [
+        "ADMIN      ",
+        "DESKTOP    ",
+        "NETWORK X  "
+      ],
+      "role": "application",
+      "bytes": 48418,
+      "sha256": "7053d5eec75298519d05c455774b892b416a521bd34044c4b26f9a321a6e0c92",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x618",
+        "stack_pages": 16,
+        "relocation_count": 570,
+        "relocation_offset": "0xb43a",
+        "bss_bytes": 736
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ADMIN/DESKTOP/TASKMGR.X",
+      "short_names": [
+        "ADMIN      ",
+        "DESKTOP    ",
+        "TASKMGR X  "
+      ],
+      "role": "application",
+      "bytes": 42190,
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x1c10",
+        "stack_pages": 16,
+        "relocation_count": 150,
+        "relocation_offset": "0xa276",
+        "bss_bytes": 4768
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/AREOBAR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "AREOBAR X  "
+      ],
+      "role": "application",
+      "bytes": 48950,
+      "sha256": "33b9f192417e861a078453727adcbb9d53f258ec4dcf4cbfa290e43733fb9963",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 527,
+        "relocation_offset": "0xb6fa",
+        "bss_bytes": 1536
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/BROWSER.X",
+      "short_names": [
+        "ICESTAR    ",
+        "BROWSER X  "
+      ],
+      "role": "application",
+      "bytes": 17304,
+      "sha256": "d74fe5e1b522941f31f47dfe643f5ded629bf886a585a593efe58d4f8b419e35",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x6e6",
+        "stack_pages": 16,
+        "relocation_count": 59,
+        "relocation_offset": "0x42ac",
+        "bss_bytes": 288
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/CALC.X",
+      "short_names": [
+        "ICESTAR    ",
+        "CALC    X  "
+      ],
+      "role": "application",
+      "bytes": 45274,
+      "sha256": "2fcfcea430f278ff85eaf24278578f845e0c85000b92613f8ef4c597146d47cc",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 140,
+        "relocation_offset": "0xaeaa",
+        "bss_bytes": 576
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/CHAT.X",
+      "short_names": [
+        "ICESTAR    ",
+        "CHAT    X  "
+      ],
+      "role": "application",
+      "bytes": 35952,
+      "sha256": "7035ae7bb738900c2b00bee16d1c196d64da9bf9836b48f3aab8b5493f17c553",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x1c10",
+        "stack_pages": 16,
+        "relocation_count": 509,
+        "relocation_offset": "0x847c",
+        "bss_bytes": 8416
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/CLOCK.X",
+      "short_names": [
+        "ICESTAR    ",
+        "CLOCK   X  "
+      ],
+      "role": "application",
+      "bytes": 15576,
+      "sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 26,
+        "relocation_offset": "0x3c70",
+        "bss_bytes": 16
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/CMD.X",
+      "short_names": [
+        "ICESTAR    ",
+        "CMD     X  "
+      ],
+      "role": "application",
+      "bytes": 65492,
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 730,
+        "relocation_offset": "0xf46c",
+        "bss_bytes": 96
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/COLOR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "COLOR   X  "
+      ],
+      "role": "application",
+      "bytes": 14516,
+      "sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 7,
+        "relocation_offset": "0x3898",
+        "bss_bytes": 16
+      },
+      "recovery": {
+        "state": "rebuilt",
+        "sources": [
+          "apps/color.c",
+          "apps/color.ld"
+        ],
+        "output": "build/color.x",
+        "note": "Reachable application logic and required API wrappers rebuilt; the guest OS still contains original components."
+      }
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "short_names": [
+        "ICESTAR    ",
+        "DESKTOP X  "
+      ],
+      "role": "application",
+      "bytes": 54966,
+      "sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 349,
+        "relocation_offset": "0xd142",
+        "bss_bytes": 10976
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/DEVMGR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "DEVMGR  X  "
+      ],
+      "role": "application",
+      "bytes": 33482,
+      "sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 7,
+        "relocation_offset": "0x82ae",
+        "bss_bytes": 0
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/AC97.DX",
+      "short_names": [
+        "ICESTAR    ",
+        "DRIVERS    ",
+        "AC97    DX "
+      ],
+      "role": "driver",
+      "bytes": 17782,
+      "sha256": "c32abec4b297e78495f788e3c7a7d854cbc3515598fd4a2d66b17b18929054bc",
+      "header": {
+        "kind": "0xd",
+        "entry": "0xc9a",
+        "stack_pages": 16,
+        "relocation_count": 83,
+        "relocation_offset": "0x442a",
+        "bss_bytes": 544
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/E1000.DX",
+      "short_names": [
+        "ICESTAR    ",
+        "DRIVERS    ",
+        "E1000   DX "
+      ],
+      "role": "driver",
+      "bytes": 38680,
+      "sha256": "b14471f9d97f26ff85796c7889bc94f622a90bb760692e97120e27be5d25a414",
+      "header": {
+        "kind": "0xd",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 694,
+        "relocation_offset": "0x8c40",
+        "bss_bytes": 796832
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/HDA.DX",
+      "short_names": [
+        "ICESTAR    ",
+        "DRIVERS    ",
+        "HDA     DX "
+      ],
+      "role": "driver",
+      "bytes": 25538,
+      "sha256": "b9c9b06159514ca5e8cb19b514be87eeb2e0506b5d70cb63376786fedac3f2ac",
+      "header": {
+        "kind": "0xd",
+        "entry": "0x27bc",
+        "stack_pages": 16,
+        "relocation_count": 294,
+        "relocation_offset": "0x5f2a",
+        "bss_bytes": 45472
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/DRIVERS/SB16.DX",
+      "short_names": [
+        "ICESTAR    ",
+        "DRIVERS    ",
+        "SB16    DX "
+      ],
+      "role": "driver",
+      "bytes": 15966,
+      "sha256": "4e419f24ba0ae96eada28000416a19c1c00b5dbd2a8fa25cf2f504f7bece16c2",
+      "header": {
+        "kind": "0xd",
+        "entry": "0x570",
+        "stack_pages": 16,
+        "relocation_count": 7,
+        "relocation_offset": "0x3e42",
+        "bss_bytes": 0
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/ELSFK.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "ELSFK   X  "
+      ],
+      "role": "application",
+      "bytes": 80694,
+      "sha256": "e3b91cd68b9a1b73b0885347b7091aea569a41f34ae9a4d816de3d5cd93c225a",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 125,
+        "relocation_offset": "0x13942",
+        "bss_bytes": 128
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/GLASS.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "GLASS   X  "
+      ],
+      "role": "application",
+      "bytes": 85588,
+      "sha256": "bcb7638fb30fa41065c50ca2eb0a15b57296748f5ca2c41f8fb6d4f105738a1d",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 2,
+        "relocation_offset": "0x14e4c",
+        "bss_bytes": 0
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/INVADER.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "INVADER X  "
+      ],
+      "role": "application",
+      "bytes": 33390,
+      "sha256": "8417747cbda6d58c0f55bc49cc5abce9ecceca04611213968e15cdcd1ded44a1",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 58,
+        "relocation_offset": "0x8186",
+        "bss_bytes": 32
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/MINE.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "MINE    X  "
+      ],
+      "role": "application",
+      "bytes": 69330,
+      "sha256": "6fbc646c15fea7ee9d97dc3382ca23cb0b6aec0b5a4accde2ade37955f14fa42",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 290,
+        "relocation_offset": "0x10a4a",
+        "bss_bytes": 1088
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "MOV        ",
+        "MOV     X  "
+      ],
+      "role": "application",
+      "bytes": 14932,
+      "sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 16,
+        "relocation_offset": "0x3a14",
+        "bss_bytes": 16
+      },
+      "recovery": {
+        "state": "rebuilt",
+        "sources": [
+          "apps/mov.c",
+          "apps/mov.ld"
+        ],
+        "output": "build/mov.x",
+        "note": "Reachable application logic and required API wrappers rebuilt; the guest OS still contains original components."
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/NES/NES.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "NES        ",
+        "NES     X  "
+      ],
+      "role": "application",
+      "bytes": 57680,
+      "sha256": "7258c05dc6e219195a6fd20554088208f45338e3e9b2adf30b75808e727f94ce",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x2958",
+        "stack_pages": 16,
+        "relocation_count": 2100,
+        "relocation_offset": "0xc080",
+        "bss_bytes": 13920
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/PUSHBOX.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "PUSHBOX X  "
+      ],
+      "role": "application",
+      "bytes": 68046,
+      "sha256": "7d4fedece810f0ea0cd2cf9e8c6b319fc71f3ef0115abc5cf4334af6a352d3ab",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 258,
+        "relocation_offset": "0x105c6",
+        "bss_bytes": 80
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/GAMES/SNAKE.X",
+      "short_names": [
+        "ICESTAR    ",
+        "GAMES      ",
+        "SNAKE   X  "
+      ],
+      "role": "application",
+      "bytes": 2852,
+      "sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488",
+      "header": {
+        "kind": "0x50",
+        "entry": "0x5dc",
+        "stack_pages": 16,
+        "relocation_count": 105,
+        "relocation_offset": "0x980",
+        "bss_bytes": 896
+      },
+      "recovery": {
+        "state": "rebuilt",
+        "sources": [
+          "apps/snake.c",
+          "apps/snake.ld"
+        ],
+        "output": "build/snake.x",
+        "note": "Reachable application logic and required API wrappers rebuilt; the guest OS still contains original components."
+      }
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "ICESTAR X  "
+      ],
+      "role": "kernel",
+      "bytes": 250099,
+      "sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x800040",
+        "stack_pages": 16,
+        "relocation_count": 0,
+        "relocation_offset": "0x0",
+        "bss_bytes": 0
+      },
+      "recovery": {
+        "state": "partial",
+        "sources": [
+          "kernel/patches.json",
+          "kernel/patches.ld",
+          "kernel/"
+        ],
+        "declared_intervals": 273,
+        "declared_slot_bytes": 52230,
+        "exact_instruction_intervals": 73,
+        "retained_payload_bytes": 197805,
+        "note": "Slot bytes include padding and exact hardware instructions; these are not semantic completion percentages."
+      }
+    },
+    {
+      "path": "/ICESTAR/MACBAR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "MACBAR  X  "
+      ],
+      "role": "application",
+      "bytes": 27758,
+      "sha256": "3d9218160e5075cb6bec71754b455b6672d43a4eb24dbda2039f19ecd94195f1",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 206,
+        "relocation_offset": "0x6936",
+        "bss_bytes": 992
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/MPLAY.X",
+      "short_names": [
+        "ICESTAR    ",
+        "MPLAY   X  "
+      ],
+      "role": "application",
+      "bytes": 31564,
+      "sha256": "8af980ff5c466f7e4c336aab3b13d406b75c3934bbbad12a071013701443d68f",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x2958",
+        "stack_pages": 16,
+        "relocation_count": 386,
+        "relocation_offset": "0x7544",
+        "bss_bytes": 1216
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/NOTEPAD.X",
+      "short_names": [
+        "ICESTAR    ",
+        "NOTEPAD X  "
+      ],
+      "role": "application",
+      "bytes": 62326,
+      "sha256": "69b53e3fe200770f1c2c24bd03991a01276aebb8729b240c918ffa25cdfa1538",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x5786",
+        "stack_pages": 16,
+        "relocation_count": 822,
+        "relocation_offset": "0xe69e",
+        "bss_bytes": 2752
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/PAINT.X",
+      "short_names": [
+        "ICESTAR    ",
+        "PAINT   X  "
+      ],
+      "role": "application",
+      "bytes": 75490,
+      "sha256": "aad10393cfa0f7f5747a1c2b0eb0def53e1a7c553ab832417ad4c6f14cbe1c7d",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x2958",
+        "stack_pages": 16,
+        "relocation_count": 710,
+        "relocation_offset": "0x11bca",
+        "bss_bytes": 1472
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/PCMGR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "PCMGR   X  "
+      ],
+      "role": "application",
+      "bytes": 45914,
+      "sha256": "8a017c88d75599a755d945d9ed112528ca61314605a4be3fc40030cfc193550c",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 492,
+        "relocation_offset": "0xabaa",
+        "bss_bytes": 27712
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/PICVIEW.X",
+      "short_names": [
+        "ICESTAR    ",
+        "PICVIEW X  "
+      ],
+      "role": "application",
+      "bytes": 43090,
+      "sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x2958",
+        "stack_pages": 16,
+        "relocation_count": 297,
+        "relocation_offset": "0xa3ae",
+        "bss_bytes": 1280
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/SCRNSET.X",
+      "short_names": [
+        "ICESTAR    ",
+        "SCRNSET X  "
+      ],
+      "role": "application",
+      "bytes": 35516,
+      "sha256": "08b67a7bf11c36208f8aeaf5d06643780c60cdfa4ef641b4dadd8578457ee27d",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x650",
+        "stack_pages": 16,
+        "relocation_count": 61,
+        "relocation_offset": "0x89c8",
+        "bss_bytes": 16
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/STARSCR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "STARSCR X  "
+      ],
+      "role": "application",
+      "bytes": 16052,
+      "sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 54,
+        "relocation_offset": "0x3ddc",
+        "bss_bytes": 16
+      },
+      "recovery": {
+        "state": "rebuilt",
+        "sources": [
+          "apps/starscr.c",
+          "apps/starscr.ld"
+        ],
+        "output": "build/starscr.x",
+        "note": "Reachable application logic and required API wrappers rebuilt; the guest OS still contains original components."
+      }
+    },
+    {
+      "path": "/ICESTAR/TASKBAR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "TASKBAR X  "
+      ],
+      "role": "application",
+      "bytes": 53446,
+      "sha256": "e43e9a785fd8e29cb38c540fe9293a06de458f20d39685150e12b5a881008fa6",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 518,
+        "relocation_offset": "0xc8ae",
+        "bss_bytes": 10816
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/TASKMGR.X",
+      "short_names": [
+        "ICESTAR    ",
+        "TASKMGR X  "
+      ],
+      "role": "application",
+      "bytes": 42190,
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x1c10",
+        "stack_pages": 16,
+        "relocation_count": 150,
+        "relocation_offset": "0xa276",
+        "bss_bytes": 4768
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "short_names": [
+        "ICESTAR    ",
+        "THEME   X  "
+      ],
+      "role": "application",
+      "bytes": 39038,
+      "sha256": "aeb4e960e6dffb5e735689c80c1f28707826b0c3bfda2c9d3f3bf747fbe4ac6e",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x40",
+        "stack_pages": 16,
+        "relocation_count": 151,
+        "relocation_offset": "0x9622",
+        "bss_bytes": 64
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/ICESTAR/TTFVIEW.X",
+      "short_names": [
+        "ICESTAR    ",
+        "TTFVIEW X  "
+      ],
+      "role": "application",
+      "bytes": 45506,
+      "sha256": "ff1f531663955fe3cbf4597a9af2b1b442d14f328a73c977d1cc3605d1a4b58c",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x2958",
+        "stack_pages": 16,
+        "relocation_count": 331,
+        "relocation_offset": "0xac96",
+        "bss_bytes": 1536
+      },
+      "recovery": {
+        "state": "unrecovered",
+        "sources": []
+      }
+    },
+    {
+      "path": "/INIT.X",
+      "short_names": [
+        "INIT    X  "
+      ],
+      "role": "init",
+      "bytes": 26817,
+      "sha256": "0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007",
+      "header": {
+        "kind": "0xa",
+        "entry": "0x70040",
+        "stack_pages": 16,
+        "relocation_count": 0,
+        "relocation_offset": "0x0",
+        "bss_bytes": 0
+      },
+      "recovery": {
+        "state": "partial",
+        "sources": [
+          "init/entry.c",
+          "init/directory.c",
+          "init/clusters.c"
+        ],
+        "note": "Recovered startup/filesystem paths still execute within original INIT."
+      }
+    }
+  ]
+}

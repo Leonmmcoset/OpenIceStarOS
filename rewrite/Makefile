@@ -717,6 +717,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/app_image.py
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/snake_image.json $(BUILD) $(BUILD)/IceStarOS_c_snake.vhd
 	python3 tools/app_image.py verify $(BUILD)/IceStarOS_c_init.vhd apps/images.json $(BUILD) $(BUILD)/IceStarOS_c_apps.vhd
+	python3 tools/binary_inventory.py --check
 
 verify: $(BUILD)/kernel_input_test $(BUILD)/kernel_input_linked_test
 verify: $(BUILD)/kernel_keyboard_init_test $(BUILD)/kernel_keyboard_init_linked_test
@@ -980,3 +981,10 @@ test-raster-fill: $(BUILD)/icestar_c.x
 .PHONY: test-raster-outline
 test-raster-outline: $(BUILD)/icestar_c.x
 	python3 tests/kernel_raster_outline.py --installed
+
+.PHONY: inventory inventory-check
+inventory:
+	python3 tools/binary_inventory.py
+
+inventory-check:
+	python3 tools/binary_inventory.py --check
