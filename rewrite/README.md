@@ -2324,3 +2324,33 @@ subdirectories. Kernel SHA-256:
 Combined-application disk SHA-256:
 `07771e8e045f98372a6980abf4c46c902d37a7c0cbceb74ae9bd9ee7d3cdbe01`.
 The full 239-interval regression is recorded separately when it completes.
+
+### Timer object source checkpoint (2026-10-28)
+
+`kernel/timer_objects.c/.h` recovers free-slot lookup, creation, deletion and
+rearming at `0x82aa33..0x82ac53`. It preserves signed table/count comparisons,
+32-bit wrapped indices and deadlines, repeated live slot-pointer reads and
+the original order of flag/allocator calls. Creation returns -1 without
+restoring flags when lookup fails or allocation returns zero. This unusual
+behavior is preserved, not fixed; it has not been established as the cause
+of the separate STARSCR post-exit stall. Deletion is a void API; its incidental
+EAX value is outside this fixture's return-value contract.
+
+`python3 tests/kernel_timer_objects.py` passes 178,032 scenarios / 534,096
+original-x86, ordinary-C and fixed-address-C executions in 91.105 seconds.
+An independent bytewise oracle compares all 96 KiB of fixture memory, exact
+flag/allocator callback order and arguments, stack balance/canaries and
+callee-saved registers. It covers signed bounds, capacity exhaustion, holes,
+allocation failure, tick wrapping, wrapped indices, unaligned records,
+records overlapping counters/table entries and callback mutations. Valid
+cases include 38,720 creates without restore, 77,328 with restore and 17,808
+successful table aliases. The fixture excludes 12,168 unmapped/unbounded alias
+inputs before execution and makes no claim about those inputs.
+
+Only flag/allocator CALL operands are redirected in fixture copies; the
+internal free-slot call and timer memory operations execute directly. The
+C bodies fit 61/122, 160/258, 87/114 and 31/50 bytes with fixed-address and
+size assertions. Evidence: `build/timer_objects_preview_summary.json`,
+`build/timer_objects_preview_test.log`, `build/timer_objects_calls.h` and
+`build/timer_objects_preview.elf`. This checkpoint does not alter production
+images while the 239-interval regression is running.
