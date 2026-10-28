@@ -4850,3 +4850,24 @@ pixel/slack and all workspace bytes with no helper substitutions. Evidence:
 `build/jpeg_scan_preview_summary.json`, `build/jpeg_scan_preview_test.log`
 and `build/jpeg_scan_original.disasm`. Production remains at 336 intervals;
 block entropy decoding, output composition and remaining OS code are unfinished.
+
+### JPEG entropy block source checkpoint (2026-10-28)
+
+`kernel/jpeg_block.c` recovers `0x83b7ab..0x83b96d` in 350/450 bytes.
+It captures the quantization table before symbol decoding, updates the live
+DC predictor, and retains unchecked AC runs and caller-provided zigzag
+indices. Missing DC symbols return without touching output; missing AC
+symbols clear the remaining coefficients. Low-DWORD dequantization, zero
+AC magnitudes and runs extending past coefficient 63 retain their original
+behavior. Helper calls execute real original or recovered code.
+
+The scan fixture now passes 5,859 scenarios / 17,577 executions, including
+776 block scenarios. Independent cases check DC predictor multiplication
+and one AC coefficient for every run nibble and magnitude size; additional
+cases cover all 256 DC and AC symbol bytes and overlapping predictor,
+quantization, bit-reader, Huffman, zigzag and caller destinations. The combined
+forks compare 84 faults, twelve bounded loops and 165 successful executions.
+Complete real JPEG information/decode still matches every pixel/slack and
+workspace byte. Evidence: `build/jpeg_scan_preview_summary.json` and
+`build/jpeg_scan_preview_test.log`. Production remains at 336 intervals;
+MCU assembly, color conversion and the rest of the OS remain unfinished.

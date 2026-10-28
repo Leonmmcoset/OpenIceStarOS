@@ -2,6 +2,7 @@
 #include "../kernel/jpeg_scan.h"
 #include "../kernel/jpeg_basis.h"
 #include "../kernel/jpeg_transform.h"
+#include "../kernel/jpeg_block.h"
 #define CONTEXT 0x1000000u
 #define SOURCE 0x1100000u
 #define ARGUMENTS 0x640f60u
@@ -15,7 +16,7 @@
 static uint8_t initial[BYTES],reference[SNAPSHOT],reference_pixels[0x100000];
 static uint8_t reference_context[CONTEXT_BYTES];
 static uint32_t args[6],stage,scenario,implementation,cases,kind;
-static uint32_t per_kind[6],faults,loops,safe_probes,caller_changes;
+static uint32_t per_kind[7],faults,loops,safe_probes,caller_changes;
 static uint8_t basis_oracle[16384];
 static uint32_t state=0x13a984c7u;
 extern uint32_t raster_checked_call(const void *,const uint32_t *,uint32_t *);
@@ -46,8 +47,8 @@ static void setup(unsigned alignment)
 }
 static void capture(void)
 {
-    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f};
-    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f};
+    const void *compiled[]={kernel_jpeg_scan_83af27,kernel_jpeg_prepare_83b233,kernel_jpeg_symbol_83b351,kernel_jpeg_basis_83b41b,kernel_jpeg_transform_83b653,kernel_jpeg_magnitude_83b73f,kernel_jpeg_block_83b7ab};
+    const uint32_t original[]={0x83af27,0x83b233,0x83b351,0x83b41b,0x83b653,0x83b73f,0x83b7ab};
     uint32_t actual[7];uint32_t abi=raster_checked_call(implementation==1u?compiled[kind]:(void *)original[kind],args,actual);
     for(unsigned i=0;i<BYTES;++i)*(volatile uint8_t *)(SHARED+i)=*(volatile uint8_t *)address(i);
     for(unsigned i=0;i<7;++i)D(SHARED+BYTES+i*4u)=actual[i];
@@ -230,6 +231,46 @@ static void magnitude(void)
         args[2]=SOURCE+0x101u;args[3]=SOURCE+0x109u;args[4]=random32();args[5]=32;exercise(1);
     }
 }
+static void block_setup(unsigned alignment,unsigned dc,unsigned ac)
+{
+    setup(alignment);args[1]=0;args[2]=CONTEXT+0x11001u+alignment;args[3]=SOURCE+0x501u;
+    put(args[0]+0x98u,0,4);put(args[0]+0x74u,0,4);put(args[0]+0x68u,0,4);
+    put(args[0]+0x40b8u,7,4);
+    for(unsigned i=0;i<128;++i){put(args[0]+0x40c4u+i*4u,i?i+1u:3u,4);put(args[3]+i,i,1);}
+    for(unsigned t=0;t<2;++t){
+        uint32_t table=args[0]+0x43c8u+t*0xc0cu;
+        put(table,0,4);put(table+4u,0,2);put(table+6u,1,2);
+        put(table+0x204u,1,1);put(table+0x205u,1,1);put(table+0x206u,0,1);
+        put(table+0x304u,t?ac:dc,1);put(table+0x305u,0,1);
+    }
+    put(args[0]+0x5becu,32,4);put(args[0]+0x5be8u,0,4);
+    for(unsigned i=0;i<256;++i)put(SOURCE+0x101u+i,0,1);
+}
+static void blocks(void)
+{
+    stage=11;kind=6;
+    for(unsigned run=0;run<16;++run)for(unsigned size=1;size<=15;++size){
+        block_setup(run&3u,0,run*16u+size);
+        put(args[0]+0x5be8u,1u<<(29u-size),4);exercise(0);
+        REQUIRE(*(uint32_t *)(reference+args[2]-CONTEXT)==21u,"DC predictor/dequantization oracle");
+        for(unsigned i=1;i<64;++i){
+            uint32_t wanted=i==run+1u?(1u-(1u<<size))*(i+1u):0u;
+            REQUIRE(*(uint32_t *)(reference+args[2]-CONTEXT+i*4u)==wanted,"one AC coefficient oracle");
+        }
+    }
+    /* All DC categories and AC run/size bytes, including overlong final runs. */
+    for(unsigned s=0;s<256;++s){block_setup(s&3u,s,0);exercise(0);block_setup(s&3u,0,s);exercise(0);}
+    for(unsigned a=0;a<4;++a)for(unsigned mode=0;mode<6;++mode){
+        block_setup(a,0,1);
+        if(mode==0)args[2]=args[0]+0x40b8u;
+        if(mode==1)args[2]=args[0]+0x40c4u;
+        if(mode==2)args[2]=args[0]+0x5be0u;
+        if(mode==3)args[2]=args[0]+0x43c8u;
+        if(mode==4)args[2]=args[3];
+        if(mode==5)args[2]=ARGUMENTS;
+        exercise(1);
+    }
+}
 static void composed(void)
 {
     stage=7;REQUIRE(map(SOURCE,65536,0)&&map(0x1200000,0x100000,0),"composition mappings");
@@ -252,10 +293,10 @@ static void composed(void)
 void _start(void)
 {
     REQUIRE(map(CONTEXT,CONTEXT_BYTES,0)&&map(SOURCE,SOURCE_BYTES,0)&&map(0x640000,4096,0)&&map(0x800000,0x40000,0)&&map(SHARED,0x23000,1),"mappings");
-    markers();preparation();symbols();probes();basis();transform();magnitude();composed();
+    markers();preparation();symbols();probes();basis();transform();magnitude();blocks();composed();
     REQUIRE(faults&&safe_probes&&per_kind[0]&&per_kind[1]&&per_kind[2],"coverage");
     PRINT("JPEG scan scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
-    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude scenarios: ");for(unsigned i=0;i<6;++i){number(per_kind[i]);PRINT(" ");}
+    PRINT("; dispatcher/prepare/symbol/basis/transform/magnitude/block scenarios: ");for(unsigned i=0;i<7;++i){number(per_kind[i]);PRINT(" ");}
     PRINT("; fault/loop/safe probe executions/caller changes: ");number(faults);PRINT(" ");number(loops);PRINT(" ");number(safe_probes);PRINT(" ");number(caller_changes);
     PRINT("; real JPEG info/decode executions: 2; jpeg scan verified with full state/source/caller/EAX/ABI and real pixel/workspace comparisons; no helper substitutions\n");
     syscall3(1,0,0,0);

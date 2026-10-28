@@ -23,6 +23,7 @@ SLOTS = [
     ("jpeg_basis", "kernel_jpeg_basis_83b41b", 0x83b41b, 0x83b653),
     ("jpeg_transform", "kernel_jpeg_transform_83b653", 0x83b653, 0x83b73f),
     ("jpeg_magnitude", "kernel_jpeg_magnitude_83b73f", 0x83b73f, 0x83b7ab),
+    ("jpeg_block", "kernel_jpeg_block_83b7ab", 0x83b7ab, 0x83b96d),
 ]
 
 
@@ -46,6 +47,8 @@ def main():
     run(["gcc", *FLAGS, "-c", "kernel/jpeg_basis.c", "-o", str(basis_obj)])
     transform_obj = BUILD / "jpeg_transform_preview.o"
     run(["gcc", *FLAGS, "-c", "kernel/jpeg_transform.c", "-o", str(transform_obj)])
+    block_obj = BUILD / "jpeg_block_preview.o"
+    run(["gcc", *FLAGS, "-c", "kernel/jpeg_block.c", "-o", str(block_obj)])
     linker.write_text("OUTPUT_FORMAT(elf32-i386)\nENTRY(kernel_jpeg_scan_83af27)\nSECTIONS {\n" +
         "\n".join(f" .{name} {start:#x} : SUBALIGN(1) {{ *(.text.{symbol}) " +
                     ("*jpeg_basis_preview.o(.rodata*) " if name == "jpeg_basis" else "") + "}\n" +
@@ -53,7 +56,7 @@ def main():
                     for name, symbol, start, end in SLOTS) +
         "\n /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n"
         " .unexpected : { *(*) }\n ASSERT(SIZEOF(.unexpected) == 0, \"unexpected sections\")\n}\n")
-    run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj), str(basis_obj), str(transform_obj)])
+    run(["ld", "-m", "elf_i386", "-T", str(linker), "-o", str(elf), str(obj), str(basis_obj), str(transform_obj), str(block_obj)])
     production = BUILD / "icestar_c.x"
     # Original neighbours isolate the new source; the installed check also
     # exercises all previously recovered JPEG helpers in the production image.
@@ -72,7 +75,7 @@ def main():
     candidate_path = BUILD / "jpeg_scan_candidate.x"
     candidate_path.write_bytes(candidate)
     disassembly = run(["objdump", "-D", "-b", "binary", "-mi386", "-Mintel",
-        "--adjust-vma=0x800000", "--start-address=0x83af27", "--stop-address=0x83b7ab",
+        "--adjust-vma=0x800000", "--start-address=0x83af27", "--stop-address=0x83b96d",
         str(original_path)], capture_output=True, text=True).stdout
     (BUILD / "jpeg_scan_original.disasm").write_text(disassembly)
     jpeg = disk.read_file(b"ICESTAR    ", b"IMAGE      ", b"STAR24  JPG")
@@ -95,12 +98,13 @@ def main():
     executable = BUILD / f"kernel_jpeg_scan_{label}_test"
     run(["gcc", *FLAGS, f"-DJPEG_FILE_BYTES={len(jpeg)}", f"-DJPEG_WIDTH={width}",
         f"-DJPEG_HEIGHT={height}", "-nostdlib", "-static", "-Wl,-e,_start,--gc-sections",
-        "tests/kernel_jpeg_scan.c", "tests/raster_abi.S", str(obj), str(basis_obj), str(transform_obj), "-o", str(executable)])
+        "tests/kernel_jpeg_scan.c", "tests/raster_abi.S", str(obj), str(basis_obj), str(transform_obj), str(block_obj), "-o", str(executable)])
     started = time.monotonic()
     result = subprocess.run([str(executable)], cwd=ROOT, capture_output=True, text=True, timeout=240)
     paths = [ROOT / p for p in ("kernel/jpeg_scan.c", "kernel/jpeg_scan.h",
         "kernel/jpeg_basis.c", "kernel/jpeg_basis.h",
         "kernel/jpeg_transform.c", "kernel/jpeg_transform.h",
+        "kernel/jpeg_block.c", "kernel/jpeg_block.h",
         "tests/kernel_jpeg_scan.c", "tests/kernel_jpeg_scan.py", "tests/raster_abi.S")]
     summary = dict(installed=args.installed, exit_code=result.returncode,
         seconds=round(time.monotonic()-started, 3), slots=sizes, helper_substitutions=0,
