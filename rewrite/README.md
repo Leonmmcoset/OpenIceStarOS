@@ -2683,3 +2683,31 @@ The pixel helpers and quantizer remain original code at this checkpoint, and
 STARSCR's documented original post-exit mouse/timer stall remains. This is
 focused and boot coverage; the latest complete regression is still the
 239-interval checkpoint.
+
+### Icon pixel helpers source checkpoint (2026-10-28)
+
+`kernel/icon_pixels.c/.h` recovers direct 8-bit and 32-bit surface writes at
+`0x81b37c..0x81b3c0` and `0x81b3c0..0x81b406`, plus the palette quantizer at
+`0x81fd90..0x81fec2`. Pixel writes retain signed bounds, short-circuit field
+access, unaligned data, 32-bit address wrapping, low-byte truncation for 8-bit
+output and full DWORD stores for 32-bit output. The quantizer retains the
+`{{3,1},{0,2}}` threshold matrix, full-width RGB inputs, wrapped multiplication
+by 21, signed division toward zero by 256 and then 4, and low-byte palette
+output. It does not clamp or normalize out-of-range inputs.
+
+`python3 tests/kernel_icon_pixels.py` passes 68,682,058 scenarios / 206,046,174
+original-x86, ordinary-C and fixed-address-C executions in 7.879 seconds.
+All 16,777,216 RGB values are tested at all four dither positions; additional
+DWORD, signed-boundary and pseudorandom cases bring quantizer coverage to
+68,419,584 scenarios. Each writer passes 131,237 scenarios covering signed
+dimensions/coordinates, wrapped effective addresses, four alignments, all
+65,536 complementary color pairs, writes aliasing surface metadata, guarded
+short-circuit access and the entire 4 KiB memory oracle. ABI checks include
+callee-saved registers, stack balance and canaries. No CALL boundaries are
+substituted. The standalone fixture does not yet test the complete decoder
+and helper chain together.
+
+Bodies fit their original slots at 55/68, 56/70 and 98/306 bytes. Evidence:
+`build/icon_pixels_preview_test.log`, `build/icon_pixels_preview_summary.json`,
+`build/icon_pixels_preview.elf` and `build/icon_pixels_preview.x`. This source
+checkpoint leaves production at 259 installed intervals with unchanged images.
