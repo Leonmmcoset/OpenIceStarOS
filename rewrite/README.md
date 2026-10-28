@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 324 declared kernel intervals and
+original VHD. The current build installs 325 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -4472,3 +4472,28 @@ Evidence: `build/bitmap_key_preview_summary.json`,
 `build/bitmap_key_preview_test.log`, `build/bitmap_key_original.disasm` and
 `build/bitmap_key_candidate.x`. Production remains at 324 intervals at this
 source checkpoint. Full OS source recovery remains unfinished.
+
+### Color-key BMP drawing installation checkpoint (2026-10-28)
+
+The new body is installed in the production kernel and all three disks,
+bringing the manifest to 325 intervals. All preceding 324 intervals remain
+byte-identical; only 451 kernel bytes change. Production equals the source
+preview, and each disk differs from its recorded 324 baseline only in the
+kernel. `make test-bitmap-key` and `make verify` include the installed fixture,
+which passes with its original 10,634 scenarios / 31,902 executions.
+
+A production CLOCK QEMU boot passes rendering, close/input, memory, task
+and all 325 loaded-interval checks; its screenshot was visually inspected.
+Normal CLOCK execution does not observe the new color-key entry. Execution
+evidence for that entry comes from the original/native/fixed-address and
+initialized-service fixtures, using real pixel/formatter/glyph bodies.
+Kernel and disk hashes remain unchanged throughout validation and boot.
+
+Evidence: `build/bitmap_key_325_final_summary.json`,
+`build/bitmap_key_325_integrity_summary.json`, `build/bitmap_key_325_app_boots.json`
+and `build/bitmap_key_325_evidence/`. The kernel SHA-256 is
+`a2c98f3384e9c7c71162b43530dbecd667e4c1e8e830a0c4110ccdee704f1c76`.
+A complete `make -j4 verify` regression is running at this checkpoint;
+`build/bitmap_key_325_verify.log` records its progress. The latest completed
+full regression remains 305 until that run finishes. Full OS source recovery
+remains unfinished.
