@@ -543,6 +543,14 @@ SECTIONS
     ASSERT(kernel_rounded_fill_81d8ca == 0x81d8ca && ADDR(.rounded_fill) + SIZEOF(.rounded_fill) <= 0x81da68, "rounded_fill overflow")
     .chamfer_fill 0x81da68 : SUBALIGN(1) { *kernel_raster_rounded.o(.text.kernel_chamfer_fill_81da68) }
     ASSERT(kernel_chamfer_fill_81da68 == 0x81da68 && ADDR(.chamfer_fill) + SIZEOF(.chamfer_fill) <= 0x81db5a, "chamfer_fill overflow")
+    .text_glyph8 0x81db5a : SUBALIGN(1) { *kernel_text_glyph.o(.text.kernel_text_glyph8_81db5a) }
+    ASSERT(kernel_text_glyph8_81db5a == 0x81db5a && ADDR(.text_glyph8) + SIZEOF(.text_glyph8) <= 0x81dcc0, "text_glyph8 overflow")
+    .text_rotated8 0x81dcc0 : SUBALIGN(1) { *kernel_text_glyph.o(.text.kernel_text_rotated8_81dcc0) }
+    ASSERT(kernel_text_rotated8_81dcc0 == 0x81dcc0 && ADDR(.text_rotated8) + SIZEOF(.text_rotated8) <= 0x81de2a, "text_rotated8 overflow")
+    .text_glyph32 0x81de2a : SUBALIGN(1) { *kernel_text_glyph.o(.text.kernel_text_glyph32_81de2a) }
+    ASSERT(kernel_text_glyph32_81de2a == 0x81de2a && ADDR(.text_glyph32) + SIZEOF(.text_glyph32) <= 0x81df96, "text_glyph32 overflow")
+    .text_rotated32 0x81df96 : SUBALIGN(1) { *kernel_text_glyph.o(.text.kernel_text_rotated32_81df96) }
+    ASSERT(kernel_text_rotated32_81df96 == 0x81df96 && ADDR(.text_rotated32) + SIZEOF(.text_rotated32) <= 0x81e106, "text_rotated32 overflow")
     .icon_quantize 0x81fd90 : SUBALIGN(1) { *kernel_icon_pixels.o(.text.kernel_icon_quantize_81fd90) }
     ASSERT(kernel_icon_quantize_81fd90 == 0x81fd90 && ADDR(.icon_quantize) + SIZEOF(.icon_quantize) <= 0x81fec2, "icon_quantize overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }

@@ -687,10 +687,10 @@
           "kernel/patches.ld",
           "kernel/"
         ],
-        "declared_intervals": 301,
-        "declared_slot_bytes": 61164,
+        "declared_intervals": 305,
+        "declared_slot_bytes": 62616,
         "exact_instruction_intervals": 77,
-        "retained_payload_bytes": 188871,
+        "retained_payload_bytes": 187419,
         "note": "Slot bytes include padding and exact hardware instructions; these are not semantic completion percentages."
       }
     },

@@ -3990,3 +3990,26 @@ Evidence: `build/text_run_direct_preview_summary.json`,
 `build/text_run_preview.elf` and `build/text_run_candidate.x`. These eight
 wide-glyph/run slots remain a source preview while the full 305-interval
 production regression runs. Complete OS source recovery remains unfinished.
+
+### 8x16 glyph installation checkpoint (2026-10-28)
+
+The four `text_glyph.c` entries are installed in all three production disks,
+bringing the kernel manifest to 305 intervals. All preceding 301 intervals
+are byte-identical; only 1,405 kernel bytes change. Production matches the
+verified source preview exactly, and each disk differs from the recorded
+301 baseline only in its kernel. Installation evidence is recorded in
+`build/text_glyph_305_installation_summary.json`.
+
+The complete `make verify` passes in 1,319.823 seconds; kernel and three disk
+SHA-256 values remain unchanged throughout. See `build/verify_305.log` and
+`build/verify_305_summary.json`. A separate CLOCK QEMU boot passes rendering,
+close/input, heap, task and all 305 loaded-interval checks. Normal execution
+observes `text_glyph32` (269 entry / 17 body trace records) and
+`text_rotated32` (21 / 685); 8-bit entries remain covered by the direct and
+real initialized-table fixtures. CLOCK and desktop screenshots were visually
+inspected. Boot evidence: `build/text_glyph_305_app_boots.json` and
+`build/text_glyph_305_evidence/clock/`.
+
+The installed kernel SHA-256 is
+`ed9afd9def016a801e09727c3948922eba0a8af7d8f0f440b004df6043a5ee37`.
+This remains a hybrid OS image; complete source recovery is unfinished.
