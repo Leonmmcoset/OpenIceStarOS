@@ -23,7 +23,7 @@ The image produced by this root Makefile is a partial assembly recovery. Its
 subsequent boot stage, kernel, drivers and applications are copied from the
 original VHD. The image comparison here verifies only the first two recovered
 stages and the copying procedure. The separate `rewrite/` build additionally
-compiles recovered boot/INIT paths, kernel intervals and four applications;
+compiles all three boot stages, recovered INIT paths, kernel intervals and five applications;
 it still depends on unrecovered components from the original VHD.
 
 The extracted filesystem contains 39 `.x` and `.dx` programs/drivers. Their

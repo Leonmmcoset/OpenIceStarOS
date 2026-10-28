@@ -5027,3 +5027,24 @@ result screenshot was visually inspected. Evidence: `build/stage3_source_build.l
 `build/boot_stage3_summary.json` and `build/input_cpuid.png`. Original
 INIT/kernel/driver/application components still remain; this removes the
 third-stage binary dependency and does not complete OS recovery.
+
+### Third-stage real-firmware matrix (2026-10-28)
+
+`make test-boot-stage3-qemu` runs the production disk with real QEMU BIOS
+and CPU devices. GDB stops at the stage's pre-PCI boundary and inspects the
+boot header, every GDT descriptor, CR0/CR4 and the complete cleared
+framebuffer. Four configurations pass: standard VGA with the normal
+32-bit selection; standard VGA with requested mode `0x105` (8-bit);
+Cirrus with its 8-bit fallback; and Pentium without SSE. The framebuffers
+are 3,145,728 or 786,432 bytes at 1024-by-768. Both SSE control bits are
+enabled only when CPUID reports SSE. All runs use snapshots and leave the
+production disk unchanged. This fixture sets the requested mode at the
+real-mode entry; it does not test keyboard navigation of the menu.
+
+`tools/boot_smoke.py` additionally accepts `--menu-choice 1|2` and
+`--vga std|cirrus`. A real PS/2 selection of menu entry 2 reaches the 8-bit
+desktop, opens CMD, executes `cpuid` and returns to the prompt; all 349
+loaded intervals match. A separate Cirrus boot also passes the same desktop,
+PS/2 and CMD checks. Both screenshots were inspected. Evidence:
+`build/boot_stage3_qemu_summary.json`, `build/boot_stage3_qemu_*.gdb.log`
+and `build/stage3_source_evidence/{std32,std8,cirrus}/`.

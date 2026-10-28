@@ -145,12 +145,15 @@ all: $(BUILD)/IceStarOS_c_mbr.vhd
 test-boot-video-preview:
 	python3 tests/boot_video.py
 
-.PHONY: test-boot-video test-boot-stage3
+.PHONY: test-boot-video test-boot-stage3 test-boot-stage3-qemu
 test-boot-video: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
 	python3 tests/boot_video.py --installed
 
 test-boot-stage3: $(BUILD)/stage3_hybrid.bin $(BUILD)/stage3_c_init.bin
 	python3 tests/boot_stage3.py
+
+test-boot-stage3-qemu: $(BUILD)/IceStarOS_c_init.vhd
+	python3 tests/boot_stage3_qemu.py
 
 verify: test-boot-video test-boot-stage3
 

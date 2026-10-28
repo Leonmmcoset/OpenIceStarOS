@@ -38,6 +38,10 @@ def png_from_ppm(source, destination):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("image", nargs="?", type=Path)
+    parser.add_argument("--vga", choices=("std", "cirrus"), default="std",
+                        help="QEMU video device for production boot checks")
+    parser.add_argument("--menu-choice", choices=(1, 2), type=int,
+                        help="select a boot menu entry explicitly (2 requests 8-bit VBE)")
     parser.add_argument("--input-check", action="store_true",
                         help="exercise the desktop pointer and CMD keyboard input")
     parser.add_argument("--surface-move-check", action="store_true",
@@ -145,7 +149,7 @@ def main():
         monitor = Path(temporary) / "monitor.sock"
         command = ["qemu-system-i386", "-machine", "pc", "-m", "128", "-drive",
                    f"file={image},format=raw,snapshot=on", "-boot", "c", "-display", "none",
-                   "-monitor", f"unix:{monitor},server=on,wait=off"]
+                   "-vga", arguments.vga, "-monitor", f"unix:{monitor},server=on,wait=off"]
         if arguments.surface_move_check:
             trace = build / "surface_move_guest.trace"
             trace.unlink(missing_ok=True)
@@ -216,6 +220,11 @@ def main():
                         return read_prompt()
 
                     read_prompt()
+                    if arguments.menu_choice is not None:
+                        time.sleep(1)
+                        execute(f"sendkey {arguments.menu_choice} 50")
+                        time.sleep(0.2)
+                        execute("sendkey ret 50")
                     time.sleep(12)
                     if arguments.memory_check:
                         from memory_smoke import check_memory
