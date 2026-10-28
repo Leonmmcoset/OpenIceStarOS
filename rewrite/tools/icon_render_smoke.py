@@ -13,6 +13,7 @@ SLOTS = {
     "bitmap_draw": (0x81ffc4, 0x82040c),
     "bitmap_draw_file": (0x81fec2, 0x81ffc4),
     "bitmap_fit_file": (0x82040c, 0x8204ac),
+    "bitmap_fit": (0x8204ac, 0x820d66),
     "icon_dib": (0x82b20c, 0x82b678),
     "pixel_put8": (0x81b26e, 0x81b2f4),
     "pixel_put32": (0x81b2f4, 0x81b37c),

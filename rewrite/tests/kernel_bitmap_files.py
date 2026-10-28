@@ -78,7 +78,7 @@ def main():
     summary = dict(installed=args.installed, exit_code=result.returncode,
         seconds=round(time.monotonic()-started, 3), slots=sizes,
         helper_entry_detours={symbol: hex(address) for symbol, address in BOUNDARIES.items()},
-        limitation="Seven explicit helper entry detours. 96 composition cases restore and execute the real BMP renderer; filesystem/free and scaled drawing remain substituted. This is not real filesystem integration.",
+        limitation="Seven explicit helper entry detours. 96 drawing and 48 fitting composition cases restore and execute the real BMP bodies. Filesystem/free remain substituted. This is not real filesystem integration.",
         stdout=result.stdout, stderr=result.stderr,
         sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                 for p in [*paths, elf, executable, candidate_path, production]})

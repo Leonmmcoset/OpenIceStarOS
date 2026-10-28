@@ -4343,3 +4343,35 @@ and three required-unused-global SIGSEGVs. Evidence:
 `build/bitmap_fit_original.disasm` and `build/bitmap_fit_candidate.x`.
 Production remains at 322 intervals at this source checkpoint. Complete
 OS source recovery is unfinished.
+
+### BMP fitting installation checkpoint (2026-10-28)
+
+The fitting body is installed in the production kernel and all three disks,
+bringing the manifest to 323 intervals. All preceding 322 intervals remain
+byte-identical; only 2,172 kernel bytes change. Production matches the source
+preview exactly, and each disk differs from its recorded 322 baseline only
+in the kernel. `make test-bitmap-fit` and `make verify` include the installed
+fitting fixture.
+
+Installed fitting, file-wrapper and BMP fixtures pass, together with startup
+UI, clock display, linked startup/runtime, inventory and whole-disk checks.
+The file-wrapper fixture now also restores and executes the actual fitting
+entry: 48 scenarios / 144 executions cover equal 3x2 source/target dimensions
+for 8-/32-bit output and both file routes. Its complete suite passes 30,354
+scenarios / 91,062 executions (6.952 seconds), including the preceding 288
+real drawing executions. Filesystem and free helpers remain explicit test
+boundaries; real filesystem integration is still unverified. The dedicated
+fitting fixture covers other geometry without helper substitutions.
+
+A production CLOCK QEMU boot passes rendering, close/input, memory, task
+and all 323 loaded-interval checks; the screenshot was visually inspected.
+The normal boot does not observe the new fitting entry. Its execution
+evidence comes from direct/service and file-wrapper composition fixtures.
+Kernel and disk hashes remain unchanged throughout validation and boot.
+Evidence: `build/bitmap_fit_323_final_summary.json`,
+`build/bitmap_fit_323_validation_summary.json`, `build/bitmap_fit_323_app_boots.json`
+and `build/bitmap_fit_323_evidence/`. The kernel SHA-256 is
+`e23e03f3c40a025c6cccaadd8fac5e97e44aba123fab7b0809ffd06380ff3112`.
+The latest complete regression remains 305; subsequent checkpoints use
+focused checks and recorded guest boots. Full bootloader/kernel/driver/
+application source recovery remains unfinished.

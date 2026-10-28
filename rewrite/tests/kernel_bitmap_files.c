@@ -6,9 +6,10 @@
 static uint32_t role,lookup_result,file_value,free_result,mutation,name_address,
     events[5][5],event_count,observed,record_pointer,record_reads,mutated_words,
     route_counts[2],draw_counts[2],early,reference_table[320],service_cases[12],
-    real_mode,real_draws,guard_faults;
+    real_mode,real_draws,real_fits,guard_faults;
 static uint8_t global_snapshot[4096];
 static uint8_t draw_prefix[5];
+static uint8_t fit_prefix[5];
 static void detour(uint32_t,uint32_t);
 static uint32_t byte_at(uint8_t *memory,uint32_t address)
 {
@@ -90,29 +91,38 @@ uint32_t bitmap_draw(uint32_t id,uint32_t x,uint32_t y,uint32_t file)
     return 0xc2705391u;
 }
 uint32_t bitmap_fit(uint32_t id,uint32_t file)
-{event(6,id,file,0,0,0);return 0xd26a3918u;}
+{
+    event(6,id,file,0,0,0);
+    if(real_mode>=5u){
+        for(unsigned i=0;i<5;++i)*(volatile uint8_t *)(0x8204acu+i)=fit_prefix[i];
+        uint32_t value=((uint32_t (*)(uint32_t,uint32_t))0x8204ac)(id,file);
+        detour(0x8204ac,(uint32_t)bitmap_fit);++real_fits;return value;
+    }
+    return 0xd26a3918u;
+}
 uint32_t bitmap_free(uint32_t file)
 {event(7,file,0,0,0,0);return free_result;}
 static void render_model(void)
 {
+    unsigned conversion=real_mode>=5u?(real_mode==6u?4u:1u):real_mode;
     uint32_t s=get32(expected,0x500000u+word_at(expected,0)*4u);
-    uint32_t buffer=get32(expected,s),stride=get32(expected,s+12u),bytes=real_mode==4u?1u:4u;
-    uint32_t x=word_at(expected,1),y=word_at(expected,2);
+    uint32_t buffer=get32(expected,s),stride=get32(expected,s+12u),bytes=conversion==4u?1u:4u;
+    uint32_t x=role?0u:word_at(expected,1),y=role?0u:word_at(expected,2);
     static const unsigned matrix[]={3,1,0,2};
-    for(unsigned row=0;row<2;++row)for(unsigned column=0;column<3;column+=real_mode==3u?2u:1u){
-        uint32_t source=file_value+0x800u+((1u-row)*3u+column)*(real_mode==1u||real_mode==4u?3u:1u);
-        unsigned count=real_mode==3u?2u:1u;
+    for(unsigned row=0;row<2;++row)for(unsigned column=0;column<3;column+=conversion==3u?2u:1u){
+        uint32_t source=file_value+0x800u+((1u-row)*3u+column)*(conversion==1u||conversion==4u?3u:1u);
+        unsigned count=conversion==3u?2u:1u;
         for(unsigned nibble=0;nibble<count;++nibble){
             uint32_t color;
-            if(real_mode==1u)color=get32(expected,source)&0xffffffu;
-            else if(real_mode==4u){
+            if(conversion==1u)color=get32(expected,source)&0xffffffu;
+            else if(conversion==4u){
                 unsigned threshold=matrix[row*2u+column%2u];
                 color=16u+(byte_at(expected,source+2u)*21u/256u+threshold)/4u+
                     6u*((byte_at(expected,source+1u)*21u/256u+threshold)/4u)+
                     36u*((byte_at(expected,source)*21u/256u+threshold)/4u);
             }else{
                 unsigned index=byte_at(expected,source);
-                if(real_mode==3u)index=nibble?index/16u:index%16u;
+                if(conversion==3u)index=nibble?index/16u:index%16u;
                 color=get32(expected,file_value+54u+index*4u);
             }
             REQUIRE(put(expected,buffer+((y+row)*stride+x+column+nibble)*bytes,color,bytes),"real BMP composition store");
@@ -137,7 +147,7 @@ static uint32_t oracle(void)
     event(absolute?2u:4u,absolute?0:lookup_result,0,0,0,1);
     if(!file_value)return 0;
     ++draw_counts[role];
-    if(role)event(6,word_at(expected,0),file_value,0,0,1);
+    if(role){event(6,word_at(expected,0),file_value,0,0,1);if(real_mode)render_model();}
     else{
         event(5,word_at(expected,0),word_at(expected,1),word_at(expected,2),file_value,1);
         if(real_mode)render_model();
@@ -181,7 +191,10 @@ static void exercise(void)
         for(unsigned i=0;i<4096;++i)global_snapshot[i]=*(volatile uint8_t *)(0x1b000u+i);
         detour(0x8263c0,(uint32_t)bitmap_lookup_absolute);detour(0x827454,(uint32_t)bitmap_read_absolute);
         detour(0x825c8e,(uint32_t)bitmap_lookup_relative);detour(0x827032,(uint32_t)bitmap_read_relative);
-        for(unsigned i=0;i<5;++i)draw_prefix[i]=*(volatile uint8_t *)(0x81ffc4u+i);
+        for(unsigned i=0;i<5;++i){
+            draw_prefix[i]=*(volatile uint8_t *)(0x81ffc4u+i);
+            fit_prefix[i]=*(volatile uint8_t *)(0x8204acu+i);
+        }
         detour(0x81ffc4,(uint32_t)bitmap_draw);detour(0x8204ac,(uint32_t)bitmap_fit);detour(0x815978,(uint32_t)bitmap_free);
         reset();observed=0;record_pointer=0;uint32_t actual[7];
         const void *fn=implementation==1?native[role]:(void *)(uintptr_t)*(volatile uint32_t *)(0x620000u+slots[role]*4u);
@@ -247,13 +260,22 @@ void _start(void)
             put(initial,file_value+22u,2,4)&&put(initial,file_value+28u,real_mode==2u?8u:real_mode==3u?4u:24u,2),"real drawing BMP");
         exercise();
     }
+    role=1;
+    for(real_mode=5;real_mode<=6;++real_mode)for(unsigned route=0;route<2;++route)for(unsigned seed=0;seed<12;++seed){
+        setup();REQUIRE(put(initial,name_address,route?'C':'B',1),"real fit route");
+        REQUIRE(put(initial,DATA+0x101u,DATA+0x3001u,4)&&put(initial,DATA+0x10du,3,4)&&
+            put(initial,DATA+0x111u,2,4)&&put(initial,DATA+0x125u,real_mode==6u?8u:32u,4),"real fit surface");
+        REQUIRE(put(initial,file_value+10u,0x800u,4)&&put(initial,file_value+18u,3,4)&&
+            put(initial,file_value+22u,2,4)&&put(initial,file_value+28u,24,2),"real fit BMP");
+        exercise();
+    }
     read_guards();
     REQUIRE(route_counts[0]&&route_counts[1]&&draw_counts[0]&&draw_counts[1]&&early&&mutated_words&&record_reads,"file coverage");
     for(unsigned i=0;i<12;++i)REQUIRE(service_cases[i],"six depths/two CPU coverage");
     PRINT("Bitmap file scenarios/executions: ");number(cases);PRINT(" ");number(cases*3u);
     PRINT("; relative/absolute/draw/fit/early/mutated caller/record reads: ");number(route_counts[0]);PRINT(" ");number(route_counts[1]);PRINT(" ");number(draw_counts[0]);PRINT(" ");number(draw_counts[1]);PRINT(" ");number(early);PRINT(" ");number(mutated_words);PRINT(" ");number(record_reads);
-    PRINT("; real renderer executions/lookahead guard faults: ");number(real_draws);PRINT(" ");number(guard_faults);
-    REQUIRE(real_draws==288u&&guard_faults==12u,"real renderer/guard coverage");
+    PRINT("; real renderer/fit executions/lookahead guard faults: ");number(real_draws);PRINT(" ");number(real_fits);PRINT(" ");number(guard_faults);
+    REQUIRE(real_draws==288u&&real_fits==144u&&guard_faults==12u,"real renderer/fit/guard coverage");
     PRINT("; bitmap file wrappers verified against event/record/32 KiB memory/caller/EAX/ABI/initialized-service oracle; seven explicit helper entry detours\n");
     syscall3(1,0,0,0);
 }

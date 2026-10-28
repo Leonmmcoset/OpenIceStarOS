@@ -190,6 +190,7 @@
   {"name": "BMP file drawing wrapper", "binary": "kernel.bitmap_draw_file.bin", "start": "0x81fec2", "end": "0x81ffc4"},
   {"name": "legacy BMP image rendering", "binary": "kernel.bitmap_draw.bin", "start": "0x81ffc4", "end": "0x82040c"},
   {"name": "BMP file fit wrapper", "binary": "kernel.bitmap_fit_file.bin", "start": "0x82040c", "end": "0x8204ac"},
+  {"name": "legacy 24-bit BMP fitting", "binary": "kernel.bitmap_fit.bin", "start": "0x8204ac", "end": "0x820d66"},
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},
   {"name": "SSE 64-byte block copy", "binary": "kernel.copy_sse64.bin", "start": "0x828eb1", "end": "0x828eeb", "exact": true},

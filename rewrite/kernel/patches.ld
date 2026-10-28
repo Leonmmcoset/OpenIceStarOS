@@ -24,7 +24,6 @@ PROVIDE(kernel_startup_read_into_82760c = 0x82760c);
 PROVIDE(kernel_startup_load_image_80214c = 0x80214c);
 PROVIDE(kernel_bitmap_lookup_relative_825c8e = 0x825c8e);
 PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
-PROVIDE(kernel_bitmap_fit_8204ac = 0x8204ac);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
 SECTIONS
 {
@@ -591,6 +590,8 @@ SECTIONS
     ASSERT(kernel_bitmap_draw_81ffc4 == 0x81ffc4 && ADDR(.bitmap_draw) + SIZEOF(.bitmap_draw) <= 0x82040c, "bitmap_draw overflow")
     .bitmap_fit_file 0x82040c : SUBALIGN(1) { *kernel_bitmap_files.o(.text.kernel_bitmap_fit_file_82040c) }
     ASSERT(kernel_bitmap_fit_file_82040c == 0x82040c && ADDR(.bitmap_fit_file) + SIZEOF(.bitmap_fit_file) <= 0x8204ac, "bitmap_fit_file overflow")
+    .bitmap_fit 0x8204ac : SUBALIGN(1) { *kernel_bitmap_fit.o(.text.kernel_bitmap_fit_8204ac) }
+    ASSERT(kernel_bitmap_fit_8204ac == 0x8204ac && ADDR(.bitmap_fit) + SIZEOF(.bitmap_fit) <= 0x820d66, "bitmap_fit overflow")
     .clock_draw_time 0x82ac53 : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_time) }
     ASSERT(kernel_draw_clock_time == 0x82ac53 && ADDR(.clock_draw_time) + SIZEOF(.clock_draw_time) <= 0x82acdd, "clock_draw_time layout overflow")
     .clock_draw_date 0x82acdd : SUBALIGN(1) { *kernel_clock_display.o(.text.kernel_draw_clock_date) }
