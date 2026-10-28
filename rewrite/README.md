@@ -3861,3 +3861,47 @@ Kernel SHA-256:
 Combined-application disk SHA-256:
 `9db17b2d944f29c63e00e7a3d5a89bed7a98108b3156c4d88cbb4bcc80fbe744`.
 Complete boot/kernel/application/driver source recovery remains unfinished.
+
+### 8x16 text glyph source checkpoint (2026-10-28)
+
+`kernel/text_glyph.c/.h` recovers normal 8-bit glyphs at
+`0x81db5a..0x81dcc0`, rotated 8-bit glyphs at `0x81dcc0..0x81de2a`, normal
+32-bit glyphs at `0x81de2a..0x81df96`, and rotated 32-bit glyphs at
+`0x81df96..0x81e106`. All four bodies are C, each using 227 bytes out of
+358, 362, 364 and 368 available bytes respectively.
+
+The original signed low character byte accepts only 0..127 (its additional
+upper test against 132 is unreachable). The routines snapshot the descriptor,
+character and font pointer. Each row snapshots its byte before drawing its
+eight bits; later rows re-read potentially overwritten font data. Coordinates,
+colors and descriptor fields remain live after stores. Only upper bounds are
+checked; negative coordinates remain accepted. Rotated entries check the
+ordinary `(x+column,y+row)` bounds but store at `(x+row,y-column)`, including
+potentially negative destination rows. These behaviors are preserved.
+
+`python3 tests/kernel_text_glyph.py` passes 70,532 direct scenarios / 211,596
+original/ordinary-C/fixed-address-C executions (13.083 seconds). The independent
+byte-address/mask-based model compares all 32 KiB of mapped state, a further
+4 KiB of globals, six live incoming words, EAX, saved registers and stack
+canaries. It covers every low character byte with unrelated high bits, both
+orientations/depths, unaligned metadata/font/output, wrapped IDs/dimensions,
+upper-only clipping, descriptor/table/caller/font aliases and short-circuit
+unmapped-height/font guards. The bounded model excludes 5,772 unsafe scenarios
+before execution; source retains the original unchecked addressing.
+
+Coverage includes 1,106 metadata stores, 352 caller stores, 237 changed caller
+words, 234,832 font stores and 19,027 row reads changed by earlier output.
+Sixteen scenarios overwrite the global font pointer during drawing and
+continue fetching the captured font; a further sixteen overwrite the caller's
+character byte with a negative value while subsequent rows still fetch the
+captured glyph, even when their pixels are clipped.
+
+A separate real initializer/table fixture passes 24,576 scenarios / 49,152
+executions (3.737 seconds), comparing all 320 table words for six depth values,
+both CPU copy choices and table slots 6/12. Unsupported depths retain seeded
+real 8-bit entries. No CALL targets are substituted. Evidence:
+`build/text_glyph_direct_preview_summary.json`,
+`build/text_glyph_chain_preview_summary.json`, `build/text_glyph_preview_test.log`,
+`build/text_glyph_preview.elf` and `build/text_glyph_candidate.x`. Production
+remains at 301 intervals at this source checkpoint. Complete OS source
+recovery remains unfinished.
