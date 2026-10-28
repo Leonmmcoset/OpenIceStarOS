@@ -467,6 +467,22 @@ SECTIONS
     ASSERT(kernel_cosine_81a366 == 0x81a366 && ADDR(.cosine) + SIZEOF(.cosine) <= 0x81a3f6, "cosine overflow")
     .power 0x81a538 : SUBALIGN(1) { *kernel_math_series.o(.text.kernel_power_81a538) }
     ASSERT(kernel_power_81a538 == 0x81a538 && ADDR(.power) + SIZEOF(.power) <= 0x81a604, "power overflow")
+    .acos 0x81a3f6 : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_acos_81a3f6) }
+    ASSERT(kernel_acos_81a3f6 == 0x81a3f6 && ADDR(.acos) + SIZEOF(.acos) <= 0x81a4fc, "acos overflow")
+    .round 0x81a4fc : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_round_81a4fc) }
+    ASSERT(kernel_round_81a4fc == 0x81a4fc && ADDR(.round) + SIZEOF(.round) <= 0x81a538, "round overflow")
+    .absolute 0x81a604 : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_absolute_81a604) }
+    ASSERT(kernel_absolute_81a604 == 0x81a604 && ADDR(.absolute) + SIZEOF(.absolute) <= 0x81a634, "absolute overflow")
+    .format_float 0x81a634 : SUBALIGN(1) { *kernel_math_format.o(.text.kernel_format_float_81a634) }
+    ASSERT(kernel_format_float_81a634 == 0x81a634 && ADDR(.format_float) + SIZEOF(.format_float) <= 0x81a9ee, "format_float overflow")
+    .floor 0x81a9ee : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_floor_81a9ee) }
+    ASSERT(kernel_floor_81a9ee == 0x81a9ee && ADDR(.floor) + SIZEOF(.floor) <= 0x81aa52, "floor overflow")
+    .ceil 0x81aa52 : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_ceil_81aa52) }
+    ASSERT(kernel_ceil_81aa52 == 0x81aa52 && ADDR(.ceil) + SIZEOF(.ceil) <= 0x81aab8, "ceil overflow")
+    .remainder 0x81aab8 : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_remainder_81aab8) }
+    ASSERT(kernel_remainder_81aab8 == 0x81aab8 && ADDR(.remainder) + SIZEOF(.remainder) <= 0x81ab2a, "remainder overflow")
+    .sqrt 0x81ab2a : SUBALIGN(1) { *kernel_math_extra.o(.text.kernel_sqrt_81ab2a) }
+    ASSERT(kernel_sqrt_81ab2a == 0x81ab2a && ADDR(.sqrt) + SIZEOF(.sqrt) <= 0x81ab34, "sqrt overflow")
     .pixel_put8 0x81b26e : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put8_81b26e) }
     ASSERT(kernel_pixel_put8_81b26e == 0x81b26e && ADDR(.pixel_put8) + SIZEOF(.pixel_put8) <= 0x81b2f4, "pixel_put8 overflow")
     .pixel_put32 0x81b2f4 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put32_81b2f4) }

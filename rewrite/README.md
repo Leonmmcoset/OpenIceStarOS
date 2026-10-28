@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 277 declared kernel intervals and
+original VHD. The current build installs 285 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3403,3 +3403,32 @@ helper; the production power helper is unchanged. Evidence:
 At this source checkpoint production remains at 277 intervals; the seven
 scalar services and formatter are not installed yet. Overall OS recovery
 remains incomplete.
+
+### Scalar math and formatter installation (2026-10-28)
+
+The seven scalar functions and float formatter are installed at their original
+addresses, increasing production from 277 to 285 declared intervals. All 277
+previous intervals retain identical bytes. The 1,460 changed kernel bytes are
+confined to the eight new slots, and the installed bodies match the independent
+source previews. The INIT, Snake and combined-application disk images differ
+from their predecessors only inside the existing kernel file. The complete
+`make verify` now includes installed scalar-math and formatter differential
+tests; a full 285-interval regression is running at this checkpoint.
+
+Five normal QEMU boots pass CLOCK, Color, Snake, MOV and STARSCR application
+checks, heap/task checks and matching loaded kernel intervals. CLOCK observes
+the compiled factorial, sine, cosine, power, floor and ceil entries and bodies;
+the other six math functions rely on their differential fixtures for execution
+coverage. Trace records are not exact function-call counts. Startup tracing
+also passes on the other four boots. Representative application screenshots
+were visually inspected. STARSCR retains its previously documented original
+post-exit mouse/timer stall; desktop reuse after it is not claimed.
+
+Evidence: `build/math_extra_285_installation_summary.json`,
+`build/math_extra_285_build.log`, `build/math_extra_285_app_boots.json`,
+`build/math_extra_285_evidence/`, `build/math_extra_285_baseline/` and
+`build/verify_285.log`. Kernel SHA-256:
+`8ce8a12e8421a015a706481d91c9d882b21a2cf4e32bd03314d53cbec658bafb`.
+Combined-application disk SHA-256:
+`d682aab8254a4cdc9ce88c3699a57bcec53356b9fe0cf2d24913a0daa4ec7be1`.
+The full boot/kernel/application/driver recovery remains incomplete.
