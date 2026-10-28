@@ -20,6 +20,8 @@ SLOTS = {
     "raster_line32": (0x81b8dc, 0x81ba8a),
     "raster_fill8": (0x81ba8a, 0x81bd26),
     "raster_fill32": (0x81bd26, 0x81bf50),
+    "raster_outline8": (0x81c058, 0x81c1e4),
+    "raster_outline32": (0x81c1e4, 0x81c396),
 }
 TRACE_FILTER = ",".join(f"{start:#x}..{end-1:#x}" for start, end in SLOTS.values())
 

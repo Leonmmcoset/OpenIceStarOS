@@ -138,6 +138,8 @@
   {"name": "32-bit fixed-point line drawing", "binary": "kernel.raster_line32.bin", "start": "0x81b8dc", "end": "0x81ba8a"},
   {"name": "8-bit clipped rectangle fill", "binary": "kernel.raster_fill8.bin", "start": "0x81ba8a", "end": "0x81bd26"},
   {"name": "32-bit clipped rectangle fill", "binary": "kernel.raster_fill32.bin", "start": "0x81bd26", "end": "0x81bf50"},
+  {"name": "8-bit unclipped rectangle outline", "binary": "kernel.raster_outline8.bin", "start": "0x81c058", "end": "0x81c1e4"},
+  {"name": "32-bit unclipped rectangle outline", "binary": "kernel.raster_outline32.bin", "start": "0x81c1e4", "end": "0x81c396"},
   {"name": "ordered-dither palette quantizer", "binary": "kernel.icon_quantize.bin", "start": "0x81fd90", "end": "0x81fec2"},
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},

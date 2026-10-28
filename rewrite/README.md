@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 271 declared kernel intervals and
+original VHD. The current build installs 273 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3118,3 +3118,48 @@ Evidence: `build/raster_outline_preview_test.log`,
 `build/raster_outline_preview.elf` and `build/raster_outline_candidate.x`.
 This preview overlays only the two borders on the 271-interval production
 kernel; the production images still contain 271 intervals at this checkpoint.
+
+### Rectangle outline installation (2026-10-28)
+
+The two border routines are installed at their original addresses, increasing
+production from 271 to 273 intervals. All previous 271 intervals retain
+identical bytes. The 791 changed kernel bytes lie only in the two new slots;
+all three production disks pass complete reconstruction and differ from their
+predecessors only in the existing kernel file. The complete installed kernel
+equals the independently linked source preview.
+
+Installed checks pass 42,338 direct border scenarios / 127,014 executions
+(7.926 s) and 7,764 complete service scenarios / 15,528 chains (1.886 s),
+with the documented large/unmapped fixture exclusions. Fill regressions pass
+44,446 direct scenarios (11.297 s) and 27,520 complete chains (4.689 s).
+Fixed-address startup/table and service-forwarder regressions also pass.
+No CALL is substituted in the complete chains.
+
+Independent QEMU snapshot checks pass Color (29.634 s), Snake (34.401 s),
+MOV (32.434 s) and STARSCR (26.513 s), including startup execution, all
+273 loaded intervals, heap/tasks, PS/2 input and the respective application
+checks. Representative screenshots were visually inspected. STARSCR's
+documented original post-exit mouse/timer stall remains present.
+
+A separate normal boot/input trace observes the new 32-bit border (11 entry /
+13 body records), plus 32-bit fill (7,394 / 130,505), line (ten / 20), DIB
+decoder (two / 1,394,625), direct writer (1,394,597 / ten), surface-ID setter
+(31,299 / eight) and getter (5,205 / four). All fifteen monitored compiled
+bodies/padding match the disk kernel, and all 273 intervals match guest memory.
+The desktop and returned CPUID prompt were visually inspected. The sampler
+and 8-bit raster paths remain unobserved in this boot. Trace records are not
+exact call counts because of TB chaining. No diagnostic guest is used.
+
+Evidence: `build/raster_outline_273_installation_summary.json`,
+`build/raster_outline_273_build.log`, `build/raster_outline_273_disk_verify.log`,
+`build/raster_outline_273_validation.log`, `build/raster_outline_273_evidence/`,
+`build/raster_outline_273_baseline/` and
+`build/raster_outline_273_source_evidence/`. Natural and differential artifacts
+have SHA-256 manifests. All four production hashes remain unchanged through
+validation. Kernel SHA-256:
+`85e8b7ea7d960a22922094befd3c6835022c1fb4c80ef0c8a989fbcc621526f2`.
+Combined-application disk SHA-256:
+`983a2662d8396d160a42ef8d827d641491a6af69f863e043a5fd12765dea6558`.
+The latest complete `make verify` remains the successful 262-interval run;
+273 has the focused/runtime coverage described above. The overall OS recovery
+remains incomplete.
