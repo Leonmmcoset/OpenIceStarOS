@@ -3260,3 +3260,40 @@ CLOCK SHA-256:
 Combined image SHA-256:
 `d5a2bc1764f6780ea08048ce221bc9f02721043100828b943863cf9c70225a1e`.
 The full boot/kernel/application/driver C recovery remains unfinished.
+
+### Kernel math series source checkpoint (2026-10-28)
+
+`kernel/math_series.c/.h` recovers factorial `0x81a2aa..0x81a2dc`, sine
+`0x81a2dc..0x81a366`, cosine `0x81a366..0x81a3f6` and repeated-product power
+`0x81a538..0x81a604`. They retain ten-term series, binary64 intermediate
+stores, extended division/addition, the original constant addresses and
+x87 control-word behavior. Fractional powers retain the original repeated
+loops (positive exponents effectively round up, negative exponents down in
+ordinary finite cases); NaN exponents return the original -1.0. Quiet
+comparisons avoid introducing the invalid exception for quiet NaNs. No
+libm or transcendental instruction replaces a series. Code sizes are
+49/50, 137/138, 111/144 and 182/204 bytes including no added helper slots.
+
+`python3 tests/kernel_math_series.py` passes 118,512 scenarios / 344,016
+executions (3.655 s) comparing original x86, ordinary C and fixed-address C.
+The fixture compares all ten bytes of ST0, binary64 results, six sticky
+exception flags, control words, return stack, incoming arguments, canaries
+and callee-saved registers. Coverage includes three precision modes, four
+rounding modes, four stack offsets (including unaligned), signed zeros,
+denormals, infinities, signed NaN payloads, signaling NaNs, overflow,
+factorials through 512, fractional powers and randomized binary64 inputs.
+Infinite/huge exponents and enormous factorial loops are not executed; the
+C source retains their original loops rather than adding a timeout/clamp.
+
+There are 11,520 additional real service scenarios within the total:
+original/candidate initializer -> actual shared slot 244/245 -> complete
+series -> power/factorial, with full service-table comparison and no CALL
+substitutions. Ordinary C runs are separate direct cases. The CLOCK fixture
+now accepts `--kernel`; its 55,576 original/C application scenarios also pass
+with the compiled four-function candidate kernel (1.954 s).
+
+Evidence: `build/math_series_preview_summary.json`,
+`build/math_series_preview_test.log`, `build/math_series_candidate.x`,
+`build/math_series_preview.elf`, `build/clock_with_recovered_kernel_summary.json`
+and `build/math_series_source_evidence/`. This source checkpoint overlays
+four candidate slots without changing the 273-interval production manifest.

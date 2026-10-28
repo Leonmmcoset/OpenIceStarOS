@@ -1,4 +1,5 @@
 """Original/C CLOCK differential tests at real SDK call boundaries."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -13,6 +14,9 @@ from xformat import XImage
 
 
 def main():
+    parser = argparse.ArgumentParser(__doc__)
+    parser.add_argument("--kernel",type=Path,help="exercise the actual trig calls in this kernel")
+    args = parser.parse_args()
     build = ROOT / "build"
     fat = Fat16((ROOT.parent / "IceStarOS_x86_32M.vhd").read_bytes())
     original = fat.read_file(b"ICESTAR    ", b"CLOCK   X  ")
@@ -33,7 +37,11 @@ def main():
         hex(symbols[name]["address"]) for name in names) + "};\n"
     (build / "clock_bindings.h").write_text(header)
     (build / "clock.original.x").write_bytes(original)
-    (build / "clock.kernel.x").write_bytes(fat.read_kernel())
+    original_kernel = fat.read_kernel()
+    kernel = args.kernel.read_bytes() if args.kernel else original_kernel
+    assert len(kernel) == len(original_kernel)
+    (build / "clock.kernel.x").write_bytes(original_kernel)
+    (build / "clock.test_kernel.x").write_bytes(kernel)
     subprocess.run(["gcc","-m32","-march=i386","-Os","-ffreestanding","-nostdlib","-static",
                     "-fno-pic","-fno-pie","-fno-stack-protector","-fno-asynchronous-unwind-tables",
                     "-fno-optimize-sibling-calls","-Wall","-Wextra","-Werror","-Ibuild","-Wl,-e,_start",
@@ -41,13 +49,16 @@ def main():
     start = time.monotonic()
     result = subprocess.run(["build/clock_test"],cwd=ROOT,check=True,capture_output=True,text=True)
     print(result.stdout,end="")
-    (build / "clock_differential_summary.json").write_text(json.dumps({
+    report_name = "clock_with_recovered_kernel_summary.json" if args.kernel else "clock_differential_summary.json"
+    (build / report_name).write_text(json.dumps({
         "original_sha256": hashlib.sha256(original).hexdigest(),
         "rewritten_sha256": hashlib.sha256(rewritten).hexdigest(),
         "original_relocations": len(XImage(original).relocations),
         "rewritten_relocations": len(XImage(rewritten).relocations),
         "seconds": time.monotonic()-start, "result": result.stdout.strip(),
-        "trig_boundary_modes": ["controlled returns", "unmodified original kernel sine/cosine/power/factorial"],
+        "kernel_sha256": hashlib.sha256(kernel).hexdigest(),
+        "kernel_path": str(args.kernel) if args.kernel else "original VHD",
+        "trig_boundary_modes": ["controlled returns", "actual kernel sine/cosine/power/factorial"],
         "scope": "SDK traces, BSS/records/palette, live parameters, table reloads, x87 CW, cdecl/stack; raster calls are test boundaries"
     },indent=2)+"\n")
 

@@ -284,7 +284,7 @@ static int run(void)
     if(!map(0x10000,0x20000)||!map(0x660000,0x10000)||!map(0x690000,0x20000)||
        !map(0x700000,0x50000)||!map(0x800000,0x40000)||
        !map(0x1000000,0x20000)||!map(0x1200000,0x20000))return 1;
-    if(!read_file("build/clock.kernel.x",0x800000,250099))return 2;
+    if(!read_file("build/clock.test_kernel.x",0x800000,250099))return 2;
     for(pass=0;pass<2;++pass) {
         uint32_t a=0x1000000+(pass?0x113:0),b=0x1200000+(pass?0x513:0);
         if(!load("build/clock.original.x",a)||!load("build/clock.x",b))return 3;
