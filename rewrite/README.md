@@ -3777,3 +3777,46 @@ Kernel SHA-256:
 Combined-application disk SHA-256:
 `4a2079effd16dc6b5bd0fa6d0e5827315b8d4e86a9fdf74243d3148b4080f370`.
 Complete boot/kernel/application/driver source recovery remains unfinished.
+
+### Rounded/chamfered rectangle source checkpoint (2026-10-28)
+
+`kernel/raster_rounded.c/.h` recovers three separate original routines:
+rounded outline at `0x81d6c2..0x81d8ca`, rounded fill at
+`0x81d8ca..0x81da68`, and chamfer fill at `0x81da68..0x81db5a`.
+The outline snapshots its four centers before drawing, then re-reads live
+geometry/ID/color between its four quadrant calls and four DDA edges.
+The filled routines retain separate point/line/fill calls, wrapped products,
+signed distance comparisons, live loop bounds and the original inclusive,
+asymmetric edges. In particular, a zero radius still makes fill/edge calls;
+large or negative radii are not normalized or clamped.
+
+All geometry, loops and call orchestration are C. Empty compiler barriers
+materialize individual coordinates and reserve a scratch word; they emit
+no drawing or arithmetic instructions. Together with `-fno-defer-pop` and
+four-byte stack alignment, this keeps the filled routines' outgoing frame
+forty bytes below EBP. That preserves the 32-bit fill's incidental expired-
+frame pointer in EAX. Compiled bodies use 456/520, 344/414 and 194/242 bytes.
+
+`python3 tests/kernel_raster_rounded.py` passes 18,372 direct scenarios /
+55,116 original/ordinary-C/fixed-address-C executions (3.156 seconds), plus
+2,880 real initialized-table scenarios / 5,760 executions (0.429 seconds).
+The composition model uses widened arithmetic and previously checked
+byte-address leaf fill/copy models. It compares all 32 KiB of mapped state,
+eight incoming words, raw EAX, saved registers and stack canaries. Actual
+quadrant, line, fill, pixel and scalar/SSE copy routines execute, with no
+substituted CALL targets. Observed coverage includes 21,347 metadata stores,
+1,880 caller stores, 412 changed incoming words, 28 changes to live radius,
+262,644 corner distance tests, 33,640 packed-byte blocks and 51,604 row copies.
+The bounded model excludes 3,072 unsafe or large scenarios before execution;
+source retains the original unchecked behavior.
+
+The chain fixture executes real initializer/table entries 155/156 and the
+direct chamfer entry for six depth values and both CPU copy choices. For
+depths other than 8/32, the initializer retains pre-existing display slots;
+the fixture seeds those with real 8-bit functions and checks that behavior.
+It compares all 320 table words. Evidence:
+`build/raster_rounded_direct_preview_summary.json`,
+`build/raster_rounded_chain_preview_summary.json`,
+`build/raster_rounded_preview_test.log`, `build/raster_rounded_preview.elf`
+and `build/raster_rounded_candidate.x`. Production remains at 298 intervals
+at this source checkpoint. Complete OS source recovery remains unfinished.
