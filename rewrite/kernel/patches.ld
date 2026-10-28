@@ -3,7 +3,9 @@ ENTRY(kernel_entry)
 PROVIDE(kernel_handle_pointer_input = 0x801454);
 PROVIDE(kernel_format_text = 0x81f88a);
 PROVIDE(kernel_icon_png_8241d0 = 0x8241d0);
-PROVIDE(kernel_icon_dib_82b20c = 0x82b20c);
+PROVIDE(kernel_icon_put8_81b37c = 0x81b37c);
+PROVIDE(kernel_icon_put32_81b3c0 = 0x81b3c0);
+PROVIDE(kernel_icon_quantize_81fd90 = 0x81fd90);
 PROVIDE(kernel_icon_read_relative_826f38 = 0x826f38);
 PROVIDE(kernel_icon_read_absolute_827798 = 0x827798);
 PROVIDE(kernel_syscall_target_8082c6 = 0x8082c6);
@@ -488,6 +490,8 @@ SECTIONS
     ASSERT(kernel_icon_draw_file == 0x82b0a0 && ADDR(.icon_draw_file) + SIZEOF(.icon_draw_file) <= 0x82b112, "icon_draw_file overflow")
     .icon_draw_file_auto 0x82b112 : SUBALIGN(1) { *kernel_icon_files.o(.text.kernel_icon_draw_file_auto) }
     ASSERT(kernel_icon_draw_file_auto == 0x82b112 && ADDR(.icon_draw_file_auto) + SIZEOF(.icon_draw_file_auto) <= 0x82b20c, "icon_draw_file_auto overflow")
+    .icon_dib 0x82b20c : SUBALIGN(1) { *kernel_icon_dib.o(.text.kernel_icon_dib_82b20c) }
+    ASSERT(kernel_icon_dib_82b20c == 0x82b20c && ADDR(.icon_dib) + SIZEOF(.icon_dib) <= 0x82b678, "icon_dib overflow")
     .cpuid_available 0x82b678 : { *kernel_cpuid.o(.text.kernel_cpuid_available) }
     ASSERT(kernel_cpuid_available == 0x82b678 && ADDR(.cpuid_available) + SIZEOF(.cpuid_available) <= 0x82b6a0, "cpuid_available overflow")
     .cpuid_vendor 0x82b6a0 : { *kernel_cpuid.o(.text.kernel_cpuid_vendor) }

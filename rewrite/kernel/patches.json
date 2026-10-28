@@ -161,6 +161,7 @@
   {"name": "ICO frame dispatch", "binary": "kernel.icon_draw_frame.bin", "start": "0x82b004", "end": "0x82b0a0"},
   {"name": "file icon drawing", "binary": "kernel.icon_draw_file.bin", "start": "0x82b0a0", "end": "0x82b112"},
   {"name": "automatic file icon drawing", "binary": "kernel.icon_draw_file_auto.bin", "start": "0x82b112", "end": "0x82b20c"},
+  {"name": "DIB icon decoder", "binary": "kernel.icon_dib.bin", "start": "0x82b20c", "end": "0x82b678"},
   {"name": "cpuid available", "binary": "kernel.cpuid_available.bin", "start": "0x82b678", "end": "0x82b6a0"},
   {"name": "cpuid vendor", "binary": "kernel.cpuid_vendor.bin", "start": "0x82b6a0", "end": "0x82b6e8"},
   {"name": "cpuid features", "binary": "kernel.cpuid_features.bin", "start": "0x82b6e8", "end": "0x82b72e"},

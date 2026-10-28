@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 258 declared kernel intervals and
+original VHD. The current build installs 259 declared kernel intervals and
 four rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -2640,3 +2640,46 @@ not establish safety for arbitrary invalid pointers. Evidence:
 `build/icon_dib_preview.elf`, `build/icon_dib_calls.h` and
 `build/icon_dib_resources.h`. This source checkpoint leaves production at
 258 installed intervals with unchanged kernel and disk images.
+
+### DIB icon decoder installation (2026-10-28)
+
+The DIB renderer is installed at its original `0x82b20c` entry, increasing the
+manifest from 258 to 259 intervals. All preceding intervals retain identical
+bytes. The 1,117 changed kernel bytes are confined to the new 1,132-byte slot;
+its 468-byte compiled body is followed by NOP padding. Complete reconstruction
+passes for all three production disks, whose only changes from the preceding
+images lie in the existing kernel file. Installed differential checks pass
+79,233 DIB scenarios / 237,699 executions (13.088 s), 235,066 ICO-directory
+scenarios / 705,198 executions (11.902 s) and 336,248 file-icon scenarios /
+1,008,744 executions (10.478 s).
+
+Four independent QEMU snapshot checks pass Color (29.581 s), Snake (33.798 s),
+MOV (32.512 s) and STARSCR (26.467 s), including startup execution, all 259
+loaded intervals, heap/task state, PS/2 input and each application check.
+Representative application screenshots have been visually inspected.
+
+`make smoke-icon-dib` additionally traces normal production startup and input
+without a diagnostic guest or decoder substitution. Both the new decoder
+entry and compiled body execute; the trace contains two entry records and
+2,794,600 body records. TB chaining means these are trace records rather than
+exact invocation counts, and this boot does not cover every conversion path.
+The image's complete kernel and the installed body/padding are checked before
+recording the execution evidence. The desktop screenshot was visually checked.
+The four production hashes remain unchanged across validation.
+
+Evidence: `build/icon_dib_installed_test.log`,
+`build/icon_dib_installed_summary.json`,
+`build/icon_directory_259_installed_test.log`,
+`build/icon_files_259_installed_test.log`,
+`build/icon_dib_259_installation_summary.json`,
+`build/icon_dib_259_build.log`, `build/icon_dib_259_disk_verify.log`,
+`build/icon_dib_259_validation.log` and `build/icon_dib_259_evidence/` with
+per-application results and the separate `natural/` trace archive.
+Kernel SHA-256:
+`a445b710ee5fdf289a7531256f885229583c3c529f8177d309d718613d9856c6`.
+Combined-application disk SHA-256:
+`73a2aae6e2b8c7d2f741e79bfc9391ceb24df52c2020b6b1a31fd3018fbc4e33`.
+The pixel helpers and quantizer remain original code at this checkpoint, and
+STARSCR's documented original post-exit mouse/timer stall remains. This is
+focused and boot coverage; the latest complete regression is still the
+239-interval checkpoint.

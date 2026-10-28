@@ -33,7 +33,7 @@ KERNEL_OBJECTS := $(BUILD)/kernel_entry.o $(BUILD)/kernel_state.o $(BUILD)/kerne
                   $(BUILD)/kernel_startup_desktop.o $(BUILD)/kernel_startup_ui.o \
                   $(BUILD)/kernel_object_registry.o \
                   $(BUILD)/kernel_timer_objects.o $(BUILD)/kernel_clock_display.o $(BUILD)/kernel_cmos_fields.o \
-                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o
+                  $(BUILD)/kernel_icon_directory.o $(BUILD)/kernel_icon_files.o $(BUILD)/kernel_x_icon.o $(BUILD)/kernel_icon_dib.o
 KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.display_state.bin $(BUILD)/kernel.object_table_state.bin \
                   $(BUILD)/kernel.startup_apps.bin $(BUILD)/kernel.display_palette.bin $(BUILD)/kernel.display_colors.bin \
@@ -45,6 +45,7 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
                   $(BUILD)/kernel.clock_draw_time.bin $(BUILD)/kernel.clock_draw_date.bin \
                   $(BUILD)/kernel.icon_draw_id.bin $(BUILD)/kernel.icon_draw_centered.bin $(BUILD)/kernel.icon_draw_frame.bin \
                   $(BUILD)/kernel.x_icon_pointer.bin $(BUILD)/kernel.icon_draw_file.bin $(BUILD)/kernel.icon_draw_file_auto.bin \
+                  $(BUILD)/kernel.icon_dib.bin \
                   $(BUILD)/kernel.cmos_seconds.bin $(BUILD)/kernel.cmos_minutes.bin $(BUILD)/kernel.cmos_hours.bin $(BUILD)/kernel.cmos_weekday.bin $(BUILD)/kernel.cmos_day.bin $(BUILD)/kernel.cmos_month.bin $(BUILD)/kernel.cmos_year.bin \
                   $(BUILD)/kernel.state.bin $(BUILD)/kernel.reset.bin \
                   $(BUILD)/kernel.api.bin $(BUILD)/kernel.services.bin \
@@ -235,6 +236,9 @@ $(BUILD)/kernel_cmos_fields.o: kernel/cmos_fields.c kernel/cmos_fields.h Makefil
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_icon_directory.o: kernel/icon_directory.c kernel/icon_directory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_icon_dib.o: kernel/icon_dib.c kernel/icon_dib.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_icon_files.o: kernel/icon_files.c kernel/icon_files.h kernel/icon_directory.h kernel/x_icon.h kernel/helpers.h kernel/memory.h Makefile | $(BUILD)
@@ -673,6 +677,7 @@ verify: $(BUILD)/IceStarOS_c_mbr.vhd $(BUILD)/IceStarOS_c_fat16.vhd $(BUILD)/Ice
 	python3 tests/kernel_cmos_fields.py --installed
 	python3 tests/kernel_icon_directory.py --installed
 	python3 tests/kernel_icon_files.py --installed
+	python3 tests/kernel_icon_dib.py --installed
 	python3 tests/firmware_scan_qemu.py --installed
 	python3 tests/timestamp_exact.py --installed
 	python3 tests/xformat.py
@@ -911,3 +916,11 @@ test-icon-directory: $(BUILD)/icestar_c.x
 .PHONY: test-icon-files
 test-icon-files: $(BUILD)/icestar_c.x
 	python3 tests/kernel_icon_files.py --installed
+
+.PHONY: test-icon-dib
+test-icon-dib: $(BUILD)/icestar_c.x
+	python3 tests/kernel_icon_dib.py --installed
+
+.PHONY: smoke-icon-dib
+smoke-icon-dib: $(BUILD)/IceStarOS_c_init.vhd
+	python3 tools/boot_smoke.py --icon-dib-check --memory-check --task-check --input-check

@@ -54,6 +54,8 @@ def main():
                         help="trace both recovered firmware scans during unmodified production boot")
     parser.add_argument("--entry-check", action="store_true",
                         help="verify all ordered startup blocks and original subsystem call targets")
+    parser.add_argument("--icon-dib-check", action="store_true",
+                        help="trace the installed DIB icon decoder during normal production boot")
     parser.add_argument("--task-check", action="store_true",
                         help="observe timer preemption and suspended C scheduler TSS/stack state")
     parser.add_argument("--memory-check", action="store_true",
@@ -69,6 +71,11 @@ def main():
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.icon_dib_check and any((arguments.starscr_reference, arguments.entry_check,
+                                         arguments.surface_move_check, arguments.surface_scale_check,
+                                         arguments.surface_lifecycle_check, arguments.surface_order_check,
+                                         arguments.cursor_check, arguments.firmware_check)):
+        parser.error("--icon-dib-check requires its own compiled-kernel execution trace")
     if arguments.entry_check and any((arguments.starscr_reference, arguments.surface_move_check,
                                       arguments.surface_scale_check, arguments.surface_lifecycle_check,
                                       arguments.surface_order_check, arguments.cursor_check,
@@ -148,6 +155,10 @@ def main():
             trace = build / "entry_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", "0x800040..0x800103", "-D", str(trace), "-d", "exec"])
+        if arguments.icon_dib_check:
+            trace = build / "icon_dib_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", "0x82b20c..0x82b677", "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -233,6 +244,9 @@ def main():
     if arguments.entry_check:
         from entry_smoke import check_entry_execution
         check_entry_execution(root, image, trace)
+    if arguments.icon_dib_check:
+        from icon_dib_smoke import check_icon_dib_execution
+        check_icon_dib_execution(root, image, trace)
     if arguments.surface_move_check:
         pcs = [int(match.group(1), 16) for match in
                re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
