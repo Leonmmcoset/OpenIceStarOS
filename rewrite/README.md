@@ -1,7 +1,7 @@
 # C rewrite
 
 This directory is an incomplete C recovery integrated into copies of the
-original VHD. The current build installs 273 declared kernel intervals and
+original VHD. The current build installs 277 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -3297,3 +3297,48 @@ Evidence: `build/math_series_preview_summary.json`,
 `build/math_series_preview.elf`, `build/clock_with_recovered_kernel_summary.json`
 and `build/math_series_source_evidence/`. This source checkpoint overlays
 four candidate slots without changing the 273-interval production manifest.
+
+### Kernel math series installation (2026-10-28)
+
+The four math functions are installed at their original addresses, increasing
+production from 273 to 277 intervals. All previous 273 intervals retain
+identical bytes. The 452 changed kernel bytes lie only in the four new slots;
+all three production images pass complete reconstruction and differ from their
+predecessors only in the existing kernel file. The entire installed kernel
+equals the independently linked source preview.
+
+Installed checks pass 118,512 math scenarios / 344,016 executions, including
+11,520 complete service scenarios (3.642 s). CLOCK's 55,576 original/C pairs
+also pass with the installed kernel (1.879 s); startup/table regressions and
+inventory checks pass. These remain focused checks: the latest complete
+`make verify` is still the successful 262-interval run.
+
+A normal production CLOCK boot, using CMD and PS/2 input, observes all four
+installed math entries and bodies without diagnostic guest code or CALL
+substitutions. Entry/body TB records: factorial 1/4, sine 75/2252, cosine
+75/3, power 3/11. These are trace records, not exact invocation counts.
+The original CLOCK face, three changing frames, relocation/BSS/callback/task
+contracts, close and subsequent CMD command all pass; the screenshots were
+visually inspected. All 277 intervals match guest memory.
+
+Separate normal boots verify Color, Snake, MOV and STARSCR behavior with
+entry/heap/task checks and matching loaded intervals. MOV initially passed
+its application checks but startup trace verification rejected one explicitly
+cancelled QEMU block. `tools/entry_smoke.py` now removes an event only when
+QEMU explicitly cancels both the same host TB and guest PC; real repeats and
+out-of-order events remain errors. Four targeted parser tests pass and the
+saved MOV trace revalidates all 30 ordered blocks and 28 call targets. A fresh
+MOV run also passes the complete check. Representative screenshots were
+visually inspected. STARSCR's original post-exit mouse/timer stall remains;
+its desktop reuse is not claimed.
+
+Evidence: `build/math_series_277_installation_summary.json`,
+`build/math_series_277_build.log`, `build/math_series_277_disk_verify.log`,
+`build/math_series_277_validation.log`, `build/math_series_277_app_boots.json`,
+`build/math_series_277_evidence/`, `build/math_series_277_baseline/` and
+`build/math_series_source_evidence/`. Per-run directories include SHA-256
+manifests. Kernel SHA-256:
+`47d9d71512973129b09adc18fce95727c265e8a84459d08510765a6abc1f35b6`.
+Combined-application disk SHA-256:
+`8c7a140dba6f9d90043fa1bddc1fbe6dff033fffe9682f3b5810d07d909d611e`.
+The full boot/kernel/application/driver recovery remains incomplete.

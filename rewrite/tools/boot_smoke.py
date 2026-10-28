@@ -72,9 +72,18 @@ def main():
                         help="load the C screen saver, verify four phases, and exit with Esc")
     parser.add_argument("--clock-check", action="store_true",
                         help="load C CLOCK, verify changing hands/face, close it and reuse CMD")
+    parser.add_argument("--math-check", action="store_true",
+                        help="trace the installed C factorial/power/trig series during --clock-check")
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.math_check:
+        if not arguments.clock_check:
+            parser.error("--math-check requires --clock-check")
+        if any((arguments.entry_check,arguments.icon_dib_check,arguments.icon_render_check,
+                arguments.surface_move_check,arguments.surface_scale_check,arguments.surface_lifecycle_check,
+                arguments.surface_order_check,arguments.cursor_check,arguments.firmware_check)):
+            parser.error("--math-check requires its own execution trace")
     if arguments.icon_render_check and any((arguments.starscr_reference, arguments.entry_check,
                                             arguments.surface_move_check, arguments.surface_scale_check,
                                             arguments.surface_lifecycle_check, arguments.surface_order_check,
@@ -176,6 +185,11 @@ def main():
             trace = build / "icon_render_guest.trace"
             trace.unlink(missing_ok=True)
             command.extend(["-dfilter", TRACE_FILTER, "-D", str(trace), "-d", "exec"])
+        if arguments.math_check:
+            from math_series_smoke import TRACE_FILTER
+            trace = build / "math_series_guest.trace"
+            trace.unlink(missing_ok=True)
+            command.extend(["-dfilter", TRACE_FILTER, "-D", str(trace), "-d", "exec"])
         with (build / "boot_qemu.log").open("wb") as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
             try:
@@ -270,6 +284,9 @@ def main():
     if arguments.icon_render_check:
         from icon_render_smoke import check_icon_render_execution
         check_icon_render_execution(root, image, trace)
+    if arguments.math_check:
+        from math_series_smoke import check_math_execution
+        check_math_execution(root, image, trace)
     if arguments.surface_move_check:
         pcs = [int(match.group(1), 16) for match in
                re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]

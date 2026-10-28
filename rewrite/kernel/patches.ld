@@ -459,6 +459,14 @@ SECTIONS
     ASSERT(kernel_timer_delete == 0x82abaf && ADDR(.timer_delete) + SIZEOF(.timer_delete) <= 0x82ac21, "timer_delete layout overflow")
     .timer_rearm 0x82ac21 : SUBALIGN(1) { *kernel_timer_objects.o(.text.kernel_timer_rearm) }
     ASSERT(kernel_timer_rearm == 0x82ac21 && ADDR(.timer_rearm) + SIZEOF(.timer_rearm) <= 0x82ac53, "timer_rearm layout overflow")
+    .factorial 0x81a2aa : SUBALIGN(1) { *kernel_math_series.o(.text.kernel_factorial_81a2aa) }
+    ASSERT(kernel_factorial_81a2aa == 0x81a2aa && ADDR(.factorial) + SIZEOF(.factorial) <= 0x81a2dc, "factorial overflow")
+    .sine 0x81a2dc : SUBALIGN(1) { *kernel_math_series.o(.text.kernel_sine_81a2dc) }
+    ASSERT(kernel_sine_81a2dc == 0x81a2dc && ADDR(.sine) + SIZEOF(.sine) <= 0x81a366, "sine overflow")
+    .cosine 0x81a366 : SUBALIGN(1) { *kernel_math_series.o(.text.kernel_cosine_81a366) }
+    ASSERT(kernel_cosine_81a366 == 0x81a366 && ADDR(.cosine) + SIZEOF(.cosine) <= 0x81a3f6, "cosine overflow")
+    .power 0x81a538 : SUBALIGN(1) { *kernel_math_series.o(.text.kernel_power_81a538) }
+    ASSERT(kernel_power_81a538 == 0x81a538 && ADDR(.power) + SIZEOF(.power) <= 0x81a604, "power overflow")
     .pixel_put8 0x81b26e : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put8_81b26e) }
     ASSERT(kernel_pixel_put8_81b26e == 0x81b26e && ADDR(.pixel_put8) + SIZEOF(.pixel_put8) <= 0x81b2f4, "pixel_put8 overflow")
     .pixel_put32 0x81b2f4 : SUBALIGN(1) { *kernel_pixel_access.o(.text.kernel_pixel_put32_81b2f4) }
