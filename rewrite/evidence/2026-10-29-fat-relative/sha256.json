@@ -1,0 +1,22 @@
+{
+  "application-disk.log": "082ea025bf38b101599ac3ff7df18bb56a2491b7234526d84559e1ba3ff0bef9",
+  "branding-inventory.log": "2362f9e6cdd7565c24673a8d7ce29469370ac3c803b39695e83d55f355e3d713",
+  "diagnostic-boot.log": "776251ecec56741a3a7825dd68c96bb99c8c18c6cae56f9595c4cbba9e6cb106",
+  "diagnostic-checks.json": "ae7ba72aab9149279633e66b4f881523b31037a7b1940945ad0bd6996c60701b",
+  "diagnostic-execution.json": "0de68d27486a29ba906350af4736b79c84c5e64c55096fea53182151af56345c",
+  "diagnostic-memory.json": "5fa712cb3a40e400bedabaf194eb3e4adf977a7d5e44075dcbb4bed676ace903",
+  "diagnostic-task.json": "9fcb9e8b4372324c16a5fb904b40dcd7a4669ec4ad581fe1b6a215099eb7ea29",
+  "icon-bitmap-regression.log": "6b38c88a08af1bac0974ecbfeb8b089359ccad656845163105595cfc6ca30572",
+  "image-delta.json": "6ebe2605f249a359d6f4a42ee3fdbad92ce02eefd8a10faeb1ce55bf75ecad35",
+  "installed-differential.json": "828a5b70d783e133f1eca8198ebffb5f9e6d43ed4b7a1cffd71dabbd0d33084e",
+  "installed-test.log": "99785aa24977a83148a22c9a28698cbd8f7407d3f2f87c6ec513ff90b44149be",
+  "kernel-disk.log": "7d8f88b9d51452d16964777c1bf52f7c6b30f84bd60102a806aed4974616ba64",
+  "preview-differential.json": "c542eb2ef0eac903161b58751e3d041858e6a37ca955047dbc9d4176eb955402",
+  "production-clock-boot.log": "c0f08a15b3e1d19b898db614527fc49cb80441c32bc22bcdf12945a46a770f9a",
+  "production-clock.json": "a92ae49b0562d489633c6ddcc9e0bb432c3a3fdb5ff92e43338b95e1a7928b2a",
+  "production-clock.png": "b5bcda279559260c772004b1b1605d74115f2e8499025529da140ddf66675797",
+  "production-cmd.png": "88686a8dd1fc27ff4662ed2ae6be842370999b7cb0643fe7b151f0183dbea1db",
+  "production-execution.json": "1f4a4199f7071746ca9be0706bc3bba754f8079869d939ee6d09a0172394bb3f",
+  "validation.json": "d459d8cb2e7fe05564446704286d68a6c5f9990d29836a999738cf2715df53a1",
+  "x-loader.json": "1281bcb9aea048a2a75cac90f405cc56a2e4ccdb7ee928036009cc0e762b0106"
+}

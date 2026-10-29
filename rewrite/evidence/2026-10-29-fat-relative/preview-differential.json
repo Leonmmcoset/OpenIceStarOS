@@ -1,0 +1,65 @@
+{
+  "installed": false,
+  "scenarios": 1926,
+  "executions": 5778,
+  "corpus_paths": 39,
+  "slots": {
+    "fat_read_alloc": {
+      "compiled_bytes": 362,
+      "slot_bytes": 440
+    },
+    "fat_read_into": {
+      "compiled_bytes": 332,
+      "slot_bytes": 396
+    },
+    "fat_read_name_alloc": {
+      "compiled_bytes": 42,
+      "slot_bytes": 68
+    },
+    "fat_read_name_into": {
+      "compiled_bytes": 46,
+      "slot_bytes": 74
+    },
+    "fat_header_relative": {
+      "compiled_bytes": 202,
+      "slot_bytes": 206
+    },
+    "fat_header_path": {
+      "compiled_bytes": 142,
+      "slot_bytes": 152
+    },
+    "fat_relative_read": {
+      "compiled_bytes": 316,
+      "slot_bytes": 348
+    },
+    "fat_relative_named": {
+      "compiled_bytes": 29,
+      "slot_bytes": 52
+    },
+    "fat_relative_cluster": {
+      "compiled_bytes": 311,
+      "slot_bytes": 354
+    },
+    "fat_relative_named_cluster": {
+      "compiled_bytes": 316,
+      "slot_bytes": 360
+    },
+    "fat_relative_alloc_named": {
+      "compiled_bytes": 198,
+      "slot_bytes": 250
+    },
+    "fat_relative_alloc_index": {
+      "compiled_bytes": 172,
+      "slot_bytes": 236
+    }
+  },
+  "seconds": 8.552,
+  "boundary_scope": "allocation, pathname lookup and hardware sector reads only",
+  "sha256": {
+    "kernel/fat_files.c": "172186c9118b11acd1b774fcbdd7c5d4041fbb89a849526ebdd0cdefc25f715a",
+    "kernel/fat_files.h": "f70f1593e63d1ceff9a0c3cf4aa39ac3d3ef874f9ebffa684d08c37ed0b40809",
+    "kernel/fat_relative.c": "fc71c65f0aa31fc57bb9f45d30e594b5aa475da24c0dbcba6be3fa6a1ec49a3f",
+    "kernel/fat_relative.h": "d6acffb78a4604caf790a61a33071e4c8c7bc5dcdaddcc9f41e9f443a9e1fdb8",
+    "tests/kernel_fat_files.py": "e234e0ad48309ea383754f729913181bffe3d27c752ea6c586aa591f90251ee2"
+  }
+}

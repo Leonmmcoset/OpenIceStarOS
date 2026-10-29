@@ -1,0 +1,109 @@
+{
+  "image_sha256": "61aec7c66bca71821410293aed58449987f6d2b85cfc2d47e88dd3c077340be2",
+  "trace_sha256": "f5c29aed6f91bc798726c2f178e273fd8e8066400f2668a1e1445f5748446ebf",
+  "functions": {
+    "relative_read": {
+      "entry": "0x826ade",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_named": {
+      "entry": "0x826c3a",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_cluster": {
+      "entry": "0x826c6e",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_named_cluster": {
+      "entry": "0x826dd0",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_allocate_named": {
+      "entry": "0x826f38",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_allocate_index": {
+      "entry": "0x827032",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "allocate_record": {
+      "entry": "0x827454",
+      "entry_events": 78,
+      "body_events": 700,
+      "executed_blocks": [
+        "0x827454",
+        "0x82748f",
+        "0x8274a3",
+        "0x8274bd",
+        "0x8274c9",
+        "0x827556",
+        "0x82755e",
+        "0x827566",
+        "0x8275a5",
+        "0x8275b3"
+      ]
+    },
+    "read_record": {
+      "entry": "0x82760c",
+      "entry_events": 6,
+      "body_events": 87,
+      "executed_blocks": [
+        "0x82760c",
+        "0x827656",
+        "0x827660",
+        "0x8276f0",
+        "0x8276f8",
+        "0x827700",
+        "0x82773f",
+        "0x82774d"
+      ]
+    },
+    "allocate_path": {
+      "entry": "0x827798",
+      "entry_events": 34,
+      "body_events": 72,
+      "executed_blocks": [
+        "0x827798",
+        "0x8277ab",
+        "0x8277b2",
+        "0x8277b8",
+        "0x8277bd"
+      ]
+    },
+    "read_path": {
+      "entry": "0x8277dc",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_relative": {
+      "entry": "0x827826",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_record": {
+      "entry": "0x8278f4",
+      "entry_events": 4,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x8278f4",
+        "0x82797a"
+      ]
+    }
+  },
+  "installed_intervals": 364,
+  "scope": "Production boot and CMD/application paths; unobserved entries require differential fixtures."
+}

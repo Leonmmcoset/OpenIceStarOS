@@ -1,0 +1,154 @@
+{
+  "diagnostic_only": true,
+  "image_sha256": "b4370c97066a3bdc9865ae7896584d5be5854cb6407c8309e8d9571a7ea2e1b6",
+  "trace_sha256": "5a3c6ccbc26691e1d26713f2ff6f5062d89582f76eecfa26e6d7e6ed5414fb48",
+  "functions": {
+    "relative_read": {
+      "entry": "0x826ade",
+      "entry_events": 4,
+      "body_events": 44,
+      "executed_blocks": [
+        "0x826ade",
+        "0x826bbc",
+        "0x826bc4",
+        "0x826bcc",
+        "0x826c02",
+        "0x826c10"
+      ]
+    },
+    "relative_named": {
+      "entry": "0x826c3a",
+      "entry_events": 1,
+      "body_events": 3,
+      "executed_blocks": [
+        "0x826c3a",
+        "0x826c45",
+        "0x826c4a",
+        "0x826c53"
+      ]
+    },
+    "relative_cluster": {
+      "entry": "0x826c6e",
+      "entry_events": 3,
+      "body_events": 28,
+      "executed_blocks": [
+        "0x826c6e",
+        "0x826c84",
+        "0x826d16",
+        "0x826d1d",
+        "0x826d22",
+        "0x826d32",
+        "0x826d37",
+        "0x826d98",
+        "0x826d9b"
+      ]
+    },
+    "relative_named_cluster": {
+      "entry": "0x826dd0",
+      "entry_events": 3,
+      "body_events": 30,
+      "executed_blocks": [
+        "0x826dd0",
+        "0x826de1",
+        "0x826def",
+        "0x826eab",
+        "0x826eb3",
+        "0x826eb8",
+        "0x826ec9",
+        "0x826eff"
+      ]
+    },
+    "relative_allocate_named": {
+      "entry": "0x826f38",
+      "entry_events": 1,
+      "body_events": 5,
+      "executed_blocks": [
+        "0x826f38",
+        "0x826f49",
+        "0x826f54",
+        "0x826fe4",
+        "0x826feb",
+        "0x826ff2"
+      ]
+    },
+    "relative_allocate_index": {
+      "entry": "0x827032",
+      "entry_events": 1,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x827032",
+        "0x827045",
+        "0x8270c2",
+        "0x8270c9",
+        "0x8270d2"
+      ]
+    },
+    "allocate_record": {
+      "entry": "0x827454",
+      "entry_events": 78,
+      "body_events": 700,
+      "executed_blocks": [
+        "0x827454",
+        "0x82748f",
+        "0x8274a3",
+        "0x8274bd",
+        "0x8274c9",
+        "0x827556",
+        "0x82755e",
+        "0x827566",
+        "0x8275a5",
+        "0x8275b3"
+      ]
+    },
+    "read_record": {
+      "entry": "0x82760c",
+      "entry_events": 6,
+      "body_events": 87,
+      "executed_blocks": [
+        "0x82760c",
+        "0x827656",
+        "0x827660",
+        "0x8276f0",
+        "0x8276f8",
+        "0x827700",
+        "0x82773f",
+        "0x82774d"
+      ]
+    },
+    "allocate_path": {
+      "entry": "0x827798",
+      "entry_events": 34,
+      "body_events": 72,
+      "executed_blocks": [
+        "0x827798",
+        "0x8277ab",
+        "0x8277b2",
+        "0x8277b8",
+        "0x8277bd"
+      ]
+    },
+    "read_path": {
+      "entry": "0x8277dc",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_relative": {
+      "entry": "0x827826",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_record": {
+      "entry": "0x8278f4",
+      "entry_events": 4,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x8278f4",
+        "0x82797a"
+      ]
+    }
+  },
+  "installed_intervals": 364,
+  "scope": "Separate diagnostic X using production kernel services and real disk I/O."
+}

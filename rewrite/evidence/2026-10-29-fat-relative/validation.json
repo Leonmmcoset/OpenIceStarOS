@@ -1,0 +1,19 @@
+{
+  "production_image_sha256": "61aec7c66bca71821410293aed58449987f6d2b85cfc2d47e88dd3c077340be2",
+  "production_kernel_sha256": "bcc5d8abd0d45cc533be5bc4a40a97bb3c07c12867dcbfddd9f714e451a75d0e",
+  "diagnostic_image_sha256": "b4370c97066a3bdc9865ae7896584d5be5854cb6407c8309e8d9571a7ea2e1b6",
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "original_logo_retained": true,
+  "installed_intervals": 364,
+  "full_verify_run": false,
+  "guest_report_sha256": "f2201fe243ed1f9ee99e6d8efaea31da3bea744b9e5a635d18b6d6d77e9e399f",
+  "source_sha256": {
+    "kernel/fat_relative.c": "fc71c65f0aa31fc57bb9f45d30e594b5aa475da24c0dbcba6be3fa6a1ec49a3f",
+    "kernel/fat_relative.h": "d6acffb78a4604caf790a61a33071e4c8c7bc5dcdaddcc9f41e9f443a9e1fdb8",
+    "tests/kernel_fat_files.py": "e234e0ad48309ea383754f729913181bffe3d27c752ea6c586aa591f90251ee2",
+    "tests/fat_relative_guest.c": "e733e2f4ff9cf6e2cc0fe194ba844bf292c2d0c36b896292dea79b0c5cc36f65",
+    "tools/fat_relative_smoke.py": "6ff3b044238daed176b283b54b682f2c54ae053cd698518e46419eef87613809",
+    "tools/fat_files_smoke.py": "0629767dbead68fe545ae0ed992a19a349273fce5b105b6482371d5b7fe580c9",
+    "tools/boot_smoke.py": "3cf066dc9eb7f93d11e1b9896adf40af2c8540650f53a5bd4551f70e61850470"
+  }
+}

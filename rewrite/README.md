@@ -5161,3 +5161,20 @@ and generator were removed. See `branding/README.md` and
 precise regression scope. The later 358-interval image reproduces the separately
 validated FAT-reader build byte for byte; only its six added kernel intervals
 differ from the fully regressed image. This does not complete OS recovery.
+
+### Relative FAT16 readers (2026-10-29)
+
+Six more original-only filesystem bodies now execute from recovered C: whole-
+chain reads by directory index/name, offset-cluster reads by index/name, and
+allocating reads by index/name. The integrated kernel contains 364 declared
+intervals. Combined original/ordinary-C/fixed-C FAT tests pass 1,926 scenarios /
+5,778 executions; installed X-loader, icon/bitmap callers, disk, branding and
+inventory checks pass. A normal QEMU boot verifies CLOCK and all installed
+slots. A separate test-only X uses real production service slots and disk I/O
+to execute all six new entries, validating ten calls and 328,000 data/guard
+bytes, including the original differing past-EOF behaviors. Only the six new
+kernel intervals differ from the 358-interval baseline. See
+[`recovery/FAT_RELATIVE.md`](recovery/FAT_RELATIVE.md) and the committed evidence
+for scope and commands. This is focused validation, not a full 364-interval
+`make verify` run. Five applications are rebuilt; INIT/kernel and 32 original
+program paths still require further recovery.

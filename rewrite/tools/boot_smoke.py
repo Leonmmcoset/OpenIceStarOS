@@ -78,11 +78,16 @@ def main():
                         help="load C CLOCK, verify changing hands/face, close it and reuse CMD")
     parser.add_argument("--fat-files-check", action="store_true",
                         help="trace recovered FAT readers during boot and CMD/application loading")
+    parser.add_argument("--fat-relative-check", action="store_true",
+                        help="run ten real FAT service calls in a separate test-only X image")
     parser.add_argument("--math-check", action="store_true",
                         help="trace the installed C factorial/power/trig series during --clock-check")
     parser.add_argument("--starscr-reference", action="store_true",
                         help="run the same screen-saver check on the untouched original VHD")
     arguments = parser.parse_args()
+    if arguments.fat_relative_check:
+        arguments.fat_files_check = True
+        arguments.input_check = True
     if arguments.fat_files_check and any((arguments.starscr_reference, arguments.math_check,
             arguments.entry_check, arguments.icon_dib_check, arguments.icon_render_check,
             arguments.surface_move_check, arguments.surface_scale_check,
@@ -141,11 +146,13 @@ def main():
     if arguments.clock_check and arguments.starscr_reference:
         parser.error("--clock-check requires the compiled application image")
     if sum((arguments.snake_check, arguments.color_check, arguments.mov_check, arguments.starscr_check, arguments.clock_check,
+            arguments.fat_relative_check,
             arguments.surface_scale_check)) > 1:
         parser.error("select one application check per boot")
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    default_image = ("OpenIceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
+    default_image = ("OpenIceStarOS_fat_diagnostic.vhd" if arguments.fat_relative_check else
+                     "OpenIceStarOS_scale_diagnostic.vhd" if arguments.surface_scale_check else
                      "OpenIceStarOS_c_apps.vhd" if arguments.color_check or arguments.mov_check or arguments.starscr_check or arguments.clock_check else
                      "OpenIceStarOS_c_snake.vhd" if arguments.snake_check else "OpenIceStarOS_c_init.vhd")
     image = (arguments.image.resolve() if arguments.image else
@@ -161,7 +168,7 @@ def main():
         if arguments.fat_files_check:
             trace = build / "fat_files_guest.trace"
             trace.unlink(missing_ok=True)
-            command.extend(["-dfilter", "0x827454..0x82798b", "-D", str(trace), "-d", "exec"])
+            command.extend(["-dfilter", "0x826ade..0x82711d,0x827454..0x82798b", "-D", str(trace), "-d", "exec"])
         if arguments.surface_move_check:
             trace = build / "surface_move_guest.trace"
             trace.unlink(missing_ok=True)
@@ -280,6 +287,9 @@ def main():
                         if arguments.clock_check:
                             from clock_smoke import check_clock
                             check_clock(execute, build, image, cmd_base)
+                        if arguments.fat_relative_check:
+                            from fat_relative_smoke import check_fat_relative
+                            check_fat_relative(execute, build, image, cmd_base)
                         if arguments.surface_scale_check:
                             from surface_scale_smoke import check_surface_scale
                             check_surface_scale(execute, build, image, cmd_base)
@@ -308,7 +318,7 @@ def main():
         check_entry_execution(root, image, trace)
     if arguments.fat_files_check:
         from fat_files_smoke import check_fat_execution
-        check_fat_execution(root, image, trace)
+        check_fat_execution(root, image, trace, require_relative=arguments.fat_relative_check)
     if arguments.icon_dib_check:
         from icon_dib_smoke import check_icon_dib_execution
         check_icon_dib_execution(root, image, trace)

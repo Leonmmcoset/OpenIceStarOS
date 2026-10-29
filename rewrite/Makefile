@@ -140,6 +140,8 @@ KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BU
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_files.o
 KERNEL_PATCHES += $(foreach name,fat_read_alloc fat_read_into fat_read_name_alloc fat_read_name_into fat_header_relative fat_header_path,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_relative.o
+KERNEL_PATCHES += $(foreach name,fat_relative_read fat_relative_named fat_relative_cluster fat_relative_named_cluster fat_relative_alloc_named fat_relative_alloc_index,$(BUILD)/kernel.$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
@@ -275,6 +277,9 @@ $(BUILD)/kernel_%.o: kernel/%.c Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 
 $(BUILD)/kernel_fat_files.o: kernel/fat_files.c kernel/fat_files.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_relative.o: kernel/fat_relative.c kernel/fat_relative.h kernel/memory.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_entry.o: kernel/entry.c kernel/entry.h kernel/entry_boundaries.def Makefile | $(BUILD)
@@ -1044,6 +1049,22 @@ $(BUILD)/OpenIceStarOS_scale_diagnostic.vhd: $(BUILD)/OpenIceStarOS_c_apps.vhd $
 .PHONY: smoke-surface-scale
 smoke-surface-scale: $(BUILD)/OpenIceStarOS_scale_diagnostic.vhd
 	python3 tools/boot_smoke.py --surface-scale-check
+
+$(BUILD)/fat_relative_guest.o: tests/fat_relative_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/fat_relative_guest.elf: $(BUILD)/fat_relative_guest.o tests/fat_relative_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_relative_guest.ld -Map=$(BUILD)/fat_relative_guest.map -o $@ $<
+
+$(BUILD)/fat_relative_guest.x: $(BUILD)/fat_relative_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/fat_relative_guest.symbols.json
+
+$(BUILD)/OpenIceStarOS_fat_diagnostic.vhd: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_relative_guest.x tools/fat_relative_smoke.py tools/kernel_image.py
+	python3 tools/fat_relative_smoke.py $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_relative_guest.x $@
+
+.PHONY: smoke-fat-relative
+smoke-fat-relative: $(BUILD)/OpenIceStarOS_fat_diagnostic.vhd
+	python3 tools/boot_smoke.py --fat-relative-check
 
 .PHONY: smoke-surface-lifecycle
 smoke-surface-lifecycle: $(BUILD)/OpenIceStarOS_c_apps.vhd

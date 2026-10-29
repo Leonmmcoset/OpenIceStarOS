@@ -1,0 +1,10 @@
+python3 tests/branding.py
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.645s
+
+OK
+python3 tools/branding.py scan build/OpenIceStarOS_c_apps.vhd build/branding_residuals.json
+Live files/boot ASCII and UTF-16 scan passed; 85 compatibility references retained
+python3 tools/binary_inventory.py --check
+{"files": 67, "directories": 11, "program_paths": 39, "unique_program_binaries": 37, "roles": {"application": 33, "driver": 4, "init": 1, "kernel": 1}, "recovery": {"partial": 2, "rebuilt": 5, "unrecovered": 32}}

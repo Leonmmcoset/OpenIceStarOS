@@ -1,0 +1,51 @@
+{
+  "baseline_intervals": 358,
+  "installed_intervals": 364,
+  "new_intervals": [
+    {
+      "name": "FAT relative whole-chain reader",
+      "binary": "kernel.fat_relative_read.bin",
+      "start": "0x826ade",
+      "end": "0x826c3a"
+    },
+    {
+      "name": "FAT relative named whole-chain reader",
+      "binary": "kernel.fat_relative_named.bin",
+      "start": "0x826c3a",
+      "end": "0x826c6e"
+    },
+    {
+      "name": "FAT relative indexed single-cluster reader",
+      "binary": "kernel.fat_relative_cluster.bin",
+      "start": "0x826c6e",
+      "end": "0x826dd0"
+    },
+    {
+      "name": "FAT relative named single-cluster reader",
+      "binary": "kernel.fat_relative_named_cluster.bin",
+      "start": "0x826dd0",
+      "end": "0x826f38"
+    },
+    {
+      "name": "FAT relative named allocating reader",
+      "binary": "kernel.fat_relative_alloc_named.bin",
+      "start": "0x826f38",
+      "end": "0x827032"
+    },
+    {
+      "name": "FAT relative indexed allocating reader",
+      "binary": "kernel.fat_relative_alloc_index.bin",
+      "start": "0x827032",
+      "end": "0x82711e"
+    }
+  ],
+  "kernel_changed_bytes": 1532,
+  "whole_disk_changed_bytes": 1532,
+  "only_six_new_kernel_intervals_changed": true,
+  "sha256": {
+    "baseline_image": "620c776e829a755aa9ad01680bf101d2f305dbf9f5bcefd8b5ea5d838e1388b7",
+    "image": "61aec7c66bca71821410293aed58449987f6d2b85cfc2d47e88dd3c077340be2",
+    "kernel": "bcc5d8abd0d45cc533be5bc4a40a97bb3c07c12867dcbfddd9f714e451a75d0e"
+  },
+  "apps_resources_boot_and_fat_unchanged": true
+}
