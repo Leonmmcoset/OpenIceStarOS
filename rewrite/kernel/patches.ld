@@ -928,6 +928,10 @@ SECTIONS
     ASSERT(kernel_icon_read_relative_826f38 == 0x826f38 && ADDR(.fat_relative_alloc_named) + SIZEOF(.fat_relative_alloc_named) <= 0x827032, "fat_relative_alloc_named overflow")
     .fat_relative_alloc_index 0x827032 : { *kernel_fat_relative.o(.text.kernel_bitmap_read_relative_827032) }
     ASSERT(kernel_bitmap_read_relative_827032 == 0x827032 && ADDR(.fat_relative_alloc_index) + SIZEOF(.fat_relative_alloc_index) <= 0x82711e, "fat_relative_alloc_index overflow")
+    .fat_allocate_index 0x82711e : { *kernel_fat_alloc.o(.text.kernel_fat_allocate_index_82711e) }
+    ASSERT(kernel_fat_allocate_index_82711e == 0x82711e && ADDR(.fat_allocate_index) + SIZEOF(.fat_allocate_index) <= 0x8272f4, "fat_allocate_index overflow")
+    .fat_allocate_clusters 0x8272f4 : { *kernel_fat_alloc.o(.text.kernel_fat_allocate_clusters_8272f4) }
+    ASSERT(kernel_fat_allocate_clusters_8272f4 == 0x8272f4 && ADDR(.fat_allocate_clusters) + SIZEOF(.fat_allocate_clusters) <= 0x827454, "fat_allocate_clusters overflow")
     .fat_read_alloc 0x827454 : { *kernel_fat_files.o(.text.kernel_fat_read_alloc_827454) }
     ASSERT(kernel_fat_read_alloc_827454 == 0x827454 && ADDR(.fat_read_alloc) + SIZEOF(.fat_read_alloc) <= 0x82760c, "fat_read_alloc overflow")
     .fat_read_into 0x82760c : { *kernel_fat_files.o(.text.kernel_x_read_path_82760c) }

@@ -1,0 +1,141 @@
+{
+  "diagnostic_only": true,
+  "image_sha256": "c7cab6da6ac3d42e2731f2e07e00174c47701f88c8d54769a1c6de3aab3dd004",
+  "relocated_base": "0x460d810",
+  "relocations_verified": 25,
+  "report_address": "0x460e850",
+  "input": "emulated PS/2 only",
+  "file": "/INIT.X",
+  "cluster_bytes": 8192,
+  "chain_clusters": 4,
+  "cases": [
+    {
+      "index": 0,
+      "entry": "0x826ade",
+      "result": "0x4",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 1,
+      "entry": "0x826c3a",
+      "result": "0x4",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 2,
+      "entry": "0x826c6e",
+      "result": "0x2",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "6bb3a90292ccb4b38565d3374769f1a3b4028c3e669633a1ba11ae4d821587ff"
+    },
+    {
+      "index": 3,
+      "entry": "0x826dd0",
+      "result": "0x2",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "6bb3a90292ccb4b38565d3374769f1a3b4028c3e669633a1ba11ae4d821587ff"
+    },
+    {
+      "index": 4,
+      "entry": "0x826f38",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 5,
+      "entry": "0x827032",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 6,
+      "entry": "0x826c6e",
+      "result": "0x3",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "9f069dfcaea359116caad48fdff87c1b6d04cea2ce40453c8afc0bc9b528f6dc"
+    },
+    {
+      "index": 7,
+      "entry": "0x826dd0",
+      "result": "0x3",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a1ddef80dded7eb595f8ed2c28d932d7825ad2d249f1cf08219114c0dcf3d1c2"
+    },
+    {
+      "index": 8,
+      "entry": "0x826c6e",
+      "result": "0x0",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "9f069dfcaea359116caad48fdff87c1b6d04cea2ce40453c8afc0bc9b528f6dc"
+    },
+    {
+      "index": 9,
+      "entry": "0x826dd0",
+      "result": "0x0",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "0ce90d6d7993658204b59cdee57c07ea15a03a65750143b7de1c37749e34cf74"
+    },
+    {
+      "index": 10,
+      "entry": "0x82711e",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 11,
+      "entry": "0x82711e",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    },
+    {
+      "index": 12,
+      "entry": "0x82711e",
+      "result": "0x0",
+      "allocation_freed": false,
+      "bytes_checked": 32800,
+      "buffer_sha256": "9f069dfcaea359116caad48fdff87c1b6d04cea2ce40453c8afc0bc9b528f6dc"
+    },
+    {
+      "index": 13,
+      "entry": "0x8272f4",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "0ce90d6d7993658204b59cdee57c07ea15a03a65750143b7de1c37749e34cf74"
+    },
+    {
+      "index": 14,
+      "entry": "0x8272f4",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "cbcfe898ab4f4cba5073dc5c273775e63ff7e9d11efa61e1749648966cb926c6"
+    },
+    {
+      "index": 15,
+      "entry": "0x8272f4",
+      "result": "0x46a1410",
+      "allocation_freed": true,
+      "bytes_checked": 32800,
+      "buffer_sha256": "a7e5639fb171219dbd1dbc3e1182f5d30b7cedd48901c200a738428e7f6ee9c7"
+    }
+  ]
+}

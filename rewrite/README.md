@@ -5194,3 +5194,21 @@ differ from the 364-interval baseline. See
 [`recovery/FAT_PATH.md`](recovery/FAT_PATH.md) for preserved parser/name/lifetime
 quirks and the committed evidence. This focused check does not constitute a
 full 366-interval regression or complete OS recovery.
+
+### FAT directory-index and bounded-cluster allocation (2026-10-29)
+
+Two more original-only services now execute from C at `0x82711e` and
+`0x8272f4`: allocation/read by arbitrary directory base and signed index, and
+allocation/read of a requested cluster count. The kernel contains 368 declared
+intervals. Fourteen-reader original/ordinary-C/fixed-C comparisons pass 2,410
+scenarios / 7,230 executions, including all 39 program paths and preserved
+zero-count, overflow, exact FAT-sentinel and live-state behavior. A separate
+QEMU diagnostic checks eight real service entries, 16 calls and 524,800
+data/guard bytes; both new C bodies execute. Ordinary production boot verifies
+CMD, C CLOCK, RAM, TSS switching and all installed intervals. Path/X-loader,
+icon/bitmap caller, disk, branding and inventory checks pass. Exactly 786 bytes
+change within the two new kernel slots; the original logo and other disk
+contents are unchanged. See [`recovery/FAT_ALLOC.md`](recovery/FAT_ALLOC.md)
+for commands, evidence and limits. A full 368-interval `make verify` was not
+run; five applications are rebuilt, INIT/kernel are partial and 32 program
+paths remain unrecovered.

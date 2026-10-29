@@ -19,6 +19,8 @@ def check_fat_execution(root, image, trace, require_relative=False):
             ("relative_named_cluster", 0x826dd0, 0x826f38),
             ("relative_allocate_named", 0x826f38, 0x827032),
             ("relative_allocate_index", 0x827032, 0x82711e),
+            ("allocate_directory_index", 0x82711e, 0x8272f4),
+            ("allocate_clusters", 0x8272f4, 0x827454),
             ("allocate_record", 0x827454, 0x82760c),
             ("read_record", 0x82760c, 0x827798),
             ("allocate_path", 0x827798, 0x8277dc),
@@ -31,7 +33,8 @@ def check_fat_execution(root, image, trace, require_relative=False):
     required = ["find_path", "name83", "allocate_record", "read_record", "allocate_path", "header_record"]
     if require_relative:
         required += ["relative_read", "relative_named", "relative_cluster",
-                     "relative_named_cluster", "relative_allocate_named", "relative_allocate_index"]
+                     "relative_named_cluster", "relative_allocate_named", "relative_allocate_index",
+                     "allocate_directory_index", "allocate_clusters"]
     for name in required:
         require(functions[name]["entry_events"] > 0 and functions[name]["body_events"] > 0,
                 "recovered FAT entry/body was not observed: " + name)

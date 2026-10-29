@@ -79,7 +79,7 @@ def main():
     parser.add_argument("--fat-files-check", action="store_true",
                         help="trace recovered FAT readers during boot and CMD/application loading")
     parser.add_argument("--fat-relative-check", action="store_true",
-                        help="run ten real FAT service calls in a separate test-only X image")
+                        help="run sixteen real FAT service calls in a separate test-only X image")
     parser.add_argument("--math-check", action="store_true",
                         help="trace the installed C factorial/power/trig series during --clock-check")
     parser.add_argument("--starscr-reference", action="store_true",
@@ -168,8 +168,7 @@ def main():
         if arguments.fat_files_check:
             trace = build / "fat_files_guest.trace"
             trace.unlink(missing_ok=True)
-            command.extend(["-dfilter", "0x8263c0..0x82693f,0x826ade..0x82711d,"
-                            "0x827454..0x82798b,0x827bba..0x827c71",
+            command.extend(["-dfilter", "0x8263c0..0x82693f,0x826ade..0x82798b,0x827bba..0x827c71",
                             "-D", str(trace), "-d", "exec"])
         if arguments.surface_move_check:
             trace = build / "surface_move_guest.trace"

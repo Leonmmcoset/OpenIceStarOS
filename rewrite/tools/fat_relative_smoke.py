@@ -53,10 +53,10 @@ def check_fat_relative(execute, build, image, cmd_base):
     symbol = metadata["symbols"]["fat_report"]
     address = bases[0] + symbol["address"]
     report = read_memory(address, symbol["size"])
-    require(len(report) == 328160, "unexpected FAT report size")
-    header = struct.unpack_from("<10I", report)
-    entries = [0x826ade, 0x826c3a, 0x826c6e, 0x826dd0, 0x826f38, 0x827032]
-    require(header[:4] == (0x46415432, 1, 1, 10) and list(header[4:]) == entries,
+    require(len(report) == 525040, "unexpected FAT report size")
+    header = struct.unpack_from("<12I", report)
+    entries = [0x826ade, 0x826c3a, 0x826c6e, 0x826dd0, 0x826f38, 0x827032, 0x82711e, 0x8272f4]
+    require(header[:4] == (0x46415432, 1, 1, 16) and list(header[4:]) == entries,
             f"FAT guest did not complete: {header}")
     init = disk.find(disk.root, b"INIT    X  ", False)
     offsets = list(disk.chain(word(init, 26)))
@@ -66,23 +66,27 @@ def check_fat_relative(execute, build, image, cmd_base):
                     relocated_base=hex(bases[0]), relocations_verified=len(parsed.relocations),
                     report_address=hex(address), input="emulated PS/2 only",
                     file="/INIT.X", cluster_bytes=8192, chain_clusters=4, cases=[])
-    for index in range(10):
-        start = 40 + index * 32812
+    for index in range(16):
+        start = 48 + index * 32812
         entry, result, freed = struct.unpack_from("<3I", report, start)
-        expected_entry = entries[index if index < 6 else index % 2 + 2]
+        expected_entry = entries[index if index < 6 else index % 2 + 2 if index < 10 else 6 if index < 13 else 7]
         require(entry == expected_entry, "unexpected FAT service entry")
         expected = bytearray(b"\xa5" * 32800)
-        if index in (0, 1, 4, 5):
+        if index in (0, 1, 4, 5, 10, 11, 15):
             expected[16:32784] = raw
-            require(result != 0 if index in (4, 5) else result == 4, "whole-file return mismatch")
+            require(result != 0 if index in (4, 5, 10, 11, 15) else result == 4, "whole-file return mismatch")
         elif index in (2, 3, 7, 9):
             cluster = 2 if index in (2, 3) else 3 if index == 7 else 0
             begin = cluster * 8192
             expected[16+begin:16+begin+8192] = raw[begin:begin+8192]
             require(result == cluster, "single-cluster return mismatch")
-        else:
+        elif index in (6, 8, 12):
             require(result == (3 if index == 6 else 0), "no-read return mismatch")
-        require(freed == int(index in (4, 5)), "diagnostic allocation cleanup mismatch")
+        else:
+            length = 8192 if index == 13 else 16384
+            expected[16:16+length] = raw[:length]
+            require(result != 0, "bounded allocation failed")
+        require(freed == int(index in (4, 5, 10, 11, 13, 14, 15)), "diagnostic allocation cleanup mismatch")
         observed = report[start+12:start+32812]
         require(observed == expected, f"FAT case {index} data/guard mismatch")
         evidence["cases"].append(dict(index=index, entry=hex(entry), result=hex(result),
@@ -90,8 +94,8 @@ def check_fat_relative(execute, build, image, cmd_base):
             buffer_sha256=hashlib.sha256(observed).hexdigest()))
     (build / "fat_relative_guest_report.memory").write_bytes(report)
     (build / "fat_relative_smoke.json").write_text(json.dumps(evidence, indent=2) + "\n")
-    print("Test-only X: all six real FAT service entries, 10 calls, 328000 data/guard bytes, "
-          "past-EOF/negative offsets, allocations/free and relocations verified")
+    print("Test-only X: all eight real FAT service entries, 16 calls, 524800 data/guard bytes, "
+          "arbitrary directory base, bounded clusters, past-EOF/negative offsets, allocations/free and relocations verified")
 
 
 if __name__ == "__main__":

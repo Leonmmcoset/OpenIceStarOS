@@ -1,0 +1,28 @@
+{
+  "baseline_intervals": 366,
+  "installed_intervals": 368,
+  "new_intervals": [
+    {
+      "name": "FAT arbitrary directory indexed allocating reader",
+      "binary": "kernel.fat_allocate_index.bin",
+      "start": "0x82711e",
+      "end": "0x8272f4"
+    },
+    {
+      "name": "FAT bounded cluster allocating reader",
+      "binary": "kernel.fat_allocate_clusters.bin",
+      "start": "0x8272f4",
+      "end": "0x827454"
+    }
+  ],
+  "changed_kernel_bytes": 786,
+  "only_two_new_kernel_intervals_changed": true,
+  "boot_applications_fat_directories_slack_unchanged": true,
+  "original_logo_retained": true,
+  "sha256": {
+    "baseline_image": "446bda2ed7e43aa0d180b536e3e0ca9735c49486a8b18ccecbecb983294f46ff",
+    "image": "654227ef12832607760e47c7263c15d3f1a481619b8b495082afdfd4b0e54b90",
+    "kernel": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd",
+    "original_image": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

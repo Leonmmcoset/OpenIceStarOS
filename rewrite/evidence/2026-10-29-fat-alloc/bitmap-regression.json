@@ -1,0 +1,46 @@
+{
+  "installed": true,
+  "exit_code": 0,
+  "seconds": 6.973,
+  "slots": [
+    {
+      "name": "bitmap_draw_file",
+      "start": "0x81fec2",
+      "end": "0x81ffc4",
+      "compiled_bytes": 220,
+      "slot_bytes": 258
+    },
+    {
+      "name": "bitmap_fit_file",
+      "start": "0x82040c",
+      "end": "0x8204ac",
+      "compiled_bytes": 134,
+      "slot_bytes": 160
+    }
+  ],
+  "helper_entry_detours": {
+    "kernel_startup_lookup_8263c0": "0x8263c0",
+    "kernel_startup_read_alloc_827454": "0x827454",
+    "kernel_bitmap_lookup_relative_825c8e": "0x825c8e",
+    "kernel_bitmap_read_relative_827032": "0x827032",
+    "kernel_bitmap_draw_81ffc4": "0x81ffc4",
+    "kernel_bitmap_fit_8204ac": "0x8204ac",
+    "kernel_bitmap_free_815978": "0x815978"
+  },
+  "limitation": "Seven explicit helper entry detours. 96 drawing and 48 fitting composition cases restore and execute the real BMP bodies. Filesystem/free remain substituted. This is not real filesystem integration.",
+  "stdout": "Bitmap file scenarios/executions: 30354 91062; relative/absolute/draw/fit/early/mutated caller/record reads: 9790 16876 8888 8432 3688 85824 35268; real renderer/fit executions/lookahead guard faults: 288 144 12; bitmap file wrappers verified against event/record/32 KiB memory/caller/EAX/ABI/initialized-service oracle; seven explicit helper entry detours\n",
+  "stderr": "",
+  "sha256": {
+    "kernel/bitmap_files.c": "c4b5eb9eb83f81daa68684dfbbbe303c7afdd4e33f739197afce7a3649d35274",
+    "kernel/bitmap_files.h": "b95ab2ef10dce5e6127340a511cf1d35202fe474ece7d0ef71ac8021bb2c5079",
+    "tests/kernel_bitmap_files.py": "775a119468d0e8797ae2c2cdf434242aa3dc262fcc1d57b4edf3211bccbd2ae5",
+    "tests/kernel_bitmap_files.c": "f913fc073fd282d23d68ede2fd55d76fbde2e15e3dba6cf231e9649ea747d95f",
+    "tests/raster_abi.S": "ce858c7bd85b493cdfa125a8fe9aff5a16c0452e0fc3535f512fefe596a29a13",
+    "tests/raster_fixture.h": "590e70e65c34288267c4d39086682125e4fe65b01c75c3faa56aebe6b604aaf0",
+    "tests/kernel_icon_pixels.py": "718ba511a773d08355b4f0997ff90e4edeb2dc94cc8c816ce2aaef4a19d00ef0",
+    "build/bitmap_files_preview.elf": "5cb39403840fd231b9cb361d4de26407a160996670e3ada1c3a2605eee87634e",
+    "build/kernel_bitmap_files_installed_test": "ee6eb8a3660f5d3ac5b8f377b9d5fe7159b4fd99c30c77fb5343e22dd621d592",
+    "build/bitmap_files_candidate.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd",
+    "build/openicestaros_kernel.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd"
+  }
+}

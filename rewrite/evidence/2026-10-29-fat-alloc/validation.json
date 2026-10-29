@@ -1,0 +1,35 @@
+{
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "image_sha256": "654227ef12832607760e47c7263c15d3f1a481619b8b495082afdfd4b0e54b90",
+  "kernel_sha256": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd",
+  "installed_intervals": 368,
+  "full_verify_run": false,
+  "diagnostic_service_entries": 8,
+  "diagnostic_calls": 16,
+  "diagnostic_data_guard_bytes": 524800,
+  "production_new_service_entry_events": 0,
+  "new_service_runtime_proof": "separate diagnostic X, real production services and disk I/O",
+  "snapshot_boots": true,
+  "original_logo_retained": true,
+  "screenshots_visually_inspected": [
+    "c-clock.png",
+    "cmd-cpuid.png"
+  ],
+  "recovery_counts": {
+    "unrecovered": 32,
+    "rebuilt": 5,
+    "partial": 2
+  },
+  "source_sha256": {
+    "kernel/fat_alloc.c": "9e6f7bf0b0ef58feeb4343fe828fc45e13a4cf6d988a658b28c704ea20fe98aa",
+    "kernel/fat_alloc.h": "5a1d3f79423a196c0906b63aa3206cd2638b4d2b287d5fb4ef83164337aeabc3",
+    "tests/kernel_fat_files.py": "7330f41fe99dec46e2f6adfe897284a1cf62387c8103f160bff84432bdc3f6aa",
+    "tests/fat_relative_guest.c": "6a72d7adb0a2ed579b68e8873cc57f0b454b4456541fd9b3243f66a29b7ef7c0",
+    "tools/fat_relative_smoke.py": "b36432b08ac302882740b9a2bba67da113f62115c7ed10e1c05955b19b0336d6",
+    "tools/fat_files_smoke.py": "dfdd31bbcbd7b10b0c9c2d8bec996ade9407033d9cd07b66cc44b323bee033a4",
+    "tools/boot_smoke.py": "56273c4811509f7becfa23b8dc026c2c8b7ffb6527cfe5d9f186cddaa480f9a0",
+    "kernel/patches.json": "68982835a02469935b631f121890849dbe3712b44d3a858877d73a195346d565",
+    "kernel/patches.ld": "1469fded1f509f75c4cf3320f42adf6b5b8a3644fdf5ffa1a1a498f55c8581fd",
+    "Makefile": "fc16c8acc158687f179a5d71cc0c77d97f1d31b78a1e3b721fadd658a561c9fa"
+  }
+}

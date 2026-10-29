@@ -1,0 +1,149 @@
+make: Entering directory '/root/IceStarOS-x86-Decompile/rewrite'
+python3 tools/binary_inventory.py
+{"files": 67, "directories": 11, "program_paths": 39, "unique_program_binaries": 37, "roles": {"application": 33, "driver": 4, "init": 1, "kernel": 1}, "recovery": {"partial": 2, "rebuilt": 5, "unrecovered": 32}}
+python3 tests/branding.py
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.607s
+
+OK
+python3 tools/branding.py scan build/OpenIceStarOS_c_apps.vhd build/branding_residuals.json
+Live files/boot ASCII and UTF-16 scan passed; 85 compatibility references retained
+python3 tests/kernel_icon_files.py --installed
+{
+  "installed": true,
+  "exit_code": 0,
+  "seconds": 10.302,
+  "slots": {
+    "x_icon_pointer": {
+      "compiled_bytes": 20,
+      "slot_bytes": 48
+    },
+    "icon_draw_file": {
+      "compiled_bytes": 77,
+      "slot_bytes": 114
+    },
+    "icon_draw_file_auto": {
+      "compiled_bytes": 165,
+      "slot_bytes": 250
+    }
+  },
+  "resources": [
+    {
+      "name": "Snake",
+      "icon_offset": 0,
+      "file_size": 2852,
+      "sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488"
+    },
+    {
+      "name": "Color",
+      "icon_offset": 0,
+      "file_size": 14516,
+      "sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3"
+    },
+    {
+      "name": "Mov",
+      "icon_offset": 0,
+      "file_size": 14932,
+      "sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68"
+    },
+    {
+      "name": "StarScr",
+      "icon_offset": 0,
+      "file_size": 16052,
+      "sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c"
+    },
+    {
+      "name": "Clock",
+      "icon_offset": 0,
+      "file_size": 15576,
+      "sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7"
+    },
+    {
+      "name": "CMD",
+      "icon_offset": 47726,
+      "file_size": 65492,
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622"
+    },
+    {
+      "name": "TASKMGR",
+      "icon_offset": 26744,
+      "file_size": 42190,
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b"
+    },
+    {
+      "name": "PICVIEW",
+      "icon_offset": 27056,
+      "file_size": 43090,
+      "sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe"
+    },
+    {
+      "name": "DESKTOP",
+      "icon_offset": 23348,
+      "file_size": 54966,
+      "sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78"
+    }
+  ],
+  "stdout": "Icon file API 0 cases: 131097\nIcon file API 1 cases: 69120\nIcon file API 2 cases: 136032\nTotal cases: 336249; executions: 1008747; relative/absolute routes: 136702 68450; null/file/extracted draws: 84903 106808 13441 ; all three file icon APIs verified against return/event/8 KiB memory/ABI oracle\n",
+  "stderr": "",
+  "sha256": {
+    "kernel/icon_files.c": "df64869fbebf809f514520df66e6095a4c8f301c0ab462df1aeb965f605afb52",
+    "kernel/icon_files.h": "870868ce5e40bf5df68e1157d11bcdbc5799cb8a9ad31f2c07dc043da9a98076",
+    "kernel/x_icon.c": "d23a0990d05992a4fccfa5f197169e198e867fd52ae9426c4d153fce73f9e0cd",
+    "kernel/x_icon.h": "c8355e46fe8f47d5986e42312cc3063b09ef1c4128b6d8c04e3799e1c201a996",
+    "tests/kernel_icon_files.c": "941af1e10f96a09b92582c2640e2e55e14825a0bb5956a7e33fc5870801f463d",
+    "tests/kernel_icon_files.py": "474e49e302df017f371a169093afb1a490fffacf9d99794dc11fcfadd28e9532",
+    "tests/icon_files_abi.S": "d5295d0cd51ba5dee1b7c40fe4a667de3922e5bfbc94f3dc48c4b2df86f358b4",
+    "build/icon_files_preview.elf": "6f13630691671261f6e92f37cd2386b1dbbf26babdb9d5c7fdefa8bd4a999e78",
+    "build/kernel_icon_files_installed_test": "fbe2222027233f3f2dc32528596021df02a76277ec30906d671a38af92ff1810",
+    "build/openicestaros_kernel.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd"
+  }
+}
+python3 tests/kernel_bitmap_files.py --installed
+{
+  "installed": true,
+  "exit_code": 0,
+  "seconds": 6.973,
+  "slots": [
+    {
+      "name": "bitmap_draw_file",
+      "start": "0x81fec2",
+      "end": "0x81ffc4",
+      "compiled_bytes": 220,
+      "slot_bytes": 258
+    },
+    {
+      "name": "bitmap_fit_file",
+      "start": "0x82040c",
+      "end": "0x8204ac",
+      "compiled_bytes": 134,
+      "slot_bytes": 160
+    }
+  ],
+  "helper_entry_detours": {
+    "kernel_startup_lookup_8263c0": "0x8263c0",
+    "kernel_startup_read_alloc_827454": "0x827454",
+    "kernel_bitmap_lookup_relative_825c8e": "0x825c8e",
+    "kernel_bitmap_read_relative_827032": "0x827032",
+    "kernel_bitmap_draw_81ffc4": "0x81ffc4",
+    "kernel_bitmap_fit_8204ac": "0x8204ac",
+    "kernel_bitmap_free_815978": "0x815978"
+  },
+  "limitation": "Seven explicit helper entry detours. 96 drawing and 48 fitting composition cases restore and execute the real BMP bodies. Filesystem/free remain substituted. This is not real filesystem integration.",
+  "stdout": "Bitmap file scenarios/executions: 30354 91062; relative/absolute/draw/fit/early/mutated caller/record reads: 9790 16876 8888 8432 3688 85824 35268; real renderer/fit executions/lookahead guard faults: 288 144 12; bitmap file wrappers verified against event/record/32 KiB memory/caller/EAX/ABI/initialized-service oracle; seven explicit helper entry detours\n",
+  "stderr": "",
+  "sha256": {
+    "kernel/bitmap_files.c": "c4b5eb9eb83f81daa68684dfbbbe303c7afdd4e33f739197afce7a3649d35274",
+    "kernel/bitmap_files.h": "b95ab2ef10dce5e6127340a511cf1d35202fe474ece7d0ef71ac8021bb2c5079",
+    "tests/kernel_bitmap_files.py": "775a119468d0e8797ae2c2cdf434242aa3dc262fcc1d57b4edf3211bccbd2ae5",
+    "tests/kernel_bitmap_files.c": "f913fc073fd282d23d68ede2fd55d76fbde2e15e3dba6cf231e9649ea747d95f",
+    "tests/raster_abi.S": "ce858c7bd85b493cdfa125a8fe9aff5a16c0452e0fc3535f512fefe596a29a13",
+    "tests/raster_fixture.h": "590e70e65c34288267c4d39086682125e4fe65b01c75c3faa56aebe6b604aaf0",
+    "tests/kernel_icon_pixels.py": "718ba511a773d08355b4f0997ff90e4edeb2dc94cc8c816ce2aaef4a19d00ef0",
+    "build/bitmap_files_preview.elf": "5cb39403840fd231b9cb361d4de26407a160996670e3ada1c3a2605eee87634e",
+    "build/kernel_bitmap_files_installed_test": "ee6eb8a3660f5d3ac5b8f377b9d5fe7159b4fd99c30c77fb5343e22dd621d592",
+    "build/bitmap_files_candidate.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd",
+    "build/openicestaros_kernel.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd"
+  }
+}
+make: Leaving directory '/root/IceStarOS-x86-Decompile/rewrite'

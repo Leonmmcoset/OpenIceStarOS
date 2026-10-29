@@ -55,5 +55,63 @@ allocations, so native fixtures provide mapped guarded storage without
 claiming those original behaviors are safe for ordinary callers.
 
 Preview evidence is in `../evidence/2026-10-29-fat-alloc/preview.json`.
-This source checkpoint precedes production installation. The kernel/INIT
-remain partial and no application is newly classified as rebuilt.
+The preview checkpoint was committed before production installation. The
+kernel/INIT remain partial and no application is newly classified as rebuilt.
+
+## Integrated validation
+
+Both bodies are now installed at their original exported service addresses.
+The kernel contains **368 declared intervals**. The installed fourteen-reader
+test passes the same 2,410 scenarios / 7,230 executions and checks installed
+bytes against its independent link. Absolute-path/name tests pass 347 / 1,041;
+X-loader tests pass 430 / 1,290. Installed icon/bitmap file callers, exact
+kernel/application disk checks, six branding tests, residual audit and
+inventory validation also pass.
+
+```sh
+make -C rewrite build/OpenIceStarOS_c_apps.vhd \
+  build/OpenIceStarOS_fat_diagnostic.vhd test-fat-files test-fat-path test-x-loader
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_fat_diagnostic.vhd \
+  --fat-relative-check --memory-check --task-check
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_c_apps.vhd \
+  --clock-check --fat-files-check --memory-check --task-check
+```
+
+The separate diagnostic X checks eight actual production service addresses and
+16 calls against the original four-cluster `/INIT.X`, using real disk I/O and
+PS/2 input. The new indexed reader runs against both the loaded root directory
+and a copied directory record at another base, and rejects a negative index.
+The bounded reader loads one, two and up to six requested clusters, stopping
+at the actual four-cluster chain end. All **524,800 data/guard bytes**, X
+relocations and allocation/free results pass. QEMU traces observe three entries
+into each new function and execution inside both C bodies. The diagnostic is
+installed only into a separately named image, replacing COLOR.X; it is never
+classified as a recovered application or included in the production image.
+
+Zero-count and directory-chain-overallocation behaviors are tested only in
+mapped native fixtures. The real allocator can return a small allocation for
+those cases, and the original reader can then write beyond it. The QEMU
+diagnostic deliberately uses requests that contain their actual data writes.
+
+The ordinary production image separately boots to the desktop and branded
+CMD/cpuid, runs the C CLOCK with three changing complete frames, closes its
+window through PS/2, terminates its task, and reuses CMD. RAM/heap, real TSS
+switching and all 368 installed guest intervals pass. The new services have
+**zero observed entries in this production workload**; the separate diagnostic
+provides their runtime proof. Both boots use snapshots. The two committed PNGs
+were captured directly by QEMU and visually inspected.
+
+Exactly **786 bytes** differ from the previous 366-interval production image,
+all within the two new slots. Restoring just those kernel bytes reproduces the
+entire previous image byte for byte. Boot stages, application binaries,
+FAT/directory structures, slack, the retained original logo and other resources
+are unchanged. The original VHD's hash remains unchanged. Evidence is in
+[`../evidence/2026-10-29-fat-alloc/`](../evidence/2026-10-29-fat-alloc/).
+
+This is focused integration validation; a full 368-interval `make verify` was
+not run. Only five applications are rebuilt; INIT/kernel are partial and 32
+program paths remain unrecovered. Relative filename lookup, other directory
+operations, hardware I/O, drivers and remaining applications still require
+source recovery.

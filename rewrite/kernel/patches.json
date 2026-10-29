@@ -203,6 +203,8 @@
   {"name": "FAT relative named single-cluster reader", "binary": "kernel.fat_relative_named_cluster.bin", "start": "0x826dd0", "end": "0x826f38"},
   {"name": "FAT relative named allocating reader", "binary": "kernel.fat_relative_alloc_named.bin", "start": "0x826f38", "end": "0x827032"},
   {"name": "FAT relative indexed allocating reader", "binary": "kernel.fat_relative_alloc_index.bin", "start": "0x827032", "end": "0x82711e"},
+  {"name": "FAT arbitrary directory indexed allocating reader", "binary": "kernel.fat_allocate_index.bin", "start": "0x82711e", "end": "0x8272f4"},
+  {"name": "FAT bounded cluster allocating reader", "binary": "kernel.fat_allocate_clusters.bin", "start": "0x8272f4", "end": "0x827454"},
   {"name": "FAT directory-record allocating reader", "binary": "kernel.fat_read_alloc.bin", "start": "0x827454", "end": "0x82760c"},
   {"name": "FAT directory-record buffered reader", "binary": "kernel.fat_read_into.bin", "start": "0x82760c", "end": "0x827798"},
   {"name": "FAT pathname allocating reader", "binary": "kernel.fat_read_name_alloc.bin", "start": "0x827798", "end": "0x8277dc"},

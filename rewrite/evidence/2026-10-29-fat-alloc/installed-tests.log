@@ -1,0 +1,1134 @@
+make: Entering directory '/root/IceStarOS-x86-Decompile/rewrite'
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/entry.c -o build/kernel_entry.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/state.c -o build/kernel_state.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/reset.c -o build/kernel_reset.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/api_table.c -o build/kernel_api_table.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/service_table.c -o build/kernel_service_table.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/events.c -o build/kernel_events.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/poll.c -o build/kernel_poll.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/pointer.c -o build/kernel_pointer.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/queue.c -o build/kernel_queue.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/pointer_decode.c -o build/kernel_pointer_decode.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/pointer_init.c -o build/kernel_pointer_init.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/input_queue.c -o build/kernel_input_queue.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/keyboard_init.c -o build/kernel_keyboard_init.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/keyboard.c -o build/kernel_keyboard.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/cpu.c -o build/kernel_cpu.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/physical.c -o build/kernel_physical.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/service_forward.c -o build/kernel_service_forward.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/runtime.c -o build/kernel_runtime.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/tasks.c -o build/kernel_tasks.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/task_create.c -o build/kernel_task_create.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/task_lifecycle.c -o build/kernel_task_lifecycle.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/segments.c -o build/kernel_segments.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/strings.c -o build/kernel_strings.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/string_extra.c -o build/kernel_string_extra.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory.c -o build/kernel_memory.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory_init.c -o build/kernel_memory_init.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory_probe.c -o build/kernel_memory_probe.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory_ops.c -o build/kernel_memory_ops.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory_accel.c -o build/kernel_memory_accel.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/memory_transfers.c -o build/kernel_memory_transfers.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/graphics_primitives.c -o build/kernel_graphics_primitives.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/service_optional.c -o build/kernel_service_optional.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/cpuid.c -o build/kernel_cpuid.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/fpu.c -o build/kernel_fpu.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/fpu_state.c -o build/kernel_fpu_state.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/interrupts.c -o build/kernel_interrupts.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/interrupt_hardware.c -o build/kernel_interrupt_hardware.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/interrupt_entries.c -o build/kernel_interrupt_entries.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/interrupt_callbacks.c -o build/kernel_interrupt_callbacks.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/cmos_clock.c -o build/kernel_cmos_clock.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/syscalls.c -o build/kernel_syscalls.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/syscall_services.c -o build/kernel_syscall_services.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/timestamp.c -o build/kernel_timestamp.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/syscall_surface.c -o build/kernel_syscall_surface.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_refresh.c -o build/kernel_surface_refresh.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_composite.c -o build/kernel_surface_composite.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_present.c -o build/kernel_surface_present.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_draw.c -o build/kernel_surface_draw.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_alpha.c -o build/kernel_surface_alpha.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_draw32.c -o build/kernel_surface_draw32.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_move.c -o build/kernel_surface_move.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/surface_scale.c -o build/kernel_surface_scale.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -mpreferred-stack-boundary=2 -c kernel/surface_lifecycle.c -o build/kernel_surface_lifecycle.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fwrapv-pointer -mpreferred-stack-boundary=2 -c kernel/surface_order.c -o build/kernel_surface_order.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -mpreferred-stack-boundary=2 -c kernel/cursor.c -o build/kernel_cursor.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/firmware_scan.c -o build/kernel_firmware_scan.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/startup_state.c -o build/kernel_startup_state.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/startup_apps.c -o build/kernel_startup_apps.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/x_loader.c -o build/kernel_x_loader.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/display_palette.c -o build/kernel_display_palette.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/display_dac.c -o build/kernel_display_dac.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/paging.c -o build/kernel_paging.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/startup_desktop.c -o build/kernel_startup_desktop.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/startup_ui.c -o build/kernel_startup_ui.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/object_registry.c -o build/kernel_object_registry.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/timer_objects.c -o build/kernel_timer_objects.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/clock_display.c -o build/kernel_clock_display.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/cmos_fields.c -o build/kernel_cmos_fields.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/icon_directory.c -o build/kernel_icon_directory.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/icon_files.c -o build/kernel_icon_files.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/x_icon.c -o build/kernel_x_icon.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/icon_dib.c -o build/kernel_icon_dib.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/icon_pixels.c -o build/kernel_icon_pixels.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/pixel_access.c -o build/kernel_pixel_access.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/bitmap.c -o build/kernel_bitmap.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/bitmap_files.c -o build/kernel_bitmap_files.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/bitmap_fit.c -o build/kernel_bitmap_fit.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/bitmap_surface_fit.c -o build/kernel_bitmap_surface_fit.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/bitmap_key.c -o build/kernel_bitmap_key.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_bits.c -o build/kernel_jpeg_bits.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_frame.c -o build/kernel_jpeg_frame.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_tables.c -o build/kernel_jpeg_tables.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_huffman.c -o build/kernel_jpeg_huffman.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/pixel_sample.c -o build/kernel_pixel_sample.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/raster_line.c -o build/kernel_raster_line.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/raster_fill.c -o build/kernel_raster_fill.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/raster_outline.c -o build/kernel_raster_outline.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/raster_circle.c -o build/kernel_raster_circle.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -fexcess-precision=fast -frounding-math -fno-math-errno -c kernel/raster_disc.c -o build/kernel_raster_disc.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/raster_gradient.c -o build/kernel_raster_gradient.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -ffixed-ebx -ffixed-esi -ffixed-edi -c kernel/raster_brush.c -o build/kernel_raster_brush.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -fno-defer-pop -c kernel/raster_rounded.c -o build/kernel_raster_rounded.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/text_glyph.c -o build/kernel_text_glyph.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/text_wide.c -o build/kernel_text_wide.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/text_run.c -o build/kernel_text_run.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/text_number.c -o build/kernel_text_number.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/text_format.c -o build/kernel_text_format.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fexcess-precision=fast -frounding-math -fno-math-errno -c kernel/math_series.c -o build/kernel_math_series.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fexcess-precision=fast -frounding-math -fno-math-errno -c kernel/math_extra.c -o build/kernel_math_extra.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fexcess-precision=fast -frounding-math -fno-math-errno -c kernel/math_format.c -o build/kernel_math_format.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -c kernel/simd.c -o build/kernel_simd.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_scan.c -o build/kernel_jpeg_scan.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_basis.c -o build/kernel_jpeg_basis.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_transform.c -o build/kernel_jpeg_transform.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_block.c -o build/kernel_jpeg_block.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_output.c -o build/kernel_jpeg_output.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -mpreferred-stack-boundary=2 -c kernel/jpeg_decode.c -o build/kernel_jpeg_decode.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/fat_files.c -o build/kernel_fat_files.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/fat_relative.c -o build/kernel_fat_relative.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/fat_path.c -o build/kernel_fat_path.o
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c kernel/fat_alloc.c -o build/kernel_fat_alloc.o
+ld -m elf_i386 -T kernel/patches.ld -Map=build/kernel_patch.map -o build/kernel_patch.elf build/kernel_entry.o build/kernel_state.o build/kernel_reset.o build/kernel_api_table.o build/kernel_service_table.o build/kernel_events.o build/kernel_poll.o build/kernel_pointer.o build/kernel_queue.o build/kernel_pointer_decode.o build/kernel_pointer_init.o build/kernel_input_queue.o build/kernel_keyboard_init.o build/kernel_keyboard.o build/kernel_cpu.o build/kernel_physical.o build/kernel_service_forward.o build/kernel_runtime.o build/kernel_tasks.o build/kernel_task_create.o build/kernel_task_lifecycle.o build/kernel_segments.o build/kernel_strings.o build/kernel_string_extra.o build/kernel_memory.o build/kernel_memory_init.o build/kernel_memory_probe.o build/kernel_memory_ops.o build/kernel_memory_accel.o build/kernel_memory_transfers.o build/kernel_graphics_primitives.o build/kernel_service_optional.o build/kernel_cpuid.o build/kernel_fpu.o build/kernel_fpu_state.o build/kernel_interrupts.o build/kernel_interrupt_hardware.o build/kernel_interrupt_entries.o build/kernel_interrupt_callbacks.o build/kernel_cmos_clock.o build/kernel_syscalls.o build/kernel_syscall_services.o build/kernel_timestamp.o build/kernel_syscall_surface.o build/kernel_surface_refresh.o build/kernel_surface_composite.o build/kernel_surface_present.o build/kernel_surface_draw.o build/kernel_surface_alpha.o build/kernel_surface_draw32.o build/kernel_surface_move.o build/kernel_surface_scale.o build/kernel_surface_lifecycle.o build/kernel_surface_order.o build/kernel_cursor.o build/kernel_firmware_scan.o build/kernel_startup_state.o build/kernel_startup_apps.o build/kernel_x_loader.o build/kernel_display_palette.o build/kernel_display_dac.o build/kernel_paging.o build/kernel_startup_desktop.o build/kernel_startup_ui.o build/kernel_object_registry.o build/kernel_timer_objects.o build/kernel_clock_display.o build/kernel_cmos_fields.o build/kernel_icon_directory.o build/kernel_icon_files.o build/kernel_x_icon.o build/kernel_icon_dib.o build/kernel_icon_pixels.o build/kernel_pixel_access.o build/kernel_bitmap.o build/kernel_bitmap_files.o build/kernel_bitmap_fit.o build/kernel_bitmap_surface_fit.o build/kernel_bitmap_key.o build/kernel_jpeg_bits.o build/kernel_jpeg_frame.o build/kernel_jpeg_tables.o build/kernel_jpeg_huffman.o build/kernel_pixel_sample.o build/kernel_raster_line.o build/kernel_raster_fill.o build/kernel_raster_outline.o build/kernel_raster_circle.o build/kernel_raster_disc.o build/kernel_raster_gradient.o build/kernel_raster_brush.o build/kernel_raster_rounded.o build/kernel_text_glyph.o build/kernel_text_wide.o build/kernel_text_run.o build/kernel_text_number.o build/kernel_text_format.o build/kernel_math_series.o build/kernel_math_extra.o build/kernel_math_format.o build/kernel_simd.o build/kernel_jpeg_scan.o build/kernel_jpeg_basis.o build/kernel_jpeg_transform.o build/kernel_jpeg_block.o build/kernel_jpeg_output.o build/kernel_jpeg_decode.o build/kernel_fat_files.o build/kernel_fat_relative.o build/kernel_fat_path.o build/kernel_fat_alloc.o
+objcopy -O binary --only-section=.entry build/kernel_patch.elf build/kernel.entry.bin
+objcopy -O binary --only-section=.bootstrap build/kernel_patch.elf build/kernel.bootstrap.bin
+objcopy -O binary --only-section=.display_state build/kernel_patch.elf build/kernel.display_state.bin
+objcopy -O binary --only-section=.object_table_state build/kernel_patch.elf build/kernel.object_table_state.bin
+objcopy -O binary --only-section=.startup_apps build/kernel_patch.elf build/kernel.startup_apps.bin
+objcopy -O binary --only-section=.display_palette build/kernel_patch.elf build/kernel.display_palette.bin
+objcopy -O binary --only-section=.display_colors build/kernel_patch.elf build/kernel.display_colors.bin
+objcopy -O binary --only-section=.display_dac build/kernel_patch.elf build/kernel.display_dac.bin
+objcopy -O binary --only-section=.identity_paging build/kernel_patch.elf build/kernel.identity_paging.bin
+objcopy -O binary --only-section=.startup_desktop build/kernel_patch.elf build/kernel.startup_desktop.bin
+objcopy -O binary --only-section=.startup_ui build/kernel_patch.elf build/kernel.startup_ui.bin
+objcopy -O binary --only-section=.object_find_name build/kernel_patch.elf build/kernel.object_find_name.bin
+objcopy -O binary --only-section=.object_set_state build/kernel_patch.elf build/kernel.object_set_state.bin
+objcopy -O binary --only-section=.object_registry_add build/kernel_patch.elf build/kernel.object_registry_add.bin
+objcopy -O binary --only-section=.object_registry_remove build/kernel_patch.elf build/kernel.object_registry_remove.bin
+objcopy -O binary --only-section=.timer_find_free build/kernel_patch.elf build/kernel.timer_find_free.bin
+objcopy -O binary --only-section=.timer_create build/kernel_patch.elf build/kernel.timer_create.bin
+objcopy -O binary --only-section=.timer_delete build/kernel_patch.elf build/kernel.timer_delete.bin
+objcopy -O binary --only-section=.timer_rearm build/kernel_patch.elf build/kernel.timer_rearm.bin
+objcopy -O binary --only-section=.clock_draw_time build/kernel_patch.elf build/kernel.clock_draw_time.bin
+objcopy -O binary --only-section=.clock_draw_date build/kernel_patch.elf build/kernel.clock_draw_date.bin
+objcopy -O binary --only-section=.icon_draw_id build/kernel_patch.elf build/kernel.icon_draw_id.bin
+objcopy -O binary --only-section=.icon_draw_centered build/kernel_patch.elf build/kernel.icon_draw_centered.bin
+objcopy -O binary --only-section=.icon_draw_frame build/kernel_patch.elf build/kernel.icon_draw_frame.bin
+objcopy -O binary --only-section=.x_icon_pointer build/kernel_patch.elf build/kernel.x_icon_pointer.bin
+objcopy -O binary --only-section=.icon_draw_file build/kernel_patch.elf build/kernel.icon_draw_file.bin
+objcopy -O binary --only-section=.icon_draw_file_auto build/kernel_patch.elf build/kernel.icon_draw_file_auto.bin
+objcopy -O binary --only-section=.icon_dib build/kernel_patch.elf build/kernel.icon_dib.bin
+objcopy -O binary --only-section=.icon_put8 build/kernel_patch.elf build/kernel.icon_put8.bin
+objcopy -O binary --only-section=.icon_put32 build/kernel_patch.elf build/kernel.icon_put32.bin
+objcopy -O binary --only-section=.icon_quantize build/kernel_patch.elf build/kernel.icon_quantize.bin
+objcopy -O binary --only-section=.bitmap_draw build/kernel_patch.elf build/kernel.bitmap_draw.bin
+objcopy -O binary --only-section=.bitmap_draw_file build/kernel_patch.elf build/kernel.bitmap_draw_file.bin
+objcopy -O binary --only-section=.bitmap_fit_file build/kernel_patch.elf build/kernel.bitmap_fit_file.bin
+objcopy -O binary --only-section=.bitmap_fit build/kernel_patch.elf build/kernel.bitmap_fit.bin
+objcopy -O binary --only-section=.bitmap_surface_fit build/kernel_patch.elf build/kernel.bitmap_surface_fit.bin
+objcopy -O binary --only-section=.bitmap_key build/kernel_patch.elf build/kernel.bitmap_key.bin
+objcopy -O binary --only-section=.jpeg_bits build/kernel_patch.elf build/kernel.jpeg_bits.bin
+objcopy -O binary --only-section=.jpeg_frame build/kernel_patch.elf build/kernel.jpeg_frame.bin
+objcopy -O binary --only-section=.jpeg_tables build/kernel_patch.elf build/kernel.jpeg_tables.bin
+objcopy -O binary --only-section=.jpeg_huffman build/kernel_patch.elf build/kernel.jpeg_huffman.bin
+objcopy -O binary --only-section=.pixel_put8 build/kernel_patch.elf build/kernel.pixel_put8.bin
+objcopy -O binary --only-section=.pixel_put32 build/kernel_patch.elf build/kernel.pixel_put32.bin
+objcopy -O binary --only-section=.pixel_get8 build/kernel_patch.elf build/kernel.pixel_get8.bin
+objcopy -O binary --only-section=.pixel_get32 build/kernel_patch.elf build/kernel.pixel_get32.bin
+objcopy -O binary --only-section=.pixel_sample build/kernel_patch.elf build/kernel.pixel_sample.bin
+objcopy -O binary --only-section=.raster_line8 build/kernel_patch.elf build/kernel.raster_line8.bin
+objcopy -O binary --only-section=.raster_line32 build/kernel_patch.elf build/kernel.raster_line32.bin
+objcopy -O binary --only-section=.brush_square build/kernel_patch.elf build/kernel.brush_square.bin
+objcopy -O binary --only-section=.brush_line build/kernel_patch.elf build/kernel.brush_line.bin
+objcopy -O binary --only-section=.brush_circle build/kernel_patch.elf build/kernel.brush_circle.bin
+objcopy -O binary --only-section=.circle_quadrants build/kernel_patch.elf build/kernel.circle_quadrants.bin
+objcopy -O binary --only-section=.rounded_outline build/kernel_patch.elf build/kernel.rounded_outline.bin
+objcopy -O binary --only-section=.rounded_fill build/kernel_patch.elf build/kernel.rounded_fill.bin
+objcopy -O binary --only-section=.chamfer_fill build/kernel_patch.elf build/kernel.chamfer_fill.bin
+objcopy -O binary --only-section=.text_glyph8 build/kernel_patch.elf build/kernel.text_glyph8.bin
+objcopy -O binary --only-section=.text_rotated8 build/kernel_patch.elf build/kernel.text_rotated8.bin
+objcopy -O binary --only-section=.text_glyph32 build/kernel_patch.elf build/kernel.text_glyph32.bin
+objcopy -O binary --only-section=.text_rotated32 build/kernel_patch.elf build/kernel.text_rotated32.bin
+objcopy -O binary --only-section=.text_wide8 build/kernel_patch.elf build/kernel.text_wide8.bin
+objcopy -O binary --only-section=.text_wide8_mask build/kernel_patch.elf build/kernel.text_wide8_mask.bin
+objcopy -O binary --only-section=.text_wide32 build/kernel_patch.elf build/kernel.text_wide32.bin
+objcopy -O binary --only-section=.text_wide32_mask build/kernel_patch.elf build/kernel.text_wide32_mask.bin
+objcopy -O binary --only-section=.text_run8 build/kernel_patch.elf build/kernel.text_run8.bin
+objcopy -O binary --only-section=.text_vertical8 build/kernel_patch.elf build/kernel.text_vertical8.bin
+objcopy -O binary --only-section=.text_run32 build/kernel_patch.elf build/kernel.text_run32.bin
+objcopy -O binary --only-section=.text_vertical32 build/kernel_patch.elf build/kernel.text_vertical32.bin
+objcopy -O binary --only-section=.text_number8 build/kernel_patch.elf build/kernel.text_number8.bin
+objcopy -O binary --only-section=.text_number32 build/kernel_patch.elf build/kernel.text_number32.bin
+objcopy -O binary --only-section=.number_digits build/kernel_patch.elf build/kernel.number_digits.bin
+objcopy -O binary --only-section=.text_format8 build/kernel_patch.elf build/kernel.text_format8.bin
+objcopy -O binary --only-section=.text_format32 build/kernel_patch.elf build/kernel.text_format32.bin
+objcopy -O binary --only-section=.text_format build/kernel_patch.elf build/kernel.text_format.bin
+objcopy -O binary --only-section=.raster_fill8 build/kernel_patch.elf build/kernel.raster_fill8.bin
+objcopy -O binary --only-section=.raster_fill32 build/kernel_patch.elf build/kernel.raster_fill32.bin
+objcopy -O binary --only-section=.raster_gradient32 build/kernel_patch.elf build/kernel.raster_gradient32.bin
+objcopy -O binary --only-section=.raster_outline8 build/kernel_patch.elf build/kernel.raster_outline8.bin
+objcopy -O binary --only-section=.raster_outline32 build/kernel_patch.elf build/kernel.raster_outline32.bin
+objcopy -O binary --only-section=.raster_circle8 build/kernel_patch.elf build/kernel.raster_circle8.bin
+objcopy -O binary --only-section=.raster_circle32 build/kernel_patch.elf build/kernel.raster_circle32.bin
+objcopy -O binary --only-section=.raster_disc8 build/kernel_patch.elf build/kernel.raster_disc8.bin
+objcopy -O binary --only-section=.raster_disc32 build/kernel_patch.elf build/kernel.raster_disc32.bin
+objcopy -O binary --only-section=.simd_add build/kernel_patch.elf build/kernel.simd_add.bin
+objcopy -O binary --only-section=.simd_subtract build/kernel_patch.elf build/kernel.simd_subtract.bin
+objcopy -O binary --only-section=.simd_multiply build/kernel_patch.elf build/kernel.simd_multiply.bin
+objcopy -O binary --only-section=.simd_blend build/kernel_patch.elf build/kernel.simd_blend.bin
+objcopy -O binary --only-section=.acos build/kernel_patch.elf build/kernel.acos.bin
+objcopy -O binary --only-section=.round build/kernel_patch.elf build/kernel.round.bin
+objcopy -O binary --only-section=.absolute build/kernel_patch.elf build/kernel.absolute.bin
+objcopy -O binary --only-section=.format_float build/kernel_patch.elf build/kernel.format_float.bin
+objcopy -O binary --only-section=.floor build/kernel_patch.elf build/kernel.floor.bin
+objcopy -O binary --only-section=.ceil build/kernel_patch.elf build/kernel.ceil.bin
+objcopy -O binary --only-section=.remainder build/kernel_patch.elf build/kernel.remainder.bin
+objcopy -O binary --only-section=.sqrt build/kernel_patch.elf build/kernel.sqrt.bin
+objcopy -O binary --only-section=.factorial build/kernel_patch.elf build/kernel.factorial.bin
+objcopy -O binary --only-section=.sine build/kernel_patch.elf build/kernel.sine.bin
+objcopy -O binary --only-section=.cosine build/kernel_patch.elf build/kernel.cosine.bin
+objcopy -O binary --only-section=.power build/kernel_patch.elf build/kernel.power.bin
+objcopy -O binary --only-section=.cmos_seconds build/kernel_patch.elf build/kernel.cmos_seconds.bin
+objcopy -O binary --only-section=.cmos_minutes build/kernel_patch.elf build/kernel.cmos_minutes.bin
+objcopy -O binary --only-section=.cmos_hours build/kernel_patch.elf build/kernel.cmos_hours.bin
+objcopy -O binary --only-section=.cmos_weekday build/kernel_patch.elf build/kernel.cmos_weekday.bin
+objcopy -O binary --only-section=.cmos_day build/kernel_patch.elf build/kernel.cmos_day.bin
+objcopy -O binary --only-section=.cmos_month build/kernel_patch.elf build/kernel.cmos_month.bin
+objcopy -O binary --only-section=.cmos_year build/kernel_patch.elf build/kernel.cmos_year.bin
+objcopy -O binary --only-section=.state build/kernel_patch.elf build/kernel.state.bin
+objcopy -O binary --only-section=.reset build/kernel_patch.elf build/kernel.reset.bin
+objcopy -O binary --only-section=.api build/kernel_patch.elf build/kernel.api.bin
+objcopy -O binary --only-section=.services build/kernel_patch.elf build/kernel.services.bin
+objcopy -O binary --only-section=.queue_request build/kernel_patch.elf build/kernel.queue_request.bin
+objcopy -O binary --only-section=.event_loop build/kernel_patch.elf build/kernel.event_loop.bin
+objcopy -O binary --only-section=.poll_events build/kernel_patch.elf build/kernel.poll_events.bin
+objcopy -O binary --only-section=.dispatch_event build/kernel_patch.elf build/kernel.dispatch_event.bin
+objcopy -O binary --only-section=.dispatch_request build/kernel_patch.elf build/kernel.dispatch_request.bin
+objcopy -O binary --only-section=.dispatch_slot1 build/kernel_patch.elf build/kernel.dispatch_slot1.bin
+objcopy -O binary --only-section=.dispatch_slot2 build/kernel_patch.elf build/kernel.dispatch_slot2.bin
+objcopy -O binary --only-section=.dispatch_slot3 build/kernel_patch.elf build/kernel.dispatch_slot3.bin
+objcopy -O binary --only-section=.pointer_input build/kernel_patch.elf build/kernel.pointer_input.bin
+objcopy -O binary --only-section=.queue_write build/kernel_patch.elf build/kernel.queue_write.bin
+objcopy -O binary --only-section=.queue_read build/kernel_patch.elf build/kernel.queue_read.bin
+objcopy -O binary --only-section=.queue_available build/kernel_patch.elf build/kernel.queue_available.bin
+objcopy -O binary --only-section=.pointer_decode build/kernel_patch.elf build/kernel.pointer_decode.bin
+objcopy -O binary --only-section=.x_load_relative build/kernel_patch.elf build/kernel.x_load_relative.bin
+objcopy -O binary --only-section=.x_load_path build/kernel_patch.elf build/kernel.x_load_path.bin
+objcopy -O binary --only-section=.x_launch build/kernel_patch.elf build/kernel.x_launch.bin
+objcopy -O binary --only-section=.pointer_init build/kernel_patch.elf build/kernel.pointer_init.bin
+objcopy -O binary --only-section=.ps2_ready build/kernel_patch.elf build/kernel.ps2_ready.bin
+objcopy -O binary --only-section=.input_write build/kernel_patch.elf build/kernel.input_write.bin
+objcopy -O binary --only-section=.input_read build/kernel_patch.elf build/kernel.input_read.bin
+objcopy -O binary --only-section=.input_available build/kernel_patch.elf build/kernel.input_available.bin
+objcopy -O binary --only-section=.ascii_upper build/kernel_patch.elf build/kernel.ascii_upper.bin
+objcopy -O binary --only-section=.keyboard_ready build/kernel_patch.elf build/kernel.keyboard_ready.bin
+objcopy -O binary --only-section=.keyboard_discard build/kernel_patch.elf build/kernel.keyboard_discard.bin
+objcopy -O binary --only-section=.keyboard_leds build/kernel_patch.elf build/kernel.keyboard_leds.bin
+objcopy -O binary --only-section=.keyboard_init build/kernel_patch.elf build/kernel.keyboard_init.bin
+objcopy -O binary --only-section=.keyboard_translate build/kernel_patch.elf build/kernel.keyboard_translate.bin
+objcopy -O binary --only-section=.keyboard_drain build/kernel_patch.elf build/kernel.keyboard_drain.bin
+objcopy -O binary --only-section=.keyboard_state build/kernel_patch.elf build/kernel.keyboard_state.bin
+objcopy -O binary --only-section=.keyboard_character build/kernel_patch.elf build/kernel.keyboard_character.bin
+objcopy -O binary --only-section=.cpu_halt build/kernel_patch.elf build/kernel.cpu_halt.bin
+objcopy -O binary --only-section=.cpu_cli build/kernel_patch.elf build/kernel.cpu_cli.bin
+objcopy -O binary --only-section=.cpu_sti build/kernel_patch.elf build/kernel.cpu_sti.bin
+objcopy -O binary --only-section=.cpu_delay build/kernel_patch.elf build/kernel.cpu_delay.bin
+objcopy -O binary --only-section=.cpu_flags_read build/kernel_patch.elf build/kernel.cpu_flags_read.bin
+objcopy -O binary --only-section=.cpu_flags_write build/kernel_patch.elf build/kernel.cpu_flags_write.bin
+objcopy -O binary --only-section=.port_read_byte build/kernel_patch.elf build/kernel.port_read_byte.bin
+objcopy -O binary --only-section=.port_write_byte build/kernel_patch.elf build/kernel.port_write_byte.bin
+objcopy -O binary --only-section=.port_read_word build/kernel_patch.elf build/kernel.port_read_word.bin
+objcopy -O binary --only-section=.port_write_word build/kernel_patch.elf build/kernel.port_write_word.bin
+objcopy -O binary --only-section=.port_read_dword build/kernel_patch.elf build/kernel.port_read_dword.bin
+objcopy -O binary --only-section=.port_write_dword build/kernel_patch.elf build/kernel.port_write_dword.bin
+objcopy -O binary --only-section=.cpu_boot_jump build/kernel_patch.elf build/kernel.cpu_boot_jump.bin
+objcopy -O binary --only-section=.physical_write_byte build/kernel_patch.elf build/kernel.physical_write_byte.bin
+objcopy -O binary --only-section=.physical_write_word build/kernel_patch.elf build/kernel.physical_write_word.bin
+objcopy -O binary --only-section=.physical_write_dword build/kernel_patch.elf build/kernel.physical_write_dword.bin
+objcopy -O binary --only-section=.physical_read_byte build/kernel_patch.elf build/kernel.physical_read_byte.bin
+objcopy -O binary --only-section=.physical_read_word build/kernel_patch.elf build/kernel.physical_read_word.bin
+objcopy -O binary --only-section=.physical_read_dword build/kernel_patch.elf build/kernel.physical_read_dword.bin
+objcopy -O binary --only-section=.cpu_cr0_read build/kernel_patch.elf build/kernel.cpu_cr0_read.bin
+objcopy -O binary --only-section=.cpu_cr0_write build/kernel_patch.elf build/kernel.cpu_cr0_write.bin
+objcopy -O binary --only-section=.service_00 build/kernel_patch.elf build/kernel.service_00.bin
+objcopy -O binary --only-section=.service_01 build/kernel_patch.elf build/kernel.service_01.bin
+objcopy -O binary --only-section=.service_02 build/kernel_patch.elf build/kernel.service_02.bin
+objcopy -O binary --only-section=.service_03 build/kernel_patch.elf build/kernel.service_03.bin
+objcopy -O binary --only-section=.service_04 build/kernel_patch.elf build/kernel.service_04.bin
+objcopy -O binary --only-section=.service_05 build/kernel_patch.elf build/kernel.service_05.bin
+objcopy -O binary --only-section=.service_06 build/kernel_patch.elf build/kernel.service_06.bin
+objcopy -O binary --only-section=.service_07 build/kernel_patch.elf build/kernel.service_07.bin
+objcopy -O binary --only-section=.service_08 build/kernel_patch.elf build/kernel.service_08.bin
+objcopy -O binary --only-section=.service_09 build/kernel_patch.elf build/kernel.service_09.bin
+objcopy -O binary --only-section=.service_0a build/kernel_patch.elf build/kernel.service_0a.bin
+objcopy -O binary --only-section=.service_0b build/kernel_patch.elf build/kernel.service_0b.bin
+objcopy -O binary --only-section=.service_0c build/kernel_patch.elf build/kernel.service_0c.bin
+objcopy -O binary --only-section=.service_0d build/kernel_patch.elf build/kernel.service_0d.bin
+objcopy -O binary --only-section=.service_0e build/kernel_patch.elf build/kernel.service_0e.bin
+objcopy -O binary --only-section=.service_0f build/kernel_patch.elf build/kernel.service_0f.bin
+objcopy -O binary --only-section=.service_10 build/kernel_patch.elf build/kernel.service_10.bin
+objcopy -O binary --only-section=.service_11 build/kernel_patch.elf build/kernel.service_11.bin
+objcopy -O binary --only-section=.service_12 build/kernel_patch.elf build/kernel.service_12.bin
+objcopy -O binary --only-section=.service_13 build/kernel_patch.elf build/kernel.service_13.bin
+objcopy -O binary --only-section=.palette_color build/kernel_patch.elf build/kernel.palette_color.bin
+objcopy -O binary --only-section=.wait_ticks build/kernel_patch.elf build/kernel.wait_ticks.bin
+objcopy -O binary --only-section=.yield_task build/kernel_patch.elf build/kernel.yield_task.bin
+objcopy -O binary --only-section=.far_task_jump build/kernel_patch.elf build/kernel.far_task_jump.bin
+objcopy -O binary --only-section=.fpu_reset build/kernel_patch.elf build/kernel.fpu_reset.bin
+objcopy -O binary --only-section=.schedule_task build/kernel_patch.elf build/kernel.schedule_task.bin
+objcopy -O binary --only-section=.timer_tick build/kernel_patch.elf build/kernel.timer_tick.bin
+objcopy -O binary --only-section=.tasks_init build/kernel_patch.elf build/kernel.tasks_init.bin
+objcopy -O binary --only-section=.task_find_free build/kernel_patch.elf build/kernel.task_find_free.bin
+objcopy -O binary --only-section=.task_create build/kernel_patch.elf build/kernel.task_create.bin
+objcopy -O binary --only-section=.cpu_load_gdt build/kernel_patch.elf build/kernel.cpu_load_gdt.bin
+objcopy -O binary --only-section=.cpu_load_tr build/kernel_patch.elf build/kernel.cpu_load_tr.bin
+objcopy -O binary --only-section=.task_create_app build/kernel_patch.elf build/kernel.task_create_app.bin
+objcopy -O binary --only-section=.task_delete build/kernel_patch.elf build/kernel.task_delete.bin
+objcopy -O binary --only-section=.task_create_thread build/kernel_patch.elf build/kernel.task_create_thread.bin
+objcopy -O binary --only-section=.task_active build/kernel_patch.elf build/kernel.task_active.bin
+objcopy -O binary --only-section=.segment_descriptor build/kernel_patch.elf build/kernel.segment_descriptor.bin
+objcopy -O binary --only-section=.string_copy build/kernel_patch.elf build/kernel.string_copy.bin
+objcopy -O binary --only-section=.text_prefix build/kernel_patch.elf build/kernel.text_prefix.bin
+objcopy -O binary --only-section=.string_limit build/kernel_patch.elf build/kernel.string_limit.bin
+objcopy -O binary --only-section=.string_length build/kernel_patch.elf build/kernel.string_length.bin
+objcopy -O binary --only-section=.string_equal build/kernel_patch.elf build/kernel.string_equal.bin
+objcopy -O binary --only-section=.string_append_character build/kernel_patch.elf build/kernel.string_append_character.bin
+objcopy -O binary --only-section=.string_append build/kernel_patch.elf build/kernel.string_append.bin
+objcopy -O binary --only-section=.string_upper build/kernel_patch.elf build/kernel.string_upper.bin
+objcopy -O binary --only-section=.string_find build/kernel_patch.elf build/kernel.string_find.bin
+objcopy -O binary --only-section=.config_value build/kernel_patch.elf build/kernel.config_value.bin
+objcopy -O binary --only-section=.string_character build/kernel_patch.elf build/kernel.string_character.bin
+objcopy -O binary --only-section=.character_upper build/kernel_patch.elf build/kernel.character_upper.bin
+objcopy -O binary --only-section=.unsigned_text build/kernel_patch.elf build/kernel.unsigned_text.bin
+objcopy -O binary --only-section=.string_split build/kernel_patch.elf build/kernel.string_split.bin
+objcopy -O binary --only-section=.allocate build/kernel_patch.elf build/kernel.allocate.bin
+objcopy -O binary --only-section=.allocate_owner build/kernel_patch.elf build/kernel.allocate_owner.bin
+objcopy -O binary --only-section=.allocate_aligned build/kernel_patch.elf build/kernel.allocate_aligned.bin
+objcopy -O binary --only-section=.free_allocation build/kernel_patch.elf build/kernel.free_allocation.bin
+objcopy -O binary --only-section=.allocation_size build/kernel_patch.elf build/kernel.allocation_size.bin
+objcopy -O binary --only-section=.allocation_total build/kernel_patch.elf build/kernel.allocation_total.bin
+objcopy -O binary --only-section=.memory_probe build/kernel_patch.elf build/kernel.memory_probe.bin
+objcopy -O binary --only-section=.heap_init build/kernel_patch.elf build/kernel.heap_init.bin
+objcopy -O binary --only-section=.page_probe build/kernel_patch.elf build/kernel.page_probe.bin
+objcopy -O binary --only-section=.move_bytes build/kernel_patch.elf build/kernel.move_bytes.bin
+objcopy -O binary --only-section=.fill_bytes build/kernel_patch.elf build/kernel.fill_bytes.bin
+objcopy -O binary --only-section=.copy_1200 build/kernel_patch.elf build/kernel.copy_1200.bin
+objcopy -O binary --only-section=.copy_dwords build/kernel_patch.elf build/kernel.copy_dwords.bin
+objcopy -O binary --only-section=.memory_differs build/kernel_patch.elf build/kernel.memory_differs.bin
+objcopy -O binary --only-section=.malloc build/kernel_patch.elf build/kernel.malloc.bin
+objcopy -O binary --only-section=.free build/kernel_patch.elf build/kernel.free.bin
+objcopy -O binary --only-section=.copy_dwords_sse build/kernel_patch.elf build/kernel.copy_dwords_sse.bin
+objcopy -O binary --only-section=.copy_sse16 build/kernel_patch.elf build/kernel.copy_sse16.bin
+objcopy -O binary --only-section=.copy_sse64 build/kernel_patch.elf build/kernel.copy_sse64.bin
+objcopy -O binary --only-section=.rep_copy_bytes build/kernel_patch.elf build/kernel.rep_copy_bytes.bin
+objcopy -O binary --only-section=.rep_fill_bytes build/kernel_patch.elf build/kernel.rep_fill_bytes.bin
+objcopy -O binary --only-section=.rep_copy_words build/kernel_patch.elf build/kernel.rep_copy_words.bin
+objcopy -O binary --only-section=.rep_fill_words build/kernel_patch.elf build/kernel.rep_fill_words.bin
+objcopy -O binary --only-section=.rep_copy_dwords build/kernel_patch.elf build/kernel.rep_copy_dwords.bin
+objcopy -O binary --only-section=.rep_fill_dwords build/kernel_patch.elf build/kernel.rep_fill_dwords.bin
+objcopy -O binary --only-section=.wait_vertical_retrace build/kernel_patch.elf build/kernel.wait_vertical_retrace.bin
+objcopy -O binary --only-section=.blend_color build/kernel_patch.elf build/kernel.blend_color.bin
+objcopy -O binary --only-section=.optional_14 build/kernel_patch.elf build/kernel.optional_14.bin
+objcopy -O binary --only-section=.optional_15 build/kernel_patch.elf build/kernel.optional_15.bin
+objcopy -O binary --only-section=.optional_16 build/kernel_patch.elf build/kernel.optional_16.bin
+objcopy -O binary --only-section=.optional_17 build/kernel_patch.elf build/kernel.optional_17.bin
+objcopy -O binary --only-section=.optional_18 build/kernel_patch.elf build/kernel.optional_18.bin
+objcopy -O binary --only-section=.optional_19 build/kernel_patch.elf build/kernel.optional_19.bin
+objcopy -O binary --only-section=.optional_1a build/kernel_patch.elf build/kernel.optional_1a.bin
+objcopy -O binary --only-section=.optional_1b build/kernel_patch.elf build/kernel.optional_1b.bin
+objcopy -O binary --only-section=.optional_1c build/kernel_patch.elf build/kernel.optional_1c.bin
+objcopy -O binary --only-section=.optional_1d build/kernel_patch.elf build/kernel.optional_1d.bin
+objcopy -O binary --only-section=.optional_1e build/kernel_patch.elf build/kernel.optional_1e.bin
+objcopy -O binary --only-section=.optional_1f build/kernel_patch.elf build/kernel.optional_1f.bin
+objcopy -O binary --only-section=.optional_20 build/kernel_patch.elf build/kernel.optional_20.bin
+objcopy -O binary --only-section=.optional_21 build/kernel_patch.elf build/kernel.optional_21.bin
+objcopy -O binary --only-section=.optional_22 build/kernel_patch.elf build/kernel.optional_22.bin
+objcopy -O binary --only-section=.optional_23 build/kernel_patch.elf build/kernel.optional_23.bin
+objcopy -O binary --only-section=.optional_24 build/kernel_patch.elf build/kernel.optional_24.bin
+objcopy -O binary --only-section=.optional_25 build/kernel_patch.elf build/kernel.optional_25.bin
+objcopy -O binary --only-section=.optional_26 build/kernel_patch.elf build/kernel.optional_26.bin
+objcopy -O binary --only-section=.optional_27 build/kernel_patch.elf build/kernel.optional_27.bin
+objcopy -O binary --only-section=.optional_28 build/kernel_patch.elf build/kernel.optional_28.bin
+objcopy -O binary --only-section=.optional_29 build/kernel_patch.elf build/kernel.optional_29.bin
+objcopy -O binary --only-section=.optional_2a build/kernel_patch.elf build/kernel.optional_2a.bin
+objcopy -O binary --only-section=.optional_2b build/kernel_patch.elf build/kernel.optional_2b.bin
+objcopy -O binary --only-section=.optional_2c build/kernel_patch.elf build/kernel.optional_2c.bin
+objcopy -O binary --only-section=.cpuid_available build/kernel_patch.elf build/kernel.cpuid_available.bin
+objcopy -O binary --only-section=.cpuid_vendor build/kernel_patch.elf build/kernel.cpuid_vendor.bin
+objcopy -O binary --only-section=.cpuid_features build/kernel_patch.elf build/kernel.cpuid_features.bin
+objcopy -O binary --only-section=.fpu_available build/kernel_patch.elf build/kernel.fpu_available.bin
+objcopy -O binary --only-section=.fpu_enable build/kernel_patch.elf build/kernel.fpu_enable.bin
+objcopy -O binary --only-section=.fpu_restore_task build/kernel_patch.elf build/kernel.fpu_restore_task.bin
+objcopy -O binary --only-section=.fpu_mark_lazy build/kernel_patch.elf build/kernel.fpu_mark_lazy.bin
+objcopy -O binary --only-section=.fpu_fault build/kernel_patch.elf build/kernel.fpu_fault.bin
+objcopy -O binary --only-section=.fpu_save_legacy build/kernel_patch.elf build/kernel.fpu_save_legacy.bin
+objcopy -O binary --only-section=.fpu_restore_legacy build/kernel_patch.elf build/kernel.fpu_restore_legacy.bin
+objcopy -O binary --only-section=.fpu_save_environment build/kernel_patch.elf build/kernel.fpu_save_environment.bin
+objcopy -O binary --only-section=.fpu_load_environment build/kernel_patch.elf build/kernel.fpu_load_environment.bin
+objcopy -O binary --only-section=.fpu_save_extended build/kernel_patch.elf build/kernel.fpu_save_extended.bin
+objcopy -O binary --only-section=.fpu_restore_extended build/kernel_patch.elf build/kernel.fpu_restore_extended.bin
+objcopy -O binary --only-section=.fpu_save_xstate build/kernel_patch.elf build/kernel.fpu_save_xstate.bin
+objcopy -O binary --only-section=.fpu_restore_xstate build/kernel_patch.elf build/kernel.fpu_restore_xstate.bin
+objcopy -O binary --only-section=.interrupts_init build/kernel_patch.elf build/kernel.interrupts_init.bin
+objcopy -O binary --only-section=.interrupt_gate build/kernel_patch.elf build/kernel.interrupt_gate.bin
+objcopy -O binary --only-section=.boot_code_selector build/kernel_patch.elf build/kernel.boot_code_selector.bin
+objcopy -O binary --only-section=.pic_init build/kernel_patch.elf build/kernel.pic_init.bin
+objcopy -O binary --only-section=.pit_init build/kernel_patch.elf build/kernel.pit_init.bin
+objcopy -O binary --only-section=.rtc_init build/kernel_patch.elf build/kernel.rtc_init.bin
+objcopy -O binary --only-section=.exception_entry build/kernel_patch.elf build/kernel.exception_entry.bin
+objcopy -O binary --only-section=.spurious_entry build/kernel_patch.elf build/kernel.spurious_entry.bin
+objcopy -O binary --only-section=.exception_fs_entry build/kernel_patch.elf build/kernel.exception_fs_entry.bin
+objcopy -O binary --only-section=.device_unavailable_entry build/kernel_patch.elf build/kernel.device_unavailable_entry.bin
+objcopy -O binary --only-section=.timer_entry build/kernel_patch.elf build/kernel.timer_entry.bin
+objcopy -O binary --only-section=.keyboard_entry build/kernel_patch.elf build/kernel.keyboard_entry.bin
+objcopy -O binary --only-section=.irq5_entry build/kernel_patch.elf build/kernel.irq5_entry.bin
+objcopy -O binary --only-section=.rtc_entry build/kernel_patch.elf build/kernel.rtc_entry.bin
+objcopy -O binary --only-section=.irq9_entry build/kernel_patch.elf build/kernel.irq9_entry.bin
+objcopy -O binary --only-section=.irq10_entry build/kernel_patch.elf build/kernel.irq10_entry.bin
+objcopy -O binary --only-section=.irq11_entry build/kernel_patch.elf build/kernel.irq11_entry.bin
+objcopy -O binary --only-section=.irq12_entry build/kernel_patch.elf build/kernel.irq12_entry.bin
+objcopy -O binary --only-section=.syscall40_entry build/kernel_patch.elf build/kernel.syscall40_entry.bin
+objcopy -O binary --only-section=.syscall41_entry build/kernel_patch.elf build/kernel.syscall41_entry.bin
+objcopy -O binary --only-section=.rtc_callback build/kernel_patch.elf build/kernel.rtc_callback.bin
+objcopy -O binary --only-section=.keyboard_callback build/kernel_patch.elf build/kernel.keyboard_callback.bin
+objcopy -O binary --only-section=.audio_callback build/kernel_patch.elf build/kernel.audio_callback.bin
+objcopy -O binary --only-section=.unused_irq_callback build/kernel_patch.elf build/kernel.unused_irq_callback.bin
+objcopy -O binary --only-section=.mouse_callback build/kernel_patch.elf build/kernel.mouse_callback.bin
+objcopy -O binary --only-section=.read_cmos_clock build/kernel_patch.elf build/kernel.read_cmos_clock.bin
+objcopy -O binary --only-section=.dispatch_syscall40 build/kernel_patch.elf build/kernel.dispatch_syscall40.bin
+objcopy -O binary --only-section=.dispatch_syscall41 build/kernel_patch.elf build/kernel.dispatch_syscall41.bin
+objcopy -O binary --only-section=.syscall_object_set build/kernel_patch.elf build/kernel.syscall_object_set.bin
+objcopy -O binary --only-section=.syscall_object_field12 build/kernel_patch.elf build/kernel.syscall_object_field12.bin
+objcopy -O binary --only-section=.syscall_object_field4 build/kernel_patch.elf build/kernel.syscall_object_field4.bin
+objcopy -O binary --only-section=.random_range build/kernel_patch.elf build/kernel.random_range.bin
+objcopy -O binary --only-section=.timestamp_low build/kernel_patch.elf build/kernel.timestamp_low.bin
+objcopy -O binary --only-section=.syscall_surface build/kernel_patch.elf build/kernel.syscall_surface.bin
+objcopy -O binary --only-section=.surface_refresh build/kernel_patch.elf build/kernel.surface_refresh.bin
+objcopy -O binary --only-section=.surface_composite build/kernel_patch.elf build/kernel.surface_composite.bin
+objcopy -O binary --only-section=.surface_regions build/kernel_patch.elf build/kernel.surface_regions.bin
+objcopy -O binary --only-section=.surface_present8 build/kernel_patch.elf build/kernel.surface_present8.bin
+objcopy -O binary --only-section=.surface_present32 build/kernel_patch.elf build/kernel.surface_present32.bin
+objcopy -O binary --only-section=.surface_draw8 build/kernel_patch.elf build/kernel.surface_draw8.bin
+objcopy -O binary --only-section=.surface_blend4 build/kernel_patch.elf build/kernel.surface_blend4.bin
+objcopy -O binary --only-section=.surface_draw32 build/kernel_patch.elf build/kernel.surface_draw32.bin
+objcopy -O binary --only-section=.surface_move build/kernel_patch.elf build/kernel.surface_move.bin
+objcopy -O binary --only-section=.surface_scale build/kernel_patch.elf build/kernel.surface_scale.bin
+objcopy -O binary --only-section=.surfaces_init build/kernel_patch.elf build/kernel.surfaces_init.bin
+objcopy -O binary --only-section=.surface_create build/kernel_patch.elf build/kernel.surface_create.bin
+objcopy -O binary --only-section=.surface_find_free build/kernel_patch.elf build/kernel.surface_find_free.bin
+objcopy -O binary --only-section=.surface_delete build/kernel_patch.elf build/kernel.surface_delete.bin
+objcopy -O binary --only-section=.surface_order_remove build/kernel_patch.elf build/kernel.surface_order_remove.bin
+objcopy -O binary --only-section=.surface_order_append build/kernel_patch.elf build/kernel.surface_order_append.bin
+objcopy -O binary --only-section=.surface_order_front build/kernel_patch.elf build/kernel.surface_order_front.bin
+objcopy -O binary --only-section=.surface_order_move build/kernel_patch.elf build/kernel.surface_order_move.bin
+objcopy -O binary --only-section=.cursor_show build/kernel_patch.elf build/kernel.cursor_show.bin
+objcopy -O binary --only-section=.cursor_hide build/kernel_patch.elf build/kernel.cursor_hide.bin
+objcopy -O binary --only-section=.cursor_select build/kernel_patch.elf build/kernel.cursor_select.bin
+objcopy -O binary --only-section=.cursor_move build/kernel_patch.elf build/kernel.cursor_move.bin
+objcopy -O binary --only-section=.scan_acpi build/kernel_patch.elf build/kernel.scan_acpi.bin
+objcopy -O binary --only-section=.scan_pmid build/kernel_patch.elf build/kernel.scan_pmid.bin
+objcopy -O binary --only-section=.jpeg_info build/kernel_patch.elf build/kernel.jpeg_info.bin
+objcopy -O binary --only-section=.jpeg_decode build/kernel_patch.elf build/kernel.jpeg_decode.bin
+objcopy -O binary --only-section=.jpeg_scan build/kernel_patch.elf build/kernel.jpeg_scan.bin
+objcopy -O binary --only-section=.jpeg_prepare build/kernel_patch.elf build/kernel.jpeg_prepare.bin
+objcopy -O binary --only-section=.jpeg_symbol build/kernel_patch.elf build/kernel.jpeg_symbol.bin
+objcopy -O binary --only-section=.jpeg_basis build/kernel_patch.elf build/kernel.jpeg_basis.bin
+objcopy -O binary --only-section=.jpeg_transform build/kernel_patch.elf build/kernel.jpeg_transform.bin
+objcopy -O binary --only-section=.jpeg_magnitude build/kernel_patch.elf build/kernel.jpeg_magnitude.bin
+objcopy -O binary --only-section=.jpeg_block build/kernel_patch.elf build/kernel.jpeg_block.bin
+objcopy -O binary --only-section=.jpeg_expand build/kernel_patch.elf build/kernel.jpeg_expand.bin
+objcopy -O binary --only-section=.jpeg_mcu build/kernel_patch.elf build/kernel.jpeg_mcu.bin
+objcopy -O binary --only-section=.jpeg_color build/kernel_patch.elf build/kernel.jpeg_color.bin
+objcopy -O binary --only-section=.jpeg_image build/kernel_patch.elf build/kernel.jpeg_image.bin
+objcopy -O binary --only-section=.fat_read_alloc build/kernel_patch.elf build/kernel.fat_read_alloc.bin
+objcopy -O binary --only-section=.fat_read_into build/kernel_patch.elf build/kernel.fat_read_into.bin
+objcopy -O binary --only-section=.fat_read_name_alloc build/kernel_patch.elf build/kernel.fat_read_name_alloc.bin
+objcopy -O binary --only-section=.fat_read_name_into build/kernel_patch.elf build/kernel.fat_read_name_into.bin
+objcopy -O binary --only-section=.fat_header_relative build/kernel_patch.elf build/kernel.fat_header_relative.bin
+objcopy -O binary --only-section=.fat_header_path build/kernel_patch.elf build/kernel.fat_header_path.bin
+objcopy -O binary --only-section=.fat_relative_read build/kernel_patch.elf build/kernel.fat_relative_read.bin
+objcopy -O binary --only-section=.fat_relative_named build/kernel_patch.elf build/kernel.fat_relative_named.bin
+objcopy -O binary --only-section=.fat_relative_cluster build/kernel_patch.elf build/kernel.fat_relative_cluster.bin
+objcopy -O binary --only-section=.fat_relative_named_cluster build/kernel_patch.elf build/kernel.fat_relative_named_cluster.bin
+objcopy -O binary --only-section=.fat_relative_alloc_named build/kernel_patch.elf build/kernel.fat_relative_alloc_named.bin
+objcopy -O binary --only-section=.fat_relative_alloc_index build/kernel_patch.elf build/kernel.fat_relative_alloc_index.bin
+objcopy -O binary --only-section=.fat_find_path build/kernel_patch.elf build/kernel.fat_find_path.bin
+objcopy -O binary --only-section=.fat_name83 build/kernel_patch.elf build/kernel.fat_name83.bin
+objcopy -O binary --only-section=.fat_allocate_index build/kernel_patch.elf build/kernel.fat_allocate_index.bin
+objcopy -O binary --only-section=.fat_allocate_clusters build/kernel_patch.elf build/kernel.fat_allocate_clusters.bin
+python3 tools/kernel_image.py patch ../IceStarOS_x86_32M.vhd kernel/patches.json build build/openicestaros_kernel.x
+kernel entry: 40/48 bytes at 0x800040
+kernel bootstrap: 135/148 bytes at 0x800070
+global state: 355/918 bytes at 0x800104
+startup record: 46/96 bytes at 0x80049a
+API table: 99/176 bytes at 0x8004fa
+service table: 1137/3316 bytes at 0x8005aa
+queue request: 29/44 bytes at 0x80129e
+event loop: 14/18 bytes at 0x8012ca
+poll events: 137/150 bytes at 0x8012dc
+event dispatch: 37/56 bytes at 0x801372
+request dispatch: 54/74 bytes at 0x8013aa
+dispatch slot 1: 17/32 bytes at 0x8013f4
+dispatch slot 2: 17/32 bytes at 0x801414
+dispatch slot 3: 17/32 bytes at 0x801434
+pointer input: 404/478 bytes at 0x801454
+relative X executable loader: 115/166 bytes at 0x8020a6
+path X executable loader: 192/310 bytes at 0x80214c
+X executable relocation and task launch: 252/680 bytes at 0x802282
+surface refresh forwarder: 119/160 bytes at 0x81017c
+syscall object setter: 31/46 bytes at 0x81041a
+syscall object field12: 23/48 bytes at 0x810448
+syscall object field4: 23/40 bytes at 0x810478
+object name lookup: 71/128 bytes at 0x8104a0
+object state assignment: 31/46 bytes at 0x810520
+object registry insertion: 88/142 bytes at 0x81054e
+object registry removal: 104/158 bytes at 0x8105dc
+startup UI and resources: 813/1744 bytes at 0x81067a
+startup desktop: 336/494 bytes at 0x810d4a
+startup application caller: 51/64 bytes at 0x810f38
+X-header icon pointer: 20/48 bytes at 0x812c0e
+pointer initialization: 359/494 bytes at 0x812c70
+PS2 controller wait: 25/32 bytes at 0x812e5e
+byte queue write: 118/174 bytes at 0x812e7e
+byte queue read: 46/70 bytes at 0x812f2c
+byte queue availability: 19/36 bytes at 0x812f72
+pointer packet decode: 181/310 bytes at 0x812f96
+cursor show: 75/114 bytes at 0x8130cc
+cursor hide: 75/114 bytes at 0x81313e
+cursor shape selection: 136/172 bytes at 0x8131b0
+cursor positioned movement: 148/196 bytes at 0x81325c
+interrupt table initialization: 417/678 bytes at 0x813320
+segment descriptor: 84/134 bytes at 0x8135c6
+timer tick handler: 5/46 bytes at 0x813a5e
+RTC callback: 25/26 bytes at 0x813a8c
+keyboard callback: 56/64 bytes at 0x813aa6
+audio IRQ5 callback: 54/68 bytes at 0x813ae6
+unused IRQ callback: 1/6 bytes at 0x813b2a
+mouse callback: 56/64 bytes at 0x813b30
+system call 0x40 dispatcher: 785/1276 bytes at 0x813b70
+system call 0x41 dispatcher: 179/266 bytes at 0x81406c
+timer task switch: 216/468 bytes at 0x814176
+cooperative task yield: 196/492 bytes at 0x81434a
+task subsystem initialization: 156/208 bytes at 0x814536
+task free-slot search: 66/130 bytes at 0x814606
+nonpaged task creation: 397/974 bytes at 0x814688
+application task creation: 448/1022 bytes at 0x814a56
+task deletion: 139/430 bytes at 0x814e54
+thread creation: 82/168 bytes at 0x815002
+task active query: 47/92 bytes at 0x8150aa
+ACPI firmware scan: 253/454 bytes at 0x815106
+PMID firmware scan: 50/84 bytes at 0x8152cc
+memory probe wrapper: 133/180 bytes at 0x815320
+heap initialization: 86/144 bytes at 0x8153d4
+heap allocation: 230/358 bytes at 0x815464
+heap owner allocation: 225/350 bytes at 0x8155ca
+heap aligned allocation: 309/592 bytes at 0x815728
+heap free: 95/146 bytes at 0x815978
+heap allocation size: 26/56 bytes at 0x815a0a
+heap owner total: 59/78 bytes at 0x815a42
+overlap-safe byte move: 70/114 bytes at 0x815a90
+byte memory fill: 25/42 bytes at 0x815b02
+1200-byte forward DWORD copy: 31/6134 bytes at 0x815b2c
+blocked DWORD copy: 115/184 bytes at 0x817322
+SSE DWORD copy dispatcher: 89/170 bytes at 0x8173da
+REP byte copy: 30/30 bytes at 0x817484
+REP byte fill: 38/38 bytes at 0x8174a2
+REP word copy: 32/32 bytes at 0x8174c8
+REP word fill: 40/40 bytes at 0x8174e8
+REP DWORD copy: 30/30 bytes at 0x817510
+REP DWORD fill: 26/26 bytes at 0x81752e
+memory difference query: 45/72 bytes at 0x817548
+allocation wrapper: 5/20 bytes at 0x817590
+free wrapper: 5/28 bytes at 0x8175a4
+surface table initializer: 66/102 bytes at 0x8175c0
+surface allocation: 344/414 bytes at 0x817626
+surface free-slot search: 61/122 bytes at 0x8177c4
+surface deletion: 170/178 bytes at 0x81783e
+surface order removal: 156/230 bytes at 0x8178f0
+surface order append: 98/102 bytes at 0x8179d6
+surface order front promotion: 166/246 bytes at 0x817a3c
+surface order positioned move: 303/414 bytes at 0x817b32
+surface clipping/list dispatcher: 219/220 bytes at 0x817cd0
+8-bit layer rasterizer: 538/904 bytes at 0x817dac
+four-pixel blend: 147/822 bytes at 0x818134
+32-bit output rasterizer: 1158/2218 bytes at 0x81846a
+surface rectangle predicate: 67/74 bytes at 0x818d14
+8-bit framebuffer submission: 361/452 bytes at 0x818d5e
+32-bit framebuffer submission: 264/316 bytes at 0x818f22
+surface refresh selector: 259/378 bytes at 0x81905e
+moved-layer damage selector: 586/780 bytes at 0x8191d8
+same-depth surface scaler: 1097/1884 bytes at 0x8194e4
+keyboard controller wait: 25/32 bytes at 0x819c40
+keyboard discard byte: 18/28 bytes at 0x819c60
+keyboard LED control: 98/124 bytes at 0x819c7c
+keyboard initialization: 121/158 bytes at 0x819cf8
+keyboard queue write: 72/104 bytes at 0x819d96
+keyboard queue read: 46/70 bytes at 0x819dfe
+keyboard queue availability: 19/36 bytes at 0x819e44
+ASCII uppercase: 19/40 bytes at 0x819e68
+scancode translation: 239/268 bytes at 0x819e90
+keyboard queue drain: 51/66 bytes at 0x819f9c
+keyboard modifier state: 374/460 bytes at 0x819fde
+keyboard character API: 97/150 bytes at 0x81a1aa
+CPU halt: 2/2 bytes at 0x81a240
+disable interrupts: 2/2 bytes at 0x81a242
+enable interrupts: 2/2 bytes at 0x81a244
+three NOP delay: 4/4 bytes at 0x81a246
+read CPU flags: 3/3 bytes at 0x81a24a
+write CPU flags: 7/7 bytes at 0x81a24d
+read byte port: 13/13 bytes at 0x81a254
+write byte port: 12/12 bytes at 0x81a261
+read word port: 14/14 bytes at 0x81a26d
+write word port: 14/14 bytes at 0x81a27b
+read DWORD port: 13/13 bytes at 0x81a289
+write DWORD port: 12/12 bytes at 0x81a296
+far jump to boot entry: 8/8 bytes at 0x81a2a2
+x87 factorial: 49/50 bytes at 0x81a2aa
+x87 ten-term sine series: 137/138 bytes at 0x81a2dc
+x87 ten-term cosine series: 111/144 bytes at 0x81a366
+x87 twenty-term acos series: 252/262 bytes at 0x81a3f6
+x87 add-half integer rounding: 51/60 bytes at 0x81a4fc
+x87 repeated-product power: 182/204 bytes at 0x81a538
+x87 conditional absolute value: 37/48 bytes at 0x81a604
+x87 decimal float formatter: 802/954 bytes at 0x81a634
+x87 int32 floor: 93/100 bytes at 0x81a9ee
+x87 int32 ceiling: 95/102 bytes at 0x81aa52
+x87 int32 quotient remainder: 98/114 bytes at 0x81aab8
+x87 square root: 10/10 bytes at 0x81ab2a
+SSE2 byte vector add: 36/36 bytes at 0x81ab34
+SSE2 byte vector subtract: 36/36 bytes at 0x81ab58
+SSE4.1 byte vector signed-saturating product: 74/74 bytes at 0x81ab7c
+SSE2 four-pixel blend: 254/254 bytes at 0x81abc6
+display startup state: 127/170 bytes at 0x81acc4
+VGA DAC writer: 161/166 bytes at 0x81ad6e
+VGA palette construction: 144/424 bytes at 0x81ae14
+software color table: 285/690 bytes at 0x81afbc
+surface-ID 8-bit pixel write: 89/134 bytes at 0x81b26e
+surface-ID 32-bit pixel write: 93/136 bytes at 0x81b2f4
+direct 8-bit icon pixel write: 55/68 bytes at 0x81b37c
+direct 32-bit icon pixel write: 56/70 bytes at 0x81b3c0
+surface-ID 8-bit pixel read: 85/128 bytes at 0x81b406
+surface-ID 32-bit pixel read: 87/142 bytes at 0x81b486
+lower-layer DWORD pixel sampling: 358/512 bytes at 0x81b514
+palette color lookup: 18/32 bytes at 0x81b714
+8-bit fixed-point line drawing: 304/424 bytes at 0x81b734
+32-bit fixed-point line drawing: 304/430 bytes at 0x81b8dc
+8-bit clipped rectangle fill: 489/668 bytes at 0x81ba8a
+32-bit clipped rectangle fill: 387/554 bytes at 0x81bd26
+32-bit periodic-color rectangle fill: 168/264 bytes at 0x81bf50
+8-bit unclipped rectangle outline: 316/396 bytes at 0x81c058
+32-bit unclipped rectangle outline: 300/434 bytes at 0x81c1e4
+8-bit asymmetric circle outline: 824/860 bytes at 0x81c396
+32-bit asymmetric circle outline: 805/912 bytes at 0x81c6f2
+8-bit decimal-root filled circle: 618/718 bytes at 0x81ca82
+32-bit decimal-root filled circle: 621/738 bytes at 0x81cd50
+square drawing brush: 39/62 bytes at 0x81d032
+square-brush fixed-point line: 316/396 bytes at 0x81d070
+square-brush circle: 659/746 bytes at 0x81d1fc
+quadrant-selected circle: 419/476 bytes at 0x81d4e6
+rounded rectangle outline: 456/520 bytes at 0x81d6c2
+rounded rectangle fill: 344/414 bytes at 0x81d8ca
+chamfered rectangle fill: 194/242 bytes at 0x81da68
+8-bit bitmap glyph: 227/358 bytes at 0x81db5a
+8-bit rotated bitmap glyph: 227/362 bytes at 0x81dcc0
+32-bit bitmap glyph: 227/364 bytes at 0x81de2a
+32-bit rotated bitmap glyph: 227/368 bytes at 0x81df96
+8-bit two-byte bitmap glyph: 323/454 bytes at 0x81e106
+8-bit masked two-byte bitmap glyph: 321/398 bytes at 0x81e2cc
+32-bit two-byte bitmap glyph: 320/458 bytes at 0x81e45a
+32-bit masked two-byte bitmap glyph: 301/398 bytes at 0x81e624
+8-bit mixed text run: 155/202 bytes at 0x81e7b2
+8-bit vertical mixed text run: 155/214 bytes at 0x81e87c
+32-bit mixed text run: 155/202 bytes at 0x81e952
+32-bit vertical mixed text run: 155/214 bytes at 0x81ea1c
+8-bit unsigned radix rendering: 147/422 bytes at 0x81eaf2
+32-bit unsigned radix rendering: 147/422 bytes at 0x81ec98
+unsigned radix digit count: 39/64 bytes at 0x81ee3e
+8-bit variadic text formatting: 944/1286 bytes at 0x81ee7e
+32-bit variadic text formatting: 944/1286 bytes at 0x81f384
+service-dispatched variadic text formatting: 944/1286 bytes at 0x81f88a
+ordered-dither palette quantizer: 98/306 bytes at 0x81fd90
+BMP file drawing wrapper: 220/258 bytes at 0x81fec2
+legacy BMP image rendering: 847/1096 bytes at 0x81ffc4
+BMP file fit wrapper: 134/160 bytes at 0x82040c
+legacy 24-bit BMP fitting: 1188/2234 bytes at 0x8204ac
+direct-surface 24-bit BMP fitting: 980/1760 bytes at 0x820d66
+color-key BMP drawing with diagnostic text: 372/478 bytes at 0x821446
+FAT absolute pathname lookup: 606/1408 bytes at 0x8263c0
+FAT relative whole-chain reader: 316/348 bytes at 0x826ade
+FAT relative named whole-chain reader: 29/52 bytes at 0x826c3a
+FAT relative indexed single-cluster reader: 311/354 bytes at 0x826c6e
+FAT relative named single-cluster reader: 316/360 bytes at 0x826dd0
+FAT relative named allocating reader: 198/250 bytes at 0x826f38
+FAT relative indexed allocating reader: 172/236 bytes at 0x827032
+FAT arbitrary directory indexed allocating reader: 381/470 bytes at 0x82711e
+FAT bounded cluster allocating reader: 286/352 bytes at 0x8272f4
+FAT directory-record allocating reader: 362/440 bytes at 0x827454
+FAT directory-record buffered reader: 332/396 bytes at 0x82760c
+FAT pathname allocating reader: 42/68 bytes at 0x827798
+FAT pathname buffered reader: 46/74 bytes at 0x8277dc
+FAT relative program-header reader: 202/206 bytes at 0x827826
+FAT record program-header reader: 142/152 bytes at 0x8278f4
+FAT uppercase 8.3 name formatter: 135/184 bytes at 0x827bba
+far task jump: 5/5 bytes at 0x828d2b
+SSE 16-byte block copy: 34/34 bytes at 0x828e8f
+SSE 64-byte block copy: 58/58 bytes at 0x828eb1
+VGA vertical retrace wait: 12/12 bytes at 0x828f0f
+color blending: 95/232 bytes at 0x828f1b
+string copy: 41/66 bytes at 0x82a32b
+text prefix copy: 92/148 bytes at 0x82a36d
+bounded string copy: 55/92 bytes at 0x82a401
+string length: 22/36 bytes at 0x82a45d
+string equality: 44/58 bytes at 0x82a481
+character append: 47/64 bytes at 0x82a4bb
+string append: 43/54 bytes at 0x82a4fb
+in-place ASCII uppercase: 62/76 bytes at 0x82a531
+substring search: 80/140 bytes at 0x82a57d
+configuration value lookup: 170/260 bytes at 0x82a609
+live-pointer character search: 51/72 bytes at 0x82a70d
+signed-byte uppercase: 24/50 bytes at 0x82a755
+unsigned radix text conversion: 158/284 bytes at 0x82a787
+in-place delimiter splitting: 158/280 bytes at 0x82a8a3
+ranged xorshift: 51/84 bytes at 0x82a9bb
+object table startup state: 31/36 bytes at 0x82aa0f
+timer free slot lookup: 61/122 bytes at 0x82aa33
+timer creation: 160/258 bytes at 0x82aaad
+timer deletion: 87/114 bytes at 0x82abaf
+timer rearming: 31/50 bytes at 0x82ac21
+packed time display: 87/138 bytes at 0x82ac53
+packed date display: 102/164 bytes at 0x82acdd
+tick wait: 34/42 bytes at 0x82ad81
+CMOS seconds reader: 26/26 bytes at 0x82adab
+CMOS minutes reader: 26/26 bytes at 0x82adc5
+CMOS hours reader: 26/26 bytes at 0x82addf
+CMOS weekday reader: 26/26 bytes at 0x82adf9
+CMOS day reader: 26/26 bytes at 0x82ae13
+CMOS month reader: 26/26 bytes at 0x82ae2d
+CMOS century and year reader: 61/61 bytes at 0x82ae47
+raw CMOS clock sampling: 132/132 bytes at 0x82ae84
+ICO surface ID wrapper: 41/68 bytes at 0x82af08
+ICO centered frame selection: 99/184 bytes at 0x82af4c
+ICO frame dispatch: 97/156 bytes at 0x82b004
+file icon drawing: 77/114 bytes at 0x82b0a0
+automatic file icon drawing: 165/250 bytes at 0x82b112
+DIB icon decoder: 468/1132 bytes at 0x82b20c
+cpuid available: 25/40 bytes at 0x82b678
+cpuid vendor: 33/72 bytes at 0x82b6a0
+cpuid features: 33/70 bytes at 0x82b6e8
+interrupt gate and IDTR load: 95/95 bytes at 0x8370d2
+boot code selector access: 18/18 bytes at 0x837131
+PIC programming: 57/57 bytes at 0x837143
+PIT programming: 13/13 bytes at 0x83717c
+RTC programming: 23/23 bytes at 0x837189
+exception entry: 28/28 bytes at 0x8371a0
+spurious entry: 10/10 bytes at 0x8371bc
+exception fs entry: 32/32 bytes at 0x8371c6
+device unavailable entry: 3/3 bytes at 0x8371e6
+timer entry: 32/32 bytes at 0x8371e9
+keyboard entry: 25/25 bytes at 0x837209
+irq5 entry: 25/25 bytes at 0x837222
+rtc entry: 31/31 bytes at 0x83723b
+irq9 entry: 25/25 bytes at 0x83725a
+irq10 entry: 25/25 bytes at 0x837273
+irq11 entry: 25/25 bytes at 0x83728c
+irq12 entry: 25/25 bytes at 0x8372a5
+syscall40 entry: 19/19 bytes at 0x8372be
+syscall41 entry: 23/23 bytes at 0x8372d1
+load GDT: 16/16 bytes at 0x8372e8
+load task register: 6/6 bytes at 0x8372f8
+read CR0 duplicate: 4/4 bytes at 0x8372fe
+write CR0 duplicate: 8/8 bytes at 0x837302
+FPU save legacy: 7/7 bytes at 0x83730a
+FPU restore legacy: 7/7 bytes at 0x837311
+FPU save environment: 8/8 bytes at 0x837318
+FPU load environment: 7/7 bytes at 0x837320
+FPU save extended: 8/8 bytes at 0x837327
+FPU restore extended: 8/8 bytes at 0x83732f
+FPU save xstate: 8/8 bytes at 0x837337
+FPU restore xstate: 8/8 bytes at 0x83733f
+FPU initialization: 3/3 bytes at 0x837347
+low TSC primitive: 5/5 bytes at 0x83734a
+physical byte write: 25/25 bytes at 0x83735b
+physical word write: 27/27 bytes at 0x837374
+physical DWORD write: 25/25 bytes at 0x83738f
+physical byte read: 23/23 bytes at 0x8373a8
+physical word read: 24/24 bytes at 0x8373bf
+physical DWORD read: 23/23 bytes at 0x8373d7
+physical page probe: 78/78 bytes at 0x8373ee
+read CR0: 4/4 bytes at 0x83743c
+write CR0: 8/8 bytes at 0x837440
+identity paging initialization: 102/106 bytes at 0x837448
+forward service 00: 29/50 bytes at 0x8374cf
+forward service 01: 36/68 bytes at 0x837501
+forward service 02: 36/68 bytes at 0x837545
+forward service 03: 36/68 bytes at 0x837589
+forward service 04: 33/60 bytes at 0x8375cd
+forward service 05: 33/60 bytes at 0x837609
+forward service 06: 38/74 bytes at 0x837645
+forward service 07: 36/68 bytes at 0x83768f
+forward service 08: 36/68 bytes at 0x8376d3
+forward service 09: 39/74 bytes at 0x837717
+forward service 0a: 33/60 bytes at 0x837761
+forward service 0b: 30/54 bytes at 0x83779d
+forward service 0c: 38/74 bytes at 0x8377d3
+forward service 0d: 36/68 bytes at 0x83781d
+forward service 0e: 33/60 bytes at 0x837861
+forward service 0f: 21/32 bytes at 0x83789d
+forward service 10: 21/32 bytes at 0x8378bd
+forward service 11: 27/46 bytes at 0x8378dd
+forward service 12: 27/46 bytes at 0x83790b
+forward service 13: 27/46 bytes at 0x837939
+optional service 14: 26/52 bytes at 0x837967
+optional service 15: 34/66 bytes at 0x83799b
+optional service 16: 30/58 bytes at 0x8379dd
+optional service 17: 26/52 bytes at 0x837a17
+optional service 18: 33/44 bytes at 0x837a4b
+optional service 19: 26/52 bytes at 0x837a77
+optional service 1a: 34/66 bytes at 0x837aab
+optional service 1b: 37/50 bytes at 0x837aed
+optional service 1c: 26/52 bytes at 0x837b1f
+optional service 1d: 26/52 bytes at 0x837b53
+optional service 1e: 33/44 bytes at 0x837b87
+optional service 1f: 33/44 bytes at 0x837bb3
+optional service 20: 42/44 bytes at 0x837bdf
+optional service 21: 40/70 bytes at 0x837c0b
+optional service 22: 54/78 bytes at 0x837c51
+optional service 23: 40/70 bytes at 0x837c9f
+optional service 24: 36/64 bytes at 0x837ce5
+optional service 25: 32/56 bytes at 0x837d25
+optional service 26: 36/64 bytes at 0x837d5d
+optional service 27: 36/64 bytes at 0x837d9d
+optional service 28: 36/64 bytes at 0x837ddd
+optional service 29: 40/70 bytes at 0x837e1d
+optional service 2a: 68/106 bytes at 0x837e63
+optional service 2b: 48/64 bytes at 0x837ecd
+optional service 2c: 52/82 bytes at 0x837f0d
+FPU available: 58/86 bytes at 0x837f5f
+FPU enable: 45/72 bytes at 0x837fb5
+FPU restore task: 93/204 bytes at 0x837ffd
+FPU mark lazy: 10/24 bytes at 0x8380c9
+FPU fault: 13/14 bytes at 0x8380e1
+JPEG information entry: 116/146 bytes at 0x83a70f
+JPEG decode entry: 112/148 bytes at 0x83a7a1
+JPEG bit reservoir reader: 196/228 bytes at 0x83a835
+JPEG frame marker parser: 402/462 bytes at 0x83a919
+JPEG quantization marker parser: 342/404 bytes at 0x83aae7
+JPEG Huffman table parser: 484/684 bytes at 0x83ac7b
+JPEG marker dispatcher: 738/780 bytes at 0x83af27
+JPEG scan preparation: 241/286 bytes at 0x83b233
+JPEG Huffman symbol lookup: 144/202 bytes at 0x83b351
+JPEG cosine basis generation: 331/568 bytes at 0x83b41b
+JPEG inverse transform accumulation: 141/236 bytes at 0x83b653
+JPEG magnitude extension: 61/108 bytes at 0x83b73f
+JPEG entropy block decode: 350/450 bytes at 0x83b7ab
+JPEG component expansion: 167/226 bytes at 0x83b96d
+JPEG MCU component assembly: 387/454 bytes at 0x83ba4f
+JPEG color conversion: 448/580 bytes at 0x83bc15
+JPEG image traversal: 342/470 bytes at 0x83be59
+python3 tools/kernel_image.py install build/OpenIceStarOS_c_fat16.vhd build/openicestaros_kernel.x build/OpenIceStarOS_c_init.vhd
+dd if=build/stage3_c_init.bin of=build/OpenIceStarOS_c_init.vhd bs=512 seek=5 count=8 conv=notrunc status=none
+dd if=build/init_c.bin of=build/OpenIceStarOS_c_init.vhd bs=512 seek=13 count=4 conv=notrunc status=none
+python3 tools/app_image.py install build/OpenIceStarOS_c_init.vhd apps/images.json build build/OpenIceStarOS_c_apps.vhd
+Recovered applications installed without changing FAT, directories, or file slack
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -c tests/fat_relative_guest.c -o build/fat_relative_guest.o
+ld -m elf_i386 --emit-relocs -T tests/fat_relative_guest.ld -Map=build/fat_relative_guest.map -o build/fat_relative_guest.elf build/fat_relative_guest.o
+python3 tools/xformat.py build/fat_relative_guest.elf build/fat_relative_guest.x --kind 0x0a --file-size 0x38b4 --metadata build/fat_relative_guest.symbols.json
+build/fat_relative_guest.x: 14516 bytes, 25 relocations, entry 0x40, BSS 0x1000+0x80330
+python3 tools/fat_relative_smoke.py build/OpenIceStarOS_c_apps.vhd build/fat_relative_guest.x build/OpenIceStarOS_fat_diagnostic.vhd
+build/OpenIceStarOS_fat_diagnostic.vhd: only COLOR.X extents replaced by the test-only FAT diagnostic
+python3 tests/kernel_fat_files.py --installed
+{
+  "installed": true,
+  "scenarios": 2410,
+  "executions": 7230,
+  "corpus_paths": 39,
+  "slots": {
+    "fat_read_alloc": {
+      "compiled_bytes": 362,
+      "slot_bytes": 440
+    },
+    "fat_read_into": {
+      "compiled_bytes": 332,
+      "slot_bytes": 396
+    },
+    "fat_read_name_alloc": {
+      "compiled_bytes": 42,
+      "slot_bytes": 68
+    },
+    "fat_read_name_into": {
+      "compiled_bytes": 46,
+      "slot_bytes": 74
+    },
+    "fat_header_relative": {
+      "compiled_bytes": 202,
+      "slot_bytes": 206
+    },
+    "fat_header_path": {
+      "compiled_bytes": 142,
+      "slot_bytes": 152
+    },
+    "fat_relative_read": {
+      "compiled_bytes": 316,
+      "slot_bytes": 348
+    },
+    "fat_relative_named": {
+      "compiled_bytes": 29,
+      "slot_bytes": 52
+    },
+    "fat_relative_cluster": {
+      "compiled_bytes": 311,
+      "slot_bytes": 354
+    },
+    "fat_relative_named_cluster": {
+      "compiled_bytes": 316,
+      "slot_bytes": 360
+    },
+    "fat_relative_alloc_named": {
+      "compiled_bytes": 198,
+      "slot_bytes": 250
+    },
+    "fat_relative_alloc_index": {
+      "compiled_bytes": 172,
+      "slot_bytes": 236
+    },
+    "fat_allocate_index": {
+      "compiled_bytes": 381,
+      "slot_bytes": 470
+    },
+    "fat_allocate_clusters": {
+      "compiled_bytes": 286,
+      "slot_bytes": 352
+    }
+  },
+  "seconds": 9.858,
+  "boundary_scope": "allocation, pathname lookup and hardware sector reads only",
+  "sha256": {
+    "kernel/fat_files.c": "172186c9118b11acd1b774fcbdd7c5d4041fbb89a849526ebdd0cdefc25f715a",
+    "kernel/fat_files.h": "f70f1593e63d1ceff9a0c3cf4aa39ac3d3ef874f9ebffa684d08c37ed0b40809",
+    "kernel/fat_relative.c": "fc71c65f0aa31fc57bb9f45d30e594b5aa475da24c0dbcba6be3fa6a1ec49a3f",
+    "kernel/fat_relative.h": "d6acffb78a4604caf790a61a33071e4c8c7bc5dcdaddcc9f41e9f443a9e1fdb8",
+    "kernel/fat_alloc.c": "9e6f7bf0b0ef58feeb4343fe828fc45e13a4cf6d988a658b28c704ea20fe98aa",
+    "kernel/fat_alloc.h": "5a1d3f79423a196c0906b63aa3206cd2638b4d2b287d5fb4ef83164337aeabc3",
+    "tests/kernel_fat_files.py": "7330f41fe99dec46e2f6adfe897284a1cf62387c8103f160bff84432bdc3f6aa"
+  }
+}
+python3 tests/kernel_fat_path.py --installed
+{
+  "installed": true,
+  "scenarios": 347,
+  "executions": 1041,
+  "corpus_files": 67,
+  "slots": {
+    "fat_find_path": {
+      "compiled_bytes": 606,
+      "slot_bytes": 1408
+    },
+    "fat_name83": {
+      "compiled_bytes": 135,
+      "slot_bytes": 184
+    }
+  },
+  "seconds": 2.127,
+  "boundaries": "Only allocation/free and hardware sectors; no pathname/directory callbacks",
+  "limitations": "Original unchecked inputs, leaks and free-before-read ordering retained; unbounded alias/cyclic FAT cases excluded",
+  "sha256": {
+    "kernel/fat_path.c": "9c70f3e405884be37397252ee42fcb5860e0f36e996bf1f38b20a35e5ea11290",
+    "kernel/fat_path.h": "0f7f6dbc2b578e4e0abce299100dcbe20e220ca614a209f6b47e2aa58d7f697a",
+    "tests/kernel_fat_path.py": "1d52fe2dde285aa62fc2e3ead7fe0985c93a4b281bb783cdf0f7dc571add5c90"
+  }
+}
+python3 tests/kernel_x_loader.py --installed
+{
+  "installed": true,
+  "scenarios": 430,
+  "executions": 1290,
+  "seconds": 2.049,
+  "slots": {
+    "x_load_relative": {
+      "compiled_bytes": 115,
+      "slot_bytes": 166
+    },
+    "x_load_path": {
+      "compiled_bytes": 192,
+      "slot_bytes": 310
+    },
+    "x_launch": {
+      "compiled_bytes": 252,
+      "slot_bytes": 680
+    }
+  },
+  "corpus": [
+    {
+      "path": "/ADMIN/DESKTOP/CMD.X",
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/DEVTEST.X",
+      "sha256": "37a9e541a35202265f99f5af13f1fbed32d0eb7648e3ded3b6005bb99d3c0255"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/NETWORK.X",
+      "sha256": "7053d5eec75298519d05c455774b892b416a521bd34044c4b26f9a321a6e0c92"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/TASKMGR.X",
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b"
+    },
+    {
+      "path": "/ICESTAR/AREOBAR.X",
+      "sha256": "33b9f192417e861a078453727adcbb9d53f258ec4dcf4cbfa290e43733fb9963"
+    },
+    {
+      "path": "/ICESTAR/BROWSER.X",
+      "sha256": "d74fe5e1b522941f31f47dfe643f5ded629bf886a585a593efe58d4f8b419e35"
+    },
+    {
+      "path": "/ICESTAR/CALC.X",
+      "sha256": "2fcfcea430f278ff85eaf24278578f845e0c85000b92613f8ef4c597146d47cc"
+    },
+    {
+      "path": "/ICESTAR/CHAT.X",
+      "sha256": "7035ae7bb738900c2b00bee16d1c196d64da9bf9836b48f3aab8b5493f17c553"
+    },
+    {
+      "path": "/ICESTAR/CLOCK.X",
+      "sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7"
+    },
+    {
+      "path": "/ICESTAR/CMD.X",
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622"
+    },
+    {
+      "path": "/ICESTAR/COLOR.X",
+      "sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78"
+    },
+    {
+      "path": "/ICESTAR/DEVMGR.X",
+      "sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18"
+    },
+    {
+      "path": "/ICESTAR/GAMES/ELSFK.X",
+      "sha256": "e3b91cd68b9a1b73b0885347b7091aea569a41f34ae9a4d816de3d5cd93c225a"
+    },
+    {
+      "path": "/ICESTAR/GAMES/GLASS.X",
+      "sha256": "bcb7638fb30fa41065c50ca2eb0a15b57296748f5ca2c41f8fb6d4f105738a1d"
+    },
+    {
+      "path": "/ICESTAR/GAMES/INVADER.X",
+      "sha256": "8417747cbda6d58c0f55bc49cc5abce9ecceca04611213968e15cdcd1ded44a1"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MINE.X",
+      "sha256": "6fbc646c15fea7ee9d97dc3382ca23cb0b6aec0b5a4accde2ade37955f14fa42"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68"
+    },
+    {
+      "path": "/ICESTAR/GAMES/NES/NES.X",
+      "sha256": "7258c05dc6e219195a6fd20554088208f45338e3e9b2adf30b75808e727f94ce"
+    },
+    {
+      "path": "/ICESTAR/GAMES/PUSHBOX.X",
+      "sha256": "7d4fedece810f0ea0cd2cf9e8c6b319fc71f3ef0115abc5cf4334af6a352d3ab"
+    },
+    {
+      "path": "/ICESTAR/GAMES/SNAKE.X",
+      "sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3"
+    },
+    {
+      "path": "/ICESTAR/MACBAR.X",
+      "sha256": "3d9218160e5075cb6bec71754b455b6672d43a4eb24dbda2039f19ecd94195f1"
+    },
+    {
+      "path": "/ICESTAR/MPLAY.X",
+      "sha256": "8af980ff5c466f7e4c336aab3b13d406b75c3934bbbad12a071013701443d68f"
+    },
+    {
+      "path": "/ICESTAR/NOTEPAD.X",
+      "sha256": "69b53e3fe200770f1c2c24bd03991a01276aebb8729b240c918ffa25cdfa1538"
+    },
+    {
+      "path": "/ICESTAR/PAINT.X",
+      "sha256": "aad10393cfa0f7f5747a1c2b0eb0def53e1a7c553ab832417ad4c6f14cbe1c7d"
+    },
+    {
+      "path": "/ICESTAR/PCMGR.X",
+      "sha256": "8a017c88d75599a755d945d9ed112528ca61314605a4be3fc40030cfc193550c"
+    },
+    {
+      "path": "/ICESTAR/PICVIEW.X",
+      "sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe"
+    },
+    {
+      "path": "/ICESTAR/SCRNSET.X",
+      "sha256": "08b67a7bf11c36208f8aeaf5d06643780c60cdfa4ef641b4dadd8578457ee27d"
+    },
+    {
+      "path": "/ICESTAR/STARSCR.X",
+      "sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c"
+    },
+    {
+      "path": "/ICESTAR/TASKBAR.X",
+      "sha256": "e43e9a785fd8e29cb38c540fe9293a06de458f20d39685150e12b5a881008fa6"
+    },
+    {
+      "path": "/ICESTAR/TASKMGR.X",
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "sha256": "aeb4e960e6dffb5e735689c80c1f28707826b0c3bfda2c9d3f3bf747fbe4ac6e"
+    },
+    {
+      "path": "/ICESTAR/TTFVIEW.X",
+      "sha256": "ff1f531663955fe3cbf4597a9af2b1b442d14f328a73c977d1cc3605d1a4b58c"
+    },
+    {
+      "path": "/INIT.X",
+      "sha256": "0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007"
+    }
+  ],
+  "compared": "Return EAX, callee-saved registers, caller stack, ordered boundary arguments/live headers, full 128 KiB low memory and 2 MiB arena",
+  "limitations": "External helpers are deterministic callbacks. Enormous/wrapped fills are argument-only probes. Unbounded relocation loops and invalid/unmapped targets are not covered.",
+  "sha256": {
+    "kernel/x_loader.c": "31d6a5768c8329b82fe45bd68a091fd43cc09866261ab1da5809c557ffa8392f",
+    "kernel/x_loader.h": "9d7e9a636c9cbcf0e96244298aa990efc070104d523fc104672c54104fea7f8f",
+    "tests/kernel_x_loader.py": "bdc73b6de69012fff078e5f0130289a34450d631dc8f77aae0783547854ce96f",
+    "build/x_loader_fixed.elf": "413ef265e0f6b74d700d1004e92069787e75ddb74d4dbedcc8fd1ecc7cfb7bc1",
+    "build/x_loader_ordinary.elf": "74b4cf68481e4aadcf7fffb72ea29571a013fdc1292f3efa10e0ac3b31718b02",
+    "build/x_loader_candidate.x": "4c904e219a986e1dee99e5ee98a0e2588835ec150ab502e8f888dc97429866bd"
+  }
+}
+make: Leaving directory '/root/IceStarOS-x86-Decompile/rewrite'
