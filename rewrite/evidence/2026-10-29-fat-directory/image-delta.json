@@ -1,0 +1,76 @@
+{
+  "baseline_intervals": 368,
+  "installed_intervals": 378,
+  "new_intervals": [
+    {
+      "name": "FAT root filename extraction",
+      "binary": "kernel.fat_root_name.bin",
+      "start": "0x8258a6",
+      "end": "0x825a7e"
+    },
+    {
+      "name": "FAT directory filename extraction",
+      "binary": "kernel.fat_directory_name.bin",
+      "start": "0x825a7e",
+      "end": "0x825bcc"
+    },
+    {
+      "name": "FAT root extension extraction",
+      "binary": "kernel.fat_root_extension.bin",
+      "start": "0x825bcc",
+      "end": "0x825c46"
+    },
+    {
+      "name": "FAT directory extension extraction",
+      "binary": "kernel.fat_directory_extension.bin",
+      "start": "0x825c46",
+      "end": "0x825c8e"
+    },
+    {
+      "name": "FAT root relative file lookup",
+      "binary": "kernel.fat_find_relative.bin",
+      "start": "0x825c8e",
+      "end": "0x825d34"
+    },
+    {
+      "name": "FAT directory relative file lookup",
+      "binary": "kernel.fat_directory_find.bin",
+      "start": "0x825d34",
+      "end": "0x825df4"
+    },
+    {
+      "name": "FAT root file-size getter",
+      "binary": "kernel.fat_root_size.bin",
+      "start": "0x826940",
+      "end": "0x82698c"
+    },
+    {
+      "name": "FAT directory file-size getter",
+      "binary": "kernel.fat_directory_size.bin",
+      "start": "0x82698c",
+      "end": "0x8269a6"
+    },
+    {
+      "name": "FAT root attributes getter",
+      "binary": "kernel.fat_root_attributes.bin",
+      "start": "0x8269a6",
+      "end": "0x8269f2"
+    },
+    {
+      "name": "FAT directory attributes getter",
+      "binary": "kernel.fat_directory_attributes.bin",
+      "start": "0x8269f2",
+      "end": "0x826a0e"
+    }
+  ],
+  "changed_kernel_bytes": 1479,
+  "only_ten_new_kernel_intervals_changed": true,
+  "boot_applications_fat_directories_slack_unchanged": true,
+  "original_logo_retained": true,
+  "sha256": {
+    "baseline_image": "654227ef12832607760e47c7263c15d3f1a481619b8b495082afdfd4b0e54b90",
+    "image": "bd7fff35e0e01978c555ab807450d168f247fa6ab1149d08a8aa9957cbed893d",
+    "kernel": "9e2978a6512db74168735108b3dc67febc57394bf7ce3ef327d8d22b74561a0b",
+    "original_image": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

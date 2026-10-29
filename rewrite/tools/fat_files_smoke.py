@@ -11,6 +11,16 @@ def check_fat_execution(root, image, trace, require_relative=False):
            re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
     functions = {}
     for name, start, end in (
+            ("root_name", 0x8258a6, 0x825a7e),
+            ("directory_name", 0x825a7e, 0x825bcc),
+            ("root_extension", 0x825bcc, 0x825c46),
+            ("directory_extension", 0x825c46, 0x825c8e),
+            ("find_relative", 0x825c8e, 0x825d34),
+            ("directory_find", 0x825d34, 0x825df4),
+            ("root_size", 0x826940, 0x82698c),
+            ("directory_size", 0x82698c, 0x8269a6),
+            ("root_attributes", 0x8269a6, 0x8269f2),
+            ("directory_attributes", 0x8269f2, 0x826a0e),
             ("find_path", 0x8263c0, 0x826940),
             ("name83", 0x827bba, 0x827c72),
             ("relative_read", 0x826ade, 0x826c3a),
@@ -35,8 +45,14 @@ def check_fat_execution(root, image, trace, require_relative=False):
         required += ["relative_read", "relative_named", "relative_cluster",
                      "relative_named_cluster", "relative_allocate_named", "relative_allocate_index",
                      "allocate_directory_index", "allocate_clusters"]
+        required += ["root_name", "directory_name", "root_extension", "directory_extension",
+                     "find_relative", "directory_find", "root_size", "directory_size",
+                     "root_attributes", "directory_attributes"]
+    single_block = {"root_extension", "directory_extension", "root_size", "directory_size",
+                    "root_attributes", "directory_attributes"}
     for name in required:
-        require(functions[name]["entry_events"] > 0 and functions[name]["body_events"] > 0,
+        require(functions[name]["entry_events"] > 0 and
+                (name in single_block or functions[name]["body_events"] > 0),
                 "recovered FAT entry/body was not observed: " + name)
     evidence = dict(diagnostic_only=require_relative,
         image_sha256=hashlib.sha256(image.read_bytes()).hexdigest(),

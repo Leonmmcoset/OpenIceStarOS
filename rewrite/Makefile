@@ -146,6 +146,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_fat_path.o
 KERNEL_PATCHES += $(foreach name,fat_find_path fat_name83,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_alloc.o
 KERNEL_PATCHES += $(foreach name,fat_allocate_index fat_allocate_clusters,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory.o
+KERNEL_PATCHES += $(foreach name,fat_root_name fat_directory_name fat_root_extension fat_directory_extension fat_find_relative fat_directory_find fat_root_size fat_directory_size fat_root_attributes fat_directory_attributes,$(BUILD)/kernel.$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
@@ -187,6 +189,12 @@ test-fat-path: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_fat_path.py --installed
 
 verify: test-fat-path
+
+.PHONY: test-fat-directory
+test-fat-directory: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_fat_directory.py --installed
+
+verify: test-fat-directory
 
 verify: test-boot-video test-boot-stage3
 
@@ -293,6 +301,9 @@ $(BUILD)/kernel_fat_relative.o: kernel/fat_relative.c kernel/fat_relative.h kern
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_alloc.o: kernel/fat_alloc.c kernel/fat_alloc.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_directory.o: kernel/fat_directory.c kernel/fat_directory.h kernel/helpers.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)

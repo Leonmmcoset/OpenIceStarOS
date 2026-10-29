@@ -1,4 +1,4 @@
-/* Test-only X application: exercise eight production FAT service entries
+/* Test-only X application: exercise eight reader and ten directory services
  * against INIT.X using real disk I/O. Never installed in production images. */
 #include <stdint.h>
 #define D(a) (*(volatile uint32_t *)(uintptr_t)(a))
@@ -15,9 +15,50 @@ struct fat_report {
     struct fat_case cases[16];
 };
 volatile struct fat_report fat_report;
-static uint8_t copied_directory[64];
+struct directory_case {
+    uint32_t entry, result;
+    uint8_t output[32];
+};
+struct directory_report {
+    uint32_t magic, status, completed;
+    uint32_t entries[10];
+    struct directory_case cases[10];
+};
+volatile struct directory_report fat_directory_report;
+static uint8_t copied_directory[96];
 _Static_assert(sizeof(struct fat_case) == 32812, "FAT guest case layout");
 _Static_assert(sizeof(struct fat_report) == 525040, "FAT guest report layout");
+_Static_assert(sizeof(struct directory_report) == 452, "directory guest report layout");
+
+static uint32_t check_directory_services(uint32_t index, uint32_t directory)
+{
+    typedef uint32_t (*one_fn)(uint32_t);
+    typedef uint32_t (*two_fn)(uint32_t, uint32_t);
+    typedef uint32_t (*three_fn)(uint32_t, uint32_t, uint32_t);
+    static const char name[] = "INIT.X";
+    static const uint32_t slots[] = {114, 119, 207, 208, 122, 123, 201, 202, 115, 120};
+    static const uint32_t entries[] = {0x8258a6, 0x825a7e, 0x825bcc, 0x825c46,
+        0x825c8e, 0x825d34, 0x826940, 0x82698c, 0x8269a6, 0x8269f2};
+    fat_directory_report.magic = 0x44495231u;
+    for (uint32_t i = 0; i < 10; ++i) {
+        volatile struct directory_case *c = &fat_directory_report.cases[i];
+        fat_directory_report.entries[i] = SERVICE(slots[i]);
+        if (fat_directory_report.entries[i] != entries[i]) return 0;
+        c->entry = entries[i];
+        for (uint32_t j = 0; j < 32; ++j) c->output[j] = 0xa5u;
+        uint32_t target = (uint32_t)(uintptr_t)c->output;
+        if (i == 0 || i == 2) c->result = ((two_fn)(uintptr_t)c->entry)(index, target);
+        else if (i == 1 || i == 3) c->result = ((three_fn)(uintptr_t)c->entry)(directory, index, target);
+        else if (i == 4) c->result = ((one_fn)(uintptr_t)c->entry)((uint32_t)(uintptr_t)name);
+        else if (i == 5) c->result = ((two_fn)(uintptr_t)c->entry)(directory, (uint32_t)(uintptr_t)name);
+        else if (i == 6 || i == 8) c->result = ((one_fn)(uintptr_t)c->entry)(index);
+        else c->result = ((two_fn)(uintptr_t)c->entry)(directory, index);
+        fat_directory_report.completed = i + 1u;
+    }
+    fat_directory_report.status = 1;
+    fat_directory_report.magic = 0x44495232u;
+    return 1;
+}
 
 void fat_guest_entry(void)
 {
@@ -43,8 +84,8 @@ void fat_guest_entry(void)
         (*(volatile uint16_t *)0x52000e + *(volatile uint8_t *)0x520010 *
          *(volatile uint16_t *)0x520016) * 512u;
     first_cluster = *(volatile uint16_t *)(uintptr_t)(directory + index * 32u + 26u);
-    for (j = 0; j < 32u; ++j)
-        copied_directory[32u + j] = *(volatile uint8_t *)(uintptr_t)(directory + index * 32u + j);
+    for (j = 0; j < 64u; ++j)
+        copied_directory[j] = *(volatile uint8_t *)(uintptr_t)(directory + j);
     for (i = 0; i < 16; ++i) {
         volatile struct fat_case *c = &fat_report.cases[i];
         uint32_t target = (uint32_t)(uintptr_t)(c->data + 16u);
@@ -85,6 +126,7 @@ void fat_guest_entry(void)
         }
         fat_report.completed = i + 1u;
     }
+    if (!check_directory_services(index, (uint32_t)(uintptr_t)copied_directory)) goto failed;
     fat_report.status = 1;
     goto finished;
 failed:

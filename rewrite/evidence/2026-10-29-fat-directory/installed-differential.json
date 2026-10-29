@@ -1,0 +1,57 @@
+{
+  "installed": true,
+  "scenarios": 5974,
+  "executions": 17922,
+  "corpus_directories": 12,
+  "corpus_records": 101,
+  "slots": {
+    "fat_root_name": {
+      "compiled_bytes": 329,
+      "slot_bytes": 472
+    },
+    "fat_directory_name": {
+      "compiled_bytes": 209,
+      "slot_bytes": 334
+    },
+    "fat_root_extension": {
+      "compiled_bytes": 99,
+      "slot_bytes": 122
+    },
+    "fat_directory_extension": {
+      "compiled_bytes": 40,
+      "slot_bytes": 72
+    },
+    "fat_find_relative": {
+      "compiled_bytes": 88,
+      "slot_bytes": 166
+    },
+    "fat_directory_find": {
+      "compiled_bytes": 113,
+      "slot_bytes": 192
+    },
+    "fat_root_size": {
+      "compiled_bytes": 58,
+      "slot_bytes": 76
+    },
+    "fat_directory_size": {
+      "compiled_bytes": 20,
+      "slot_bytes": 26
+    },
+    "fat_root_attributes": {
+      "compiled_bytes": 59,
+      "slot_bytes": 76
+    },
+    "fat_directory_attributes": {
+      "compiled_bytes": 21,
+      "slot_bytes": 28
+    }
+  },
+  "seconds": 17.885,
+  "boundaries": "No callbacks or stubbed services",
+  "scope": "Return values, complete checked memory, ordered service calls, cdecl ABI; bounded record/output aliases",
+  "sha256": {
+    "kernel/fat_directory.c": "4c87452038afdf27d9f3dabc66453db25603c08de0157b39c7c9d92522a3854d",
+    "kernel/fat_directory.h": "b83b757e6c77b39ea63194caeaf2da93ef20013ea3e514e6fe74ece241081807",
+    "tests/kernel_fat_directory.py": "c6a3c8f828950cea27cf23d83ffaa792eb25082566b172ca0152b8de752bc2d9"
+  }
+}

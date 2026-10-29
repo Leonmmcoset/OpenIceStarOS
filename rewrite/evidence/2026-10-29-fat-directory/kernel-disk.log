@@ -1,0 +1,379 @@
+kernel entry: 40/48 bytes at 0x800040
+kernel bootstrap: 135/148 bytes at 0x800070
+global state: 355/918 bytes at 0x800104
+startup record: 46/96 bytes at 0x80049a
+API table: 99/176 bytes at 0x8004fa
+service table: 1137/3316 bytes at 0x8005aa
+queue request: 29/44 bytes at 0x80129e
+event loop: 14/18 bytes at 0x8012ca
+poll events: 137/150 bytes at 0x8012dc
+event dispatch: 37/56 bytes at 0x801372
+request dispatch: 54/74 bytes at 0x8013aa
+dispatch slot 1: 17/32 bytes at 0x8013f4
+dispatch slot 2: 17/32 bytes at 0x801414
+dispatch slot 3: 17/32 bytes at 0x801434
+pointer input: 404/478 bytes at 0x801454
+relative X executable loader: 115/166 bytes at 0x8020a6
+path X executable loader: 192/310 bytes at 0x80214c
+X executable relocation and task launch: 252/680 bytes at 0x802282
+surface refresh forwarder: 119/160 bytes at 0x81017c
+syscall object setter: 31/46 bytes at 0x81041a
+syscall object field12: 23/48 bytes at 0x810448
+syscall object field4: 23/40 bytes at 0x810478
+object name lookup: 71/128 bytes at 0x8104a0
+object state assignment: 31/46 bytes at 0x810520
+object registry insertion: 88/142 bytes at 0x81054e
+object registry removal: 104/158 bytes at 0x8105dc
+startup UI and resources: 813/1744 bytes at 0x81067a
+startup desktop: 336/494 bytes at 0x810d4a
+startup application caller: 51/64 bytes at 0x810f38
+X-header icon pointer: 20/48 bytes at 0x812c0e
+pointer initialization: 359/494 bytes at 0x812c70
+PS2 controller wait: 25/32 bytes at 0x812e5e
+byte queue write: 118/174 bytes at 0x812e7e
+byte queue read: 46/70 bytes at 0x812f2c
+byte queue availability: 19/36 bytes at 0x812f72
+pointer packet decode: 181/310 bytes at 0x812f96
+cursor show: 75/114 bytes at 0x8130cc
+cursor hide: 75/114 bytes at 0x81313e
+cursor shape selection: 136/172 bytes at 0x8131b0
+cursor positioned movement: 148/196 bytes at 0x81325c
+interrupt table initialization: 417/678 bytes at 0x813320
+segment descriptor: 84/134 bytes at 0x8135c6
+timer tick handler: 5/46 bytes at 0x813a5e
+RTC callback: 25/26 bytes at 0x813a8c
+keyboard callback: 56/64 bytes at 0x813aa6
+audio IRQ5 callback: 54/68 bytes at 0x813ae6
+unused IRQ callback: 1/6 bytes at 0x813b2a
+mouse callback: 56/64 bytes at 0x813b30
+system call 0x40 dispatcher: 785/1276 bytes at 0x813b70
+system call 0x41 dispatcher: 179/266 bytes at 0x81406c
+timer task switch: 216/468 bytes at 0x814176
+cooperative task yield: 196/492 bytes at 0x81434a
+task subsystem initialization: 156/208 bytes at 0x814536
+task free-slot search: 66/130 bytes at 0x814606
+nonpaged task creation: 397/974 bytes at 0x814688
+application task creation: 448/1022 bytes at 0x814a56
+task deletion: 139/430 bytes at 0x814e54
+thread creation: 82/168 bytes at 0x815002
+task active query: 47/92 bytes at 0x8150aa
+ACPI firmware scan: 253/454 bytes at 0x815106
+PMID firmware scan: 50/84 bytes at 0x8152cc
+memory probe wrapper: 133/180 bytes at 0x815320
+heap initialization: 86/144 bytes at 0x8153d4
+heap allocation: 230/358 bytes at 0x815464
+heap owner allocation: 225/350 bytes at 0x8155ca
+heap aligned allocation: 309/592 bytes at 0x815728
+heap free: 95/146 bytes at 0x815978
+heap allocation size: 26/56 bytes at 0x815a0a
+heap owner total: 59/78 bytes at 0x815a42
+overlap-safe byte move: 70/114 bytes at 0x815a90
+byte memory fill: 25/42 bytes at 0x815b02
+1200-byte forward DWORD copy: 31/6134 bytes at 0x815b2c
+blocked DWORD copy: 115/184 bytes at 0x817322
+SSE DWORD copy dispatcher: 89/170 bytes at 0x8173da
+REP byte copy: 30/30 bytes at 0x817484
+REP byte fill: 38/38 bytes at 0x8174a2
+REP word copy: 32/32 bytes at 0x8174c8
+REP word fill: 40/40 bytes at 0x8174e8
+REP DWORD copy: 30/30 bytes at 0x817510
+REP DWORD fill: 26/26 bytes at 0x81752e
+memory difference query: 45/72 bytes at 0x817548
+allocation wrapper: 5/20 bytes at 0x817590
+free wrapper: 5/28 bytes at 0x8175a4
+surface table initializer: 66/102 bytes at 0x8175c0
+surface allocation: 344/414 bytes at 0x817626
+surface free-slot search: 61/122 bytes at 0x8177c4
+surface deletion: 170/178 bytes at 0x81783e
+surface order removal: 156/230 bytes at 0x8178f0
+surface order append: 98/102 bytes at 0x8179d6
+surface order front promotion: 166/246 bytes at 0x817a3c
+surface order positioned move: 303/414 bytes at 0x817b32
+surface clipping/list dispatcher: 219/220 bytes at 0x817cd0
+8-bit layer rasterizer: 538/904 bytes at 0x817dac
+four-pixel blend: 147/822 bytes at 0x818134
+32-bit output rasterizer: 1158/2218 bytes at 0x81846a
+surface rectangle predicate: 67/74 bytes at 0x818d14
+8-bit framebuffer submission: 361/452 bytes at 0x818d5e
+32-bit framebuffer submission: 264/316 bytes at 0x818f22
+surface refresh selector: 259/378 bytes at 0x81905e
+moved-layer damage selector: 586/780 bytes at 0x8191d8
+same-depth surface scaler: 1097/1884 bytes at 0x8194e4
+keyboard controller wait: 25/32 bytes at 0x819c40
+keyboard discard byte: 18/28 bytes at 0x819c60
+keyboard LED control: 98/124 bytes at 0x819c7c
+keyboard initialization: 121/158 bytes at 0x819cf8
+keyboard queue write: 72/104 bytes at 0x819d96
+keyboard queue read: 46/70 bytes at 0x819dfe
+keyboard queue availability: 19/36 bytes at 0x819e44
+ASCII uppercase: 19/40 bytes at 0x819e68
+scancode translation: 239/268 bytes at 0x819e90
+keyboard queue drain: 51/66 bytes at 0x819f9c
+keyboard modifier state: 374/460 bytes at 0x819fde
+keyboard character API: 97/150 bytes at 0x81a1aa
+CPU halt: 2/2 bytes at 0x81a240
+disable interrupts: 2/2 bytes at 0x81a242
+enable interrupts: 2/2 bytes at 0x81a244
+three NOP delay: 4/4 bytes at 0x81a246
+read CPU flags: 3/3 bytes at 0x81a24a
+write CPU flags: 7/7 bytes at 0x81a24d
+read byte port: 13/13 bytes at 0x81a254
+write byte port: 12/12 bytes at 0x81a261
+read word port: 14/14 bytes at 0x81a26d
+write word port: 14/14 bytes at 0x81a27b
+read DWORD port: 13/13 bytes at 0x81a289
+write DWORD port: 12/12 bytes at 0x81a296
+far jump to boot entry: 8/8 bytes at 0x81a2a2
+x87 factorial: 49/50 bytes at 0x81a2aa
+x87 ten-term sine series: 137/138 bytes at 0x81a2dc
+x87 ten-term cosine series: 111/144 bytes at 0x81a366
+x87 twenty-term acos series: 252/262 bytes at 0x81a3f6
+x87 add-half integer rounding: 51/60 bytes at 0x81a4fc
+x87 repeated-product power: 182/204 bytes at 0x81a538
+x87 conditional absolute value: 37/48 bytes at 0x81a604
+x87 decimal float formatter: 802/954 bytes at 0x81a634
+x87 int32 floor: 93/100 bytes at 0x81a9ee
+x87 int32 ceiling: 95/102 bytes at 0x81aa52
+x87 int32 quotient remainder: 98/114 bytes at 0x81aab8
+x87 square root: 10/10 bytes at 0x81ab2a
+SSE2 byte vector add: 36/36 bytes at 0x81ab34
+SSE2 byte vector subtract: 36/36 bytes at 0x81ab58
+SSE4.1 byte vector signed-saturating product: 74/74 bytes at 0x81ab7c
+SSE2 four-pixel blend: 254/254 bytes at 0x81abc6
+display startup state: 127/170 bytes at 0x81acc4
+VGA DAC writer: 161/166 bytes at 0x81ad6e
+VGA palette construction: 144/424 bytes at 0x81ae14
+software color table: 285/690 bytes at 0x81afbc
+surface-ID 8-bit pixel write: 89/134 bytes at 0x81b26e
+surface-ID 32-bit pixel write: 93/136 bytes at 0x81b2f4
+direct 8-bit icon pixel write: 55/68 bytes at 0x81b37c
+direct 32-bit icon pixel write: 56/70 bytes at 0x81b3c0
+surface-ID 8-bit pixel read: 85/128 bytes at 0x81b406
+surface-ID 32-bit pixel read: 87/142 bytes at 0x81b486
+lower-layer DWORD pixel sampling: 358/512 bytes at 0x81b514
+palette color lookup: 18/32 bytes at 0x81b714
+8-bit fixed-point line drawing: 304/424 bytes at 0x81b734
+32-bit fixed-point line drawing: 304/430 bytes at 0x81b8dc
+8-bit clipped rectangle fill: 489/668 bytes at 0x81ba8a
+32-bit clipped rectangle fill: 387/554 bytes at 0x81bd26
+32-bit periodic-color rectangle fill: 168/264 bytes at 0x81bf50
+8-bit unclipped rectangle outline: 316/396 bytes at 0x81c058
+32-bit unclipped rectangle outline: 300/434 bytes at 0x81c1e4
+8-bit asymmetric circle outline: 824/860 bytes at 0x81c396
+32-bit asymmetric circle outline: 805/912 bytes at 0x81c6f2
+8-bit decimal-root filled circle: 618/718 bytes at 0x81ca82
+32-bit decimal-root filled circle: 621/738 bytes at 0x81cd50
+square drawing brush: 39/62 bytes at 0x81d032
+square-brush fixed-point line: 316/396 bytes at 0x81d070
+square-brush circle: 659/746 bytes at 0x81d1fc
+quadrant-selected circle: 419/476 bytes at 0x81d4e6
+rounded rectangle outline: 456/520 bytes at 0x81d6c2
+rounded rectangle fill: 344/414 bytes at 0x81d8ca
+chamfered rectangle fill: 194/242 bytes at 0x81da68
+8-bit bitmap glyph: 227/358 bytes at 0x81db5a
+8-bit rotated bitmap glyph: 227/362 bytes at 0x81dcc0
+32-bit bitmap glyph: 227/364 bytes at 0x81de2a
+32-bit rotated bitmap glyph: 227/368 bytes at 0x81df96
+8-bit two-byte bitmap glyph: 323/454 bytes at 0x81e106
+8-bit masked two-byte bitmap glyph: 321/398 bytes at 0x81e2cc
+32-bit two-byte bitmap glyph: 320/458 bytes at 0x81e45a
+32-bit masked two-byte bitmap glyph: 301/398 bytes at 0x81e624
+8-bit mixed text run: 155/202 bytes at 0x81e7b2
+8-bit vertical mixed text run: 155/214 bytes at 0x81e87c
+32-bit mixed text run: 155/202 bytes at 0x81e952
+32-bit vertical mixed text run: 155/214 bytes at 0x81ea1c
+8-bit unsigned radix rendering: 147/422 bytes at 0x81eaf2
+32-bit unsigned radix rendering: 147/422 bytes at 0x81ec98
+unsigned radix digit count: 39/64 bytes at 0x81ee3e
+8-bit variadic text formatting: 944/1286 bytes at 0x81ee7e
+32-bit variadic text formatting: 944/1286 bytes at 0x81f384
+service-dispatched variadic text formatting: 944/1286 bytes at 0x81f88a
+ordered-dither palette quantizer: 98/306 bytes at 0x81fd90
+BMP file drawing wrapper: 220/258 bytes at 0x81fec2
+legacy BMP image rendering: 847/1096 bytes at 0x81ffc4
+BMP file fit wrapper: 134/160 bytes at 0x82040c
+legacy 24-bit BMP fitting: 1188/2234 bytes at 0x8204ac
+direct-surface 24-bit BMP fitting: 980/1760 bytes at 0x820d66
+color-key BMP drawing with diagnostic text: 372/478 bytes at 0x821446
+FAT root filename extraction: 329/472 bytes at 0x8258a6
+FAT directory filename extraction: 209/334 bytes at 0x825a7e
+FAT root extension extraction: 99/122 bytes at 0x825bcc
+FAT directory extension extraction: 40/72 bytes at 0x825c46
+FAT root relative file lookup: 88/166 bytes at 0x825c8e
+FAT directory relative file lookup: 113/192 bytes at 0x825d34
+FAT absolute pathname lookup: 606/1408 bytes at 0x8263c0
+FAT root file-size getter: 58/76 bytes at 0x826940
+FAT directory file-size getter: 20/26 bytes at 0x82698c
+FAT root attributes getter: 59/76 bytes at 0x8269a6
+FAT directory attributes getter: 21/28 bytes at 0x8269f2
+FAT relative whole-chain reader: 316/348 bytes at 0x826ade
+FAT relative named whole-chain reader: 29/52 bytes at 0x826c3a
+FAT relative indexed single-cluster reader: 311/354 bytes at 0x826c6e
+FAT relative named single-cluster reader: 316/360 bytes at 0x826dd0
+FAT relative named allocating reader: 198/250 bytes at 0x826f38
+FAT relative indexed allocating reader: 172/236 bytes at 0x827032
+FAT arbitrary directory indexed allocating reader: 381/470 bytes at 0x82711e
+FAT bounded cluster allocating reader: 286/352 bytes at 0x8272f4
+FAT directory-record allocating reader: 362/440 bytes at 0x827454
+FAT directory-record buffered reader: 332/396 bytes at 0x82760c
+FAT pathname allocating reader: 42/68 bytes at 0x827798
+FAT pathname buffered reader: 46/74 bytes at 0x8277dc
+FAT relative program-header reader: 202/206 bytes at 0x827826
+FAT record program-header reader: 142/152 bytes at 0x8278f4
+FAT uppercase 8.3 name formatter: 135/184 bytes at 0x827bba
+far task jump: 5/5 bytes at 0x828d2b
+SSE 16-byte block copy: 34/34 bytes at 0x828e8f
+SSE 64-byte block copy: 58/58 bytes at 0x828eb1
+VGA vertical retrace wait: 12/12 bytes at 0x828f0f
+color blending: 95/232 bytes at 0x828f1b
+string copy: 41/66 bytes at 0x82a32b
+text prefix copy: 92/148 bytes at 0x82a36d
+bounded string copy: 55/92 bytes at 0x82a401
+string length: 22/36 bytes at 0x82a45d
+string equality: 44/58 bytes at 0x82a481
+character append: 47/64 bytes at 0x82a4bb
+string append: 43/54 bytes at 0x82a4fb
+in-place ASCII uppercase: 62/76 bytes at 0x82a531
+substring search: 80/140 bytes at 0x82a57d
+configuration value lookup: 170/260 bytes at 0x82a609
+live-pointer character search: 51/72 bytes at 0x82a70d
+signed-byte uppercase: 24/50 bytes at 0x82a755
+unsigned radix text conversion: 158/284 bytes at 0x82a787
+in-place delimiter splitting: 158/280 bytes at 0x82a8a3
+ranged xorshift: 51/84 bytes at 0x82a9bb
+object table startup state: 31/36 bytes at 0x82aa0f
+timer free slot lookup: 61/122 bytes at 0x82aa33
+timer creation: 160/258 bytes at 0x82aaad
+timer deletion: 87/114 bytes at 0x82abaf
+timer rearming: 31/50 bytes at 0x82ac21
+packed time display: 87/138 bytes at 0x82ac53
+packed date display: 102/164 bytes at 0x82acdd
+tick wait: 34/42 bytes at 0x82ad81
+CMOS seconds reader: 26/26 bytes at 0x82adab
+CMOS minutes reader: 26/26 bytes at 0x82adc5
+CMOS hours reader: 26/26 bytes at 0x82addf
+CMOS weekday reader: 26/26 bytes at 0x82adf9
+CMOS day reader: 26/26 bytes at 0x82ae13
+CMOS month reader: 26/26 bytes at 0x82ae2d
+CMOS century and year reader: 61/61 bytes at 0x82ae47
+raw CMOS clock sampling: 132/132 bytes at 0x82ae84
+ICO surface ID wrapper: 41/68 bytes at 0x82af08
+ICO centered frame selection: 99/184 bytes at 0x82af4c
+ICO frame dispatch: 97/156 bytes at 0x82b004
+file icon drawing: 77/114 bytes at 0x82b0a0
+automatic file icon drawing: 165/250 bytes at 0x82b112
+DIB icon decoder: 468/1132 bytes at 0x82b20c
+cpuid available: 25/40 bytes at 0x82b678
+cpuid vendor: 33/72 bytes at 0x82b6a0
+cpuid features: 33/70 bytes at 0x82b6e8
+interrupt gate and IDTR load: 95/95 bytes at 0x8370d2
+boot code selector access: 18/18 bytes at 0x837131
+PIC programming: 57/57 bytes at 0x837143
+PIT programming: 13/13 bytes at 0x83717c
+RTC programming: 23/23 bytes at 0x837189
+exception entry: 28/28 bytes at 0x8371a0
+spurious entry: 10/10 bytes at 0x8371bc
+exception fs entry: 32/32 bytes at 0x8371c6
+device unavailable entry: 3/3 bytes at 0x8371e6
+timer entry: 32/32 bytes at 0x8371e9
+keyboard entry: 25/25 bytes at 0x837209
+irq5 entry: 25/25 bytes at 0x837222
+rtc entry: 31/31 bytes at 0x83723b
+irq9 entry: 25/25 bytes at 0x83725a
+irq10 entry: 25/25 bytes at 0x837273
+irq11 entry: 25/25 bytes at 0x83728c
+irq12 entry: 25/25 bytes at 0x8372a5
+syscall40 entry: 19/19 bytes at 0x8372be
+syscall41 entry: 23/23 bytes at 0x8372d1
+load GDT: 16/16 bytes at 0x8372e8
+load task register: 6/6 bytes at 0x8372f8
+read CR0 duplicate: 4/4 bytes at 0x8372fe
+write CR0 duplicate: 8/8 bytes at 0x837302
+FPU save legacy: 7/7 bytes at 0x83730a
+FPU restore legacy: 7/7 bytes at 0x837311
+FPU save environment: 8/8 bytes at 0x837318
+FPU load environment: 7/7 bytes at 0x837320
+FPU save extended: 8/8 bytes at 0x837327
+FPU restore extended: 8/8 bytes at 0x83732f
+FPU save xstate: 8/8 bytes at 0x837337
+FPU restore xstate: 8/8 bytes at 0x83733f
+FPU initialization: 3/3 bytes at 0x837347
+low TSC primitive: 5/5 bytes at 0x83734a
+physical byte write: 25/25 bytes at 0x83735b
+physical word write: 27/27 bytes at 0x837374
+physical DWORD write: 25/25 bytes at 0x83738f
+physical byte read: 23/23 bytes at 0x8373a8
+physical word read: 24/24 bytes at 0x8373bf
+physical DWORD read: 23/23 bytes at 0x8373d7
+physical page probe: 78/78 bytes at 0x8373ee
+read CR0: 4/4 bytes at 0x83743c
+write CR0: 8/8 bytes at 0x837440
+identity paging initialization: 102/106 bytes at 0x837448
+forward service 00: 29/50 bytes at 0x8374cf
+forward service 01: 36/68 bytes at 0x837501
+forward service 02: 36/68 bytes at 0x837545
+forward service 03: 36/68 bytes at 0x837589
+forward service 04: 33/60 bytes at 0x8375cd
+forward service 05: 33/60 bytes at 0x837609
+forward service 06: 38/74 bytes at 0x837645
+forward service 07: 36/68 bytes at 0x83768f
+forward service 08: 36/68 bytes at 0x8376d3
+forward service 09: 39/74 bytes at 0x837717
+forward service 0a: 33/60 bytes at 0x837761
+forward service 0b: 30/54 bytes at 0x83779d
+forward service 0c: 38/74 bytes at 0x8377d3
+forward service 0d: 36/68 bytes at 0x83781d
+forward service 0e: 33/60 bytes at 0x837861
+forward service 0f: 21/32 bytes at 0x83789d
+forward service 10: 21/32 bytes at 0x8378bd
+forward service 11: 27/46 bytes at 0x8378dd
+forward service 12: 27/46 bytes at 0x83790b
+forward service 13: 27/46 bytes at 0x837939
+optional service 14: 26/52 bytes at 0x837967
+optional service 15: 34/66 bytes at 0x83799b
+optional service 16: 30/58 bytes at 0x8379dd
+optional service 17: 26/52 bytes at 0x837a17
+optional service 18: 33/44 bytes at 0x837a4b
+optional service 19: 26/52 bytes at 0x837a77
+optional service 1a: 34/66 bytes at 0x837aab
+optional service 1b: 37/50 bytes at 0x837aed
+optional service 1c: 26/52 bytes at 0x837b1f
+optional service 1d: 26/52 bytes at 0x837b53
+optional service 1e: 33/44 bytes at 0x837b87
+optional service 1f: 33/44 bytes at 0x837bb3
+optional service 20: 42/44 bytes at 0x837bdf
+optional service 21: 40/70 bytes at 0x837c0b
+optional service 22: 54/78 bytes at 0x837c51
+optional service 23: 40/70 bytes at 0x837c9f
+optional service 24: 36/64 bytes at 0x837ce5
+optional service 25: 32/56 bytes at 0x837d25
+optional service 26: 36/64 bytes at 0x837d5d
+optional service 27: 36/64 bytes at 0x837d9d
+optional service 28: 36/64 bytes at 0x837ddd
+optional service 29: 40/70 bytes at 0x837e1d
+optional service 2a: 68/106 bytes at 0x837e63
+optional service 2b: 48/64 bytes at 0x837ecd
+optional service 2c: 52/82 bytes at 0x837f0d
+FPU available: 58/86 bytes at 0x837f5f
+FPU enable: 45/72 bytes at 0x837fb5
+FPU restore task: 93/204 bytes at 0x837ffd
+FPU mark lazy: 10/24 bytes at 0x8380c9
+FPU fault: 13/14 bytes at 0x8380e1
+JPEG information entry: 116/146 bytes at 0x83a70f
+JPEG decode entry: 112/148 bytes at 0x83a7a1
+JPEG bit reservoir reader: 196/228 bytes at 0x83a835
+JPEG frame marker parser: 402/462 bytes at 0x83a919
+JPEG quantization marker parser: 342/404 bytes at 0x83aae7
+JPEG Huffman table parser: 484/684 bytes at 0x83ac7b
+JPEG marker dispatcher: 738/780 bytes at 0x83af27
+JPEG scan preparation: 241/286 bytes at 0x83b233
+JPEG Huffman symbol lookup: 144/202 bytes at 0x83b351
+JPEG cosine basis generation: 331/568 bytes at 0x83b41b
+JPEG inverse transform accumulation: 141/236 bytes at 0x83b653
+JPEG magnitude extension: 61/108 bytes at 0x83b73f
+JPEG entropy block decode: 350/450 bytes at 0x83b7ab
+JPEG component expansion: 167/226 bytes at 0x83b96d
+JPEG MCU component assembly: 387/454 bytes at 0x83ba4f
+JPEG color conversion: 448/580 bytes at 0x83bc15
+JPEG image traversal: 342/470 bytes at 0x83be59
+entire disk verified: only compiled boot stages and declared kernel slots changed

@@ -1,0 +1,75 @@
+{
+  "installed": true,
+  "scenarios": 2410,
+  "executions": 7230,
+  "corpus_paths": 39,
+  "slots": {
+    "fat_read_alloc": {
+      "compiled_bytes": 362,
+      "slot_bytes": 440
+    },
+    "fat_read_into": {
+      "compiled_bytes": 332,
+      "slot_bytes": 396
+    },
+    "fat_read_name_alloc": {
+      "compiled_bytes": 42,
+      "slot_bytes": 68
+    },
+    "fat_read_name_into": {
+      "compiled_bytes": 46,
+      "slot_bytes": 74
+    },
+    "fat_header_relative": {
+      "compiled_bytes": 202,
+      "slot_bytes": 206
+    },
+    "fat_header_path": {
+      "compiled_bytes": 142,
+      "slot_bytes": 152
+    },
+    "fat_relative_read": {
+      "compiled_bytes": 316,
+      "slot_bytes": 348
+    },
+    "fat_relative_named": {
+      "compiled_bytes": 29,
+      "slot_bytes": 52
+    },
+    "fat_relative_cluster": {
+      "compiled_bytes": 311,
+      "slot_bytes": 354
+    },
+    "fat_relative_named_cluster": {
+      "compiled_bytes": 316,
+      "slot_bytes": 360
+    },
+    "fat_relative_alloc_named": {
+      "compiled_bytes": 198,
+      "slot_bytes": 250
+    },
+    "fat_relative_alloc_index": {
+      "compiled_bytes": 172,
+      "slot_bytes": 236
+    },
+    "fat_allocate_index": {
+      "compiled_bytes": 381,
+      "slot_bytes": 470
+    },
+    "fat_allocate_clusters": {
+      "compiled_bytes": 286,
+      "slot_bytes": 352
+    }
+  },
+  "seconds": 10.045,
+  "boundary_scope": "allocation, pathname lookup and hardware sector reads only",
+  "sha256": {
+    "kernel/fat_files.c": "172186c9118b11acd1b774fcbdd7c5d4041fbb89a849526ebdd0cdefc25f715a",
+    "kernel/fat_files.h": "f70f1593e63d1ceff9a0c3cf4aa39ac3d3ef874f9ebffa684d08c37ed0b40809",
+    "kernel/fat_relative.c": "fc71c65f0aa31fc57bb9f45d30e594b5aa475da24c0dbcba6be3fa6a1ec49a3f",
+    "kernel/fat_relative.h": "d6acffb78a4604caf790a61a33071e4c8c7bc5dcdaddcc9f41e9f443a9e1fdb8",
+    "kernel/fat_alloc.c": "9e6f7bf0b0ef58feeb4343fe828fc45e13a4cf6d988a658b28c704ea20fe98aa",
+    "kernel/fat_alloc.h": "5a1d3f79423a196c0906b63aa3206cd2638b4d2b287d5fb4ef83164337aeabc3",
+    "tests/kernel_fat_files.py": "7330f41fe99dec46e2f6adfe897284a1cf62387c8103f160bff84432bdc3f6aa"
+  }
+}

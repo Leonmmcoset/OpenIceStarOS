@@ -1,0 +1,47 @@
+{
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "image_sha256": "bd7fff35e0e01978c555ab807450d168f247fa6ab1149d08a8aa9957cbed893d",
+  "kernel_sha256": "9e2978a6512db74168735108b3dc67febc57394bf7ce3ef327d8d22b74561a0b",
+  "installed_intervals": 378,
+  "full_verify_run": false,
+  "directory_scenarios": 5974,
+  "directory_executions": 17922,
+  "diagnostic_service_entries": 18,
+  "diagnostic_checked_calls": 26,
+  "diagnostic_data_guard_bytes": 525120,
+  "production_entry_events": {
+    "root_name": 3,
+    "directory_name": 27,
+    "root_extension": 0,
+    "directory_extension": 0,
+    "find_relative": 0,
+    "directory_find": 1,
+    "root_size": 0,
+    "directory_size": 0,
+    "root_attributes": 1,
+    "directory_attributes": 1
+  },
+  "snapshot_boots": true,
+  "original_logo_retained": true,
+  "screenshots_visually_inspected": [
+    "c-clock.png",
+    "cmd-cpuid.png"
+  ],
+  "recovery_counts": {
+    "unrecovered": 32,
+    "rebuilt": 5,
+    "partial": 2
+  },
+  "source_sha256": {
+    "kernel/fat_directory.c": "4c87452038afdf27d9f3dabc66453db25603c08de0157b39c7c9d92522a3854d",
+    "kernel/fat_directory.h": "b83b757e6c77b39ea63194caeaf2da93ef20013ea3e514e6fe74ece241081807",
+    "tests/kernel_fat_directory.py": "c6a3c8f828950cea27cf23d83ffaa792eb25082566b172ca0152b8de752bc2d9",
+    "tests/fat_relative_guest.c": "7ebe5447f441c63a3bf925c366c196491fb1fb7e46b237da3cf785ead05999be",
+    "tools/fat_relative_smoke.py": "f4add076a7739464879dd411ef1ede67dfef5c486f101e54c9857c80c61be927",
+    "tools/fat_files_smoke.py": "07aeca3e792b34a67799c6685e250daf1471c0351b3b6a316e8a0b614e1935ca",
+    "tools/boot_smoke.py": "b04e8b82699934ee5a80ab2ffa9a8f48c106053c66ba73dd8404a512ddc6c2e9",
+    "kernel/patches.json": "3a726c898b5829531eceddaf1ca47f4cdc93fb81b6312e2991412a15753b3e23",
+    "kernel/patches.ld": "a5f84ca01d49cadc899206d1b7c9cdeb258b4d7330155fe53bd29479fd4376fc",
+    "Makefile": "055b130716157e4a8c499703e54decba58797d5584a1c4868daf9eee2a6ea534"
+  }
+}

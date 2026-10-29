@@ -912,6 +912,26 @@ SECTIONS
     ASSERT(kernel_jpeg_color_83bc15 == 0x83bc15 && ADDR(.jpeg_color) + SIZEOF(.jpeg_color) <= 0x83be59, "jpeg color layout overflow")
     .jpeg_image 0x83be59 : SUBALIGN(1) { *kernel_jpeg_decode.o(.text.kernel_jpeg_image_83be59 .rodata*) }
     ASSERT(kernel_jpeg_image_83be59 == 0x83be59 && ADDR(.jpeg_image) + SIZEOF(.jpeg_image) <= 0x83c02f, "jpeg image layout overflow")
+    .fat_root_name 0x8258a6 : { *kernel_fat_directory.o(.text.kernel_fat_root_name_8258a6) }
+    ASSERT(kernel_fat_root_name_8258a6 == 0x8258a6 && ADDR(.fat_root_name) + SIZEOF(.fat_root_name) <= 0x825a7e, "fat_root_name overflow")
+    .fat_directory_name 0x825a7e : { *kernel_fat_directory.o(.text.kernel_fat_directory_name_825a7e) }
+    ASSERT(kernel_fat_directory_name_825a7e == 0x825a7e && ADDR(.fat_directory_name) + SIZEOF(.fat_directory_name) <= 0x825bcc, "fat_directory_name overflow")
+    .fat_root_extension 0x825bcc : { *kernel_fat_directory.o(.text.kernel_fat_root_extension_825bcc) }
+    ASSERT(kernel_fat_root_extension_825bcc == 0x825bcc && ADDR(.fat_root_extension) + SIZEOF(.fat_root_extension) <= 0x825c46, "fat_root_extension overflow")
+    .fat_directory_extension 0x825c46 : { *kernel_fat_directory.o(.text.kernel_fat_directory_extension_825c46) }
+    ASSERT(kernel_fat_directory_extension_825c46 == 0x825c46 && ADDR(.fat_directory_extension) + SIZEOF(.fat_directory_extension) <= 0x825c8e, "fat_directory_extension overflow")
+    .fat_find_relative 0x825c8e : { *kernel_fat_directory.o(.text.kernel_x_find_relative_825c8e) }
+    ASSERT(kernel_x_find_relative_825c8e == 0x825c8e && ADDR(.fat_find_relative) + SIZEOF(.fat_find_relative) <= 0x825d34, "fat_find_relative overflow")
+    .fat_directory_find 0x825d34 : { *kernel_fat_directory.o(.text.kernel_fat_directory_find_825d34) }
+    ASSERT(kernel_fat_directory_find_825d34 == 0x825d34 && ADDR(.fat_directory_find) + SIZEOF(.fat_directory_find) <= 0x825df4, "fat_directory_find overflow")
+    .fat_root_size 0x826940 : { *kernel_fat_directory.o(.text.kernel_fat_root_size_826940) }
+    ASSERT(kernel_fat_root_size_826940 == 0x826940 && ADDR(.fat_root_size) + SIZEOF(.fat_root_size) <= 0x82698c, "fat_root_size overflow")
+    .fat_directory_size 0x82698c : { *kernel_fat_directory.o(.text.kernel_fat_directory_size_82698c) }
+    ASSERT(kernel_fat_directory_size_82698c == 0x82698c && ADDR(.fat_directory_size) + SIZEOF(.fat_directory_size) <= 0x8269a6, "fat_directory_size overflow")
+    .fat_root_attributes 0x8269a6 : { *kernel_fat_directory.o(.text.kernel_fat_root_attributes_8269a6) }
+    ASSERT(kernel_fat_root_attributes_8269a6 == 0x8269a6 && ADDR(.fat_root_attributes) + SIZEOF(.fat_root_attributes) <= 0x8269f2, "fat_root_attributes overflow")
+    .fat_directory_attributes 0x8269f2 : { *kernel_fat_directory.o(.text.kernel_fat_directory_attributes_8269f2) }
+    ASSERT(kernel_fat_directory_attributes_8269f2 == 0x8269f2 && ADDR(.fat_directory_attributes) + SIZEOF(.fat_directory_attributes) <= 0x826a0e, "fat_directory_attributes overflow")
     .fat_find_path 0x8263c0 : { *kernel_fat_path.o(.text.kernel_x_find_path_8263c0) }
     ASSERT(kernel_x_find_path_8263c0 == 0x8263c0 && ADDR(.fat_find_path) + SIZEOF(.fat_find_path) <= 0x826940, "fat_find_path overflow")
     .fat_name83 0x827bba : { *kernel_fat_path.o(.text.kernel_fat_name83_827bba) }
