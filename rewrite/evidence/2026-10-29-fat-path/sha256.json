@@ -1,0 +1,21 @@
+{
+  "application-disk.log": "082ea025bf38b101599ac3ff7df18bb56a2491b7234526d84559e1ba3ff0bef9",
+  "branding-inventory-callers.log": "0aaa8f5d665aab2dce64edf24a2f1e23bc7af284b41e5368fe88c5aa9dd7a426",
+  "c-clock.png": "3f03fbd5651455e1b35332b73420ac4d752006fd2a6a6893a5f697845db69f5c",
+  "clock-boot.log": "d3f8e65b93a8471f78e5404c8a254d49db1f864c1f60fb6427e70af021637517",
+  "clock-checks.json": "718ab2a0907826ad3c0ccca2d68636bfb52e1b1cd0e9f77aad20bc37a8dd7f89",
+  "fat-reader-regression.json": "5f44de14b2f643c461ea138622becea5e63fa674d5fbc6d21a201feeae014659",
+  "image-delta.json": "edbbb32bdc027b27e576b266c4464a964647b208a5afb67fd660838c6fc1eefc",
+  "installed-differential.json": "be5917c3a56446ec208e39d22bacfad81b3a23dee41115e56839ea7d91a37afc",
+  "installed-tests.log": "925a755e5f577bfc87ff624e52e1bc90ad8af24b32a310183278c08019542ba8",
+  "kernel-disk.log": "b0d24aaedc6d4ae7dc849020b0f6821065d18cc161c523a612aaf7f5bfcb724d",
+  "memory-checks.json": "1688d2dedfde51d33aee8e5a365090e6621189d77c2899fb5bc2ad0be8cd8a2e",
+  "original-devmgr-boot.log": "5b83f27b3090dbc3411824cd7133c72d1c48aff60c64cbcf0aeb488e82b3da25",
+  "original-devmgr-checks.json": "adbf72a35b999779348820e196355bd29d85422c16d17c239325dc47dfb71560",
+  "original-devmgr.png": "1dbd8a0e0985873976e6575032ecbeec6c3483d2c043d5dcea4ba57a594ba567",
+  "preview-differential.json": "4e8d0055ff0e396a6a48c821fab38892179a5bd6d03451192e56af069836c1f8",
+  "production-execution.json": "c1b8d98645f2d5598a635ffcd7fe9eb38a56dcbf9bf3b50c2ae27fe24c4793ed",
+  "task-checks.json": "056cb8a1ad0a5751593ec1f7531b27e654c07f1c629ce84c110a5abf0f65c3bb",
+  "validation.json": "f5b8cd98b4b3ee9c6ba0a6790d3bb36c389e4b4ec33a37f5a464afe3a59e06ec",
+  "x-loader-regression.json": "17ca38dc4fd622ba539359005d21739470a342b1e8730e52236d09cb10bb4048"
+}

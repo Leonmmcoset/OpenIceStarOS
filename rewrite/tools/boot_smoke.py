@@ -168,7 +168,9 @@ def main():
         if arguments.fat_files_check:
             trace = build / "fat_files_guest.trace"
             trace.unlink(missing_ok=True)
-            command.extend(["-dfilter", "0x826ade..0x82711d,0x827454..0x82798b", "-D", str(trace), "-d", "exec"])
+            command.extend(["-dfilter", "0x8263c0..0x82693f,0x826ade..0x82711d,"
+                            "0x827454..0x82798b,0x827bba..0x827c71",
+                            "-D", str(trace), "-d", "exec"])
         if arguments.surface_move_check:
             trace = build / "surface_move_guest.trace"
             trace.unlink(missing_ok=True)

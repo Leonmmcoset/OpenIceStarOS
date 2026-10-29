@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_fat_files.o
 KERNEL_PATCHES += $(foreach name,fat_read_alloc fat_read_into fat_read_name_alloc fat_read_name_into fat_header_relative fat_header_path,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_relative.o
 KERNEL_PATCHES += $(foreach name,fat_relative_read fat_relative_named fat_relative_cluster fat_relative_named_cluster fat_relative_alloc_named fat_relative_alloc_index,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_path.o
+KERNEL_PATCHES += $(foreach name,fat_find_path fat_name83,$(BUILD)/kernel.$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
@@ -177,6 +179,12 @@ test-fat-files: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_fat_files.py --installed
 
 verify: test-fat-files
+
+.PHONY: test-fat-path
+test-fat-path: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_fat_path.py --installed
+
+verify: test-fat-path
 
 verify: test-boot-video test-boot-stage3
 
@@ -280,6 +288,9 @@ $(BUILD)/kernel_fat_files.o: kernel/fat_files.c kernel/fat_files.h kernel/memory
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_relative.o: kernel/fat_relative.c kernel/fat_relative.h kernel/memory.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_entry.o: kernel/entry.c kernel/entry.h kernel/entry_boundaries.def Makefile | $(BUILD)

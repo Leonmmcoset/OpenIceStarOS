@@ -5178,3 +5178,19 @@ kernel intervals differ from the 358-interval baseline. See
 for scope and commands. This is focused validation, not a full 364-interval
 `make verify` run. Five applications are rebuilt; INIT/kernel and 32 original
 program paths still require further recovery.
+
+### Absolute FAT paths and short names (2026-10-29)
+
+Absolute file lookup and FAT 8.3 name conversion now execute from recovered C
+at `0x8263c0` and `0x827bba`. Installed original/C comparison passes 347 scenarios /
+1,041 executions with real directory/FAT traversal and all 67 original files;
+only allocation/free and hardware sectors are intercepted. The production
+kernel contains 366 declared intervals. Normal QEMU boot observes 47 path-lookup
+entries and 119 short-name entries, with desktop, CMD/cpuid, CLOCK, RAM, task
+switching and all installed slots verified. A second production boot runs and
+closes unchanged original DEVMGR.X. FAT-reader/X-loader/caller regressions,
+exact disk checks, branding and inventory pass. Only the two new kernel slots
+differ from the 364-interval baseline. See
+[`recovery/FAT_PATH.md`](recovery/FAT_PATH.md) for preserved parser/name/lifetime
+quirks and the committed evidence. This focused check does not constitute a
+full 366-interval regression or complete OS recovery.

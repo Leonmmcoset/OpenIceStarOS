@@ -1,0 +1,18 @@
+{
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "image_sha256": "446bda2ed7e43aa0d180b536e3e0ca9735c49486a8b18ccecbecb983294f46ff",
+  "kernel_sha256": "59fa14662383aa94f42e23d6df095471365a759dedb54eae420ac01793c1d1b5",
+  "installed_intervals": 366,
+  "full_verify_run": false,
+  "original_devmgr_sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18",
+  "original_devmgr_unchanged": true,
+  "snapshot_boots": true,
+  "original_logo_retained": true,
+  "source_sha256": {
+    "kernel/fat_path.c": "9c70f3e405884be37397252ee42fcb5860e0f36e996bf1f38b20a35e5ea11290",
+    "kernel/fat_path.h": "0f7f6dbc2b578e4e0abce299100dcbe20e220ca614a209f6b47e2aa58d7f697a",
+    "tests/kernel_fat_path.py": "1d52fe2dde285aa62fc2e3ead7fe0985c93a4b281bb783cdf0f7dc571add5c90",
+    "tools/boot_smoke.py": "1a88936a8fecf5dc4c69daf6321480a29b1d86dacbe8719cbd57421deefa3452",
+    "tools/fat_files_smoke.py": "717fb2304f748c87cb0d22d3f9e39d07b7f80658cb30e7343e87715d02edeee4"
+  }
+}

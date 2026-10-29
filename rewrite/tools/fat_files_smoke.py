@@ -11,6 +11,8 @@ def check_fat_execution(root, image, trace, require_relative=False):
            re.finditer(r"\[[0-9a-fA-F]+/([0-9a-fA-F]+)/", trace.read_text())]
     functions = {}
     for name, start, end in (
+            ("find_path", 0x8263c0, 0x826940),
+            ("name83", 0x827bba, 0x827c72),
             ("relative_read", 0x826ade, 0x826c3a),
             ("relative_named", 0x826c3a, 0x826c6e),
             ("relative_cluster", 0x826c6e, 0x826dd0),
@@ -26,7 +28,7 @@ def check_fat_execution(root, image, trace, require_relative=False):
         functions[name] = dict(entry=hex(start), entry_events=pcs.count(start),
             body_events=sum(start < pc < end for pc in pcs),
             executed_blocks=[hex(pc) for pc in sorted(set(pcs)) if start <= pc < end])
-    required = ["allocate_record", "read_record", "allocate_path", "header_record"]
+    required = ["find_path", "name83", "allocate_record", "read_record", "allocate_path", "header_record"]
     if require_relative:
         required += ["relative_read", "relative_named", "relative_cluster",
                      "relative_named_cluster", "relative_allocate_named", "relative_allocate_index"]

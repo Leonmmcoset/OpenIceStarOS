@@ -912,6 +912,10 @@ SECTIONS
     ASSERT(kernel_jpeg_color_83bc15 == 0x83bc15 && ADDR(.jpeg_color) + SIZEOF(.jpeg_color) <= 0x83be59, "jpeg color layout overflow")
     .jpeg_image 0x83be59 : SUBALIGN(1) { *kernel_jpeg_decode.o(.text.kernel_jpeg_image_83be59 .rodata*) }
     ASSERT(kernel_jpeg_image_83be59 == 0x83be59 && ADDR(.jpeg_image) + SIZEOF(.jpeg_image) <= 0x83c02f, "jpeg image layout overflow")
+    .fat_find_path 0x8263c0 : { *kernel_fat_path.o(.text.kernel_x_find_path_8263c0) }
+    ASSERT(kernel_x_find_path_8263c0 == 0x8263c0 && ADDR(.fat_find_path) + SIZEOF(.fat_find_path) <= 0x826940, "fat_find_path overflow")
+    .fat_name83 0x827bba : { *kernel_fat_path.o(.text.kernel_fat_name83_827bba) }
+    ASSERT(kernel_fat_name83_827bba == 0x827bba && ADDR(.fat_name83) + SIZEOF(.fat_name83) <= 0x827c72, "fat_name83 overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }
     ASSERT(kernel_x_read_relative_826ade == 0x826ade && ADDR(.fat_relative_read) + SIZEOF(.fat_relative_read) <= 0x826c3a, "fat_relative_read overflow")
     .fat_relative_named 0x826c3a : { *kernel_fat_relative.o(.text.kernel_fat_read_relative_named_826c3a) }

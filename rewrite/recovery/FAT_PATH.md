@@ -69,3 +69,47 @@ input/output aliases and original stack-overflow inputs outside the parser's
 bounded cases are excluded. Preview evidence is in `build/fat_path_summary.json`
 and `build/fat_path_preview.log`. This checkpoint precedes production installation;
 INIT, the kernel, drivers and other unrecovered programs remain incomplete.
+
+## Integrated validation
+
+Both C bodies are installed at the original exported addresses in the
+production kernel, increasing the declared intervals from 364 to 366. Their
+installed bytes agree with an independent preview link. The installed path
+test passes all 347 scenarios / 1,041 executions while using the production
+C string and FAT-reader dependencies; the ordinary link still uses original
+helper bodies. The existing twelve-reader FAT suite passes 1,926 scenarios /
+5,778 executions, and the X-loader suite passes 430 / 1,290. Installed icon-file
+and bitmap-file differential checks, exact kernel/application disk comparison,
+six branding tests, residual audit and inventory validation also pass.
+
+```sh
+make -C rewrite build/OpenIceStarOS_c_apps.vhd \
+  test-fat-path test-fat-files test-x-loader
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_c_apps.vhd \
+  --clock-check --fat-files-check --memory-check --task-check
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_c_apps.vhd \
+  --cursor-check --memory-check --task-check
+```
+
+The ordinary production QEMU boot executes the new C path entry **47 times**
+and short-name entry **119 times**, including C-body blocks for both. No
+diagnostic application or pathname callback is used for this execution proof.
+The desktop, CMD/cpuid, changing CLOCK frames, close/task exit/CMD reuse,
+128 MiB RAM/heap, real TSS switching and all 366 installed guest intervals pass.
+The second production boot checks unchanged original DEVMGR.X through CMD,
+its device list, border cursor behavior and PS/2 close. Both boots use snapshots.
+
+An exact comparison with the previous 364-interval production image finds
+**1,542 changed bytes**, all inside the two newly recovered kernel slots.
+Boot stages, all application files, FAT/directory structures, disk slack and
+the original retained logo/resources are byte-identical. The original VHD's
+hash also remains unchanged. Evidence and inspected screenshots are in
+[`../evidence/2026-10-29-fat-path/`](../evidence/2026-10-29-fat-path/).
+
+This is a focused 366-interval integration checkpoint, not a full `make verify`
+regression. Kernel and INIT are still partial, five applications are rebuilt
+and 32 program paths remain unrecovered. Other lookup variants, directory
+name extraction, remaining filesystem routines and hardware I/O still require
+source recovery; no unchanged binary is reclassified as rebuilt here.

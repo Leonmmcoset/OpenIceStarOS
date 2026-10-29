@@ -1,0 +1,24 @@
+{
+  "installed": true,
+  "scenarios": 347,
+  "executions": 1041,
+  "corpus_files": 67,
+  "slots": {
+    "fat_find_path": {
+      "compiled_bytes": 606,
+      "slot_bytes": 1408
+    },
+    "fat_name83": {
+      "compiled_bytes": 135,
+      "slot_bytes": 184
+    }
+  },
+  "seconds": 2.089,
+  "boundaries": "Only allocation/free and hardware sectors; no pathname/directory callbacks",
+  "limitations": "Original unchecked inputs, leaks and free-before-read ordering retained; unbounded alias/cyclic FAT cases excluded",
+  "sha256": {
+    "kernel/fat_path.c": "9c70f3e405884be37397252ee42fcb5860e0f36e996bf1f38b20a35e5ea11290",
+    "kernel/fat_path.h": "0f7f6dbc2b578e4e0abce299100dcbe20e220ca614a209f6b47e2aa58d7f697a",
+    "tests/kernel_fat_path.py": "1d52fe2dde285aa62fc2e3ead7fe0985c93a4b281bb783cdf0f7dc571add5c90"
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "diagnostic_only": false,
+  "image_sha256": "446bda2ed7e43aa0d180b536e3e0ca9735c49486a8b18ccecbecb983294f46ff",
+  "trace_sha256": "925879aacd79c948afc17d5c6466b5d4fcf37fc62f7689dfc88eb1dbab337359",
+  "functions": {
+    "find_path": {
+      "entry": "0x8263c0",
+      "entry_events": 47,
+      "body_events": 1029,
+      "executed_blocks": [
+        "0x8263c0",
+        "0x8263dd",
+        "0x8263ef",
+        "0x8263f1",
+        "0x8263fa",
+        "0x826402",
+        "0x82640e",
+        "0x826411",
+        "0x826419",
+        "0x826421",
+        "0x82642d",
+        "0x82643c",
+        "0x826446",
+        "0x826452",
+        "0x82645f",
+        "0x82646c",
+        "0x8264c9",
+        "0x8264d3",
+        "0x8264de",
+        "0x8264e0",
+        "0x8264f6",
+        "0x8264fc",
+        "0x826505",
+        "0x82650b",
+        "0x82650c",
+        "0x826512",
+        "0x826524",
+        "0x826539",
+        "0x826540",
+        "0x826550",
+        "0x826558",
+        "0x826579",
+        "0x82657e",
+        "0x826593",
+        "0x8265a1",
+        "0x8265a9",
+        "0x8265af",
+        "0x8265b6",
+        "0x8265be",
+        "0x8265c0",
+        "0x8265d2",
+        "0x8265d8",
+        "0x8265e3",
+        "0x8265ed",
+        "0x8265fa",
+        "0x826603",
+        "0x82660f",
+        "0x826616"
+      ]
+    },
+    "name83": {
+      "entry": "0x827bba",
+      "entry_events": 119,
+      "body_events": 1130,
+      "executed_blocks": [
+        "0x827bba",
+        "0x827bca",
+        "0x827bd3",
+        "0x827bdf",
+        "0x827be3",
+        "0x827be9",
+        "0x827bf2",
+        "0x827bfe",
+        "0x827c00",
+        "0x827c05",
+        "0x827c0e",
+        "0x827c15",
+        "0x827c20",
+        "0x827c24",
+        "0x827c29",
+        "0x827c32"
+      ]
+    },
+    "relative_read": {
+      "entry": "0x826ade",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_named": {
+      "entry": "0x826c3a",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_cluster": {
+      "entry": "0x826c6e",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_named_cluster": {
+      "entry": "0x826dd0",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_allocate_named": {
+      "entry": "0x826f38",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "relative_allocate_index": {
+      "entry": "0x827032",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "allocate_record": {
+      "entry": "0x827454",
+      "entry_events": 78,
+      "body_events": 700,
+      "executed_blocks": [
+        "0x827454",
+        "0x82748f",
+        "0x8274a3",
+        "0x8274bd",
+        "0x8274c9",
+        "0x827556",
+        "0x82755e",
+        "0x827566",
+        "0x8275a5",
+        "0x8275b3"
+      ]
+    },
+    "read_record": {
+      "entry": "0x82760c",
+      "entry_events": 6,
+      "body_events": 87,
+      "executed_blocks": [
+        "0x82760c",
+        "0x827656",
+        "0x827660",
+        "0x8276f0",
+        "0x8276f8",
+        "0x827700",
+        "0x82773f",
+        "0x82774d"
+      ]
+    },
+    "allocate_path": {
+      "entry": "0x827798",
+      "entry_events": 34,
+      "body_events": 72,
+      "executed_blocks": [
+        "0x827798",
+        "0x8277ab",
+        "0x8277b2",
+        "0x8277b8",
+        "0x8277bd"
+      ]
+    },
+    "read_path": {
+      "entry": "0x8277dc",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_relative": {
+      "entry": "0x827826",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_record": {
+      "entry": "0x8278f4",
+      "entry_events": 4,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x8278f4",
+        "0x82797a"
+      ]
+    }
+  },
+  "installed_intervals": 366,
+  "scope": "Production boot and CMD/application paths; unobserved entries require differential fixtures."
+}

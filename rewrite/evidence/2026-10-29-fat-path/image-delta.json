@@ -1,0 +1,27 @@
+{
+  "baseline_intervals": 364,
+  "installed_intervals": 366,
+  "new_intervals": [
+    {
+      "name": "FAT absolute pathname lookup",
+      "binary": "kernel.fat_find_path.bin",
+      "start": "0x8263c0",
+      "end": "0x826940"
+    },
+    {
+      "name": "FAT uppercase 8.3 name formatter",
+      "binary": "kernel.fat_name83.bin",
+      "start": "0x827bba",
+      "end": "0x827c72"
+    }
+  ],
+  "changed_kernel_bytes": 1542,
+  "only_two_new_kernel_intervals_changed": true,
+  "boot_applications_fat_directories_slack_unchanged": true,
+  "original_logo_retained": true,
+  "sha256": {
+    "baseline_image": "61aec7c66bca71821410293aed58449987f6d2b85cfc2d47e88dd3c077340be2",
+    "image": "446bda2ed7e43aa0d180b536e3e0ca9735c49486a8b18ccecbecb983294f46ff",
+    "kernel": "59fa14662383aa94f42e23d6df095471365a759dedb54eae420ac01793c1d1b5"
+  }
+}
