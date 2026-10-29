@@ -1,0 +1,10 @@
+RAM probe detected 134217728 bytes; 60 live heap headers verified
+Advancing timer and real TSS switches verified through suspended C scheduler stacks
+Input state: {"pointer_initial": [500, 372], "pointer_cmd_icon": [45, 282], "cmd_code_candidates": ["0x44b3010"], "keyboard_queue_before": [1, 1, 0, 2048], "keyboard_queue_after": [11, 11, 0, 2048], "cmd_input": "cpuid", "cmd_cursor_before_return": [9, 1], "cmd_cursor_after_return": [4, 3]}
+Mouse position, relocated CMD, input text, queue consumption, and prompt return verified
+Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked
+Test-only X: eight reader and seventeen directory service entries, 37 calls, 526144 data/guard bytes, directory paths/queries/date/time, bounded clusters, past-EOF/negative offsets, allocations/free and relocations verified
+Recovered FAT reader execution: root_name=21, directory_name=47, root_extension=1, directory_extension=1, find_relative=7, directory_find=2, root_find_directory=2, find_directory=1, find_directory_path=7, root_size=1, directory_size=1, root_attributes=10, directory_attributes=5, root_date=1, directory_date=1, root_time=1, directory_time=1, find_path=47, name83=124, relative_read=4, relative_named=1, relative_cluster=3, relative_named_cluster=3, relative_allocate_named=1, relative_allocate_index=1, allocate_directory_index=3, allocate_clusters=3, allocate_record=80, read_record=6, allocate_path=34, read_path=0, header_relative=0, header_record=4
+QEMU snapshot boot captured; all fixed-address C patches match guest memory
+Screenshot: /root/IceStarOS-x86-Decompile/rewrite/build/boot_openicestaros.png
+Desktop appearance still requires visual inspection; this is not a full OS test

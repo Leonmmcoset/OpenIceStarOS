@@ -1,0 +1,4 @@
+make: Entering directory '/root/IceStarOS-x86-Decompile/rewrite'
+python3 tools/binary_inventory.py --check
+{"files": 67, "directories": 11, "program_paths": 39, "unique_program_binaries": 37, "roles": {"application": 33, "driver": 4, "init": 1, "kernel": 1}, "recovery": {"partial": 2, "rebuilt": 5, "unrecovered": 32}}
+make: Leaving directory '/root/IceStarOS-x86-Decompile/rewrite'

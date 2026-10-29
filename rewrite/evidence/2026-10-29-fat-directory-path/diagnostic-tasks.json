@@ -1,0 +1,86 @@
+{
+  "expected_far_return_eip": "0x828d2f",
+  "expected_c_returns": {
+    "0x814213": "kernel_schedule_task",
+    "0x8143f7": "kernel_yield_task"
+  },
+  "samples": [
+    {
+      "tick": 266,
+      "current_task": 0,
+      "task_high_water": 3,
+      "suspended_c_tasks": [
+        {
+          "task": 1,
+          "tss": "0x700068",
+          "saved_eip": "0x828d2f",
+          "saved_esp": "0x204a616",
+          "c_return": "0x814213",
+          "entry": "kernel_schedule_task",
+          "selector": "0x68",
+          "schedule_counter": 83
+        },
+        {
+          "task": 2,
+          "tss": "0x7000d0",
+          "saved_eip": "0x828d2f",
+          "saved_esp": "0x2278556",
+          "c_return": "0x8143f7",
+          "entry": "kernel_yield_task",
+          "selector": "0x58",
+          "schedule_counter": 63
+        }
+      ]
+    },
+    {
+      "tick": 278,
+      "current_task": 0,
+      "task_high_water": 3,
+      "suspended_c_tasks": [
+        {
+          "task": 1,
+          "tss": "0x700068",
+          "saved_eip": "0x828d2f",
+          "saved_esp": "0x204a5c2",
+          "c_return": "0x814213",
+          "entry": "kernel_schedule_task",
+          "selector": "0x68",
+          "schedule_counter": 89
+        },
+        {
+          "task": 2,
+          "tss": "0x7000d0",
+          "saved_eip": "0x828d2f",
+          "saved_esp": "0x2278556",
+          "c_return": "0x8143f7",
+          "entry": "kernel_yield_task",
+          "selector": "0x58",
+          "schedule_counter": 69
+        }
+      ]
+    }
+  ],
+  "tick_advance": 12,
+  "observed_c_tasks": [
+    {
+      "task": 1,
+      "tss": "0x700068",
+      "saved_eip": "0x828d2f",
+      "saved_esp": "0x204a5c2",
+      "c_return": "0x814213",
+      "entry": "kernel_schedule_task",
+      "selector": "0x68",
+      "schedule_counter": 89
+    },
+    {
+      "task": 2,
+      "tss": "0x7000d0",
+      "saved_eip": "0x828d2f",
+      "saved_esp": "0x2278556",
+      "c_return": "0x8143f7",
+      "entry": "kernel_yield_task",
+      "selector": "0x58",
+      "schedule_counter": 69
+    }
+  ]
+}

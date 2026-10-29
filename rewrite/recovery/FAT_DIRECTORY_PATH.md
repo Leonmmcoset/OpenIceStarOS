@@ -71,3 +71,68 @@ chains are outside these fixtures. Preview reports are in
 [`../evidence/2026-10-29-fat-directory-path/`](../evidence/2026-10-29-fat-directory-path/).
 This source checkpoint precedes production installation. Kernel/INIT remain
 partial; no new application is classified as rebuilt.
+
+## Integrated validation
+
+All seven bodies are installed at the original addresses; the kernel now has
+**385 declared intervals**. Independent preview and production-linked bytes
+agree. Installed original/ordinary-C/fixed-C comparisons pass 7,187 directory
+scenarios / 21,561 executions, 758 path scenarios / 2,274 executions, 2,410
+reader scenarios / 7,230 executions, and 430 X-loader scenarios / 1,290
+executions. Icon-directory, icon-file and bitmap-file caller regressions,
+exact whole-disk kernel/application checks, six branding tests, residual audit
+and inventory validation pass.
+
+```sh
+make -C rewrite build/OpenIceStarOS_c_apps.vhd \
+  build/OpenIceStarOS_fat_diagnostic.vhd \
+  test-fat-directory test-fat-path test-fat-files test-x-loader
+make -C rewrite inventory test-branding \
+  test-icon-directory test-icon-files test-bitmap-files
+make -C rewrite inventory-check
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_fat_diagnostic.vhd \
+  --fat-relative-check --memory-check --task-check
+python3 rewrite/tools/boot_smoke.py \
+  rewrite/build/OpenIceStarOS_c_apps.vhd \
+  --clock-check --fat-files-check --memory-check --task-check
+```
+
+The separate diagnostic X calls 25 production service addresses: eight readers
+and seventeen directory entries. Its 37 checked calls verify **526,144
+data/guard bytes**, results, relocations and allocation/free paths using actual
+kernel services and disk I/O. A copied root buffer independently exercises
+supplied-directory entries. Both relative directory finders return index 2 for
+`ICESTAR`, bypassing the identically named volume label. Absolute-directory
+calls check `C:\ICESTAR\GAMES`, `C:\ICESTAR`, a missing child, drive-only input
+and a doubled separator. All 32 bytes of both successful output records and
+the surrounding 16-byte guards agree with independent FAT reads; error cases
+leave output/guards intact. All four timestamp getters agree with the raw
+INIT record. QEMU observes every new entry, plus interior blocks for all three
+lookups. The small getters each execute in one translation block. This
+diagnostic replaces COLOR.X only in its separate image and is not an app
+recovery.
+
+Ordinary production boot additionally observes one root directory-only lookup
+and two absolute-directory lookups. The supplied-buffer finder and four
+timestamp entries have no observed calls in this production workload; they
+are covered by the diagnostic and differential suites. Branded legacy CMD
+and `cpuid`, C CLOCK with three complete changing frames, PS/2 close, task exit,
+CMD reuse, 128 MiB RAM/heap and real TSS switches pass. Both snapshot boots
+verify all 385 installed intervals against guest memory. The committed CLOCK
+and CMD screenshots are direct QEMU captures and were visually inspected.
+
+Exactly **1,630 bytes** differ from the preceding 378-interval production
+image, all inside the seven new slots. Restoring the preceding kernel
+reproduces that whole image byte for byte. All non-kernel disk bytes, including
+the original startup logo, FATs, directories, slack and apps remain unchanged;
+the original VHD hash is unchanged. `image-delta.json` records per-slot changes
+and image/kernel hashes.
+
+Committed reports and screenshots are in
+[`../evidence/2026-10-29-fat-directory-path/`](../evidence/2026-10-29-fat-directory-path/).
+This was focused integration validation; a full 385-interval `make verify`
+was not run. The interval count is not a completion percentage. Five apps are
+rebuilt; INIT/kernel are partial and 32 program paths remain unrecovered.
+The build still uses original program logic and resources, and remaining FAT
+mutators, hardware I/O, drivers and applications still need recovery.

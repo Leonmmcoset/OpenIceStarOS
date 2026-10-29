@@ -95,35 +95,50 @@ def check_fat_relative(execute, build, image, cmd_base):
     directory_symbol = metadata["symbols"]["fat_directory_report"]
     directory_address = bases[0] + directory_symbol["address"]
     directory_report = read_memory(directory_address, directory_symbol["size"])
-    require(len(directory_report) == 452, "unexpected directory report size")
+    require(len(directory_report) == 1592, "unexpected directory report size")
     directory_entries = [0x8258a6, 0x825a7e, 0x825bcc, 0x825c46, 0x825c8e,
-                         0x825d34, 0x826940, 0x82698c, 0x8269a6, 0x8269f2]
-    directory_header = struct.unpack_from("<13I", directory_report)
-    require(directory_header[:3] == (0x44495232, 1, 10) and
+                         0x825d34, 0x826940, 0x82698c, 0x8269a6, 0x8269f2,
+                         0x826a0e, 0x826a5a, 0x826a76, 0x826ac2, 0x825df4, 0x825e86, 0x825f48]
+    directory_header = struct.unpack_from("<20I", directory_report)
+    require(directory_header[:3] == (0x44495232, 1, 21) and
             list(directory_header[3:]) == directory_entries, "directory services did not complete")
+    icestar = disk.find(disk.root, b"ICESTAR    ", True)
+    icestar_data = b"".join(disk.data[o:o+disk.cluster_bytes] for o in disk.chain(word(icestar, 26)))
+    games = disk.find(icestar_data, b"GAMES      ", True)
+    require(disk.root[64:96] == icestar, "directory fixture index changed")
     evidence["directory_services"] = []
-    for index, expected_entry in enumerate(directory_entries):
-        entry, result = struct.unpack_from("<2I", directory_report, 52 + index*40)
-        output = directory_report[60 + index*40:92 + index*40]
+    for index in range(21):
+        expected_entry = directory_entries[min(index, 16)]
+        entry, result = struct.unpack_from("<2I", directory_report, 80 + index*72)
+        output = directory_report[88 + index*72:152 + index*72]
         require(entry == expected_entry, "directory service address mismatch")
-        expected_output = b"\xa5"*32
+        expected_output = bytearray(b"\xa5"*64)
         if index in (0, 1):
             expected_result, payload = 1, b"INIT.X\0"
-            expected_output = payload + b"\xa5"*(32-len(payload))
+            expected_output[16:16+len(payload)] = payload
         elif index in (2, 3):
-            expected_result = directory_address + 60 + index*40
-            expected_output = init[8:11] + b"\0" + b"\xa5"*28
+            expected_result = directory_address + 104 + index*72
+            expected_output[16:20] = init[8:11] + b"\0"
         elif index in (4, 5): expected_result = 1
         elif index in (6, 7): expected_result = struct.unpack_from("<I", init, 28)[0]
-        else: expected_result = init[11]
+        elif index in (8, 9): expected_result = init[11]
+        elif index in (10, 11): expected_result = word(init, 24)
+        elif index in (12, 13): expected_result = word(init, 22)
+        elif index in (14, 15): expected_result = 2
+        elif index in (16, 17):
+            expected_result = 1
+            expected_output[16:48] = games if index == 16 else icestar
+        elif index in (18, 19): expected_result = 0
+        else: expected_result = 0xffffffff
         require(result == expected_result and output == expected_output,
                 f"directory service {index} result/output/guard mismatch")
-        evidence["directory_services"].append(dict(entry=hex(entry), result=hex(result),
+        evidence["directory_services"].append(dict(index=index, entry=hex(entry), result=hex(result),
             output_hex=output.hex(), bytes_checked=len(output)))
     (build / "fat_relative_guest_report.memory").write_bytes(report)
+    (build / "fat_directory_guest_report.memory").write_bytes(directory_report)
     (build / "fat_relative_smoke.json").write_text(json.dumps(evidence, indent=2) + "\n")
-    print("Test-only X: eight reader and ten directory service entries, 26 calls, "
-          "525120 data/guard bytes, directory queries, bounded clusters, "
+    print("Test-only X: eight reader and seventeen directory service entries, 37 calls, "
+          "526144 data/guard bytes, directory paths/queries/date/time, bounded clusters, "
           "past-EOF/negative offsets, allocations/free and relocations verified")
 
 

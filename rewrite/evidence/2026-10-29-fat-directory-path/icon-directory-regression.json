@@ -1,0 +1,365 @@
+{
+  "installed": true,
+  "exit_code": 0,
+  "seconds": 11.904,
+  "slots": {
+    "icon_draw_id": {
+      "compiled_bytes": 41,
+      "slot_bytes": 68
+    },
+    "icon_draw_centered": {
+      "compiled_bytes": 99,
+      "slot_bytes": 184
+    },
+    "icon_draw_frame": {
+      "compiled_bytes": 97,
+      "slot_bytes": 156
+    }
+  },
+  "resources": [
+    {
+      "name": "QQ.ICO",
+      "sha256": "37348470d032f9f7386c648600291c7988a4a8f59c5e8b765ece5cf7d2f35c82",
+      "entries": [
+        {
+          "width": 16,
+          "height": 16,
+          "size": 296,
+          "offset": 134,
+          "png": false
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2216,
+          "offset": 430,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 2646,
+          "png": false
+        },
+        {
+          "width": 0,
+          "height": 0,
+          "size": 11061,
+          "offset": 4030,
+          "png": true
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 9640,
+          "offset": 15091,
+          "png": false
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 4264,
+          "offset": 24731,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 2440,
+          "offset": 28995,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1128,
+          "offset": 31435,
+          "png": false
+        }
+      ]
+    },
+    {
+      "name": "STAR.ICO",
+      "sha256": "cfc80a50fc538e5ee82d5763ee66190d7f3569f23f5d1144e77fd53d6bcf5f95",
+      "entries": [
+        {
+          "width": 64,
+          "height": 64,
+          "size": 5672,
+          "offset": 326,
+          "png": false
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 3752,
+          "offset": 5998,
+          "png": false
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 3752,
+          "offset": 9750,
+          "png": false
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2216,
+          "offset": 13502,
+          "png": false
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 3752,
+          "offset": 15718,
+          "png": false
+        },
+        {
+          "width": 64,
+          "height": 64,
+          "size": 5672,
+          "offset": 19470,
+          "png": false
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2216,
+          "offset": 25142,
+          "png": false
+        },
+        {
+          "width": 0,
+          "height": 0,
+          "size": 10224,
+          "offset": 27358,
+          "png": true
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 37582,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 39318,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 41054,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 42790,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 48,
+          "size": 2408,
+          "offset": 44526,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 46934,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 48670,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 50406,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 52142,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 53878,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 55614,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 57350,
+          "png": false
+        }
+      ]
+    },
+    {
+      "name": "DISK.ICO",
+      "sha256": "e355ff0626d07154e434408587f0d31df3feb640ff18efca1d2c33706659733e",
+      "entries": [
+        {
+          "width": 64,
+          "height": 64,
+          "size": 5672,
+          "offset": 86,
+          "png": false
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 3752,
+          "offset": 5758,
+          "png": false
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2216,
+          "offset": 9510,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 11726,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 13462,
+          "png": false
+        }
+      ]
+    },
+    {
+      "name": "TASKBAR.ICO",
+      "sha256": "e72c5fe7258d0d7f7e89ebe360ea39ef8f5f7ad90206536cf99a91871511e741",
+      "entries": [
+        {
+          "width": 0,
+          "height": 0,
+          "size": 9795,
+          "offset": 182,
+          "png": true
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 9977,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 11713,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 13449,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 14833,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 16217,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 17601,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 18985,
+          "png": false
+        },
+        {
+          "width": 24,
+          "height": 24,
+          "size": 1736,
+          "offset": 20369,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 22105,
+          "png": false
+        },
+        {
+          "width": 16,
+          "height": 16,
+          "size": 1384,
+          "offset": 23489,
+          "png": false
+        }
+      ]
+    }
+  ],
+  "stdout": "ICO wrapper 0 cases: 66296\nICO wrapper 1 cases: 102474\nICO wrapper 2 cases: 66296\nTotal cases: 235066; executions: 705198; no draw/PNG/DIB: 634 475 233957 ; excluded unmapped entries: 32; all three ICO wrappers verified against directory/callback/16 KiB memory/ABI oracle\n",
+  "stderr": "",
+  "sha256": {
+    "kernel/icon_directory.c": "1cb7830ec98bd3785af407312bf2365def91091338a4b32fbb7919adda5489ff",
+    "kernel/icon_directory.h": "f67de8209c8f72634b594135a6fd401cbc71840b51a5ef25c41d667142ca7e47",
+    "tests/kernel_icon_directory.c": "8b33979d98d80e2979e32d7ed1abd55c9e204721eea3641c549b24014d54c262",
+    "tests/kernel_icon_directory.py": "67279267afc9e98348a3d503ffdd0b219fcebdadeab07434badf5ae130fe6e42",
+    "tests/icon_directory_abi.S": "e964a497074497780eae18115dca743462641a8aee4ec0a783d503dcc3892f45",
+    "build/icon_directory_preview.elf": "90ba58821c3fc8edf4733b8cb0a12126801ed84975de68f6092c865343fef94c",
+    "build/kernel_icon_directory_installed_test": "a0496173afe7197e8ea6aa9b3d96f950d976189323eb3b129bef26c9be047ed5",
+    "build/openicestaros_kernel.x": "0d1c19f4360d0e2513552afddfcd6e7a5756fec9a16cdf0851070a8b0614979d"
+  }
+}

@@ -1,0 +1,520 @@
+{
+  "diagnostic_only": true,
+  "image_sha256": "9259013b94d8a8ce6e1427073a21a9ac57a6345e856e4dc4a3934b965d4b400e",
+  "trace_sha256": "9fc35a8f2df54d46fbe3f02db2b14217e16c245d060b091e4fdc6304fbff6084",
+  "functions": {
+    "root_name": {
+      "entry": "0x8258a6",
+      "entry_events": 21,
+      "body_events": 558,
+      "executed_blocks": [
+        "0x8258a6",
+        "0x8258f4",
+        "0x825906",
+        "0x82591a",
+        "0x82592a",
+        "0x825949",
+        "0x825954",
+        "0x825971",
+        "0x825978",
+        "0x825983",
+        "0x825986",
+        "0x825995",
+        "0x82599c",
+        "0x8259bc",
+        "0x8259c1",
+        "0x8259d4",
+        "0x8259d9",
+        "0x8259e6"
+      ]
+    },
+    "directory_name": {
+      "entry": "0x825a7e",
+      "entry_events": 47,
+      "body_events": 1110,
+      "executed_blocks": [
+        "0x825a7e",
+        "0x825a9c",
+        "0x825aaa",
+        "0x825abb",
+        "0x825abd",
+        "0x825ad1",
+        "0x825ad9",
+        "0x825ae4",
+        "0x825aeb",
+        "0x825af2",
+        "0x825af9",
+        "0x825b01",
+        "0x825b1e",
+        "0x825b23",
+        "0x825b34",
+        "0x825b39",
+        "0x825b3e",
+        "0x825b43",
+        "0x825b48"
+      ]
+    },
+    "root_extension": {
+      "entry": "0x825bcc",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x825bcc"
+      ]
+    },
+    "directory_extension": {
+      "entry": "0x825c46",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x825c46"
+      ]
+    },
+    "find_relative": {
+      "entry": "0x825c8e",
+      "entry_events": 7,
+      "body_events": 91,
+      "executed_blocks": [
+        "0x825c8e",
+        "0x825c99",
+        "0x825ca6",
+        "0x825cb0",
+        "0x825cb7",
+        "0x825cc0",
+        "0x825cc5",
+        "0x825cc8",
+        "0x825cce",
+        "0x825cd3",
+        "0x825cd5",
+        "0x825cdc"
+      ]
+    },
+    "directory_find": {
+      "entry": "0x825d34",
+      "entry_events": 2,
+      "body_events": 232,
+      "executed_blocks": [
+        "0x825d34",
+        "0x825d56",
+        "0x825d5d",
+        "0x825d6a",
+        "0x825d72",
+        "0x825d7b",
+        "0x825d80",
+        "0x825d83",
+        "0x825d8c",
+        "0x825d92",
+        "0x825d9b"
+      ]
+    },
+    "root_find_directory": {
+      "entry": "0x825df4",
+      "entry_events": 2,
+      "body_events": 38,
+      "executed_blocks": [
+        "0x825df4",
+        "0x825dff",
+        "0x825e0c",
+        "0x825e16",
+        "0x825e1d",
+        "0x825e26",
+        "0x825e2b",
+        "0x825e2e",
+        "0x825e34",
+        "0x825e39",
+        "0x825e3b",
+        "0x825e42"
+      ]
+    },
+    "find_directory": {
+      "entry": "0x825e86",
+      "entry_events": 1,
+      "body_events": 22,
+      "executed_blocks": [
+        "0x825e86",
+        "0x825ea8",
+        "0x825eaf",
+        "0x825ebc",
+        "0x825ec4",
+        "0x825ecd",
+        "0x825ed2",
+        "0x825ed5",
+        "0x825ede",
+        "0x825ee4",
+        "0x825eed"
+      ]
+    },
+    "find_directory_path": {
+      "entry": "0x825f48",
+      "entry_events": 7,
+      "body_events": 782,
+      "executed_blocks": [
+        "0x825f48",
+        "0x825f5d",
+        "0x825f65",
+        "0x825f77",
+        "0x825f79",
+        "0x825f82",
+        "0x825f8a",
+        "0x825f96",
+        "0x825f99",
+        "0x825fa1",
+        "0x825fa9",
+        "0x825fb5",
+        "0x825fc4",
+        "0x825fce",
+        "0x825fd1",
+        "0x825fda",
+        "0x825fe7",
+        "0x825ff4",
+        "0x826054",
+        "0x82605e",
+        "0x826069",
+        "0x82606b",
+        "0x826081",
+        "0x826087",
+        "0x82608c",
+        "0x826092",
+        "0x826093",
+        "0x82609e",
+        "0x8260a9",
+        "0x8260ac",
+        "0x8260bf",
+        "0x8260c7",
+        "0x8260d9",
+        "0x8260e9",
+        "0x8260f1",
+        "0x8260fb",
+        "0x8260fe",
+        "0x826104",
+        "0x826109",
+        "0x82610e",
+        "0x826114",
+        "0x826119"
+      ]
+    },
+    "root_size": {
+      "entry": "0x826940",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x826940"
+      ]
+    },
+    "directory_size": {
+      "entry": "0x82698c",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x82698c"
+      ]
+    },
+    "root_attributes": {
+      "entry": "0x8269a6",
+      "entry_events": 10,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x8269a6"
+      ]
+    },
+    "directory_attributes": {
+      "entry": "0x8269f2",
+      "entry_events": 5,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x8269f2"
+      ]
+    },
+    "root_date": {
+      "entry": "0x826a0e",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x826a0e"
+      ]
+    },
+    "directory_date": {
+      "entry": "0x826a5a",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x826a5a"
+      ]
+    },
+    "root_time": {
+      "entry": "0x826a76",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x826a76"
+      ]
+    },
+    "directory_time": {
+      "entry": "0x826ac2",
+      "entry_events": 1,
+      "body_events": 0,
+      "executed_blocks": [
+        "0x826ac2"
+      ]
+    },
+    "find_path": {
+      "entry": "0x8263c0",
+      "entry_events": 47,
+      "body_events": 1116,
+      "executed_blocks": [
+        "0x8263c0",
+        "0x8263dd",
+        "0x8263ef",
+        "0x8263f1",
+        "0x8263fa",
+        "0x826402",
+        "0x82640e",
+        "0x826411",
+        "0x826419",
+        "0x826421",
+        "0x82642d",
+        "0x82643c",
+        "0x826446",
+        "0x826452",
+        "0x82645f",
+        "0x82646c",
+        "0x8264c9",
+        "0x8264d3",
+        "0x8264de",
+        "0x8264e0",
+        "0x8264f6",
+        "0x8264fc",
+        "0x826505",
+        "0x82650b",
+        "0x82650c",
+        "0x826512",
+        "0x826524",
+        "0x826539",
+        "0x826540",
+        "0x826550",
+        "0x826558",
+        "0x826579",
+        "0x82657e",
+        "0x826593",
+        "0x8265a1",
+        "0x8265a9",
+        "0x8265af",
+        "0x8265b6",
+        "0x8265be",
+        "0x8265c0",
+        "0x8265d2",
+        "0x8265d8",
+        "0x8265e3",
+        "0x8265ed",
+        "0x8265fa",
+        "0x826603",
+        "0x82660f",
+        "0x826616"
+      ]
+    },
+    "name83": {
+      "entry": "0x827bba",
+      "entry_events": 124,
+      "body_events": 1387,
+      "executed_blocks": [
+        "0x827bba",
+        "0x827bca",
+        "0x827bd3",
+        "0x827bdf",
+        "0x827be3",
+        "0x827be9",
+        "0x827bf2",
+        "0x827bfe",
+        "0x827c00",
+        "0x827c05",
+        "0x827c0e",
+        "0x827c15",
+        "0x827c20",
+        "0x827c24",
+        "0x827c29",
+        "0x827c32"
+      ]
+    },
+    "relative_read": {
+      "entry": "0x826ade",
+      "entry_events": 4,
+      "body_events": 44,
+      "executed_blocks": [
+        "0x826ade",
+        "0x826bbc",
+        "0x826bc4",
+        "0x826bcc",
+        "0x826c02",
+        "0x826c10"
+      ]
+    },
+    "relative_named": {
+      "entry": "0x826c3a",
+      "entry_events": 1,
+      "body_events": 3,
+      "executed_blocks": [
+        "0x826c3a",
+        "0x826c45",
+        "0x826c4a",
+        "0x826c53"
+      ]
+    },
+    "relative_cluster": {
+      "entry": "0x826c6e",
+      "entry_events": 3,
+      "body_events": 28,
+      "executed_blocks": [
+        "0x826c6e",
+        "0x826c84",
+        "0x826d16",
+        "0x826d1d",
+        "0x826d22",
+        "0x826d32",
+        "0x826d37",
+        "0x826d98",
+        "0x826d9b"
+      ]
+    },
+    "relative_named_cluster": {
+      "entry": "0x826dd0",
+      "entry_events": 3,
+      "body_events": 30,
+      "executed_blocks": [
+        "0x826dd0",
+        "0x826de1",
+        "0x826def",
+        "0x826eab",
+        "0x826eb3",
+        "0x826eb8",
+        "0x826ec9",
+        "0x826eff"
+      ]
+    },
+    "relative_allocate_named": {
+      "entry": "0x826f38",
+      "entry_events": 1,
+      "body_events": 5,
+      "executed_blocks": [
+        "0x826f38",
+        "0x826f49",
+        "0x826f54",
+        "0x826fe4",
+        "0x826feb",
+        "0x826ff2"
+      ]
+    },
+    "relative_allocate_index": {
+      "entry": "0x827032",
+      "entry_events": 1,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x827032",
+        "0x827045",
+        "0x8270c2",
+        "0x8270c9",
+        "0x8270d2"
+      ]
+    },
+    "allocate_directory_index": {
+      "entry": "0x82711e",
+      "entry_events": 3,
+      "body_events": 32,
+      "executed_blocks": [
+        "0x82711e",
+        "0x82712e",
+        "0x827135",
+        "0x82716d",
+        "0x82719b",
+        "0x8271a2",
+        "0x827234",
+        "0x82723c",
+        "0x827244",
+        "0x827283",
+        "0x827291"
+      ]
+    },
+    "allocate_clusters": {
+      "entry": "0x8272f4",
+      "entry_events": 3,
+      "body_events": 29,
+      "executed_blocks": [
+        "0x8272f4",
+        "0x827318",
+        "0x827324",
+        "0x8273ae",
+        "0x8273b6",
+        "0x8273bb",
+        "0x8273c3",
+        "0x8273f9",
+        "0x827407"
+      ]
+    },
+    "allocate_record": {
+      "entry": "0x827454",
+      "entry_events": 80,
+      "body_events": 710,
+      "executed_blocks": [
+        "0x827454",
+        "0x82748f",
+        "0x8274a3",
+        "0x8274bd",
+        "0x8274c9",
+        "0x827556",
+        "0x82755e",
+        "0x827566",
+        "0x8275a5",
+        "0x8275b3"
+      ]
+    },
+    "read_record": {
+      "entry": "0x82760c",
+      "entry_events": 6,
+      "body_events": 87,
+      "executed_blocks": [
+        "0x82760c",
+        "0x827656",
+        "0x827660",
+        "0x8276f0",
+        "0x8276f8",
+        "0x827700",
+        "0x82773f",
+        "0x82774d"
+      ]
+    },
+    "allocate_path": {
+      "entry": "0x827798",
+      "entry_events": 34,
+      "body_events": 72,
+      "executed_blocks": [
+        "0x827798",
+        "0x8277ab",
+        "0x8277b2",
+        "0x8277b8",
+        "0x8277bd"
+      ]
+    },
+    "read_path": {
+      "entry": "0x8277dc",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_relative": {
+      "entry": "0x827826",
+      "entry_events": 0,
+      "body_events": 0,
+      "executed_blocks": []
+    },
+    "header_record": {
+      "entry": "0x8278f4",
+      "entry_events": 4,
+      "body_events": 4,
+      "executed_blocks": [
+        "0x8278f4",
+        "0x82797a"
+      ]
+    }
+  },
+  "installed_intervals": 385,
+  "scope": "Separate diagnostic X using production kernel services and real disk I/O."
+}

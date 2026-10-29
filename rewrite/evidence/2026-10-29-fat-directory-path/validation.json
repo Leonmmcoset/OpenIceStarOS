@@ -1,0 +1,50 @@
+{
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "image_sha256": "86e806df427e737c4e1d486fd489bddef43962fdfc4c68550000d31b91f9b9fe",
+  "kernel_sha256": "0d1c19f4360d0e2513552afddfcd6e7a5756fec9a16cdf0851070a8b0614979d",
+  "installed_intervals": 385,
+  "new_c_service_entries": 7,
+  "full_verify_run": false,
+  "directory_scenarios": 7187,
+  "directory_executions": 21561,
+  "path_scenarios": 758,
+  "path_executions": 2274,
+  "diagnostic_service_entries": 25,
+  "diagnostic_checked_calls": 37,
+  "diagnostic_data_guard_bytes": 526144,
+  "production_entry_events": {
+    "root_find_directory": 1,
+    "find_directory": 0,
+    "find_directory_path": 2,
+    "root_date": 0,
+    "directory_date": 0,
+    "root_time": 0,
+    "directory_time": 0
+  },
+  "snapshot_boots": true,
+  "original_logo_retained": true,
+  "screenshots_visually_inspected": [
+    "c-clock.png",
+    "cmd-cpuid.png"
+  ],
+  "recovery_counts": {
+    "partial": 2,
+    "rebuilt": 5,
+    "unrecovered": 32
+  },
+  "source_sha256": {
+    "kernel/fat_directory.c": "6384c6ac4f2ea87e63382999b1d8171ad3374f8538ec08dbfe0c9265c3918881",
+    "kernel/fat_directory.h": "168f6cbad5849602253821330fee68a8f784e3a73d16a1838726a072a164913e",
+    "kernel/fat_directory_path.c": "b35b0769ec3bcd0db6b9ae6bd0d8740d75bc0f6f1b2c0b70f18e21f9cd822d7f",
+    "kernel/fat_path.h": "1dc6b1eb9d3153b9f535bd97ebada4598e866e0972479e2ca3f73256c22dafcb",
+    "tests/kernel_fat_directory.py": "13c657371a442fd22c63c362abb052caae695f06ecefd382718ba97436fbc629",
+    "tests/kernel_fat_path.py": "f758ff1b061d0c7233b4b407f9abc554fadabe9a77915190c039eca69e23f95f",
+    "tests/fat_relative_guest.c": "d5c45846d68e7529e83a0254753e3420cf4625c20b6482fe77433973cdd4a9fd",
+    "tools/fat_relative_smoke.py": "571327df1ee844ab3e4ef73081b24838461e770ca1d9169bf04f5c18fddba2b2",
+    "tools/fat_files_smoke.py": "68f8d3920f408fa927b353c6aac48943772fa857719f9a45428a4929bddb5ce8",
+    "tools/boot_smoke.py": "b7c456bd53da8961b1132dcdfdf244c5a25e98a41fb1592d9b9e0d58a3c72beb",
+    "kernel/patches.json": "0c8db1ed9ce5a8ee951f1361e9036cb12bde6a1f641efe30d047e3f771d05bde",
+    "kernel/patches.ld": "4341dcfe97eb365a9663b5361c3a53be994e76d0f99a350315e896394058a1ca",
+    "Makefile": "65d4308f870132450dd691ec9f6c9caee103a7f39925a2fd93771b6245c6e8cd"
+  }
+}

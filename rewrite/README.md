@@ -5230,3 +5230,22 @@ See [`recovery/FAT_DIRECTORY.md`](recovery/FAT_DIRECTORY.md) and committed
 evidence for commands and preserved behavior. No full 378-interval `make verify`
 was run; the complete OS remains unfinished, with five apps rebuilt,
 kernel/INIT partial and 32 program paths unrecovered.
+
+### Directory-only lookup and FAT timestamps (2026-10-29)
+
+Seven more original-only entries now execute from recovered C: root and
+supplied-buffer directory-only lookups, absolute directory lookup, and four
+raw date/time getters. The kernel contains 385 declared intervals. Installed
+original/ordinary-C/fixed-C comparisons pass 7,187 directory scenarios /
+21,561 executions and 758 path scenarios / 2,274 executions, with existing
+reader/X-loader/caller, exact disk, branding and inventory checks passing.
+A separate QEMU diagnostic verifies all seven new entries within 25 service
+addresses, 37 calls and 526,144 checked data/guard bytes. Ordinary boot
+exercises root/absolute directory lookup and verifies CMD/cpuid, C CLOCK,
+RAM/TSS switching and all installed intervals. Only 1,630 bytes in the seven
+new kernel slots change; the original startup logo is retained. See
+[`recovery/FAT_DIRECTORY_PATH.md`](recovery/FAT_DIRECTORY_PATH.md) for preserved
+parser/free-before-copy behavior, commands, evidence and screenshots. A full
+385-interval `make verify` was not run. Five apps are rebuilt; INIT/kernel
+remain partial and 32 program paths are unrecovered. The complete OS recovery
+remains unfinished.

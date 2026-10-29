@@ -1,0 +1,172 @@
+{
+  "installed": true,
+  "scenarios": 430,
+  "executions": 1290,
+  "seconds": 1.981,
+  "slots": {
+    "x_load_relative": {
+      "compiled_bytes": 115,
+      "slot_bytes": 166
+    },
+    "x_load_path": {
+      "compiled_bytes": 192,
+      "slot_bytes": 310
+    },
+    "x_launch": {
+      "compiled_bytes": 252,
+      "slot_bytes": 680
+    }
+  },
+  "corpus": [
+    {
+      "path": "/ADMIN/DESKTOP/CMD.X",
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/DEVTEST.X",
+      "sha256": "37a9e541a35202265f99f5af13f1fbed32d0eb7648e3ded3b6005bb99d3c0255"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/NETWORK.X",
+      "sha256": "7053d5eec75298519d05c455774b892b416a521bd34044c4b26f9a321a6e0c92"
+    },
+    {
+      "path": "/ADMIN/DESKTOP/TASKMGR.X",
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b"
+    },
+    {
+      "path": "/ICESTAR/AREOBAR.X",
+      "sha256": "33b9f192417e861a078453727adcbb9d53f258ec4dcf4cbfa290e43733fb9963"
+    },
+    {
+      "path": "/ICESTAR/BROWSER.X",
+      "sha256": "d74fe5e1b522941f31f47dfe643f5ded629bf886a585a593efe58d4f8b419e35"
+    },
+    {
+      "path": "/ICESTAR/CALC.X",
+      "sha256": "2fcfcea430f278ff85eaf24278578f845e0c85000b92613f8ef4c597146d47cc"
+    },
+    {
+      "path": "/ICESTAR/CHAT.X",
+      "sha256": "7035ae7bb738900c2b00bee16d1c196d64da9bf9836b48f3aab8b5493f17c553"
+    },
+    {
+      "path": "/ICESTAR/CLOCK.X",
+      "sha256": "2b93983ddb1c812ffca6bfb27c6a2f8223054bbfff49aef60c583c4cbd6993d7"
+    },
+    {
+      "path": "/ICESTAR/CMD.X",
+      "sha256": "2a9755a74dca9d0183f2eaabdbfbe9b06591539fdc59122a907b6b00dc970622"
+    },
+    {
+      "path": "/ICESTAR/COLOR.X",
+      "sha256": "b693c210f98a8295d5cad90b2370302b1a527c895bdca23d925b40d18773c6c3"
+    },
+    {
+      "path": "/ICESTAR/DESKTOP.X",
+      "sha256": "e9466810f9d8b1a1803f88bbeb7104255bc8f3ae6bbef2537dbe1492499d6c78"
+    },
+    {
+      "path": "/ICESTAR/DEVMGR.X",
+      "sha256": "79a34ce65e16481b787a0396ec076ed94af96d2c493d8c46a8ca408f9be6ab18"
+    },
+    {
+      "path": "/ICESTAR/GAMES/ELSFK.X",
+      "sha256": "e3b91cd68b9a1b73b0885347b7091aea569a41f34ae9a4d816de3d5cd93c225a"
+    },
+    {
+      "path": "/ICESTAR/GAMES/GLASS.X",
+      "sha256": "bcb7638fb30fa41065c50ca2eb0a15b57296748f5ca2c41f8fb6d4f105738a1d"
+    },
+    {
+      "path": "/ICESTAR/GAMES/INVADER.X",
+      "sha256": "8417747cbda6d58c0f55bc49cc5abce9ecceca04611213968e15cdcd1ded44a1"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MINE.X",
+      "sha256": "6fbc646c15fea7ee9d97dc3382ca23cb0b6aec0b5a4accde2ade37955f14fa42"
+    },
+    {
+      "path": "/ICESTAR/GAMES/MOV/MOV.X",
+      "sha256": "df5429c3e1ff472e0c6142fa003635430eef3114a6fcd256c14319ac83199a68"
+    },
+    {
+      "path": "/ICESTAR/GAMES/NES/NES.X",
+      "sha256": "7258c05dc6e219195a6fd20554088208f45338e3e9b2adf30b75808e727f94ce"
+    },
+    {
+      "path": "/ICESTAR/GAMES/PUSHBOX.X",
+      "sha256": "7d4fedece810f0ea0cd2cf9e8c6b319fc71f3ef0115abc5cf4334af6a352d3ab"
+    },
+    {
+      "path": "/ICESTAR/GAMES/SNAKE.X",
+      "sha256": "be2bbb4d1369977369bdc5292a29d0f02350d92bf4207e9f6123466c6f570488"
+    },
+    {
+      "path": "/ICESTAR/ICESTAR.X",
+      "sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3"
+    },
+    {
+      "path": "/ICESTAR/MACBAR.X",
+      "sha256": "3d9218160e5075cb6bec71754b455b6672d43a4eb24dbda2039f19ecd94195f1"
+    },
+    {
+      "path": "/ICESTAR/MPLAY.X",
+      "sha256": "8af980ff5c466f7e4c336aab3b13d406b75c3934bbbad12a071013701443d68f"
+    },
+    {
+      "path": "/ICESTAR/NOTEPAD.X",
+      "sha256": "69b53e3fe200770f1c2c24bd03991a01276aebb8729b240c918ffa25cdfa1538"
+    },
+    {
+      "path": "/ICESTAR/PAINT.X",
+      "sha256": "aad10393cfa0f7f5747a1c2b0eb0def53e1a7c553ab832417ad4c6f14cbe1c7d"
+    },
+    {
+      "path": "/ICESTAR/PCMGR.X",
+      "sha256": "8a017c88d75599a755d945d9ed112528ca61314605a4be3fc40030cfc193550c"
+    },
+    {
+      "path": "/ICESTAR/PICVIEW.X",
+      "sha256": "9826fdfe8b0d553cc74d0a6cfdaeb9dc7d5117376d1f10c8774d24a14ee250fe"
+    },
+    {
+      "path": "/ICESTAR/SCRNSET.X",
+      "sha256": "08b67a7bf11c36208f8aeaf5d06643780c60cdfa4ef641b4dadd8578457ee27d"
+    },
+    {
+      "path": "/ICESTAR/STARSCR.X",
+      "sha256": "6d2f3ebfe9a45dcba055ddfe01b7fb8f384e0003a9a9484c9585d912c7f0473c"
+    },
+    {
+      "path": "/ICESTAR/TASKBAR.X",
+      "sha256": "e43e9a785fd8e29cb38c540fe9293a06de458f20d39685150e12b5a881008fa6"
+    },
+    {
+      "path": "/ICESTAR/TASKMGR.X",
+      "sha256": "fcdd0b9874c736f04a148396d94add22dbb6aac9ada258725a6528cb72477d6b"
+    },
+    {
+      "path": "/ICESTAR/THEME.X",
+      "sha256": "aeb4e960e6dffb5e735689c80c1f28707826b0c3bfda2c9d3f3bf747fbe4ac6e"
+    },
+    {
+      "path": "/ICESTAR/TTFVIEW.X",
+      "sha256": "ff1f531663955fe3cbf4597a9af2b1b442d14f328a73c977d1cc3605d1a4b58c"
+    },
+    {
+      "path": "/INIT.X",
+      "sha256": "0364c0f872a844d6603634fe69adabce92dfafca4a6146474bcb858130899007"
+    }
+  ],
+  "compared": "Return EAX, callee-saved registers, caller stack, ordered boundary arguments/live headers, full 128 KiB low memory and 2 MiB arena",
+  "limitations": "External helpers are deterministic callbacks. Enormous/wrapped fills are argument-only probes. Unbounded relocation loops and invalid/unmapped targets are not covered.",
+  "sha256": {
+    "kernel/x_loader.c": "31d6a5768c8329b82fe45bd68a091fd43cc09866261ab1da5809c557ffa8392f",
+    "kernel/x_loader.h": "9d7e9a636c9cbcf0e96244298aa990efc070104d523fc104672c54104fea7f8f",
+    "tests/kernel_x_loader.py": "bdc73b6de69012fff078e5f0130289a34450d631dc8f77aae0783547854ce96f",
+    "build/x_loader_fixed.elf": "413ef265e0f6b74d700d1004e92069787e75ddb74d4dbedcc8fd1ecc7cfb7bc1",
+    "build/x_loader_ordinary.elf": "74b4cf68481e4aadcf7fffb72ea29571a013fdc1292f3efa10e0ac3b31718b02",
+    "build/x_loader_candidate.x": "0d1c19f4360d0e2513552afddfcd6e7a5756fec9a16cdf0851070a8b0614979d"
+  }
+}

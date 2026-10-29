@@ -1,0 +1,56 @@
+{
+  "baseline_intervals": 378,
+  "installed_intervals": 385,
+  "image_changed_bytes": 1630,
+  "changed_slots": [
+    {
+      "name": "FAT root directory-only lookup",
+      "start": "0x825df4",
+      "end": "0x825e86",
+      "changed_bytes": 140
+    },
+    {
+      "name": "FAT supplied-buffer directory-only lookup",
+      "start": "0x825e86",
+      "end": "0x825f48",
+      "changed_bytes": 188
+    },
+    {
+      "name": "FAT absolute directory pathname lookup",
+      "start": "0x825f48",
+      "end": "0x8263c0",
+      "changed_bytes": 1112
+    },
+    {
+      "name": "FAT root raw date getter",
+      "start": "0x826a0e",
+      "end": "0x826a5a",
+      "changed_bytes": 71
+    },
+    {
+      "name": "FAT directory raw date getter",
+      "start": "0x826a5a",
+      "end": "0x826a76",
+      "changed_bytes": 24
+    },
+    {
+      "name": "FAT root raw time getter",
+      "start": "0x826a76",
+      "end": "0x826ac2",
+      "changed_bytes": 71
+    },
+    {
+      "name": "FAT directory raw time getter",
+      "start": "0x826ac2",
+      "end": "0x826ade",
+      "changed_bytes": 24
+    }
+  ],
+  "only_seven_kernel_intervals_changed": true,
+  "previous_image_reproduced_by_restoring_previous_kernel": true,
+  "original_logo_and_all_non_kernel_bytes_unchanged": true,
+  "baseline_image_sha256": "bd7fff35e0e01978c555ab807450d168f247fa6ab1149d08a8aa9957cbed893d",
+  "image_sha256": "86e806df427e737c4e1d486fd489bddef43962fdfc4c68550000d31b91f9b9fe",
+  "kernel_sha256": "0d1c19f4360d0e2513552afddfcd6e7a5756fec9a16cdf0851070a8b0614979d",
+  "original_image_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+}

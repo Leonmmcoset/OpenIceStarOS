@@ -1,0 +1,137 @@
+{
+  "image": "/root/IceStarOS-x86-Decompile/rewrite/build/OpenIceStarOS_c_apps.vhd",
+  "cmd_base": "0x44a9010",
+  "base": "0x460c810",
+  "binary_sha256": "70a2e9ba6483f825909eab030364804863d2ecb2f60045bf561c1ef4ea72aedf",
+  "relocations_verified": 24,
+  "state": [
+    "0x4445010",
+    7,
+    10,
+    0
+  ],
+  "close_callback": "0x460c954",
+  "task": 5,
+  "task_active_before_close": 2,
+  "geometry": [
+    200,
+    100,
+    400,
+    380
+  ],
+  "foreground": [
+    255,
+    0,
+    0
+  ],
+  "background": [
+    198,
+    198,
+    198
+  ],
+  "samples": [
+    {
+      "time": "0x5141643",
+      "signature": "472f362104b7aadc8e05936f35df59176b11b5e96b4e1b095731150601fb6808",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        27,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 142,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x5141644",
+      "signature": "17ae1288b67d9760ed61f02beb0ce2455eb1552d53e12e4ed7ac6c08705ea745",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        27,
+        43,
+        85,
+        71,
+        54
+      ],
+      "center": 141,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x5141645",
+      "signature": "e5556d90c157bf5686c0ec4517f3849da90e5093896d181ef2969c9239a272cb",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        27,
+        43,
+        83,
+        71,
+        54
+      ],
+      "center": 141,
+      "background": 400,
+      "complete": true
+    }
+  ],
+  "complete_distinct_frames": 3,
+  "distinct_times": 3,
+  "pointer_close_button": [
+    587,
+    112
+  ],
+  "window_pool_after_close": "0x0",
+  "task_active_after_close": 0,
+  "pointer_cmd_taskbar": [
+    125,
+    754
+  ],
+  "cmd_cursor_after_close": [
+    [
+      11,
+      7
+    ],
+    [
+      11,
+      9
+    ]
+  ]
+}

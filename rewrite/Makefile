@@ -144,10 +144,12 @@ KERNEL_OBJECTS += $(BUILD)/kernel_fat_relative.o
 KERNEL_PATCHES += $(foreach name,fat_relative_read fat_relative_named fat_relative_cluster fat_relative_named_cluster fat_relative_alloc_named fat_relative_alloc_index,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_path.o
 KERNEL_PATCHES += $(foreach name,fat_find_path fat_name83,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory_path.o
+KERNEL_PATCHES += $(BUILD)/kernel.fat_find_directory_path.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_alloc.o
 KERNEL_PATCHES += $(foreach name,fat_allocate_index fat_allocate_clusters,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory.o
-KERNEL_PATCHES += $(foreach name,fat_root_name fat_directory_name fat_root_extension fat_directory_extension fat_find_relative fat_directory_find fat_root_size fat_directory_size fat_root_attributes fat_directory_attributes,$(BUILD)/kernel.$(name).bin)
+KERNEL_PATCHES += $(foreach name,fat_root_name fat_directory_name fat_root_extension fat_directory_extension fat_find_relative fat_directory_find fat_root_size fat_directory_size fat_root_attributes fat_directory_attributes fat_root_date fat_directory_date fat_root_time fat_directory_time fat_root_find_directory fat_find_directory,$(BUILD)/kernel.$(name).bin)
 
 .PHONY: all verify run run-hybrid run-c-init run-c-snake smoke-snake run-c-apps smoke-color smoke-mov smoke-starscr smoke-starscr-reference smoke-tasks smoke-memory test-x-loader
 all: $(BUILD)/OpenIceStarOS_c_mbr.vhd
@@ -307,6 +309,9 @@ $(BUILD)/kernel_fat_directory.o: kernel/fat_directory.c kernel/fat_directory.h k
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_directory_path.o: kernel/fat_directory_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_entry.o: kernel/entry.c kernel/entry.h kernel/entry_boundaries.def Makefile | $(BUILD)
