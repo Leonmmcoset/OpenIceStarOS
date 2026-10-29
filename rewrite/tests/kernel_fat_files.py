@@ -37,6 +37,8 @@ SLOTS = [
     ('fat_relative_named_cluster', 'kernel_fat_read_relative_named_cluster_826dd0', 0x826dd0, 0x826f38),
     ('fat_relative_alloc_named', 'kernel_icon_read_relative_826f38', 0x826f38, 0x827032),
     ('fat_relative_alloc_index', 'kernel_bitmap_read_relative_827032', 0x827032, 0x82711e),
+    ('fat_allocate_index', 'kernel_fat_allocate_index_82711e', 0x82711e, 0x8272f4),
+    ('fat_allocate_clusters', 'kernel_fat_allocate_clusters_8272f4', 0x8272f4, 0x827454),
 ]
 HELPERS = {0x815464: ('kernel_allocate', 1),
            0x8263c0: ('kernel_x_find_path_8263c0', 2),
@@ -49,7 +51,7 @@ STACK, STOP = 0x40f000, 0x200000
 
 def compile_variants(original, installed):
     objects = []
-    for module in ('fat_files', 'fat_relative'):
+    for module in ('fat_files', 'fat_relative', 'fat_alloc'):
         obj = BUILD / f'kernel_{module}_preview.o'
         run(['gcc', *FLAGS, '-c', f'kernel/{module}.c', '-o', str(obj)])
         objects.append(str(obj))
@@ -125,6 +127,12 @@ class Machine:
             result = self.case.get('allocation', ALLOC)
             if self.case.get('allocate_mutation'):
                 uc.mem_write(BPB+13, b'\x02')
+            if self.case.get('allocate_record_mutation'):
+                uc.mem_write(self.root_record+26, struct.pack('<H', 7))
+            if self.case.get('allocate_fat_mutation'):
+                uc.mem_write(FAT+0x10000, bytes(uc.mem_read(FAT, 0x10000)))
+                uc.mem_write(FAT+0x10000+7*2, struct.pack('<H', 0xffff))
+                self.put32(0x1a83a, FAT+0x10000)
         else:
             self.reads += 1
             lba, sectors, destination = args if count == 3 else [args[0], 1, args[1]]
@@ -174,7 +182,8 @@ class Machine:
         bpb = case['bpb']
         root = BPB + (word(bpb, 14)+bpb[16]*word(bpb, 22))*word(bpb, 11)
         index = case.get('index', 0 if case['function'] < 6 else 1)
-        self.root_record = (root + ((index & 0xffffffff) << 5)) & 0xffffffff
+        directory = case.get('directory', 0x540000) if case['function'] == 12 else root
+        self.root_record = (directory + ((index & 0xffffffff) << 5)) & 0xffffffff
         uc.mem_write(self.root_record, self.record)
         # A nonnegative lookup result selects that record, independently of
         # the explicit index used by the direct entries.
@@ -186,7 +195,8 @@ class Machine:
         args = ([RECORD], [RECORD, destination], [NAME], [NAME, destination],
                 [index, destination], [RECORD, destination], [index, destination],
                 [NAME, destination], [index, destination, skip],
-                [NAME, destination, skip], [NAME], [index])[function]
+                [NAME, destination, skip], [NAME], [index], [directory, index],
+                [case.get('cluster', word(self.record, 26)), case.get('requested', 2)])[function]
         args = [v & 0xffffffff for v in args]
         uc.mem_write(STACK, struct.pack(f'<{len(args)+3}I', STOP, *args, 0x13579bdf, 0x2468ace0))
         saved = [(UC_X86_REG_EBX, 0x12345678), (UC_X86_REG_ESI, 0x87654321),
@@ -208,14 +218,22 @@ class Machine:
             assert bytes(uc.mem_read(STACK+4, len(args)*4+8)) == struct.pack(f'<{len(args)+2}I', *args, 0x13579bdf, 0x2468ace0)
         assert bool(fault) == bool(case.get('fault')), 'expected division fault was not delivered'
         output = bytes(uc.mem_read(0x600000, 0x100000))
-        if case.get('corpus') and function in (0, 1, 2, 3, 6, 7, 10, 11):
-            dest = ALLOC if function in (0, 2, 10, 11) else destination
+        if case.get('corpus') and function in (0, 1, 2, 3, 6, 7, 10, 11, 12, 13):
+            dest = ALLOC if function in (0, 2, 10, 11, 12, 13) else destination
             expected = case['expected']
             assert output[dest-0x600000:dest-0x600000+len(expected)] == expected, 'corpus bytes differ'
         if 'expected_return' in case:
             assert uc.reg_read(UC_X86_REG_EAX) == case['expected_return'] & 0xffffffff
         if 'expected_reads' in case:
             assert self.reads == case['expected_reads'], (self.label, self.trace)
+        if 'expected_allocation' in case:
+            allocations = [args[0] for label, args in self.trace if label == 'kernel_allocate']
+            assert allocations == [case['expected_allocation']], (self.label, self.trace)
+        if 'expected_trace' in case:
+            assert self.trace == case['expected_trace'], (self.label, self.trace)
+        if 'expected_allocated_bytes' in case:
+            payload = case['expected_allocated_bytes']
+            assert bytes(uc.mem_read(ALLOC, len(payload)+32)) == payload + b'\x96'*32
         if 'expected_slice' in case:
             offset, payload = case['expected_slice']
             assert bytes(uc.mem_read(destination+offset, len(payload))) == payload, 'cluster bytes differ'
@@ -318,15 +336,62 @@ def main():
         for bps, spc in ((0, 1), (512, 0)):
             cases.append(synthetic(function, bps=bps, spc=spc,
                 fault=bps == 0 or function in (10, 11), lookup=1, allocation=0))
+    for function in (12, 13):
+        for bps in (128, 512, 1024):
+            for spc in (1, 2, 16):
+                for entries in (0, 1, 17, 512):
+                    cases.append(synthetic(function, bps=bps, spc=spc, entries=entries))
+        for size in (0, 1, 511, 512, 513, 0x7fffffff, 0xffffffff):
+            for attributes in (0, 16, 0xff):
+                clusters = ((512 + size - 1) & 0xffffffff)//512
+                count = (1 if attributes & 16 else clusters) if function == 12 else 2
+                cases.append(synthetic(function, size=size, attributes=attributes,
+                    expected_allocation=(count*512) & 0xffffffff, expected_reads=3 if function == 12 else 2))
+        for option, values in dict(allocation=(0,), bpb_mutation=(True,),
+            fat_pointer_mutation=(True,), fat_mutation=(True,), allocate_mutation=(True,),
+            allocate_fat_mutation=(True,), record_mutation=(True,), partition_mutation=(True,),
+            read_status=(0, 0xffffffff), partition=(0, 0xfffffff0)).items():
+            for value in values:
+                cases.append(synthetic(function, **{option:value}))
+        for chain in ((5,), (5, 0xfff8), (5, 0, 1, 9)):
+            cases.append(synthetic(function, chain=chain))
+    for directory in (0x540000, 0x540003, RECORD, 0x600000):
+        for index in (0, 1, 7, 0x08000001, -1, -0x80000000):
+            for attributes in (0, 16):
+                cases.append(synthetic(12, directory=directory, index=index, attributes=attributes,
+                    expected_return=0 if index < 0 else ALLOC, expected_reads=0 if index < 0 else 3,
+                    **({'expected_trace': []} if index < 0 else {})))
+    cases.append(synthetic(12, allocate_record_mutation=True, expected_reads=2))
+    for requested in (0, 1, 2, 3, 4, 0x7fffffff, 0x80000000, 0xffffffff):
+        cases.append(synthetic(13, requested=requested, expected_reads=min(max(requested, 1), 3),
+            expected_allocation=(requested*512) & 0xffffffff, expected_return=ALLOC))
+    # Exact boundary traces check allocation before reads, the zero-count
+    # first read, empty-root sector rounding, and the cached data LBA.
+    cases.append(synthetic(13, requested=0, entries=0, expected_trace=[
+        ['kernel_allocate', [0]], ['kernel_fat_read_sectors_8254ca', [29, 1, ALLOC]]]))
+    for function in (12, 13):
+        for bps, spc in ((0, 1), (512, 0)):
+            for allocation in (0, ALLOC):
+                cases.append(synthetic(function, bps=bps, spc=spc, allocation=allocation,
+                    fault=(function == 12 or (bps == 0 and allocation != 0)),
+                    **({'expected_trace': []} if function == 12 else {})))
+    cases.append(synthetic(12, index=-1, bps=0, spc=0, expected_return=0, expected_trace=[]))
     for program in json.loads((ROOT / 'recovery/inventory.json').read_text())['programs']:
         names = tuple(n.encode('ascii') for n in program['short_names'])
         record = corpus_record(disk, names)
         expected = disk.read_file(*names)
-        for function in range(12):
+        for function in range(13):
             cases.append(dict(function=function, bpb=source[17*512:18*512],
                 fat=disk.fat.ljust(0x20000, b'\0'), record=record, corpus=True,
                 expected=expected, name=program['path']))
         chain = list(disk.chain(word(record, 26)))
+        for requested in (0, 1, len(chain)//2, len(chain), len(chain)+1, 0x80000000):
+            raw = b''.join(source[o:o+disk.cluster_bytes] for o in chain[:max(requested, 1)])
+            cases.append(dict(function=13, bpb=source[17*512:18*512],
+                fat=disk.fat.ljust(0x20000, b'\0'), record=record, corpus=True,
+                name=program['path'], requested=requested, expected=raw,
+                expected_allocated_bytes=raw, expected_reads=min(max(requested, 1), len(chain)),
+                expected_allocation=(requested*disk.cluster_bytes) & 0xffffffff))
         for function in (8, 9):
             for skip in (0, len(chain)//2, len(chain)-1, len(chain), -1):
                 walked = min(max(skip, 0), len(chain)-1)
@@ -356,7 +421,8 @@ def main():
         boundary_scope='allocation, pathname lookup and hardware sector reads only',
         sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
                 for p in ['kernel/fat_files.c', 'kernel/fat_files.h',
-                          'kernel/fat_relative.c', 'kernel/fat_relative.h', 'tests/kernel_fat_files.py']})
+                          'kernel/fat_relative.c', 'kernel/fat_relative.h',
+                          'kernel/fat_alloc.c', 'kernel/fat_alloc.h', 'tests/kernel_fat_files.py']})
     (BUILD / 'fat_files_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary, indent=2))
 
