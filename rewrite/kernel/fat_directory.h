@@ -11,4 +11,10 @@ uint32_t kernel_fat_root_size_826940(uint32_t index);
 uint32_t kernel_fat_directory_size_82698c(uint32_t directory, uint32_t index);
 uint32_t kernel_fat_root_attributes_8269a6(uint32_t index);
 uint32_t kernel_fat_directory_attributes_8269f2(uint32_t directory, uint32_t index);
+uint32_t kernel_fat_root_date_826a0e(uint32_t index);
+uint32_t kernel_fat_directory_date_826a5a(uint32_t directory, uint32_t index);
+uint32_t kernel_fat_root_time_826a76(uint32_t index);
+uint32_t kernel_fat_directory_time_826ac2(uint32_t directory, uint32_t index);
+int32_t kernel_fat_root_find_directory_825df4(uint32_t name);
+int32_t kernel_fat_find_directory_825e86(uint32_t directory, uint32_t name);
 #endif

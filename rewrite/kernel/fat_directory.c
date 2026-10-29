@@ -1,5 +1,5 @@
-/* Original directory services at 0x8258a6..0x825df4 and
- * 0x826940..0x826a0e. Retain bytewise alias effects, case-sensitive
+/* Original directory services at 0x8258a6..0x825f48 and
+ * 0x826940..0x826ade. Retain bytewise alias effects, case-sensitive
  * lookup, root-only volume-label status, and extension pointer returns. */
 #include "fat_directory.h"
 #include "helpers.h"
@@ -130,4 +130,57 @@ __attribute__((noinline)) uint32_t kernel_fat_root_attributes_8269a6(uint32_t in
 __attribute__((noinline)) uint32_t kernel_fat_directory_attributes_8269f2(uint32_t directory, uint32_t index)
 {
     return B(directory + (index << 5) + 11u);
+}
+
+uint32_t kernel_fat_root_date_826a0e(uint32_t index)
+{
+    return W(root_record(index) + 24u);
+}
+
+uint32_t kernel_fat_directory_date_826a5a(uint32_t directory, uint32_t index)
+{
+    return W(directory + (index << 5) + 24u);
+}
+
+uint32_t kernel_fat_root_time_826a76(uint32_t index)
+{
+    return W(root_record(index) + 22u);
+}
+
+uint32_t kernel_fat_directory_time_826ac2(uint32_t directory, uint32_t index)
+{
+    return W(directory + (index << 5) + 22u);
+}
+
+int32_t kernel_fat_root_find_directory_825df4(uint32_t name)
+{
+    uint8_t filename[32];
+    for (uint32_t index = 0; (int32_t)index < (int32_t)W(BPB + 17u); ++index) {
+        int32_t status = kernel_fat_root_name_8258a6(index, (uint32_t)(uintptr_t)filename);
+        if (status == 1) {
+            if (kernel_strings_equal((uint32_t)(uintptr_t)filename, name) == 1) {
+                uint8_t attributes = (uint8_t)kernel_fat_root_attributes_8269a6(index);
+                if (attributes & 16u) return (int32_t)index;
+            }
+        } else if (!status) break;
+    }
+    return -1;
+}
+
+int32_t kernel_fat_find_directory_825e86(uint32_t directory, uint32_t name)
+{
+    int32_t bytes = W(BPB + 11u) * B(BPB + 13u);
+    int32_t entries = bytes / 32;
+    uint8_t filename[32];
+    for (uint32_t index = 0; (int32_t)index < entries; ++index) {
+        int32_t status = kernel_fat_directory_name_825a7e(directory, index,
+                                                       (uint32_t)(uintptr_t)filename);
+        if (status == 1) {
+            if (kernel_strings_equal((uint32_t)(uintptr_t)filename, name) == 1) {
+                uint8_t attributes = (uint8_t)kernel_fat_directory_attributes_8269f2(directory, index);
+                if (attributes & 16u) return (int32_t)index;
+            }
+        } else if (!status) break;
+    }
+    return -1;
 }

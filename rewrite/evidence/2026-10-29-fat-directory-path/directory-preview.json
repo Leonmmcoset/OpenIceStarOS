@@ -1,0 +1,81 @@
+{
+  "installed": false,
+  "scenarios": 7187,
+  "executions": 21561,
+  "corpus_directories": 12,
+  "corpus_records": 101,
+  "slots": {
+    "fat_root_name": {
+      "compiled_bytes": 329,
+      "slot_bytes": 472
+    },
+    "fat_directory_name": {
+      "compiled_bytes": 209,
+      "slot_bytes": 334
+    },
+    "fat_root_extension": {
+      "compiled_bytes": 99,
+      "slot_bytes": 122
+    },
+    "fat_directory_extension": {
+      "compiled_bytes": 40,
+      "slot_bytes": 72
+    },
+    "fat_find_relative": {
+      "compiled_bytes": 88,
+      "slot_bytes": 166
+    },
+    "fat_directory_find": {
+      "compiled_bytes": 113,
+      "slot_bytes": 192
+    },
+    "fat_root_size": {
+      "compiled_bytes": 58,
+      "slot_bytes": 76
+    },
+    "fat_directory_size": {
+      "compiled_bytes": 20,
+      "slot_bytes": 26
+    },
+    "fat_root_attributes": {
+      "compiled_bytes": 59,
+      "slot_bytes": 76
+    },
+    "fat_directory_attributes": {
+      "compiled_bytes": 21,
+      "slot_bytes": 28
+    },
+    "fat_root_date": {
+      "compiled_bytes": 59,
+      "slot_bytes": 76
+    },
+    "fat_directory_date": {
+      "compiled_bytes": 21,
+      "slot_bytes": 28
+    },
+    "fat_root_time": {
+      "compiled_bytes": 59,
+      "slot_bytes": 76
+    },
+    "fat_directory_time": {
+      "compiled_bytes": 21,
+      "slot_bytes": 28
+    },
+    "fat_root_find_directory": {
+      "compiled_bytes": 88,
+      "slot_bytes": 146
+    },
+    "fat_find_directory": {
+      "compiled_bytes": 113,
+      "slot_bytes": 194
+    }
+  },
+  "seconds": 25.977,
+  "boundaries": "No callbacks or stubbed services",
+  "scope": "Return values, complete checked memory, ordered service calls, cdecl ABI; bounded record/output aliases",
+  "sha256": {
+    "kernel/fat_directory.c": "6384c6ac4f2ea87e63382999b1d8171ad3374f8538ec08dbfe0c9265c3918881",
+    "kernel/fat_directory.h": "168f6cbad5849602253821330fee68a8f784e3a73d16a1838726a072a164913e",
+    "tests/kernel_fat_directory.py": "13c657371a442fd22c63c362abb052caae695f06ecefd382718ba97436fbc629"
+  }
+}

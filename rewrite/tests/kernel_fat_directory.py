@@ -33,9 +33,20 @@ SLOTS = [
     ('fat_directory_size', 'kernel_fat_directory_size_82698c', 0x82698c, 0x8269a6),
     ('fat_root_attributes', 'kernel_fat_root_attributes_8269a6', 0x8269a6, 0x8269f2),
     ('fat_directory_attributes', 'kernel_fat_directory_attributes_8269f2', 0x8269f2, 0x826a0e),
+    ('fat_root_date', 'kernel_fat_root_date_826a0e', 0x826a0e, 0x826a5a),
+    ('fat_directory_date', 'kernel_fat_directory_date_826a5a', 0x826a5a, 0x826a76),
+    ('fat_root_time', 'kernel_fat_root_time_826a76', 0x826a76, 0x826ac2),
+    ('fat_directory_time', 'kernel_fat_directory_time_826ac2', 0x826ac2, 0x826ade),
+    ('fat_root_find_directory', 'kernel_fat_root_find_directory_825df4', 0x825df4, 0x825e86),
+    ('fat_find_directory', 'kernel_fat_find_directory_825e86', 0x825e86, 0x825f48),
 ]
 BPB, DIRECTORY, NAME, OUTPUT, STACK, STOP = 0x520000, 0x580000, 0x700100, 0x710100, 0x40f000, 0x200000
-ARGC = (2, 3, 2, 3, 1, 2, 1, 2, 1, 2)
+ARGC = (2, 3, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)
+
+
+def describe(case):
+    return {key: f'{value[:32].hex()}... ({len(value)} bytes)' if isinstance(value, bytes) else value
+            for key, value in case.items()}
 
 
 def compile_variants(original, installed):
@@ -144,7 +155,8 @@ class Machine:
         uc.mem_write(NAME, case.get('name', b'FILE.X')+b'\0')
         args = ([index, output], [directory, index, output], [index, output],
                 [directory, index, output], [NAME], [directory, NAME], [index],
-                [directory, index], [index], [directory, index])[function]
+                [directory, index], [index], [directory, index], [index], [directory, index],
+                [index], [directory, index], [NAME], [directory, NAME])[function]
         guard = [0x13579bdf, 0x2468ace0]
         uc.mem_write(STACK, struct.pack(f'<{len(args)+3}I', STOP, *args, *guard))
         saved = [(UC_X86_REG_EBX, 0x12345678), (UC_X86_REG_ESI, 0x87654321),
@@ -153,27 +165,28 @@ class Machine:
                            (UC_X86_REG_ECX, 0x11112222), (UC_X86_REG_EDX, 0x33334444)]:
             uc.reg_write(reg, value)
         uc.emu_start(self.entries[function], STOP+1, count=1000000)
-        assert self.done, (self.label, case)
+        assert self.done, (self.label, describe(case))
         assert uc.reg_read(UC_X86_REG_ESP) == STACK+4
         assert all(uc.reg_read(r) == v for r, v in saved)
         assert bytes(uc.mem_read(STACK+4, len(args)*4+8)) == struct.pack(f'<{len(args)+2}I', *args, *guard)
         result = uc.reg_read(UC_X86_REG_EAX)
         if 'expected_return' in case:
-            assert result == case['expected_return'] & 0xffffffff, (self.label, case, hex(result))
+            assert result == case['expected_return'] & 0xffffffff, (self.label, describe(case), hex(result))
         if 'expected_output' in case:
             expected = case['expected_output']
-            assert bytes(uc.mem_read(output, len(expected))) == expected, (self.label, case)
+            assert bytes(uc.mem_read(output, len(expected))) == expected, (self.label, describe(case))
             assert bytes(uc.mem_read(output+len(expected), 16)) == b'\x96'*16
         if function in (2, 3):
             assert result == output, (self.label, function, hex(result), hex(output), case.get('case'))
         return result, self.trace, bytes(uc.mem_read(0x500000, 0x100000)), bytes(uc.mem_read(0x700000, 0x20000))
 
 
-def entry(name=b'FILE    X  ', attributes=0x20, size=1234):
+def entry(name=b'FILE    X  ', attributes=0x20, size=1234, date=0, time=0):
     assert len(name) == 11
     value = bytearray(32)
     value[:11], value[11] = name, attributes
     struct.pack_into('<I', value, 28, size)
+    struct.pack_into('<HH', value, 22, time, date)
     return bytes(value)
 
 
@@ -215,7 +228,7 @@ def cases(disk, source):
             records_checked += 1
             if record[0] == 0xe5 or record[11] == 0xf: continue
             name = record[:8].rstrip()+ (b'.'+record[8:11].rstrip() if record[8:11].strip() else b'')
-            for function in range(10):
+            for function in range(16):
                 if path != '/' and function % 2 == 0: continue
                 index = offset//32
                 options = dict(index=index, root=data if path == '/' else disk.root,
@@ -227,7 +240,23 @@ def cases(disk, source):
                 elif function in (4, 5):
                     options['expected_return'] = -1 if record[11]&24 else index
                 elif function in (6, 7): options['expected_return'] = struct.unpack_from('<I', record, 28)[0]
-                else: options['expected_return'] = record[11]
+                elif function in (8, 9): options['expected_return'] = record[11]
+                elif function < 14: options['expected_return'] = word(record, 24 if function < 12 else 22)
+                else:
+                    # The corpus has a volume label and a directory both named
+                    # ICESTAR. Lookup must select the first eligible match,
+                    # rather than infer the result from the input's record.
+                    limit = word(options['bpb'], 17) if function == 14 else disk.cluster_bytes//32
+                    matches = []
+                    for candidate_index in range(min(limit, len(data)//32)):
+                        candidate = data[candidate_index*32:(candidate_index+1)*32]
+                        if not candidate[0]: break
+                        if candidate[0] == 0xe5 or candidate[11] == 15: continue
+                        if not candidate[11]&16 or (function == 14 and candidate[11]&8): continue
+                        displayed = candidate[:8].rstrip() + (b'.'+candidate[8:11].rstrip()
+                            if candidate[8:11].strip() else b'')
+                        if displayed == name: matches.append(candidate_index)
+                    options['expected_return'] = matches[0] if matches else -1
                 samples.append(options)
             if not record[11]&24:
                 for name_variant in (name.lower(), name+b'.BAD'):
@@ -290,6 +319,45 @@ def cases(disk, source):
     for bps, spc in ((0, 1), (512, 0), (128, 1), (1024, 16), (65535, 255)):
         samples.append(fixture(5, bps=bps, spc=spc, records=b'',
             directory=entry()+bytes(32), expected_return=-1 if not bps*spc else 0))
+    for function in (10, 11, 12, 13):
+        for value in (0, 1, 0x7fff, 0x8000, 0xfffe, 0xffff):
+            for marker in (0, 0xe5, ord('F')):
+                for attributes in (0, 15, 16, 255):
+                    samples.append(fixture(function, records=entry(bytes([marker])+b'ILE    X  ',
+                        attributes, date=value, time=value), expected_return=value))
+        for index in (0, 1, 7, -1, -0x80000000, 0x08000001):
+            for base in (DIRECTORY, DIRECTORY+3):
+                samples.append(fixture(function, bps=511, directory_base=base, index=index,
+                    direct_record=entry(date=0x1234, time=0xabcd),
+                    expected_return=0x1234 if function < 12 else 0xabcd))
+    for function in (14, 15):
+        for attributes in range(256):
+            accepts = bool(attributes&16) and not (function == 14 and attributes&8)
+            samples.append(fixture(function, records=entry(attributes=attributes)+bytes(32),
+                expected_return=0 if accepts else -1))
+        for prefix in (bytes(32), entry(b'\xe5ILE    X  '), entry(attributes=15),
+                       entry(b'OTHER   X  '), entry(attributes=0), entry(attributes=8)):
+            samples.append(fixture(function, records=prefix+entry(attributes=16)+bytes(32),
+                expected_return=-1 if prefix[0] == 0 else 1))
+        for index in (0, 1, 15, 16, 63, 64):
+            samples.append(fixture(function,
+                records=entry(b'OTHER   X  ')*index+entry(attributes=16)+bytes(32),
+                expected_return=index if index < (64 if function == 14 else 16) else -1))
+        for attributes in (0, 8, 16, 24, 0xff):
+            samples.append(fixture(function, records=entry(attributes=16)+bytes(32),
+                attributes_during_compare=attributes, expected_return=0 if attributes&16 else -1))
+        for bound in (0, 2):
+            samples.append(fixture(function, records=entry(b'OTHER   X  ')+entry(attributes=16)+bytes(32),
+                entries=1, root_bound_during_compare=bound,
+                expected_return=1 if function == 15 or bound == 2 else -1))
+        for name in (b'FILE.X', b'file.x', b'FILE.X.BAD', b''):
+            samples.append(fixture(function, records=entry(attributes=16)+bytes(32), name=name,
+                expected_return=0 if name == b'FILE.X' else -1))
+        samples.append(fixture(function, records=entry(attributes=16)+bytes(32),
+            geometry_during_compare=True, expected_return=0))
+        samples.append(fixture(function, records=entry(b'OTHER   X  ')+entry(attributes=16)+bytes(32),
+            bps=32, spc=1, cluster_bound_during_compare=True,
+            expected_return=1 if function == 14 else -1))
     return samples, records_checked
 
 
@@ -308,7 +376,7 @@ def main():
         expected = machines[0].execute(case)
         for machine in machines[1:]:
             actual = machine.execute(case)
-            assert actual == expected, (index, machine.label, case,
+            assert actual == expected, (index, machine.label, describe(case),
                 [(i, a[:16] if isinstance(a, bytes) else a, b[:16] if isinstance(b, bytes) else b)
                  for i, (a, b) in enumerate(zip(expected, actual)) if a != b])
     summary = dict(installed=arguments.installed, scenarios=len(samples), executions=len(samples)*3,

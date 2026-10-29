@@ -23,7 +23,8 @@ from unicorn.x86_const import (UC_X86_REG_EAX, UC_X86_REG_EBX, UC_X86_REG_ESI,
     UC_X86_REG_ECX, UC_X86_REG_EDX, UC_X86_REG_EFLAGS)
 
 SLOTS = [('fat_find_path', 'kernel_x_find_path_8263c0', 0x8263c0, 0x826940),
-         ('fat_name83', 'kernel_fat_name83_827bba', 0x827bba, 0x827c72)]
+         ('fat_name83', 'kernel_fat_name83_827bba', 0x827bba, 0x827c72),
+         ('fat_find_directory_path', 'kernel_fat_find_directory_path_825f48', 0x825f48, 0x8263c0)]
 EXTERNAL = {'kernel_string_upper_82a531': 0x82a531,
     'kernel_character_upper_82a755': 0x82a755, 'kernel_rep_copy_bytes': 0x817484,
     'kernel_fat_read_alloc_827454': 0x827454, 'kernel_free_allocation': 0x815978}
@@ -31,8 +32,11 @@ BPB, FAT, NAME, OUTPUT, ARENA, STACK, STOP = 0x520000, 0x500000, 0x700100, 0x710
 
 
 def compile_variants(original, installed):
-    obj = BUILD / 'kernel_fat_path_preview.o'
-    run(['gcc', *FLAGS, '-c', 'kernel/fat_path.c', '-o', str(obj)])
+    objects = []
+    for module in ('fat_path', 'fat_directory_path'):
+        obj = BUILD / f'kernel_{module}_preview.o'
+        run(['gcc', *FLAGS, '-c', f'kernel/{module}.c', '-o', str(obj)])
+        objects.append(str(obj))
     variants, sizes = [], {}
     for fixed in (False, True):
         label = 'fixed' if fixed else 'ordinary'
@@ -45,7 +49,7 @@ def compile_variants(original, installed):
             '\n'.join(f'PROVIDE({name} = {address:#x});' for name,address in EXTERNAL.items())+
             '\nSECTIONS {\n'+sections+'\n/DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n'+
             '.unexpected : { *(*) }\nASSERT(SIZEOF(.unexpected)==0,"unexpected section")\n}\n')
-        run(['ld', '-m', 'elf_i386', '-T', str(script), '-o', str(elf), str(obj)])
+        run(['ld', '-m', 'elf_i386', '-T', str(script), '-o', str(elf), *objects])
         symbols = {line.split()[-1]: int(line.split()[0],16)
                    for line in run(['nm', str(elf)],capture_output=True,text=True).stdout.splitlines()}
         candidate = bytearray(original)
@@ -236,6 +240,67 @@ def cases(disk,source):
     for name in (b'.',b'..',b'ABCDEFGH.XYZ',b'ABCDEFGHI.XYZ',b'A.1234567890',b'FOO\\',b'a\x81.x',b'a/b.x'):
         samples.append(synthetic(name,function=1))
     samples.append(synthetic(b'abc',function=1,in_place=True,expected_name83=b'ABC        \0'))
+    # Directory paths use the real parent chain and return its final record,
+    # without reading the final directory's contents.
+    def directory_paths(contents, prefix=(), seen=None):
+        seen = set() if seen is None else seen
+        for offset in range(0, len(contents), 32):
+            item = contents[offset:offset+32]
+            if not item[0]: break
+            if item[0] in (0xe5, 46) or item[11]&8 or not item[11]&16: continue
+            name = item[:8].rstrip()+(b'.'+item[8:11].rstrip() if item[8:11].strip() else b'')
+            path = (*prefix, name)
+            yield b'C:\\'+b'\\'.join(path), item
+            cluster = word(item, 26)
+            assert cluster not in seen
+            seen.add(cluster)
+            data = b''.join(disk.data[o:o+disk.cluster_bytes] for o in disk.chain(cluster))
+            yield from directory_paths(data, path, seen)
+    for path, item in directory_paths(disk.root):
+        depth = path.count(b'\\')
+        for name in (path, path.lower(), path+b'\\'):
+            samples.append(dict(function=2, name=name, bpb=source[17*512:18*512],
+                fat=disk.fat, root=disk.root, disk=source, expected_return=1,
+                expected_record=item, expected_allocations=depth-1, expected_frees=depth-1))
+    for path, item in walk(disk, disk.root):
+        samples.append(dict(function=2, name=path, bpb=source[17*512:18*512],
+            fat=disk.fat, root=disk.root, disk=source, expected_return=0))
+    for name in malformed:
+        samples.append(synthetic(name, function=2))
+    for name in (b'C:', b'C:\\', b'C:EXTRA', b'D:\\A', b'C:/A'):
+        samples.append(synthetic(name, function=2, expected_return=0))
+    for name in (b'C:\\A', b'c:\\a', b'C:EXTRA\\A', b'C:\\A\\'):
+        samples.append(synthetic(name, function=2, expected_return=1,
+            expected_record=record(b'A          ',0x10,5,0), expected_allocations=0, expected_frees=0))
+    for attributes in range(256):
+        samples.append(synthetic(b'C:\\A', function=2, root=record(b'A          ',attributes,5,0),
+            expected_return=1 if attributes&16 else 0))
+    for prefix in (bytes(32),record(b'OTHER      '),record(b'\xe5          ',0x10),record(b'A          ',8)):
+        samples.append(synthetic(b'C:\\A', function=2,
+            root=prefix+record(b'A          ',0x10,5,0), expected_return=0 if prefix[0]==0 else 1))
+    for depth in (1,2,3,10,30,31,32,33):
+        directory=record(b'A          ',0x10,5,0)+bytes(32)
+        for suffix in (b'A', b'MISSING'):
+            loaded=min(depth-1,30)
+            success = suffix == b'A'
+            samples.append(synthetic(b'C:\\'+b'A\\'*(depth-1)+suffix, function=2,
+                directory=directory, expected_return=int(success or depth>31),
+                expected_allocations=loaded, expected_frees=loaded))
+        samples.append(synthetic(b'C:\\'+b'A\\'*(depth-1)+b'A', function=2,
+            directory=directory, free_mutation=True))
+    for fail in (1,2):
+        samples.append(synthetic(b'C:\\A\\A\\A', function=2,
+            directory=record(b'A          ',0x10,5,0)+bytes(32), fail_allocation=fail,
+            expected_return=0))
+    changed=bytearray(record(b'A          ',0x10,5,0)); struct.pack_into('<H',changed,26,7)
+    samples.append(synthetic(b'C:\\A\\A', function=2,
+        directory=record(b'A          ',0x10,5,0)+bytes(32), free_mutation=True,
+        expected_return=1, expected_record=bytes(changed), expected_allocations=1, expected_frees=1))
+    samples.append(synthetic(b'C:\\\x81', function=2,
+        root=record(b'\x81          ',0x10,5), expected_return=0))
+    samples.append(synthetic(b'C:\\A.1234567890', function=2,
+        root=record(b'A       123',0x10), expected_return=1,
+        expected_record=record(b'A       123',0x10)))
     return samples
 
 
@@ -262,7 +327,7 @@ def main():
         boundaries='Only allocation/free and hardware sectors; no pathname/directory callbacks',
         limitations='Original unchecked inputs, leaks and free-before-read ordering retained; unbounded alias/cyclic FAT cases excluded',
         sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
-                for p in ('kernel/fat_path.c','kernel/fat_path.h','tests/kernel_fat_path.py')})
+                for p in ('kernel/fat_path.c','kernel/fat_path.h','kernel/fat_directory_path.c','tests/kernel_fat_path.py')})
     (BUILD/'fat_path_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary,indent=2))
 
