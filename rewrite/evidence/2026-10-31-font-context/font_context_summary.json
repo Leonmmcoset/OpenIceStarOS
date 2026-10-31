@@ -1,0 +1,55 @@
+{
+  "installed": true,
+  "functions": 6,
+  "scenarios": 1747,
+  "executions": 5241,
+  "slots": {
+    "font_context_bounds": {
+      "compiled_bytes": 91,
+      "slot_bytes": 132
+    },
+    "font_context_vertex": {
+      "compiled_bytes": 149,
+      "slot_bytes": 246
+    },
+    "font_context_close": {
+      "compiled_bytes": 112,
+      "slot_bytes": 166
+    },
+    "font_context_move": {
+      "compiled_bytes": 130,
+      "slot_bytes": 184
+    },
+    "font_context_line": {
+      "compiled_bytes": 96,
+      "slot_bytes": 148
+    },
+    "font_context_curve": {
+      "compiled_bytes": 192,
+      "slot_bytes": 228
+    }
+  },
+  "scenarios_by_function": {
+    "font_context_bounds": 324,
+    "font_context_vertex": 457,
+    "font_context_close": 384,
+    "font_context_move": 194,
+    "font_context_line": 194,
+    "font_context_curve": 194
+  },
+  "seconds": 3.171,
+  "checks": [
+    "all touched pages",
+    "caller arguments",
+    "callee-saved registers",
+    "six x87 control words and preserved control",
+    "independent geometry",
+    "output aliases",
+    "wrapped count/coordinates"
+  ],
+  "sha256": {
+    "kernel/font_context.c": "c079763ffbd709db4deb96750f50e40423186f3abfd86ff82dfe7f5713690349",
+    "kernel/font_context.h": "9904322511e83db63509a5a5a85d2b68d50d3e5c27f7c46b2bc4bab203eff001",
+    "tests/kernel_font_context.py": "5fff3dacd7e56da8c924cb38ebdea32029b8fb7cbb3a0b70d8d4244880b986c0"
+  }
+}

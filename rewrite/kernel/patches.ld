@@ -1121,6 +1121,18 @@ SECTIONS
     ASSERT(kernel_fat_find_free_cluster_827ace == 0x827ace && ADDR(.fat_find_free_cluster) + SIZEOF(.fat_find_free_cluster) <= 0x827b44, "fat_find_free_cluster overflow")
     .fat_find_free_after 0x827b44 : { *kernel_fat_slots.o(.text.kernel_fat_find_free_after_827b44) }
     ASSERT(kernel_fat_find_free_after_827b44 == 0x827b44 && ADDR(.fat_find_free_after) + SIZEOF(.fat_find_free_after) <= 0x827bba, "fat_find_free_after overflow")
+    .font_context_bounds 0x82e05c : { *kernel_font_context.o(.text.kernel_font_context_bounds_82e05c) }
+    ASSERT(kernel_font_context_bounds_82e05c == 0x82e05c && SIZEOF(.font_context_bounds) <= 132, "font_context_bounds overflow")
+    .font_context_vertex 0x82e0e0 : { *kernel_font_context.o(.text.kernel_font_context_vertex_82e0e0) }
+    ASSERT(kernel_font_context_vertex_82e0e0 == 0x82e0e0 && SIZEOF(.font_context_vertex) <= 246, "font_context_vertex overflow")
+    .font_context_close 0x82e1d6 : { *kernel_font_context.o(.text.kernel_font_context_close_82e1d6) }
+    ASSERT(kernel_font_context_close_82e1d6 == 0x82e1d6 && SIZEOF(.font_context_close) <= 166, "font_context_close overflow")
+    .font_context_move 0x82e27c : { *kernel_font_context.o(.text.kernel_font_context_move_82e27c) }
+    ASSERT(kernel_font_context_move_82e27c == 0x82e27c && SIZEOF(.font_context_move) <= 184, "font_context_move overflow")
+    .font_context_line 0x82e334 : { *kernel_font_context.o(.text.kernel_font_context_line_82e334) }
+    ASSERT(kernel_font_context_line_82e334 == 0x82e334 && SIZEOF(.font_context_line) <= 148, "font_context_line overflow")
+    .font_context_curve 0x82e3c8 : { *kernel_font_context.o(.text.kernel_font_context_curve_82e3c8) }
+    ASSERT(kernel_font_context_curve_82e3c8 == 0x82e3c8 && SIZEOF(.font_context_curve) <= 228, "font_context_curve overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

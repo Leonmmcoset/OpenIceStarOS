@@ -1,0 +1,56 @@
+{
+  "installed": true,
+  "scenarios": 882,
+  "executions": 2646,
+  "slots": {
+    "x_lba_alloc": {
+      "compiled_bytes": 110,
+      "slot_bytes": 234
+    },
+    "x_lba_into": {
+      "compiled_bytes": 97,
+      "slot_bytes": 216
+    },
+    "fat_sectors_alloc": {
+      "compiled_bytes": 64,
+      "slot_bytes": 84
+    },
+    "fat_read_sectors": {
+      "compiled_bytes": 44,
+      "slot_bytes": 60
+    },
+    "fat_read_partition": {
+      "compiled_bytes": 145,
+      "slot_bytes": 168
+    },
+    "fat_read_root_directory": {
+      "compiled_bytes": 229,
+      "slot_bytes": 250
+    },
+    "fat_alloc_root_directory": {
+      "compiled_bytes": 254,
+      "slot_bytes": 276
+    },
+    "fat_alloc_directory": {
+      "compiled_bytes": 204,
+      "slot_bytes": 234
+    }
+  },
+  "seconds": 4.342,
+  "corpus_paths": 39,
+  "boundary_scope": "Only allocation and ATA single-sector read; nested contiguous readers execute",
+  "checks": [
+    "ordered boundary calls and payloads",
+    "all touched data pages",
+    "return values",
+    "callee-saved registers",
+    "caller argument stack",
+    "signed counts",
+    "divide faults"
+  ],
+  "sha256": {
+    "kernel/fat_block.c": "3b55af9ad958c3ef2aeb5cf7618c1ef2385dc32fc3864e80885d5db495bd045b",
+    "kernel/fat_block.h": "a6072f2292a2b384f7edb7bea5a0eafe33965169e63e955426c90d243d25721f",
+    "tests/kernel_fat_block.py": "d224925fe39deb0f5a3e49aa458c26c6a7d26ac55e461b45dca41be25491049b"
+  }
+}

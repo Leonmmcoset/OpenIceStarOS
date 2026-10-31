@@ -138,6 +138,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_context.o
+KERNEL_PATCHES += $(foreach name,font_context_bounds font_context_vertex font_context_close font_context_move font_context_line font_context_curve,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_cmap.o
 KERNEL_PATCHES += $(BUILD)/kernel.font_cmap.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_font_init.o
@@ -1624,3 +1626,24 @@ $(BUILD)/font_init_guest.x: $(BUILD)/font_init_guest.elf tools/xformat.py
 .PHONY: test-font-init-qemu
 test-font-init-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_init_guest.x
 	python3 tests/kernel_font_init_qemu.py
+
+$(BUILD)/kernel_font_context.o: kernel/font_context.c kernel/font_context.h kernel/font_glyph.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+.PHONY: test-font-context test-font-context-qemu
+test-font-context: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_context.py --installed
+
+verify: test-font-context
+
+$(BUILD)/font_context_guest.o: tests/font_context_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_context_guest.elf: $(BUILD)/font_context_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_context_guest.map -o $@ $<
+
+$(BUILD)/font_context_guest.x: $(BUILD)/font_context_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_context_guest.symbols.json
+
+test-font-context-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_context_guest.x
+	python3 tests/kernel_font_context_qemu.py

@@ -1,0 +1,103 @@
+{
+  "installed": true,
+  "functions": 15,
+  "scenarios": 25225,
+  "executions": 75675,
+  "slots": {
+    "font_vertex": {
+      "compiled_bytes": 41,
+      "slot_bytes": 64
+    },
+    "font_glyph_offset": {
+      "compiled_bytes": 151,
+      "slot_bytes": 274
+    },
+    "font_glyph_box": {
+      "compiled_bytes": 187,
+      "slot_bytes": 250
+    },
+    "font_codepoint_box": {
+      "compiled_bytes": 40,
+      "slot_bytes": 72
+    },
+    "font_glyph_empty": {
+      "compiled_bytes": 85,
+      "slot_bytes": 166
+    },
+    "font_cff_box": {
+      "compiled_bytes": 137,
+      "slot_bytes": 256
+    },
+    "font_kern_length": {
+      "compiled_bytes": 73,
+      "slot_bytes": 122
+    },
+    "font_kern_table": {
+      "compiled_bytes": 158,
+      "slot_bytes": 336
+    },
+    "font_legacy_kern": {
+      "compiled_bytes": 160,
+      "slot_bytes": 270
+    },
+    "font_coverage": {
+      "compiled_bytes": 208,
+      "slot_bytes": 406
+    },
+    "font_class": {
+      "compiled_bytes": 218,
+      "slot_bytes": 358
+    },
+    "font_gpos_kern": {
+      "compiled_bytes": 623,
+      "slot_bytes": 1054
+    },
+    "font_glyph_kern": {
+      "compiled_bytes": 58,
+      "slot_bytes": 102
+    },
+    "font_codepoint_kern": {
+      "compiled_bytes": 60,
+      "slot_bytes": 104
+    },
+    "font_codepoint_metrics": {
+      "compiled_bytes": 37,
+      "slot_bytes": 58
+    }
+  },
+  "scenarios_by_function": {
+    "font_vertex": 100,
+    "font_glyph_offset": 5775,
+    "font_glyph_box": 5809,
+    "font_codepoint_box": 340,
+    "font_glyph_empty": 5579,
+    "font_cff_box": 64,
+    "font_kern_length": 13,
+    "font_kern_table": 103,
+    "font_legacy_kern": 869,
+    "font_coverage": 1570,
+    "font_class": 1570,
+    "font_gpos_kern": 1007,
+    "font_glyph_kern": 1001,
+    "font_codepoint_kern": 385,
+    "font_codepoint_metrics": 1040
+  },
+  "seconds": 41.754,
+  "boundary_scope": "All helpers execute; original CFF Type-2 interpreter remains a dependency",
+  "checks": [
+    "independent complete Fira loca/glyf header expectations",
+    "synthetic legacy/GPOS independent advances",
+    "output aliases and signed boundaries",
+    "caller arguments",
+    "callee-saved registers",
+    "all touched data pages"
+  ],
+  "sha256": {
+    "kernel/font_glyph.c": "59920c020e7bf27be40c585a5a539e744455942d08be583d3a8dc26df3d747c5",
+    "kernel/font_glyph.h": "848fc0a60b417651de2838c635eb4bb8f3b190681216a82e1cf53b1d5794b3c8",
+    "kernel/font_kern.c": "7c07cab0a00fc5ec63ce3a7bfe64da3762fec7ba5fe08b43da526c9654e02bfc",
+    "kernel/font_kern.h": "f15d551ef25016894963cfb00da3730e4273bb1803c34bd35370643634c58cf7",
+    "tests/kernel_font_glyph.py": "422b027f02a9737eb4cd56f671804bace367f7a256dd0b380e140f6d4016c208",
+    "tests/kernel_font_cmap.py": "9e1ebca9376eb9dffef4b52b51f43fc05bf3cad2418e47056fb627f6532545ea"
+  }
+}

@@ -1,4 +1,4 @@
-"""Exercise all recovered font parsers and original full font init in QEMU."""
+"""Exercise recovered font parsers and full font initialization in QEMU."""
 import hashlib
 import json
 from pathlib import Path
@@ -16,7 +16,7 @@ STARTS=[0x82b838,0x82b86e,0x82b8a2,0x82b8de,0x82b8fe,0x82b946,0x82b962,
     0x82c196,0x82c232,0x82c34c,0x82c3bc,0x82ca7c]
 NAMES=['get8','peek8','seek','skip','getn','buffer','range','cff_index','cff_int',
     'cff_skip','cff_dict','cff_ints','cff_count','cff_item','u16','s16','u32',
-    's32','signature','table','offset','count','cff_subrs','svg','original_full_init']
+    's32','signature','table','offset','count','cff_subrs','svg','full_font_init']
 ENTRIES=list(zip(NAMES,STARTS,STARTS[1:]))
 
 
@@ -53,7 +53,7 @@ def main():
             (Path(__file__),ROOT/'tests/font_parse_guest.c',ROOT/'tests/kernel_fat_mutation_qemu.py')},
         complete_os_recovery=False)
     (BUILD/'font_parse_qemu_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
-    print('All 24 font parsers and original full Fira initialization executed; independent report and unchanged disks verified.')
+    print('All 24 font parsers and full Fira initialization executed; independent report and unchanged disks verified.')
 
 
 if __name__=='__main__':main()

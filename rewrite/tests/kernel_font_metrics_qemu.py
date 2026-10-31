@@ -20,8 +20,8 @@ ENTRIES=[
     ('svg_record',0x83077c,0x83081c),
     ('glyph_svg',0x83081c,0x8308a0),
     ('codepoint_svg',0x8308a0,0x8308d2),
-    ('original_full_init',0x82c3bc,0x82ca7c),
-    ('original_cmap_lookup',0x82ca7c,0x82cede),
+    ('full_font_init',0x82c3bc,0x82ca7c),
+    ('cmap_lookup',0x82ca7c,0x82cede),
 ]
 
 
