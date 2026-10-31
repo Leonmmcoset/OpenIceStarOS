@@ -1,8 +1,8 @@
-"""Differentially execute the recovered contiguous FAT sector reader.
+"""Differentially execute the recovered contiguous FAT sector writer.
 
 The original ATA one-sector routine is intercepted at its real entry so the
 tests compare the original body, ordinary linked C, and the fixed-address C
-replacement without requiring privileged I/O.  The reader's unsigned end
+replacement without requiring privileged I/O.  The writer's unsigned end
 calculation, live BPB stride, exact call order, ignored helper return value,
 and cdecl register/stack contract are exercised.
 """
@@ -24,10 +24,11 @@ from unicorn.x86_const import (UC_X86_REG_EAX, UC_X86_REG_EBX, UC_X86_REG_ECX,
     UC_X86_REG_EDX, UC_X86_REG_ESI, UC_X86_REG_EDI, UC_X86_REG_EBP,
     UC_X86_REG_ESP, UC_X86_REG_EIP)
 
-SLOT = ("fat_read_sectors", "kernel_fat_read_sectors_827c72", 0x827c72, 0x827cc3)
+SLOT = ("fat_write_sectors", "kernel_fat_write_sectors_827c72", 0x827c72, 0x827cc3)
 HELPER = 0x828c18
 BASE, BPB, DEST, STACK, STOP = 0x800000, 0x520000, 0x610000, 0x40f000, 0x200000
 
+SOURCE_BYTES = bytes((index * 11 + (index >> 8) * 7) & 255 for index in range(0x200000))
 
 def compile_variants(original, installed):
     obj = BUILD / "kernel_fat_io_preview.o"
@@ -46,7 +47,7 @@ def compile_variants(original, installed):
             sections = ". = 0x300000; .text : { *(.text*) }"
         script.write_text(
             "OUTPUT_FORMAT(\"elf32-i386\")\nENTRY(" + SLOT[1] + ")\n"
-            f"PROVIDE(kernel_fat_read_sector_828c18 = {HELPER:#x});\n"
+            f"PROVIDE(kernel_fat_write_sector_828c18 = {HELPER:#x});\n"
             "SECTIONS {\n" + sections +
             "\n/DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }\n"
             ".unexpected : { *(*) }\n"
@@ -55,7 +56,7 @@ def compile_variants(original, installed):
         symbols = {line.split()[-1]: int(line.split()[0], 16)
                    for line in run(["nm", str(elf)], capture_output=True, text=True).stdout.splitlines()}
         if fixed:
-            path = BUILD / "fat_io_preview.fat_read_sectors.bin"
+            path = BUILD / "fat_io_preview.fat_write_sectors.bin"
             run(["objcopy", "-O", "binary", "-j", "." + SLOT[0], str(elf), str(path)])
             body = path.read_bytes()
             assert 0 < len(body) <= SLOT[3] - SLOT[2]
@@ -91,11 +92,9 @@ class Machine:
 
     def sector(self, uc, address, size, unused):
         sp = uc.reg_read(UC_X86_REG_ESP)
-        lba, destination = struct.unpack("<2I", uc.mem_read(sp + 4, 8))
-        self.trace.append((lba, destination))
-        payload = bytes(((lba * 37 + index * 11 + len(self.trace)) & 255)
-                        for index in range(512))
-        uc.mem_write(destination, payload)
+        lba, source = struct.unpack("<2I", uc.mem_read(sp + 4, 8))
+        self.trace.append((lba, source))
+        self.payloads.append(bytes(uc.mem_read(source, 512)))
         if self.case.get("bpb_mutation") and len(self.trace) == 1:
             uc.mem_write(BPB + 11, struct.pack("<H", self.case["mutated_bps"]))
         uc.reg_write(UC_X86_REG_EAX, self.case.get("helper_eax", 0xdeadbeef))
@@ -105,14 +104,14 @@ class Machine:
         uc.reg_write(UC_X86_REG_EIP, struct.unpack("<I", uc.mem_read(sp, 4))[0])
 
     def execute(self, case):
-        self.case, self.done, self.trace = case, False, []
+        self.case, self.done, self.trace, self.payloads = case, False, [], []
         uc = self.uc
         uc.mem_write(0, bytes(0x20000))
         uc.mem_write(BPB, bytes(512))
-        uc.mem_write(DEST - 0x1000, bytes(0x5000))
+        uc.mem_write(0x600000, SOURCE_BYTES)
         struct.pack_into("<H", (bpb := bytearray(512)), 11, case["bps"])
         uc.mem_write(BPB, bytes(bpb))
-        args = (case["lba"], case["destination"], case["count"])
+        args = (case["lba"], case["source"], case["count"])
         uc.mem_write(STACK, struct.pack("<4I", STOP, *args))
         saved = [(UC_X86_REG_EBX, 0x12345678), (UC_X86_REG_ESI, 0x87654321),
                  (UC_X86_REG_EDI, 0xABCDEF12), (UC_X86_REG_EBP, 0x11223344)]
@@ -126,8 +125,9 @@ class Machine:
         assert all(uc.reg_read(reg) == value for reg, value in saved), "callee-saved register changed"
         assert uc.mem_read(STACK + 4, 12) == struct.pack("<3I", *args)
         # The helper intentionally changes caller-clobbered registers; the
-        # recovered reader must not make a contract out of its return value.
-        return self.trace, bytes(uc.mem_read(DEST - 0x1000, 0x5000))
+        # recovered writer must not make a contract out of its return value.
+        assert bytes(uc.mem_read(0x600000, len(SOURCE_BYTES))) == SOURCE_BYTES, "writer changed source"
+        return self.trace, self.payloads
 
 
 def cases():
@@ -136,13 +136,13 @@ def cases():
         for lba in (0, 1, 29, 0x7fffffff):
             for count in (0, 1, 2, 3, 16):
                 values.append(dict(bps=bps, lba=lba, count=count,
-                                   destination=DEST + (lba & 7) * 0x4000))
+                                   source=DEST + (lba & 7) * 0x4000))
     # A wrapped end is below the starting LBA, so the original unsigned loop
     # performs no I/O.  Keep these explicit to prevent accidental saturation.
     for lba, count in ((0xffffffff, 1), (0xfffffff0, 0x20), (0xfffffffe, 3)):
-        values.append(dict(bps=512, lba=lba, count=count, destination=DEST))
+        values.append(dict(bps=512, lba=lba, count=count, source=DEST))
     for mutated in (128, 256, 1024, 0xffff):
-        values.append(dict(bps=512, lba=17, count=5, destination=DEST,
+        values.append(dict(bps=512, lba=17, count=5, source=DEST,
                            bpb_mutation=True, mutated_bps=mutated,
                            helper_eax=0x01020304))
     return values
@@ -160,13 +160,21 @@ def main():
     specs = [("original", original, BASE, SLOT[2]), *variants]
     machines = [Machine(*spec) for spec in specs]
     all_cases = cases()
+    calls = 0
     for number, case in enumerate(all_cases):
         expected = machines[0].execute(case)
+        end = (case["lba"] + case["count"]) & 0xffffffff
+        stride = case.get("mutated_bps", case["bps"])
+        addresses = [(lba, case["source"] + index * stride)
+                     for index, lba in enumerate(range(case["lba"], end))]
+        assert expected[0] == addresses
+        assert expected[1] == [SOURCE_BYTES[p-0x600000:p-0x600000+512] for _, p in addresses]
+        calls += len(addresses)
         for machine in machines[1:]:
             actual = machine.execute(case)
             assert actual == expected, (number, case, machine.label, expected[0], actual[0])
     summary = dict(installed=args.installed, scenarios=len(all_cases), executions=len(all_cases)*3,
-                   calls=sum(len(machines[0].execute(c)[0]) for c in all_cases), slots=sizes,
+                   calls=calls, slots=sizes,
                    seconds=round(time.monotonic() - started, 3),
                    sha256={path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
                            for path in ("kernel/fat_io.c", "kernel/fat_io.h", "tests/kernel_fat_io.py")})

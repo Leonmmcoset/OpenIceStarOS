@@ -5263,11 +5263,11 @@ result are preserved. The installed differential suite passes 208 scenarios /
 declared intervals; this is a focused recovery step and the complete OS
 rewrite remains unfinished.
 
-### FAT contiguous-sector reader (2026-10-31)
+### FAT contiguous-sector writer (2026-10-31)
 
-The contiguous reader at `0x827c72` is now recovered in `kernel/fat_io.c`.
+The contiguous writer at `0x827c72` is now recovered in `kernel/fat_io.c`.
 It preserves the original wrapped end calculation, unsigned loop condition,
-live bytes-per-sector stride, one-sector ATA call sequence, ignored hardware
+live bytes-per-sector stride, one-sector ATA write sequence, ignored hardware
 return value, and cdecl contract. `tests/kernel_fat_io.py` compares original
 x86, ordinary C, and fixed-address C across 127 scenarios and 381 executions;
 the installed run passes and the 50-byte body fits its 81-byte slot. See

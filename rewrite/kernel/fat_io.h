@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void kernel_fat_read_sectors_827c72(uint32_t lba, uint32_t destination,
+void kernel_fat_write_sectors_827c72(uint32_t lba, uint32_t source,
                                     uint32_t count);
 
 #endif

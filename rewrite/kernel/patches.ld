@@ -34,7 +34,7 @@ PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
 PROVIDE(kernel_fat_read_sectors_8254ca = 0x8254ca);
 PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
-PROVIDE(kernel_fat_read_sector_828c18 = 0x828c18);
+PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -951,8 +951,8 @@ SECTIONS
     ASSERT(kernel_x_find_path_8263c0 == 0x8263c0 && ADDR(.fat_find_path) + SIZEOF(.fat_find_path) <= 0x826940, "fat_find_path overflow")
     .fat_name83 0x827bba : { *kernel_fat_path.o(.text.kernel_fat_name83_827bba) }
     ASSERT(kernel_fat_name83_827bba == 0x827bba && ADDR(.fat_name83) + SIZEOF(.fat_name83) <= 0x827c72, "fat_name83 overflow")
-    .fat_read_sectors 0x827c72 : { *kernel_fat_io.o(.text.kernel_fat_read_sectors_827c72) }
-    ASSERT(kernel_fat_read_sectors_827c72 == 0x827c72 && ADDR(.fat_read_sectors) + SIZEOF(.fat_read_sectors) <= 0x827cc3, "fat_read_sectors overflow")
+    .fat_write_sectors 0x827c72 : { *kernel_fat_io.o(.text.kernel_fat_write_sectors_827c72) }
+    ASSERT(kernel_fat_write_sectors_827c72 == 0x827c72 && ADDR(.fat_write_sectors) + SIZEOF(.fat_write_sectors) <= 0x827cc3, "fat_write_sectors overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }
     ASSERT(kernel_x_read_relative_826ade == 0x826ade && ADDR(.fat_relative_read) + SIZEOF(.fat_relative_read) <= 0x826c3a, "fat_relative_read overflow")
     .fat_relative_named 0x826c3a : { *kernel_fat_relative.o(.text.kernel_fat_read_relative_named_826c3a) }
