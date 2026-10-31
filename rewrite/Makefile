@@ -140,6 +140,8 @@ KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BU
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_cmap.o
 KERNEL_PATCHES += $(BUILD)/kernel.font_cmap.bin
+KERNEL_OBJECTS += $(BUILD)/kernel_font_glyph.o $(BUILD)/kernel_font_kern.o
+KERNEL_PATCHES += $(foreach name,font_vertex font_glyph_offset font_glyph_box font_codepoint_box font_glyph_empty font_cff_box font_kern_length font_kern_table font_legacy_kern font_coverage font_class font_gpos_kern font_glyph_kern font_codepoint_kern font_codepoint_metrics,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_metrics.o
 KERNEL_PATCHES += $(foreach name,font_hmetrics font_vmetrics font_typo_metrics font_bounds font_scale_height font_scale_em font_svg_record font_glyph_svg font_codepoint_svg,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_parse.o
@@ -363,6 +365,12 @@ $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_font_cmap.o: kernel/font_cmap.c kernel/font_cmap.h kernel/font_parse.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_font_glyph.o: kernel/font_glyph.c kernel/font_glyph.h kernel/font_cmap.h kernel/font_parse.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_font_kern.o: kernel/font_kern.c kernel/font_kern.h kernel/font_cmap.h kernel/font_metrics.h kernel/font_parse.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_font_metrics.o: kernel/font_metrics.c kernel/font_metrics.h kernel/font_parse.h Makefile | $(BUILD)
@@ -1573,3 +1581,22 @@ $(BUILD)/font_cmap_guest.x: $(BUILD)/font_cmap_guest.elf tools/xformat.py
 .PHONY: test-font-cmap-qemu
 test-font-cmap-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_cmap_guest.x
 	python3 tests/kernel_font_cmap_qemu.py
+
+.PHONY: test-font-glyph
+test-font-glyph: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_glyph.py --installed
+
+verify: test-font-glyph
+
+$(BUILD)/font_glyph_guest.o: tests/font_glyph_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_glyph_guest.elf: $(BUILD)/font_glyph_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_glyph_guest.map -o $@ $<
+
+$(BUILD)/font_glyph_guest.x: $(BUILD)/font_glyph_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_glyph_guest.symbols.json
+
+.PHONY: test-font-glyph-qemu
+test-font-glyph-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_glyph_guest.x
+	python3 tests/kernel_font_glyph_qemu.py

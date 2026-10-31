@@ -5391,3 +5391,16 @@ QEMU guests also match independent real-font and synthetic-format results;
 complete temporary disks remain unchanged. Parser/metrics/FAT/X-loader
 regressions and installers pass. See [recovery/FONT_CMAP.md](recovery/FONT_CMAP.md).
 Full regression and complete OS recovery remain unfinished.
+
+### Glyph bounds and kerning (2026-10-31)
+
+Fifteen more entries now execute C for vertex fields, TrueType glyph offsets,
+glyph/codepoint bounds and metrics, empty glyphs, CFF bounds context handling,
+legacy kern table access and GPOS pair positioning. The kernel installs 455
+intervals. Differential comparison passes 25,225 scenarios / 75,675 executions,
+including independent expectations for all 5,565 Fira glyphs. Original/C QEMU
+guests execute all fifteen entries, match independently specified reports and
+leave complete temporary disks unchanged. Focused regressions and installers
+pass. See [recovery/FONT_GLYPH.md](recovery/FONT_GLYPH.md). The CFF Type-2
+interpreter and outline/rasterization paths still contain original code;
+full regression and complete OS recovery remain unfinished.

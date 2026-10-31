@@ -1,0 +1,9 @@
+RAM probe detected 134217728 bytes; 59 live heap headers verified
+Advancing timer and real TSS switches verified through suspended C scheduler stacks
+Input state: {"pointer_initial": [500, 372], "pointer_cmd_icon": [45, 282], "cmd_code_candidates": ["0x44a9010"], "keyboard_queue_before": [1, 1, 0, 2048], "keyboard_queue_after": [11, 11, 0, 2048], "cmd_input": "cpuid", "cmd_cursor_before_return": [9, 1], "cmd_cursor_after_return": [4, 3]}
+Mouse position, relocated CMD, input text, queue consumption, and prompt return verified
+Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked
+C CLOCK loaded; 24 relocations, face/labels, three changing frames, PS/2 close, task exit and CMD reuse verified
+QEMU snapshot boot captured; all fixed-address C patches match guest memory
+Screenshot: /root/IceStarOS-x86-Decompile/rewrite/build/boot_openicestaros.png
+Desktop appearance still requires visual inspection; this is not a full OS test

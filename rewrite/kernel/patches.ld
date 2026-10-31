@@ -841,6 +841,37 @@ SECTIONS
     ASSERT(kernel_font_codepoint_svg_8308a0 == 0x8308a0 && SIZEOF(.font_codepoint_svg) <= 50, "font_codepoint_svg overflow")
     .font_cmap 0x82ca7c : { *kernel_font_cmap.o(.text.kernel_font_glyph_index_82ca7c) }
     ASSERT(kernel_font_glyph_index_82ca7c == 0x82ca7c && SIZEOF(.font_cmap) <= 1122, "font cmap overflow")
+    PROVIDE(kernel_font_charstring_82e6f0 = 0x82e6f0);
+    .font_vertex 0x82cf10 : { *kernel_font_glyph.o(.text.kernel_font_vertex_82cf10) }
+    ASSERT(kernel_font_vertex_82cf10 == 0x82cf10 && SIZEOF(.font_vertex) <= 64, "font_vertex overflow")
+    .font_glyph_offset 0x82cf50 : { *kernel_font_glyph.o(.text.kernel_font_glyph_offset_82cf50) }
+    ASSERT(kernel_font_glyph_offset_82cf50 == 0x82cf50 && SIZEOF(.font_glyph_offset) <= 274, "font_glyph_offset overflow")
+    .font_glyph_box 0x82d062 : { *kernel_font_glyph.o(.text.kernel_font_glyph_box_82d062) }
+    ASSERT(kernel_font_glyph_box_82d062 == 0x82d062 && SIZEOF(.font_glyph_box) <= 250, "font_glyph_box overflow")
+    .font_codepoint_box 0x82d15c : { *kernel_font_glyph.o(.text.kernel_font_codepoint_box_82d15c) }
+    ASSERT(kernel_font_codepoint_box_82d15c == 0x82d15c && SIZEOF(.font_codepoint_box) <= 72, "font_codepoint_box overflow")
+    .font_glyph_empty 0x82d1a4 : { *kernel_font_glyph.o(.text.kernel_font_glyph_empty_82d1a4) }
+    ASSERT(kernel_font_glyph_empty_82d1a4 == 0x82d1a4 && SIZEOF(.font_glyph_empty) <= 166, "font_glyph_empty overflow")
+    .font_cff_box 0x82f80a : { *kernel_font_glyph.o(.text.kernel_font_cff_box_82f80a) }
+    ASSERT(kernel_font_cff_box_82f80a == 0x82f80a && SIZEOF(.font_cff_box) <= 256, "font_cff_box overflow")
+    .font_kern_length 0x82fa50 : { *kernel_font_kern.o(.text.kernel_font_kern_length_82fa50) }
+    ASSERT(kernel_font_kern_length_82fa50 == 0x82fa50 && SIZEOF(.font_kern_length) <= 122, "font_kern_length overflow")
+    .font_kern_table 0x82faca : { *kernel_font_kern.o(.text.kernel_font_kern_table_82faca) }
+    ASSERT(kernel_font_kern_table_82faca == 0x82faca && SIZEOF(.font_kern_table) <= 336, "font_kern_table overflow")
+    .font_legacy_kern 0x82fc1a : { *kernel_font_kern.o(.text.kernel_font_legacy_kern_82fc1a) }
+    ASSERT(kernel_font_legacy_kern_82fc1a == 0x82fc1a && SIZEOF(.font_legacy_kern) <= 270, "font_legacy_kern overflow")
+    .font_coverage 0x82fd28 : { *kernel_font_kern.o(.text.kernel_font_coverage_82fd28) }
+    ASSERT(kernel_font_coverage_82fd28 == 0x82fd28 && SIZEOF(.font_coverage) <= 406, "font_coverage overflow")
+    .font_class 0x82febe : { *kernel_font_kern.o(.text.kernel_font_class_82febe) }
+    ASSERT(kernel_font_class_82febe == 0x82febe && SIZEOF(.font_class) <= 358, "font_class overflow")
+    .font_gpos_kern 0x830024 : { *kernel_font_kern.o(.text.kernel_font_gpos_kern_830024) }
+    ASSERT(kernel_font_gpos_kern_830024 == 0x830024 && SIZEOF(.font_gpos_kern) <= 1054, "font_gpos_kern overflow")
+    .font_glyph_kern 0x830442 : { *kernel_font_kern.o(.text.kernel_font_glyph_kern_830442) }
+    ASSERT(kernel_font_glyph_kern_830442 == 0x830442 && SIZEOF(.font_glyph_kern) <= 102, "font_glyph_kern overflow")
+    .font_codepoint_kern 0x8304a8 : { *kernel_font_kern.o(.text.kernel_font_codepoint_kern_8304a8) }
+    ASSERT(kernel_font_codepoint_kern_8304a8 == 0x8304a8 && SIZEOF(.font_codepoint_kern) <= 104, "font_codepoint_kern overflow")
+    .font_codepoint_metrics 0x830510 : { *kernel_font_kern.o(.text.kernel_font_codepoint_metrics_830510) }
+    ASSERT(kernel_font_codepoint_metrics_830510 == 0x830510 && SIZEOF(.font_codepoint_metrics) <= 58, "font_codepoint_metrics overflow")
     .identity_paging 0x837448 : SUBALIGN(1) {
         *kernel_paging.o(.text.kernel_init_identity_paging)
         *kernel_paging.o(.text.build_identity_tables)
