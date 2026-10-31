@@ -1,0 +1,73 @@
+{
+  "source_commit": "61847e4247fdf3ae455a9f2159a1ab3e94c88acf",
+  "installed_intervals": 406,
+  "exact_instruction_intervals": 77,
+  "checks": {
+    "fat_block_native": "882 scenarios / 2646 executions; original, ordinary C, installed C",
+    "original_and_recovered_qemu": "All eight entries/body executed with real ATA; independent payload hashes; zero changed disk bytes",
+    "kernel_installation": "Only compiled boot stages and declared kernel slots changed",
+    "application_installation": "Only declared application extents changed",
+    "inventory": "39 program paths; 5 rebuilt, 2 partial, 32 unrecovered",
+    "production_boot": "CLOCK load/animation/close/task exit/CMD reuse; PS/2 CMD cpuid; all 406 slots match memory",
+    "memory": "134217728 bytes; 59 live heap headers",
+    "tasks": "Advancing timer and real TSS switches via suspended C scheduler stacks",
+    "visual": "clock_sample.png inspected: desktop, clock face, labels and hands render"
+  },
+  "focused_regressions": {
+    "fat_files": {
+      "scenarios": 2422,
+      "executions": 7266,
+      "installed": true
+    },
+    "fat_path": {
+      "scenarios": 758,
+      "executions": 2274,
+      "installed": true
+    },
+    "fat_directory": {
+      "scenarios": 7187,
+      "executions": 21561,
+      "installed": true
+    },
+    "fat_write": {
+      "scenarios": 846,
+      "executions": 2538,
+      "installed": true
+    },
+    "fat_mutation": {
+      "scenarios": 472,
+      "executions": 1416,
+      "installed": true
+    },
+    "fat_metadata": {
+      "scenarios": 1924,
+      "executions": 5772,
+      "installed": true
+    },
+    "fat_io": {
+      "scenarios": 127,
+      "executions": 381,
+      "installed": true
+    },
+    "fat_slots": {
+      "scenarios": 208,
+      "executions": 624,
+      "installed": true
+    },
+    "x_loader_installed": {
+      "scenarios": 430,
+      "executions": 1290,
+      "installed": true
+    }
+  },
+  "sha256": {
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+    "rewrite/kernel/patches.json": "55f98f5e2234a9489e650aa5ddffaa9dd6f70c794ea0886ab7922f5a6f405d4e",
+    "rewrite/build/openicestaros_kernel.x": "f8a226961fea0a0e15bde1bb4d3ee8fbef7e83fb4a24c8a8f0c5032830a64e70",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "71ef4760d75d9469240ddf30fa5f4c81c3dbe9c07d2bfdec7fced9eb953917c7",
+    "rewrite/build/clock_sample.png": "9e5af7ff65bc7696f0794a17c69dc266ebe46723d8922721c6a8aeb5c5aebda8"
+  },
+  "full_make_verify_run": false,
+  "complete_os_recovery": false,
+  "limits": "Fixtures and focused regressions only; unrecovered original code remains required, including ATA hardware entries."
+}

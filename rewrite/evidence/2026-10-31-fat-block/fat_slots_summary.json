@@ -1,0 +1,35 @@
+{
+  "installed": true,
+  "scenarios": 208,
+  "executions": 624,
+  "functions": [
+    "0x82798c",
+    "0x827a40",
+    "0x827ace",
+    "0x827b44"
+  ],
+  "slots": {
+    "fat_root_empty": {
+      "compiled_bytes": 117,
+      "slot_bytes": 180
+    },
+    "fat_directory_empty": {
+      "compiled_bytes": 70,
+      "slot_bytes": 142
+    },
+    "fat_find_free_cluster": {
+      "compiled_bytes": 68,
+      "slot_bytes": 118
+    },
+    "fat_find_free_after": {
+      "compiled_bytes": 66,
+      "slot_bytes": 118
+    }
+  },
+  "seconds": 0.404,
+  "sha256": {
+    "kernel/fat_slots.c": "0fda0c7d7f80790ff75b579f145d9eb29bb1b41b2e069cd9e835fa20fcf5e177",
+    "kernel/fat_slots.h": "229542d0b52b7503405cf056a51f8c2777f5f28c5bf064d26adb7fff21d8f767",
+    "tests/kernel_fat_slots.py": "8056e18416331dcea2058c1da5ce716180b099732cddf5dfed43ae11ce43482f"
+  }
+}

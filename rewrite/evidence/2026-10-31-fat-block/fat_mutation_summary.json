@@ -1,0 +1,31 @@
+{
+  "installed": true,
+  "scenarios": 472,
+  "executions": 1416,
+  "corpus_paths": 39,
+  "slots": {
+    "fat_release_root_chain": {
+      "compiled_bytes": 189,
+      "slot_bytes": 290
+    },
+    "fat_release_record_chain": {
+      "compiled_bytes": 127,
+      "slot_bytes": 236
+    },
+    "fat_delete_root": {
+      "compiled_bytes": 85,
+      "slot_bytes": 138
+    },
+    "fat_delete_relative": {
+      "compiled_bytes": 30,
+      "slot_bytes": 54
+    }
+  },
+  "seconds": 8.655,
+  "scope": "Only pathname lookup and metadata flush are intercepted.",
+  "sha256": {
+    "kernel/fat_mutation.c": "9a052108931114d6127623c2e127b3c0000d986c776976c073514266fc45bd4f",
+    "kernel/fat_mutation.h": "2394bdefb2ecff4455cd2777eb2473e2dd872ba4590982970e9ca8f6b4afc92c",
+    "tests/kernel_fat_mutation.py": "6dd1d64e4f079a7af92188495e1c2a4f12acacb37fd57761e0e0c352c428f0f9"
+  }
+}

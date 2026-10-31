@@ -1,0 +1,18 @@
+{
+  "installed": true,
+  "scenarios": 127,
+  "executions": 381,
+  "calls": 548,
+  "slots": {
+    "fat_write_sectors": {
+      "compiled_bytes": 50,
+      "slot_bytes": 81
+    }
+  },
+  "seconds": 1.229,
+  "sha256": {
+    "kernel/fat_io.c": "ab597345ef5a7d26b08891f80e16f8290eb4b68db9619ca904882850375cd3c5",
+    "kernel/fat_io.h": "7310ac60d9130077308a8ff78d5bb5352ad049bde4cfca56d3227e2d55698b21",
+    "tests/kernel_fat_io.py": "d74b0775cee2bf5825a609b4e7e6c8fafc87d8d636dfabe6ce4236db54fe16f9"
+  }
+}

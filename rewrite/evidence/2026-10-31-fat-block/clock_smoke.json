@@ -1,0 +1,191 @@
+{
+  "image": "/root/IceStarOS-x86-Decompile/rewrite/build/OpenIceStarOS_c_apps.vhd",
+  "cmd_base": "0x44a9810",
+  "base": "0x460d010",
+  "binary_sha256": "70a2e9ba6483f825909eab030364804863d2ecb2f60045bf561c1ef4ea72aedf",
+  "relocations_verified": 24,
+  "state": [
+    "0x4432010",
+    7,
+    10,
+    0
+  ],
+  "close_callback": "0x460d154",
+  "task": 5,
+  "task_active_before_close": 2,
+  "geometry": [
+    200,
+    100,
+    400,
+    380
+  ],
+  "foreground": [
+    255,
+    0,
+    0
+  ],
+  "background": [
+    198,
+    198,
+    198
+  ],
+  "samples": [
+    {
+      "time": "0x7163457",
+      "signature": "16b9158c6328bcf8c1f115876f932e6d15a7c33d72d7bc95dd74c8b4431ab028",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        32,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 167,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x7163457",
+      "signature": "16b9158c6328bcf8c1f115876f932e6d15a7c33d72d7bc95dd74c8b4431ab028",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        32,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 167,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x7163458",
+      "signature": "1e19c4f1d13be71d483f86019c08d4636f41003ea76c0f1404ed6bce47ba97b1",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        32,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 166,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x7163458",
+      "signature": "1e19c4f1d13be71d483f86019c08d4636f41003ea76c0f1404ed6bce47ba97b1",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        32,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 166,
+      "background": 400,
+      "complete": true
+    },
+    {
+      "time": "0x7163459",
+      "signature": "e904a1fd83af61955667ccc938af73f74f9d02b2781fdefb2409671a69066983",
+      "rim": [
+        27,
+        27,
+        27,
+        27
+      ],
+      "labels": [
+        59,
+        27,
+        32,
+        32,
+        34,
+        34,
+        36,
+        32,
+        43,
+        35,
+        71,
+        54
+      ],
+      "center": 165,
+      "background": 400,
+      "complete": true
+    }
+  ],
+  "complete_distinct_frames": 3,
+  "distinct_times": 3,
+  "pointer_close_button": [
+    587,
+    112
+  ],
+  "window_pool_after_close": "0x0",
+  "task_active_after_close": 0,
+  "pointer_cmd_taskbar": [
+    125,
+    754
+  ],
+  "cmd_cursor_after_close": [
+    [
+      11,
+      7
+    ],
+    [
+      11,
+      9
+    ]
+  ]
+}
