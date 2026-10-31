@@ -1,0 +1,167 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "9734e8ab05c90da691371ed3c4673d1d49605a968140008c826d1c76bd2ae9e9",
+      "result_sha256": "9734e8ab05c90da691371ed3c4673d1d49605a968140008c826d1c76bd2ae9e9",
+      "clusters": [
+        2117,
+        2118
+      ],
+      "report": [
+        1112296241,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        1655618273,
+        3208216090,
+        1,
+        296230341,
+        1,
+        296230341,
+        1,
+        296230341,
+        0,
+        0,
+        0,
+        1
+      ],
+      "functions": {
+        "x_lba_alloc": {
+          "entry": "0x8252b4",
+          "entry_events": 1
+        },
+        "x_lba_into": {
+          "entry": "0x82539e",
+          "entry_events": 1
+        },
+        "sectors_alloc": {
+          "entry": "0x825476",
+          "entry_events": 1
+        },
+        "read_sectors": {
+          "entry": "0x8254ca",
+          "entry_events": 10
+        },
+        "read_partition": {
+          "entry": "0x825506",
+          "entry_events": 1
+        },
+        "read_root_directory": {
+          "entry": "0x8255ae",
+          "entry_events": 2
+        },
+        "alloc_root_directory": {
+          "entry": "0x8256a8",
+          "entry_events": 2
+        },
+        "alloc_directory": {
+          "entry": "0x8257bc",
+          "entry_events": 2
+        },
+        "ata_read_sector": {
+          "entry": "0x828b44",
+          "entry_events": 192
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "71ef4760d75d9469240ddf30fa5f4c81c3dbe9c07d2bfdec7fced9eb953917c7",
+      "seeded_sha256": "a4a6175d6918f3c2044949cd4cf59320df798446af50a5a18c0f53157de21dac",
+      "result_sha256": "a4a6175d6918f3c2044949cd4cf59320df798446af50a5a18c0f53157de21dac",
+      "clusters": [
+        2117,
+        2118
+      ],
+      "report": [
+        1112296241,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        854048704,
+        1,
+        1655618273,
+        3208216090,
+        1,
+        296230341,
+        1,
+        296230341,
+        1,
+        296230341,
+        0,
+        0,
+        0,
+        1
+      ],
+      "functions": {
+        "x_lba_alloc": {
+          "entry": "0x8252b4",
+          "entry_events": 1
+        },
+        "x_lba_into": {
+          "entry": "0x82539e",
+          "entry_events": 1
+        },
+        "sectors_alloc": {
+          "entry": "0x825476",
+          "entry_events": 1
+        },
+        "read_sectors": {
+          "entry": "0x8254ca",
+          "entry_events": 10
+        },
+        "read_partition": {
+          "entry": "0x825506",
+          "entry_events": 1
+        },
+        "read_root_directory": {
+          "entry": "0x8255ae",
+          "entry_events": 2
+        },
+        "alloc_root_directory": {
+          "entry": "0x8256a8",
+          "entry_events": 2
+        },
+        "alloc_directory": {
+          "entry": "0x8257bc",
+          "entry_events": 2
+        },
+        "ata_read_sector": {
+          "entry": "0x828b44",
+          "entry_events": 192
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 406,
+  "sha256": {
+    "tests/kernel_fat_block_qemu.py": "282966faeed0d1545e3ca964ca65696adb5cfca5b48a834b25c096a732c068a5",
+    "tests/fat_block_guest.c": "d54010acf4b95307f7436902797feddb00e667c15532eb9a25686efc5f46cca1",
+    "tests/kernel_fat_mutation_qemu.py": "0cff8db547a031929cb1e2c186f50a06cb1ffdeec203b69d0c713caea60cd464"
+  },
+  "complete_os_recovery": false
+}

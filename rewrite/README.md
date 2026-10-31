@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 398 declared kernel intervals and
+original IceStarOS VHD. The current build installs 406 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5335,3 +5335,18 @@ Production boot verifies C CLOCK, CMD/cpuid, RAM/TSS and all 398 intervals.
 See [recovery/FAT_WRITE_PATH.md](recovery/FAT_WRITE_PATH.md) for behavior,
 evidence and limits. No full regression was run; the complete OS recovery
 remains unfinished.
+
+### Contiguous disk and directory-cluster readers (2026-10-31)
+
+Eight entries at 0x8252b4..0x8258a6 now execute C for contiguous disk reads,
+X header-sized reads, partition BPB/FAT/root caching and directory first-cluster
+reads. They retain signed counts, fixed 512-byte transfer strides, unchecked
+allocation cases and live metadata behavior. The kernel installs 406 intervals.
+Original x86, ordinary C and installed C agree in 882 scenarios / 2,646
+executions. Original and recovered QEMU guests execute all eight entries
+with real ATA reads, match independently calculated data hashes and leave
+their entire disposable disks unchanged. Focused FAT/X-loader regressions,
+installation checks, CLOCK, CMD/cpuid, RAM/TSS and all 406 guest intervals
+pass. See [recovery/FAT_BLOCK_READ.md](recovery/FAT_BLOCK_READ.md) for evidence,
+commands and limits. The ATA hardware entry remains original, no full
+regression was run, and complete OS recovery remains unfinished.

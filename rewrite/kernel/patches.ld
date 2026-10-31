@@ -32,7 +32,6 @@ PROVIDE(kernel_x_show_dialog_8082c6 = 0x8082c6);
 PROVIDE(kernel_bitmap_lookup_relative_825c8e = 0x825c8e);
 PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
-PROVIDE(kernel_fat_read_sectors_8254ca = 0x8254ca);
 PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
 PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
 SECTIONS
@@ -913,6 +912,22 @@ SECTIONS
     ASSERT(kernel_jpeg_color_83bc15 == 0x83bc15 && ADDR(.jpeg_color) + SIZEOF(.jpeg_color) <= 0x83be59, "jpeg color layout overflow")
     .jpeg_image 0x83be59 : SUBALIGN(1) { *kernel_jpeg_decode.o(.text.kernel_jpeg_image_83be59 .rodata*) }
     ASSERT(kernel_jpeg_image_83be59 == 0x83be59 && ADDR(.jpeg_image) + SIZEOF(.jpeg_image) <= 0x83c02f, "jpeg image layout overflow")
+    .x_lba_alloc 0x8252b4 : { *kernel_fat_block.o(.text.kernel_x_read_lba_alloc_8252b4) }
+    ASSERT(kernel_x_read_lba_alloc_8252b4 == 0x8252b4 && ADDR(.x_lba_alloc) + SIZEOF(.x_lba_alloc) <= 0x82539e, "x_lba_alloc overflow")
+    .x_lba_into 0x82539e : { *kernel_fat_block.o(.text.kernel_x_read_lba_into_82539e) }
+    ASSERT(kernel_x_read_lba_into_82539e == 0x82539e && ADDR(.x_lba_into) + SIZEOF(.x_lba_into) <= 0x825476, "x_lba_into overflow")
+    .fat_sectors_alloc 0x825476 : { *kernel_fat_block.o(.text.kernel_fat_read_sectors_alloc_825476) }
+    ASSERT(kernel_fat_read_sectors_alloc_825476 == 0x825476 && ADDR(.fat_sectors_alloc) + SIZEOF(.fat_sectors_alloc) <= 0x8254ca, "fat_sectors_alloc overflow")
+    .fat_read_sectors 0x8254ca : { *kernel_fat_block.o(.text.kernel_fat_read_sectors_8254ca) }
+    ASSERT(kernel_fat_read_sectors_8254ca == 0x8254ca && ADDR(.fat_read_sectors) + SIZEOF(.fat_read_sectors) <= 0x825506, "fat_read_sectors overflow")
+    .fat_read_partition 0x825506 : { *kernel_fat_block.o(.text.kernel_fat_read_partition_825506) }
+    ASSERT(kernel_fat_read_partition_825506 == 0x825506 && ADDR(.fat_read_partition) + SIZEOF(.fat_read_partition) <= 0x8255ae, "fat_read_partition overflow")
+    .fat_read_root_directory 0x8255ae : { *kernel_fat_block.o(.text.kernel_fat_read_root_directory_8255ae) }
+    ASSERT(kernel_fat_read_root_directory_8255ae == 0x8255ae && ADDR(.fat_read_root_directory) + SIZEOF(.fat_read_root_directory) <= 0x8256a8, "fat_read_root_directory overflow")
+    .fat_alloc_root_directory 0x8256a8 : { *kernel_fat_block.o(.text.kernel_fat_alloc_root_directory_8256a8) }
+    ASSERT(kernel_fat_alloc_root_directory_8256a8 == 0x8256a8 && ADDR(.fat_alloc_root_directory) + SIZEOF(.fat_alloc_root_directory) <= 0x8257bc, "fat_alloc_root_directory overflow")
+    .fat_alloc_directory 0x8257bc : { *kernel_fat_block.o(.text.kernel_fat_alloc_directory_8257bc) }
+    ASSERT(kernel_fat_alloc_directory_8257bc == 0x8257bc && ADDR(.fat_alloc_directory) + SIZEOF(.fat_alloc_directory) <= 0x8258a6, "fat_alloc_directory overflow")
     .fat_root_name 0x8258a6 : { *kernel_fat_directory.o(.text.kernel_fat_root_name_8258a6) }
     ASSERT(kernel_fat_root_name_8258a6 == 0x8258a6 && ADDR(.fat_root_name) + SIZEOF(.fat_root_name) <= 0x825a7e, "fat_root_name overflow")
     .fat_directory_name 0x825a7e : { *kernel_fat_directory.o(.text.kernel_fat_directory_name_825a7e) }
