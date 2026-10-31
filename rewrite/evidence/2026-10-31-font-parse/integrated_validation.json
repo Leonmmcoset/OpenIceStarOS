@@ -1,0 +1,67 @@
+{
+  "installed_intervals": 430,
+  "focused_regressions": {
+    "fat_block": {
+      "scenarios": 882,
+      "executions": 2646
+    },
+    "fat_files": {
+      "scenarios": 2422,
+      "executions": 7266
+    },
+    "fat_path": {
+      "scenarios": 758,
+      "executions": 2274
+    },
+    "fat_directory": {
+      "scenarios": 7187,
+      "executions": 21561
+    },
+    "fat_write": {
+      "scenarios": 846,
+      "executions": 2538
+    },
+    "fat_mutation": {
+      "scenarios": 472,
+      "executions": 1416
+    },
+    "fat_metadata": {
+      "scenarios": 1924,
+      "executions": 5772
+    },
+    "fat_io": {
+      "scenarios": 127,
+      "executions": 381
+    },
+    "fat_slots": {
+      "scenarios": 208,
+      "executions": 624
+    },
+    "x_loader_installed": {
+      "scenarios": 430,
+      "executions": 1290
+    }
+  },
+  "production_boot": [
+    "RAM probe detected 134217728 bytes; 59 live heap headers verified",
+    "Advancing timer and real TSS switches verified through suspended C scheduler stacks",
+    "Input state: {\"pointer_initial\": [500, 372], \"pointer_cmd_icon\": [45, 282], \"cmd_code_candidates\": [\"0x44a9010\"], \"keyboard_queue_before\": [1, 1, 0, 2048], \"keyboard_queue_after\": [11, 11, 0, 2048], \"cmd_input\": \"cpuid\", \"cmd_cursor_before_return\": [9, 1], \"cmd_cursor_after_return\": [4, 3]}",
+    "Mouse position, relocated CMD, input text, queue consumption, and prompt return verified",
+    "Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked",
+    "C CLOCK loaded; 24 relocations, face/labels, three changing frames, PS/2 close, task exit and CMD reuse verified",
+    "QEMU snapshot boot captured; all fixed-address C patches match guest memory",
+    "Screenshot: /root/IceStarOS-x86-Decompile/rewrite/build/boot_openicestaros.png",
+    "Desktop appearance still requires visual inspection; this is not a full OS test"
+  ],
+  "installation_checks": [
+    "entire disk verified: only compiled boot stages and declared kernel slots changed",
+    "Entire disk verified: only declared application file extents changed"
+  ],
+  "sha256": {
+    "rewrite/build/openicestaros_kernel.x": "ff5f45e195f04534ad24b7c9fd21737acc9da57912d071ef4aa5fbef91de8046",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "1b256bf080e5b7c7084f505b56c0c21315bc1c6363d051558b8aaff115d05d93",
+    "rewrite/kernel/patches.json": "0202479e5bdf547813242399b6b1e83b6a00f16a541e845243c7ac9f7403db4c"
+  },
+  "full_make_verify_run": false,
+  "complete_os_recovery": false
+}

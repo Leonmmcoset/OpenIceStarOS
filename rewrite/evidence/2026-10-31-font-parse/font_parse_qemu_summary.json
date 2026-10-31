@@ -1,0 +1,415 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "d37a769c00f1acc53f8d3aacac21bb7f5eeb4901dfbe75142bd8e4998b0e61a3",
+      "result_sha256": "d37a769c00f1acc53f8d3aacac21bb7f5eeb4901dfbe75142bd8e4998b0e61a3",
+      "clusters": [],
+      "report": [
+        1179538481,
+        18,
+        52,
+        2,
+        1,
+        13398,
+        1,
+        1,
+        1,
+        11,
+        108,
+        3,
+        1,
+        108,
+        4294966165,
+        2,
+        1,
+        4660,
+        4294964992,
+        305419896,
+        4144037631,
+        1,
+        1,
+        1,
+        0,
+        1,
+        332,
+        0,
+        0,
+        1,
+        5565,
+        83288,
+        332,
+        105552,
+        388
+      ],
+      "functions": {
+        "get8": {
+          "entry": "0x82b838",
+          "entry_events": 44,
+          "interior_block_events": 44,
+          "decoded_body_instructions": 17
+        },
+        "peek8": {
+          "entry": "0x82b86e",
+          "entry_events": 20,
+          "interior_block_events": 20,
+          "decoded_body_instructions": 16
+        },
+        "seek": {
+          "entry": "0x82b8a2",
+          "entry_events": 15,
+          "interior_block_events": 45,
+          "decoded_body_instructions": 18
+        },
+        "skip": {
+          "entry": "0x82b8de",
+          "entry_events": 7,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 11
+        },
+        "getn": {
+          "entry": "0x82b8fe",
+          "entry_events": 9,
+          "interior_block_events": 51,
+          "decoded_body_instructions": 28
+        },
+        "buffer": {
+          "entry": "0x82b946",
+          "entry_events": 11,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 9
+        },
+        "range": {
+          "entry": "0x82b962",
+          "entry_events": 9,
+          "interior_block_events": 45,
+          "decoded_body_instructions": 33
+        },
+        "cff_index": {
+          "entry": "0x82b9ca",
+          "entry_events": 2,
+          "interior_block_events": 14,
+          "decoded_body_instructions": 49
+        },
+        "cff_int": {
+          "entry": "0x82ba70",
+          "entry_events": 13,
+          "interior_block_events": 79,
+          "decoded_body_instructions": 56
+        },
+        "cff_skip": {
+          "entry": "0x82bb70",
+          "entry_events": 8,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 37
+        },
+        "cff_dict": {
+          "entry": "0x82bbe4",
+          "entry_events": 4,
+          "interior_block_events": 64,
+          "decoded_body_instructions": 55
+        },
+        "cff_ints": {
+          "entry": "0x82bcc8",
+          "entry_events": 3,
+          "interior_block_events": 26,
+          "decoded_body_instructions": 33
+        },
+        "cff_count": {
+          "entry": "0x82bd28",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 12
+        },
+        "cff_item": {
+          "entry": "0x82bd56",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 55
+        },
+        "u16": {
+          "entry": "0x82be14",
+          "entry_events": 172,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 26
+        },
+        "s16": {
+          "entry": "0x82be34",
+          "entry_events": 169,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 26
+        },
+        "u32": {
+          "entry": "0x82be52",
+          "entry_events": 924,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 40
+        },
+        "s32": {
+          "entry": "0x82be86",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 20
+        },
+        "signature": {
+          "entry": "0x82beba",
+          "entry_events": 3,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 33
+        },
+        "table": {
+          "entry": "0x82bfe6",
+          "entry_events": 11,
+          "interior_block_events": 502,
+          "decoded_body_instructions": 74
+        },
+        "offset": {
+          "entry": "0x82c0b2",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 17
+        },
+        "count": {
+          "entry": "0x82c196",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 12
+        },
+        "cff_subrs": {
+          "entry": "0x82c232",
+          "entry_events": 1,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 56
+        },
+        "svg": {
+          "entry": "0x82c34c",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 22
+        },
+        "original_full_init": {
+          "entry": "0x82c3bc",
+          "entry_events": 1,
+          "interior_block_events": 42,
+          "decoded_body_instructions": 194
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "1b256bf080e5b7c7084f505b56c0c21315bc1c6363d051558b8aaff115d05d93",
+      "seeded_sha256": "96446bda4660ecce112ec60a34d3231c891f49b9f2533636219df9ff77dfcd9f",
+      "result_sha256": "96446bda4660ecce112ec60a34d3231c891f49b9f2533636219df9ff77dfcd9f",
+      "clusters": [],
+      "report": [
+        1179538481,
+        18,
+        52,
+        2,
+        1,
+        13398,
+        1,
+        1,
+        1,
+        11,
+        108,
+        3,
+        1,
+        108,
+        4294966165,
+        2,
+        1,
+        4660,
+        4294964992,
+        305419896,
+        4144037631,
+        1,
+        1,
+        1,
+        0,
+        1,
+        332,
+        0,
+        0,
+        1,
+        5565,
+        83288,
+        332,
+        105552,
+        388
+      ],
+      "functions": {
+        "get8": {
+          "entry": "0x82b838",
+          "entry_events": 44,
+          "interior_block_events": 44,
+          "decoded_body_instructions": 18
+        },
+        "peek8": {
+          "entry": "0x82b86e",
+          "entry_events": 20,
+          "interior_block_events": 20,
+          "decoded_body_instructions": 15
+        },
+        "seek": {
+          "entry": "0x82b8a2",
+          "entry_events": 15,
+          "interior_block_events": 30,
+          "decoded_body_instructions": 11
+        },
+        "skip": {
+          "entry": "0x82b8de",
+          "entry_events": 7,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 11
+        },
+        "getn": {
+          "entry": "0x82b8fe",
+          "entry_events": 9,
+          "interior_block_events": 51,
+          "decoded_body_instructions": 23
+        },
+        "buffer": {
+          "entry": "0x82b946",
+          "entry_events": 2,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 9
+        },
+        "range": {
+          "entry": "0x82b962",
+          "entry_events": 9,
+          "interior_block_events": 54,
+          "decoded_body_instructions": 35
+        },
+        "cff_index": {
+          "entry": "0x82b9ca",
+          "entry_events": 2,
+          "interior_block_events": 14,
+          "decoded_body_instructions": 46
+        },
+        "cff_int": {
+          "entry": "0x82ba70",
+          "entry_events": 13,
+          "interior_block_events": 60,
+          "decoded_body_instructions": 43
+        },
+        "cff_skip": {
+          "entry": "0x82bb70",
+          "entry_events": 8,
+          "interior_block_events": 31,
+          "decoded_body_instructions": 40
+        },
+        "cff_dict": {
+          "entry": "0x82bbe4",
+          "entry_events": 4,
+          "interior_block_events": 64,
+          "decoded_body_instructions": 50
+        },
+        "cff_ints": {
+          "entry": "0x82bcc8",
+          "entry_events": 3,
+          "interior_block_events": 26,
+          "decoded_body_instructions": 34
+        },
+        "cff_count": {
+          "entry": "0x82bd28",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 12
+        },
+        "cff_item": {
+          "entry": "0x82bd56",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 46
+        },
+        "u16": {
+          "entry": "0x82be14",
+          "entry_events": 164,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 18
+        },
+        "s16": {
+          "entry": "0x82be34",
+          "entry_events": 169,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 18
+        },
+        "u32": {
+          "entry": "0x82be52",
+          "entry_events": 924,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 32
+        },
+        "s32": {
+          "entry": "0x82be86",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 16
+        },
+        "signature": {
+          "entry": "0x82beba",
+          "entry_events": 3,
+          "interior_block_events": 21,
+          "decoded_body_instructions": 27
+        },
+        "table": {
+          "entry": "0x82bfe6",
+          "entry_events": 11,
+          "interior_block_events": 502,
+          "decoded_body_instructions": 55
+        },
+        "offset": {
+          "entry": "0x82c0b2",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 20
+        },
+        "count": {
+          "entry": "0x82c196",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 16
+        },
+        "cff_subrs": {
+          "entry": "0x82c232",
+          "entry_events": 1,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 56
+        },
+        "svg": {
+          "entry": "0x82c34c",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 24
+        },
+        "original_full_init": {
+          "entry": "0x82c3bc",
+          "entry_events": 1,
+          "interior_block_events": 42,
+          "decoded_body_instructions": 194
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 430,
+  "sha256": {
+    "tests/kernel_font_parse_qemu.py": "7f37f2dfe7f0703635596ab9b5b8f33e9e7222510cbed154172fd491255b1e4c",
+    "tests/font_parse_guest.c": "0e9dc96a8e072da744d8ee2fb0c4e230b24fbd9ad703ff68a83b864b455ed3b9",
+    "tests/kernel_fat_mutation_qemu.py": "991b28ea75400e803bad12b5dfcc267a6a04765bdc7c255df64e7c1d81d2b260"
+  },
+  "complete_os_recovery": false
+}

@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 406 declared kernel intervals and
+original IceStarOS VHD. The current build installs 430 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5350,3 +5350,19 @@ installation checks, CLOCK, CMD/cpuid, RAM/TSS and all 406 guest intervals
 pass. See [recovery/FAT_BLOCK_READ.md](recovery/FAT_BLOCK_READ.md) for evidence,
 commands and limits. The ATA hardware entry remains original, no full
 regression was run, and complete OS recovery remains unfinished.
+
+### CFF and TrueType parser foundations (2026-10-31)
+
+Twenty-four functions at 0x82b838..0x82c3bc now execute recovered C for
+bounded buffer access, CFF integer/INDEX/dictionary/local-subroutine parsing,
+SFNT byte order, font signatures, TTC offsets/counts, table lookup and SVG
+cache discovery. The kernel now installs 430 declared intervals. Original
+x86, ordinary C and installed C agree in 5,371 scenarios / 16,113 executions,
+including hidden structure-return pointers and by-value buffer mutation.
+QEMU executes every entry with real CFF fixtures and the original 2,000,408-byte
+Fira font; the original full font initializer succeeds using the recovered
+helpers. Independent reports and complete unchanged temporary disks pass.
+Focused FAT/X-loader regressions, installers and production CLOCK/RAM/TSS
+checks pass. See [recovery/FONT_PARSE.md](recovery/FONT_PARSE.md) for scope
+and limits. Font outlines, rasterization and the complete initializer remain
+original; neither the kernel nor the complete OS is fully recovered.

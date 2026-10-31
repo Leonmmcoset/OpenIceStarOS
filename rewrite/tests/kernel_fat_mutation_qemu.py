@@ -75,7 +75,7 @@ def fixture(source):
 def boot(label, source_path, *, fixture_builder=fixture, suite='fat_mutation',
          entries=ENTRIES, expected_report=(0x4d555431,4,5,2,1,2,1,0xffffffff,
                                           0xffffffff,64,0xe5e5,1),
-         compact_changes=False):
+         compact_changes=False, instruction_trace=False):
     source = source_path.read_bytes()
     seeded, expected, clusters = fixture_builder(source)
     output = BUILD/f'{suite}_qemu_{label}'
@@ -138,7 +138,7 @@ def boot(label, source_path, *, fixture_builder=fixture, suite='fat_mutation',
                     require((output/'metadata_before.memory').read_bytes() ==
                             seeded[metadata_start:metadata_start+metadata_bytes],
                             'cached FAT/root fixture differs before diagnostic')
-                    execute('log exec,nochain')
+                    execute('log exec,nochain,in_asm' if instruction_trace else 'log exec,nochain')
                     execute('cont')
                     for line in ('cd icestar','color.x'):
                         for char in line:
@@ -180,12 +180,23 @@ def boot(label, source_path, *, fixture_builder=fixture, suite='fat_mutation',
         (output/'expected.vhd').write_bytes(expected)
         offsets = [i for i,(a,b) in enumerate(zip(actual,expected)) if a != b]
         raise AssertionError(f'{label}: unexpected disk bytes: {offsets[:16]}')
-    pcs = [int(m.group(1),16) for m in re.finditer(r'\[[0-9a-fA-F]+/([0-9a-fA-F]+)/',trace.read_text())]
+    trace_text = trace.read_text()
+    pcs = [int(m.group(1),16) for m in re.finditer(r'\[[0-9a-fA-F]+/([0-9a-fA-F]+)/',trace_text)]
+    decoded = [int(m.group(1),16) for m in re.finditer(r'^0x([0-9a-fA-F]+):',trace_text,re.MULTILINE)]
     functions = {}
     for name,start,end in entries:
         hits = pcs.count(start)
-        require(hits > 0 and any(start < pc < end for pc in pcs),f'entry/body not executed: {name}')
+        body_events = sum(start < pc < end for pc in pcs)
+        body_instructions = sum(start < pc < end for pc in decoded)
+        # A straight-line leaf can fit wholly in its entry translation block.
+        # For those leaves, entry execution plus that block's instruction
+        # listing and the independent guest report establish body execution.
+        require(hits > 0 and (body_events or (instruction_trace and body_instructions)),
+                f'entry/body not executed: {name}')
         functions[name] = dict(entry=hex(start),entry_events=hits)
+        if instruction_trace:
+            functions[name].update(interior_block_events=body_events,
+                                   decoded_body_instructions=body_instructions)
     changed = [i for i,(a,b) in enumerate(zip(seeded,actual)) if a != b]
     require(source_path.read_bytes() == source,'input image was modified')
     evidence = dict(label=label,diagnostic_only=True,source_sha256=hashlib.sha256(source).hexdigest(),

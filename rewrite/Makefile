@@ -138,6 +138,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_parse.o
+KERNEL_PATCHES += $(foreach name,font_cff_subrs font_svg font_get8 font_peek8 font_seek font_skip font_getn font_buffer font_range font_cff_index font_cff_int font_cff_skip font_cff_dict font_cff_ints font_cff_count font_cff_item font_u16 font_s16 font_u32 font_s32 font_signature font_table font_offset font_count,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_block.o
 KERNEL_PATCHES += $(foreach name,x_lba_alloc x_lba_into fat_sectors_alloc fat_read_sectors fat_read_partition fat_read_root_directory fat_alloc_root_directory fat_alloc_directory,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_files.o
@@ -354,6 +356,9 @@ $(BUILD)/kernel_fat_directory.o: kernel/fat_directory.c kernel/fat_directory.h k
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_font_parse.o: kernel/font_parse.c kernel/font_parse.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_block.o: kernel/fat_block.c kernel/fat_block.h kernel/memory.h Makefile | $(BUILD)
@@ -1501,3 +1506,22 @@ $(BUILD)/fat_block_guest.x: $(BUILD)/fat_block_guest.elf tools/xformat.py
 .PHONY: test-fat-block-qemu
 test-fat-block-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_block_guest.x
 	python3 tests/kernel_fat_block_qemu.py
+
+.PHONY: test-font-parse
+test-font-parse: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_parse.py --installed
+
+verify: test-font-parse
+
+$(BUILD)/font_parse_guest.o: tests/font_parse_guest.c kernel/font_parse.h | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_parse_guest.elf: $(BUILD)/font_parse_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_parse_guest.map -o $@ $<
+
+$(BUILD)/font_parse_guest.x: $(BUILD)/font_parse_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_parse_guest.symbols.json
+
+.PHONY: test-font-parse-qemu
+test-font-parse-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_parse_guest.x
+	python3 tests/kernel_font_parse_qemu.py

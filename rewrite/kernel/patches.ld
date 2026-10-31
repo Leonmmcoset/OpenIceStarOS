@@ -773,6 +773,54 @@ SECTIONS
     ASSERT(kernel_read_cr0 == 0x83743c && SIZEOF(.cpu_cr0_read) == 4, "read CR0 layout changed")
     .cpu_cr0_write 0x837440 : { *kernel_cpu.o(.text.kernel_write_cr0) }
     ASSERT(kernel_write_cr0 == 0x837440 && SIZEOF(.cpu_cr0_write) == 8, "write CR0 layout changed")
+    .font_get8 0x82b838 : { *kernel_font_parse.o(.text.kernel_font_get8_82b838) }
+    ASSERT(kernel_font_get8_82b838 == 0x82b838 && SIZEOF(.font_get8) <= 54, "font_get8 overflow")
+    .font_peek8 0x82b86e : { *kernel_font_parse.o(.text.kernel_font_peek8_82b86e) }
+    ASSERT(kernel_font_peek8_82b86e == 0x82b86e && SIZEOF(.font_peek8) <= 52, "font_peek8 overflow")
+    .font_seek 0x82b8a2 : { *kernel_font_parse.o(.text.kernel_font_seek_82b8a2) }
+    ASSERT(kernel_font_seek_82b8a2 == 0x82b8a2 && SIZEOF(.font_seek) <= 60, "font_seek overflow")
+    .font_skip 0x82b8de : { *kernel_font_parse.o(.text.kernel_font_skip_82b8de) }
+    ASSERT(kernel_font_skip_82b8de == 0x82b8de && SIZEOF(.font_skip) <= 32, "font_skip overflow")
+    .font_getn 0x82b8fe : { *kernel_font_parse.o(.text.kernel_font_getn_82b8fe) }
+    ASSERT(kernel_font_getn_82b8fe == 0x82b8fe && SIZEOF(.font_getn) <= 72, "font_getn overflow")
+    .font_buffer 0x82b946 : { *kernel_font_parse.o(.text.kernel_font_buffer_82b946) }
+    ASSERT(kernel_font_buffer_82b946 == 0x82b946 && SIZEOF(.font_buffer) <= 28, "font_buffer overflow")
+    .font_range 0x82b962 : { *kernel_font_parse.o(.text.kernel_font_range_82b962) }
+    ASSERT(kernel_font_range_82b962 == 0x82b962 && SIZEOF(.font_range) <= 104, "font_range overflow")
+    .font_cff_index 0x82b9ca : { *kernel_font_parse.o(.text.kernel_font_cff_index_82b9ca) }
+    ASSERT(kernel_font_cff_index_82b9ca == 0x82b9ca && SIZEOF(.font_cff_index) <= 166, "font_cff_index overflow")
+    .font_cff_int 0x82ba70 : { *kernel_font_parse.o(.text.kernel_font_cff_int_82ba70) }
+    ASSERT(kernel_font_cff_int_82ba70 == 0x82ba70 && SIZEOF(.font_cff_int) <= 256, "font_cff_int overflow")
+    .font_cff_skip 0x82bb70 : { *kernel_font_parse.o(.text.kernel_font_cff_skip_82bb70) }
+    ASSERT(kernel_font_cff_skip_82bb70 == 0x82bb70 && SIZEOF(.font_cff_skip) <= 116, "font_cff_skip overflow")
+    .font_cff_dict 0x82bbe4 : { *kernel_font_parse.o(.text.kernel_font_cff_dict_82bbe4) }
+    ASSERT(kernel_font_cff_dict_82bbe4 == 0x82bbe4 && SIZEOF(.font_cff_dict) <= 228, "font_cff_dict overflow")
+    .font_cff_ints 0x82bcc8 : { *kernel_font_parse.o(.text.kernel_font_cff_ints_82bcc8) }
+    ASSERT(kernel_font_cff_ints_82bcc8 == 0x82bcc8 && SIZEOF(.font_cff_ints) <= 96, "font_cff_ints overflow")
+    .font_cff_count 0x82bd28 : { *kernel_font_parse.o(.text.kernel_font_cff_count_82bd28) }
+    ASSERT(kernel_font_cff_count_82bd28 == 0x82bd28 && SIZEOF(.font_cff_count) <= 46, "font_cff_count overflow")
+    .font_cff_item 0x82bd56 : { *kernel_font_parse.o(.text.kernel_font_cff_item_82bd56) }
+    ASSERT(kernel_font_cff_item_82bd56 == 0x82bd56 && SIZEOF(.font_cff_item) <= 190, "font_cff_item overflow")
+    .font_u16 0x82be14 : { *kernel_font_parse.o(.text.kernel_font_u16_82be14) }
+    ASSERT(kernel_font_u16_82be14 == 0x82be14 && SIZEOF(.font_u16) <= 32, "font_u16 overflow")
+    .font_s16 0x82be34 : { *kernel_font_parse.o(.text.kernel_font_s16_82be34) }
+    ASSERT(kernel_font_s16_82be34 == 0x82be34 && SIZEOF(.font_s16) <= 30, "font_s16 overflow")
+    .font_u32 0x82be52 : { *kernel_font_parse.o(.text.kernel_font_u32_82be52) }
+    ASSERT(kernel_font_u32_82be52 == 0x82be52 && SIZEOF(.font_u32) <= 52, "font_u32 overflow")
+    .font_s32 0x82be86 : { *kernel_font_parse.o(.text.kernel_font_s32_82be86) }
+    ASSERT(kernel_font_s32_82be86 == 0x82be86 && SIZEOF(.font_s32) <= 52, "font_s32 overflow")
+    .font_signature 0x82beba : { *kernel_font_parse.o(.text.kernel_font_signature_82beba) }
+    ASSERT(kernel_font_signature_82beba == 0x82beba && SIZEOF(.font_signature) <= 300, "font_signature overflow")
+    .font_table 0x82bfe6 : { *kernel_font_parse.o(.text.kernel_font_table_82bfe6) }
+    ASSERT(kernel_font_table_82bfe6 == 0x82bfe6 && SIZEOF(.font_table) <= 204, "font_table overflow")
+    .font_offset 0x82c0b2 : { *kernel_font_parse.o(.text.kernel_font_offset_82c0b2) }
+    ASSERT(kernel_font_offset_82c0b2 == 0x82c0b2 && SIZEOF(.font_offset) <= 228, "font_offset overflow")
+    .font_count 0x82c196 : { *kernel_font_parse.o(.text.kernel_font_count_82c196) }
+    ASSERT(kernel_font_count_82c196 == 0x82c196 && SIZEOF(.font_count) <= 156, "font_count overflow")
+    .font_cff_subrs 0x82c232 : { *kernel_font_parse.o(.text.kernel_font_cff_subrs_82c232) }
+    ASSERT(kernel_font_cff_subrs_82c232 == 0x82c232 && SIZEOF(.font_cff_subrs) <= 282, "font_cff_subrs overflow")
+    .font_svg 0x82c34c : { *kernel_font_parse.o(.text.kernel_font_svg_82c34c) }
+    ASSERT(kernel_font_svg_82c34c == 0x82c34c && SIZEOF(.font_svg) <= 112, "font_svg overflow")
     .identity_paging 0x837448 : SUBALIGN(1) {
         *kernel_paging.o(.text.kernel_init_identity_paging)
         *kernel_paging.o(.text.build_identity_tables)
