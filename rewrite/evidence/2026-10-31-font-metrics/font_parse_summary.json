@@ -1,0 +1,123 @@
+{
+  "installed": true,
+  "functions": 24,
+  "scenarios": 5371,
+  "executions": 16113,
+  "slots": {
+    "font_get8": {
+      "compiled_bytes": 39,
+      "slot_bytes": 54
+    },
+    "font_peek8": {
+      "compiled_bytes": 32,
+      "slot_bytes": 52
+    },
+    "font_seek": {
+      "compiled_bytes": 28,
+      "slot_bytes": 60
+    },
+    "font_skip": {
+      "compiled_bytes": 23,
+      "slot_bytes": 32
+    },
+    "font_getn": {
+      "compiled_bytes": 43,
+      "slot_bytes": 72
+    },
+    "font_buffer": {
+      "compiled_bytes": 28,
+      "slot_bytes": 28
+    },
+    "font_range": {
+      "compiled_bytes": 87,
+      "slot_bytes": 104
+    },
+    "font_cff_index": {
+      "compiled_bytes": 101,
+      "slot_bytes": 166
+    },
+    "font_cff_int": {
+      "compiled_bytes": 141,
+      "slot_bytes": 256
+    },
+    "font_cff_skip": {
+      "compiled_bytes": 75,
+      "slot_bytes": 116
+    },
+    "font_cff_dict": {
+      "compiled_bytes": 122,
+      "slot_bytes": 228
+    },
+    "font_cff_ints": {
+      "compiled_bytes": 67,
+      "slot_bytes": 96
+    },
+    "font_cff_count": {
+      "compiled_bytes": 28,
+      "slot_bytes": 46
+    },
+    "font_cff_item": {
+      "compiled_bytes": 107,
+      "slot_bytes": 190
+    },
+    "font_u16": {
+      "compiled_bytes": 22,
+      "slot_bytes": 32
+    },
+    "font_s16": {
+      "compiled_bytes": 20,
+      "slot_bytes": 30
+    },
+    "font_u32": {
+      "compiled_bytes": 39,
+      "slot_bytes": 52
+    },
+    "font_s32": {
+      "compiled_bytes": 39,
+      "slot_bytes": 52
+    },
+    "font_signature": {
+      "compiled_bytes": 186,
+      "slot_bytes": 300
+    },
+    "font_table": {
+      "compiled_bytes": 113,
+      "slot_bytes": 204
+    },
+    "font_offset": {
+      "compiled_bytes": 129,
+      "slot_bytes": 228
+    },
+    "font_count": {
+      "compiled_bytes": 109,
+      "slot_bytes": 156
+    },
+    "font_cff_subrs": {
+      "compiled_bytes": 162,
+      "slot_bytes": 282
+    },
+    "font_svg": {
+      "compiled_bytes": 80,
+      "slot_bytes": 112
+    }
+  },
+  "seconds": 1.671,
+  "boundary_scope": "No intercepted helper calls",
+  "checks": [
+    "return values",
+    "all touched data pages",
+    "callee-saved registers",
+    "RET 4 structure return ABI",
+    "caller argument stack including by-value buffer mutation",
+    "original Fira font table directory"
+  ],
+  "original_font": {
+    "bytes": 2000408,
+    "sha256": "976757412b8504f3fbff684186ec69025892f667b1d785bd78326c424f4c6677"
+  },
+  "sha256": {
+    "kernel/font_parse.c": "ca9a9f17dba9139777574ebd8bb41a47834a337aa8b600f4befa53db05bbfa26",
+    "kernel/font_parse.h": "4ad4465ce5a7afb9d1b7265310bfc83f92dd3e94a340e05e3539022b8eb0687a",
+    "tests/kernel_font_parse.py": "b920c76a4757d411699cec3522831e15cb9c2383827142bf9ddbbf1db5486802"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "installed": true,
+  "functions": 9,
+  "scenarios": 1098,
+  "executions": 3294,
+  "slots": {
+    "font_hmetrics": {
+      "compiled_bytes": 162,
+      "slot_bytes": 248
+    },
+    "font_vmetrics": {
+      "compiled_bytes": 100,
+      "slot_bytes": 118
+    },
+    "font_typo_metrics": {
+      "compiled_bytes": 127,
+      "slot_bytes": 170
+    },
+    "font_bounds": {
+      "compiled_bytes": 103,
+      "slot_bytes": 130
+    },
+    "font_scale_height": {
+      "compiled_bytes": 65,
+      "slot_bytes": 78
+    },
+    "font_scale_em": {
+      "compiled_bytes": 37,
+      "slot_bytes": 46
+    },
+    "font_svg_record": {
+      "compiled_bytes": 93,
+      "slot_bytes": 160
+    },
+    "font_glyph_svg": {
+      "compiled_bytes": 80,
+      "slot_bytes": 132
+    },
+    "font_codepoint_svg": {
+      "compiled_bytes": 31,
+      "slot_bytes": 50
+    }
+  },
+  "seconds": 2.049,
+  "boundary_scope": "No intercepted helper calls; real original cmap lookup",
+  "checks": [
+    "returns",
+    "all touched data pages",
+    "caller arguments",
+    "callee-saved registers",
+    "raw x87 extended results and float32 conversions",
+    "six x87 control words",
+    "original Fira metrics"
+  ],
+  "sha256": {
+    "kernel/font_metrics.c": "ba6c75f8530e1adbd684f4df39cc73efea4ff204f145eb4256ddfd2de94d7316",
+    "kernel/font_metrics.h": "3fa17e9a5fe78d307243f5756f74543559478366226602cabf054d94eb0f2769",
+    "tests/kernel_font_metrics.py": "15ab2c10f5e756239311fc8fe02d1d12e6ce2c725cf071c45f830cc191e5385b"
+  }
+}

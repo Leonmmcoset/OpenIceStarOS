@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 430 declared kernel intervals and
+original IceStarOS VHD. The current build installs 439 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5366,3 +5366,17 @@ Focused FAT/X-loader regressions, installers and production CLOCK/RAM/TSS
 checks pass. See [recovery/FONT_PARSE.md](recovery/FONT_PARSE.md) for scope
 and limits. Font outlines, rasterization and the complete initializer remain
 original; neither the kernel nor the complete OS is fully recovered.
+
+### Font metrics, scaling and SVG documents (2026-10-31)
+
+Nine more entries now execute recovered C for horizontal/vertical metrics,
+OS/2 typography metrics, global bounds, pixel-height/EM scaling and SVG
+glyph/codepoint documents. The kernel installs 439 intervals. Differential
+comparison passes 1,098 scenarios / 3,294 executions, including raw x87
+80-bit results and float32 conversions under six precision/rounding controls.
+Original/C QEMU reports match metrics parsed independently from Fira table
+bytes and specified SVG fixtures; both disks remain unchanged. Parser,
+FAT/X-loader, installers, CLOCK, RAM/TSS and all 439 guest intervals pass.
+See [recovery/FONT_METRICS.md](recovery/FONT_METRICS.md). Full OS recovery and
+full regression remain unfinished; the glyph cmap and rasterizer are still
+original at this step.

@@ -1,0 +1,25 @@
+{
+  "installed_intervals": 439,
+  "full_make_verify_run": false,
+  "complete_os_recovery": false,
+  "production_boot": [
+    "RAM probe detected 134217728 bytes; 59 live heap headers verified",
+    "Advancing timer and real TSS switches verified through suspended C scheduler stacks",
+    "Input state: {\"pointer_initial\": [500, 372], \"pointer_cmd_icon\": [45, 282], \"cmd_code_candidates\": [\"0x44a9010\"], \"keyboard_queue_before\": [1, 1, 0, 2048], \"keyboard_queue_after\": [11, 11, 0, 2048], \"cmd_input\": \"cpuid\", \"cmd_cursor_before_return\": [9, 1], \"cmd_cursor_after_return\": [4, 3]}",
+    "Mouse position, relocated CMD, input text, queue consumption, and prompt return verified",
+    "Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked",
+    "C CLOCK loaded; 24 relocations, face/labels, three changing frames, PS/2 close, task exit and CMD reuse verified",
+    "QEMU snapshot boot captured; all fixed-address C patches match guest memory",
+    "Screenshot: /root/IceStarOS-x86-Decompile/rewrite/build/boot_openicestaros.png",
+    "Desktop appearance still requires visual inspection; this is not a full OS test"
+  ],
+  "installation_checks": [
+    "entire disk verified: only compiled boot stages and declared kernel slots changed",
+    "Entire disk verified: only declared application file extents changed"
+  ],
+  "sha256": {
+    "rewrite/build/openicestaros_kernel.x": "0821f1cade310f8e7addd89a9cb12c30db17e7872a7e14be8c14259bcbefacc5",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "46faa9ccf40275b13de04c5112a9a35ac178b1ad1ae1e8e02968dc36da5468d6",
+    "rewrite/kernel/patches.json": "b7a009edb63b825034f094a3b852e56cee9af53b6c650b7fc3fac4c10abce2d3"
+  }
+}

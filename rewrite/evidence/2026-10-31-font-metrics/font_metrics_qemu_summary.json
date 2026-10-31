@@ -1,0 +1,227 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "84c3304f7796d2f7c4f45099bdfaa2d12b3f53e115642cf5fe510e453c73d843",
+      "result_sha256": "84c3304f7796d2f7c4f45099bdfaa2d12b3f53e115642cf5fe510e453c73d843",
+      "clusters": [],
+      "report": [
+        1296389169,
+        1,
+        1,
+        1160,
+        4294966988,
+        0,
+        1,
+        923,
+        4294966988,
+        0,
+        4294965473,
+        4294966783,
+        1223,
+        1231,
+        615,
+        21,
+        1015410141,
+        1019517862,
+        1,
+        10,
+        1,
+        20,
+        1,
+        0,
+        1
+      ],
+      "functions": {
+        "hmetrics": {
+          "entry": "0x82f958",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 50
+        },
+        "vmetrics": {
+          "entry": "0x83054a",
+          "entry_events": 1,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 43
+        },
+        "typo_metrics": {
+          "entry": "0x8305c0",
+          "entry_events": 1,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 53
+        },
+        "bounds": {
+          "entry": "0x83066a",
+          "entry_events": 1,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 47
+        },
+        "scale_height": {
+          "entry": "0x8306ec",
+          "entry_events": 5,
+          "interior_block_events": 9,
+          "decoded_body_instructions": 59
+        },
+        "scale_em": {
+          "entry": "0x83073a",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 16
+        },
+        "svg_record": {
+          "entry": "0x83077c",
+          "entry_events": 4,
+          "interior_block_events": 43,
+          "decoded_body_instructions": 58
+        },
+        "glyph_svg": {
+          "entry": "0x83081c",
+          "entry_events": 3,
+          "interior_block_events": 14,
+          "decoded_body_instructions": 43
+        },
+        "codepoint_svg": {
+          "entry": "0x8308a0",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 16
+        },
+        "original_full_init": {
+          "entry": "0x82c3bc",
+          "entry_events": 1,
+          "interior_block_events": 42,
+          "decoded_body_instructions": 194
+        },
+        "original_cmap_lookup": {
+          "entry": "0x82ca7c",
+          "entry_events": 25,
+          "interior_block_events": 1625,
+          "decoded_body_instructions": 124
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "46faa9ccf40275b13de04c5112a9a35ac178b1ad1ae1e8e02968dc36da5468d6",
+      "seeded_sha256": "8103516b5860c39fd5999349ed5ea5c64811467b000af68733a46cb5c3543432",
+      "result_sha256": "8103516b5860c39fd5999349ed5ea5c64811467b000af68733a46cb5c3543432",
+      "clusters": [],
+      "report": [
+        1296389169,
+        1,
+        1,
+        1160,
+        4294966988,
+        0,
+        1,
+        923,
+        4294966988,
+        0,
+        4294965473,
+        4294966783,
+        1223,
+        1231,
+        615,
+        21,
+        1015410141,
+        1019517862,
+        1,
+        10,
+        1,
+        20,
+        1,
+        0,
+        1
+      ],
+      "functions": {
+        "hmetrics": {
+          "entry": "0x82f958",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 48
+        },
+        "vmetrics": {
+          "entry": "0x83054a",
+          "entry_events": 1,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 44
+        },
+        "typo_metrics": {
+          "entry": "0x8305c0",
+          "entry_events": 1,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 53
+        },
+        "bounds": {
+          "entry": "0x83066a",
+          "entry_events": 1,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 39
+        },
+        "scale_height": {
+          "entry": "0x8306ec",
+          "entry_events": 5,
+          "interior_block_events": 11,
+          "decoded_body_instructions": 55
+        },
+        "scale_em": {
+          "entry": "0x83073a",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 14
+        },
+        "svg_record": {
+          "entry": "0x83077c",
+          "entry_events": 4,
+          "interior_block_events": 43,
+          "decoded_body_instructions": 52
+        },
+        "glyph_svg": {
+          "entry": "0x83081c",
+          "entry_events": 3,
+          "interior_block_events": 12,
+          "decoded_body_instructions": 44
+        },
+        "codepoint_svg": {
+          "entry": "0x8308a0",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 13
+        },
+        "original_full_init": {
+          "entry": "0x82c3bc",
+          "entry_events": 1,
+          "interior_block_events": 42,
+          "decoded_body_instructions": 194
+        },
+        "original_cmap_lookup": {
+          "entry": "0x82ca7c",
+          "entry_events": 33,
+          "interior_block_events": 2165,
+          "decoded_body_instructions": 124
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 439,
+  "sha256": {
+    "tests/kernel_font_metrics_qemu.py": "b490ae3e21e4c1aca83b8eb9656551b43107e1398f622ffe88a733d5a8f131bb",
+    "tests/font_metrics_guest.c": "2a653b2111f975aa0ed5b8bdc06b1a3a744c52160f90dc59162528332fc363cb",
+    "tests/kernel_fat_mutation_qemu.py": "991b28ea75400e803bad12b5dfcc267a6a04765bdc7c255df64e7c1d81d2b260"
+  },
+  "complete_os_recovery": false
+}

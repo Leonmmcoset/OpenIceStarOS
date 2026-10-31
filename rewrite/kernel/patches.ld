@@ -821,6 +821,25 @@ SECTIONS
     ASSERT(kernel_font_cff_subrs_82c232 == 0x82c232 && SIZEOF(.font_cff_subrs) <= 282, "font_cff_subrs overflow")
     .font_svg 0x82c34c : { *kernel_font_parse.o(.text.kernel_font_svg_82c34c) }
     ASSERT(kernel_font_svg_82c34c == 0x82c34c && SIZEOF(.font_svg) <= 112, "font_svg overflow")
+PROVIDE(kernel_font_glyph_index_82ca7c = 0x82ca7c);
+    .font_hmetrics 0x82f958 : { *kernel_font_metrics.o(.text.kernel_font_hmetrics_82f958) }
+    ASSERT(kernel_font_hmetrics_82f958 == 0x82f958 && SIZEOF(.font_hmetrics) <= 248, "font_hmetrics overflow")
+    .font_vmetrics 0x83054a : { *kernel_font_metrics.o(.text.kernel_font_vmetrics_83054a) }
+    ASSERT(kernel_font_vmetrics_83054a == 0x83054a && SIZEOF(.font_vmetrics) <= 118, "font_vmetrics overflow")
+    .font_typo_metrics 0x8305c0 : { *kernel_font_metrics.o(.text.kernel_font_typo_metrics_8305c0) }
+    ASSERT(kernel_font_typo_metrics_8305c0 == 0x8305c0 && SIZEOF(.font_typo_metrics) <= 170, "font_typo_metrics overflow")
+    .font_bounds 0x83066a : { *kernel_font_metrics.o(.text.kernel_font_bounds_83066a) }
+    ASSERT(kernel_font_bounds_83066a == 0x83066a && SIZEOF(.font_bounds) <= 130, "font_bounds overflow")
+    .font_scale_height 0x8306ec : { *kernel_font_metrics.o(.text.kernel_font_scale_height_8306ec) }
+    ASSERT(kernel_font_scale_height_8306ec == 0x8306ec && SIZEOF(.font_scale_height) <= 78, "font_scale_height overflow")
+    .font_scale_em 0x83073a : { *kernel_font_metrics.o(.text.kernel_font_scale_em_83073a) }
+    ASSERT(kernel_font_scale_em_83073a == 0x83073a && SIZEOF(.font_scale_em) <= 46, "font_scale_em overflow")
+    .font_svg_record 0x83077c : { *kernel_font_metrics.o(.text.kernel_font_svg_record_83077c) }
+    ASSERT(kernel_font_svg_record_83077c == 0x83077c && SIZEOF(.font_svg_record) <= 160, "font_svg_record overflow")
+    .font_glyph_svg 0x83081c : { *kernel_font_metrics.o(.text.kernel_font_glyph_svg_83081c) }
+    ASSERT(kernel_font_glyph_svg_83081c == 0x83081c && SIZEOF(.font_glyph_svg) <= 132, "font_glyph_svg overflow")
+    .font_codepoint_svg 0x8308a0 : { *kernel_font_metrics.o(.text.kernel_font_codepoint_svg_8308a0) }
+    ASSERT(kernel_font_codepoint_svg_8308a0 == 0x8308a0 && SIZEOF(.font_codepoint_svg) <= 50, "font_codepoint_svg overflow")
     .identity_paging 0x837448 : SUBALIGN(1) {
         *kernel_paging.o(.text.kernel_init_identity_paging)
         *kernel_paging.o(.text.build_identity_tables)
