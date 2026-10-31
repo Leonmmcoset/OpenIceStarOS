@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 439 declared kernel intervals and
+original IceStarOS VHD. The current build installs 456 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5415,3 +5415,8 @@ independent Fira/CFF/CID and partial-failure reports with complete disks
 unchanged. CLOCK, RAM/TSS and all installed guest intervals pass. See
 [recovery/FONT_INIT.md](recovery/FONT_INIT.md). Full OS recovery remains
 unfinished; the outline interpreters and rasterizer still contain original code.
+
+The complete 456-interval regression finished on 2026-10-31: every `make verify`
+recipe, including the final whole-disk installers and inventory check, passed.
+See [the complete regression record](evidence/2026-10-31-font-456-regression/README.md).
+This records commit `1865457`; later recovered functions require separate validation.

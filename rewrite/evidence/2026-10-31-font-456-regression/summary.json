@@ -1,0 +1,15 @@
+{
+  "source_commit": "1865457e1cd5b39adbdfb618a9a115ce27af43b2",
+  "command": "make -C rewrite verify",
+  "result": "passed all recipes through final inventory check",
+  "installed_intervals": 456,
+  "sha256": {
+    "rewrite/build/openicestaros_kernel.x": "04cc90d64d2e60962251a66018223d1eb4508981c7edcf540da340ce3422597f",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "405c8ff2604e5489774698d69c78c4c3798657fbcc349eb65a60dbb89ef0e4a6",
+    "rewrite/kernel/patches.json": "fb8688da8783f5a5da3836cb050fc5c8e8bdb045fd45bd52c9115dd4f75d0664",
+    "rewrite/kernel/patches.ld": "b9d111216110b6a51c993d93920493949a0b478ba0db5ac351aa3705b3723574",
+    "rewrite/Makefile": "b5cbe0b6c3c26093893fffd03b923ebd9781e459abbbc858a0d2ffb73af5138d",
+    "rewrite/build/font_456_verify.log": "7892d272fc2311872437a49b53c0441326f74db8264df33d9b029d55ea5b9c33"
+  },
+  "complete_os_recovery": false
+}
