@@ -146,6 +146,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_fat_path.o
 KERNEL_PATCHES += $(foreach name,fat_find_path fat_name83,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_io.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_write_sectors.bin
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_metadata.o
+KERNEL_PATCHES += $(BUILD)/kernel.fat_flush_metadata.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory_path.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_find_directory_path.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_alloc.o
@@ -195,6 +197,12 @@ test-fat-io: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_fat_io.py --installed
 
 verify: test-fat-io
+
+.PHONY: test-fat-metadata
+test-fat-metadata: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_fat_metadata.py --installed
+
+verify: test-fat-metadata
 
 .PHONY: test-fat-slots
 test-fat-slots: $(BUILD)/openicestaros_kernel.x
@@ -331,6 +339,9 @@ $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_io.o: kernel/fat_io.c kernel/fat_io.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_metadata.o: kernel/fat_metadata.c kernel/fat_metadata.h kernel/fat_io.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_directory_path.o: kernel/fat_directory_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)

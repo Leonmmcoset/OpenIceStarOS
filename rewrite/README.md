@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 390 declared kernel intervals and
+original IceStarOS VHD. The current build installs 391 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5274,3 +5274,16 @@ the installed run passes and the 50-byte body fits its 81-byte slot. See
 [`recovery/FAT_IO.md`](recovery/FAT_IO.md). The kernel now has 390 declared
 intervals; INIT, drivers, and most applications remain original or partial,
 so the complete OS rewrite remains unfinished.
+
+### FAT/root metadata writeback (2026-10-31)
+
+The writeback entry at `0x827cc4` now executes recovered C. It preserves
+cached FAT pointers/counts, partition wrapping, unrounded signed root-sector
+division, divide faults, and the contiguous writer contract. Original x86,
+ordinary C, and installed fixed-address C agree across 1,924 scenarios /
+5,772 executions; the body occupies 101 of 133 slot bytes. Production disk
+and application installation checks pass. QEMU verifies CMD/cpuid, RAM/heap,
+TSS switching and all 391 installed intervals; ordinary boot does not invoke
+writeback. See [`recovery/FAT_METADATA.md`](recovery/FAT_METADATA.md).
+A full regression was not run for this checkpoint. The complete OS recovery
+remains unfinished.

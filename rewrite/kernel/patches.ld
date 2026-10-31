@@ -953,6 +953,8 @@ SECTIONS
     ASSERT(kernel_fat_name83_827bba == 0x827bba && ADDR(.fat_name83) + SIZEOF(.fat_name83) <= 0x827c72, "fat_name83 overflow")
     .fat_write_sectors 0x827c72 : { *kernel_fat_io.o(.text.kernel_fat_write_sectors_827c72) }
     ASSERT(kernel_fat_write_sectors_827c72 == 0x827c72 && ADDR(.fat_write_sectors) + SIZEOF(.fat_write_sectors) <= 0x827cc3, "fat_write_sectors overflow")
+    .fat_flush_metadata 0x827cc4 : { *kernel_fat_metadata.o(.text.kernel_fat_flush_metadata_827cc4) }
+    ASSERT(kernel_fat_flush_metadata_827cc4 == 0x827cc4 && ADDR(.fat_flush_metadata) + SIZEOF(.fat_flush_metadata) <= 0x827d49, "fat_flush_metadata overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }
     ASSERT(kernel_x_read_relative_826ade == 0x826ade && ADDR(.fat_relative_read) + SIZEOF(.fat_relative_read) <= 0x826c3a, "fat_relative_read overflow")
     .fat_relative_named 0x826c3a : { *kernel_fat_relative.o(.text.kernel_fat_read_relative_named_826c3a) }
