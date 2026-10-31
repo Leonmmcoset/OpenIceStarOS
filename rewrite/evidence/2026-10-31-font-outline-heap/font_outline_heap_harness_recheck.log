@@ -1,0 +1,108 @@
+make: Entering directory '/root/IceStarOS-x86-Decompile/rewrite'
+python3 tests/kernel_font_outline.py --installed
+{
+  "installed": true,
+  "functions": 7,
+  "scenarios": 7977,
+  "executions": 23931,
+  "slots": {
+    "font_close_shape": {
+      "compiled_bytes": 220,
+      "slot_bytes": 316
+    },
+    "font_subroutine": {
+      "compiled_bytes": 129,
+      "slot_bytes": 166
+    },
+    "font_cid_subrs": {
+      "compiled_bytes": 240,
+      "slot_bytes": 414
+    },
+    "font_bitmap_box_subpixel": {
+      "compiled_bytes": 248,
+      "slot_bytes": 362
+    },
+    "font_bitmap_box": {
+      "compiled_bytes": 48,
+      "slot_bytes": 86
+    },
+    "font_codepoint_bitmap_box_subpixel": {
+      "compiled_bytes": 55,
+      "slot_bytes": 100
+    },
+    "font_codepoint_bitmap_box": {
+      "compiled_bytes": 48,
+      "slot_bytes": 86
+    }
+  },
+  "scenarios_by_function": {
+    "font_close_shape": 966,
+    "font_subroutine": 384,
+    "font_cid_subrs": 185,
+    "font_bitmap_box_subpixel": 3007,
+    "font_bitmap_box": 3001,
+    "font_codepoint_bitmap_box_subpixel": 217,
+    "font_codepoint_bitmap_box": 217
+  },
+  "seconds": 15.185,
+  "checks": [
+    "all touched data pages",
+    "caller-area count/cursor/bias writes",
+    "aggregate RET 4",
+    "callee-saved registers",
+    "six preserved x87 controls",
+    "independent packed quadratic vertices",
+    "all Fira glyph bounds",
+    "CFF subroutine bias thresholds",
+    "CID formats 0/3 and partial data",
+    "output aliases"
+  ],
+  "sha256": {
+    "kernel/font_outline.c": "f8a5a9ecc96fd3b7784b55f1569a19d7bb4d92ff789deb1814632168a8a2a45a",
+    "kernel/font_outline.h": "d042c8e71aae829866e022fb02215d16a08032deb18b8cf0465b8e29d58b320e",
+    "tests/kernel_font_outline.py": "2250fc476148aae44b08915fac22809eaec64e24170037cb34aa25b736ac07fe"
+  }
+}
+python3 tests/kernel_font_heap.py --installed
+{
+  "installed": true,
+  "functions": 3,
+  "scenarios": 184,
+  "executions": 552,
+  "slots": {
+    "font_heap_alloc": {
+      "compiled_bytes": 118,
+      "slot_bytes": 194
+    },
+    "font_heap_free": {
+      "compiled_bytes": 19,
+      "slot_bytes": 26
+    },
+    "font_heap_cleanup": {
+      "compiled_bytes": 31,
+      "slot_bytes": 50
+    }
+  },
+  "scenarios_by_function": {
+    "font_heap_alloc": 165,
+    "font_heap_free": 15,
+    "font_heap_cleanup": 4
+  },
+  "seconds": 0.395,
+  "checks": [
+    "real original and installed malloc/free",
+    "chunk sizing thresholds",
+    "allocation failures",
+    "free-list and descriptor aliases",
+    "wrapped indices",
+    "all touched pages including heap headers",
+    "cleanup and merge"
+  ],
+  "sha256": {
+    "kernel/font_heap.c": "0231f9404c9032f338c1cd096790b47a1c146741279f36247ba70d2f68c25e35",
+    "kernel/font_heap.h": "fdd29a6e8f772e05b3a11831e275de1dd4eee59ab691179341c2c1e2546d43bf",
+    "tests/kernel_font_heap.py": "f1122983611d6f9f6db3d4591d2f211863dfb1690feccd1540d3d88db89b41fb",
+    "tests/kernel_font_outline.py": "2250fc476148aae44b08915fac22809eaec64e24170037cb34aa25b736ac07fe"
+  }
+}
+make: Leaving directory '/root/IceStarOS-x86-Decompile/rewrite'

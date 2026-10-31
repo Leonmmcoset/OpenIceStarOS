@@ -1,0 +1,16 @@
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -c tests/font_context_guest.c -o build/font_context_guest.o
+ld -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=build/font_context_guest.map -o build/font_context_guest.elf build/font_context_guest.o
+python3 tools/xformat.py build/font_context_guest.elf build/font_context_guest.x --kind 0x0a --file-size 0x38b4 --metadata build/font_context_guest.symbols.json
+build/font_context_guest.x: 14516 bytes, 29 relocations, entry 0x58, BSS 0x1000+0x150
+python3 tests/kernel_font_context_qemu.py
+Traceback (most recent call last):
+  File "/root/IceStarOS-x86-Decompile/rewrite/tests/kernel_font_context_qemu.py", line 46, in <module>
+    if __name__=='__main__':main()
+  File "/root/IceStarOS-x86-Decompile/rewrite/tests/kernel_font_context_qemu.py", line 37, in main
+    results.append(boot(label,path,fixture_builder=fixture,suite='font_context',
+  File "/root/IceStarOS-x86-Decompile/rewrite/tests/kernel_fat_mutation_qemu.py", line 122, in boot
+    cmd_base = check_inputs(execute,output,image)
+  File "/root/IceStarOS-x86-Decompile/rewrite/tools/boot_smoke.py", line 538, in check_inputs
+    raise RuntimeError("expected one relocated CMD instance after clicking its icon")
+RuntimeError: expected one relocated CMD instance after clicking its icon
+make: *** [Makefile:1653: test-font-context-qemu] Error 1

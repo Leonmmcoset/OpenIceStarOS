@@ -1,0 +1,41 @@
+{
+  "cmd_base": "0x44aa410",
+  "input": "emulated PS/2 only",
+  "window_application": "original DEVMGR.X",
+  "completed": true,
+  "window": 7,
+  "record": "0x4436810",
+  "surface": 10,
+  "geometry": [
+    230,
+    184,
+    680,
+    460
+  ],
+  "resize_mode": 3,
+  "border": {
+    "pointer": [
+      232,
+      186
+    ],
+    "shape": 2,
+    "descriptor": [
+      116728,
+      224,
+      178
+    ]
+  },
+  "interior": {
+    "pointer": [
+      310,
+      264
+    ],
+    "shape": 0,
+    "descriptor": [
+      115576,
+      310,
+      264
+    ]
+  },
+  "window_deleted": true
+}

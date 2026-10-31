@@ -1,0 +1,46 @@
+{
+  "source_commit_before_step": "80b09de",
+  "installed_intervals": 472,
+  "exact_instruction_intervals": 77,
+  "new_functions": 10,
+  "previous_context_functions": 6,
+  "differential_scenarios": {
+    "font_context": 1747,
+    "font_outline": 7977,
+    "font_heap": 184
+  },
+  "complete_os_recovery": false,
+  "full_verify_for_this_kernel": false,
+  "last_complete_full_verify_intervals": 456,
+  "recovery": {
+    "rebuilt_applications": 5,
+    "partial_programs": 2,
+    "unrecovered_program_paths": 32
+  },
+  "passed": [
+    "installed original/ordinary/fixed font outline, heap and context differentials",
+    "installed glyph/kerning, X loader and FAT block regressions",
+    "original/C QEMU context, outline and arena diagnostics",
+    "kernel and application whole-disk installation verification",
+    "inventory check",
+    "production CLOCK animation, close, task exit and CMD reuse",
+    "CMD/cpuid via emulated PS/2",
+    "128 MiB RAM/heap header validation",
+    "timer/TSS task switches",
+    "cursor callbacks and 472 loaded patch intervals"
+  ],
+  "sha256": {
+    "rewrite/kernel/font_outline.c": "f8a5a9ecc96fd3b7784b55f1569a19d7bb4d92ff789deb1814632168a8a2a45a",
+    "rewrite/kernel/font_outline.h": "d042c8e71aae829866e022fb02215d16a08032deb18b8cf0465b8e29d58b320e",
+    "rewrite/kernel/font_heap.c": "0231f9404c9032f338c1cd096790b47a1c146741279f36247ba70d2f68c25e35",
+    "rewrite/kernel/font_heap.h": "fdd29a6e8f772e05b3a11831e275de1dd4eee59ab691179341c2c1e2546d43bf",
+    "rewrite/tests/kernel_font_outline.py": "2250fc476148aae44b08915fac22809eaec64e24170037cb34aa25b736ac07fe",
+    "rewrite/tests/kernel_font_heap.py": "f1122983611d6f9f6db3d4591d2f211863dfb1690feccd1540d3d88db89b41fb",
+    "rewrite/kernel/patches.json": "284ee96f626701b5d2f7c15b9837c3b0f790aca919897460069b9d16f69c9fd4",
+    "rewrite/kernel/patches.ld": "cc1bbc1c50cf362781fe7c4e72298137032c4df02613d01f4e9c3dcffba15ec3",
+    "rewrite/Makefile": "318cfb7fb8bc702e611c424dba16a129a1edcd4789ecd6372b42c1586d5439c9",
+    "rewrite/build/openicestaros_kernel.x": "e902a90a7c3540c324294154c8bc675e77b088679e646377a429389028f7998c",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "b8ae77bad3a9cf6741ad94c01adf9bbc63b1d80cce24c7ccd9ae4e92b3c9c23f",
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 462 declared kernel intervals and
+original IceStarOS VHD. The current build installs 472 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5426,3 +5426,12 @@ the kernel installs 462 intervals. The Type-2 interpreter itself still uses
 original code. See [CFF context recovery](recovery/FONT_CONTEXT.md) for packed
 vertices, geometry, aliasing, floating-point behavior and original/C guest
 checks. Evidence includes an actual CLOCK boot and preserved original logo.
+
+Ten more font functions now execute C: quadratic contour closure, biased CFF
+subroutine lookup, CID local subroutines, four bitmap-bound entries and three
+rasterizer arena functions. The kernel installs 472 intervals. See
+[outline and pixel bounds](recovery/FONT_OUTLINE.md) and
+[font object arenas](recovery/FONT_HEAP.md) for behavior, original/C/guest
+validation and limits. The Type-2 interpreter, full TrueType outline decoder
+and remaining rasterizer remain original. Five applications are still rebuilt;
+32 program paths remain unrecovered. The full OS rewrite is unfinished.

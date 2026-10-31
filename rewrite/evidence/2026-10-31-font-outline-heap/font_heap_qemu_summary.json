@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "5defbd1ea7fd92581132437ed2f7f3260c148f68189a48d4b55a1b12afe7a6e2",
+      "result_sha256": "5defbd1ea7fd92581132437ed2f7f3260c148f68189a48d4b55a1b12afe7a6e2",
+      "clusters": [],
+      "report": [
+        1212498225,
+        1,
+        1999,
+        1,
+        1998,
+        1,
+        1998,
+        1,
+        1,
+        1,
+        799,
+        1,
+        798,
+        1,
+        798,
+        1,
+        1,
+        1,
+        99
+      ],
+      "functions": {
+        "font_heap_alloc": {
+          "entry": "0x830b4c",
+          "entry_events": 527,
+          "interior_block_events": 1163,
+          "decoded_body_instructions": 149
+        },
+        "font_heap_free": {
+          "entry": "0x830c0e",
+          "entry_events": 504,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 20
+        },
+        "font_heap_cleanup": {
+          "entry": "0x830c28",
+          "entry_events": 35,
+          "interior_block_events": 140,
+          "decoded_body_instructions": 40
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "b8ae77bad3a9cf6741ad94c01adf9bbc63b1d80cce24c7ccd9ae4e92b3c9c23f",
+      "seeded_sha256": "9a81fd6ebfcead7b9772decf05d7de6a6e38c38e71cdb08f386842074408fafe",
+      "result_sha256": "9a81fd6ebfcead7b9772decf05d7de6a6e38c38e71cdb08f386842074408fafe",
+      "clusters": [],
+      "report": [
+        1212498225,
+        1,
+        1999,
+        1,
+        1998,
+        1,
+        1998,
+        1,
+        1,
+        1,
+        799,
+        1,
+        798,
+        1,
+        798,
+        1,
+        1,
+        1,
+        99
+      ],
+      "functions": {
+        "font_heap_alloc": {
+          "entry": "0x830b4c",
+          "entry_events": 488,
+          "interior_block_events": 1081,
+          "decoded_body_instructions": 135
+        },
+        "font_heap_free": {
+          "entry": "0x830c0e",
+          "entry_events": 461,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 16
+        },
+        "font_heap_cleanup": {
+          "entry": "0x830c28",
+          "entry_events": 35,
+          "interior_block_events": 140,
+          "decoded_body_instructions": 34
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 472,
+  "sha256": {
+    "tests/kernel_font_heap_qemu.py": "9dcf5acf429a0aa76bd2ae7647daf28ca6df8dabc872b2aa6c7f9f6031301b98",
+    "tests/font_heap_guest.c": "7be1c92f64e46682cb884b6bb5c0f188fe2237323a975d76f0e5cab716d0f456"
+  },
+  "complete_os_recovery": false
+}

@@ -138,6 +138,10 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_outline.o
+KERNEL_PATCHES += $(foreach name,font_close_shape font_subroutine font_cid_subrs font_bitmap_box_subpixel font_bitmap_box font_codepoint_bitmap_box_subpixel font_codepoint_bitmap_box,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_heap.o
+KERNEL_PATCHES += $(foreach name,font_heap_alloc font_heap_free font_heap_cleanup,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_context.o
 KERNEL_PATCHES += $(foreach name,font_context_bounds font_context_vertex font_context_close font_context_move font_context_line font_context_curve,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_cmap.o
@@ -1647,3 +1651,45 @@ $(BUILD)/font_context_guest.x: $(BUILD)/font_context_guest.elf tools/xformat.py
 
 test-font-context-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_context_guest.x
 	python3 tests/kernel_font_context_qemu.py
+
+$(BUILD)/kernel_font_outline.o: kernel/font_outline.c kernel/font_outline.h kernel/font_parse.h kernel/font_glyph.h kernel/font_cmap.h kernel/math_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-outline test-font-outline-qemu
+test-font-outline: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_outline.py --installed
+
+verify: test-font-outline
+
+$(BUILD)/font_outline_guest.o: tests/font_outline_guest.c kernel/font_outline.h kernel/font_parse.h Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_outline_guest.elf: $(BUILD)/font_outline_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_outline_guest.map -o $@ $<
+
+$(BUILD)/font_outline_guest.x: $(BUILD)/font_outline_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_outline_guest.symbols.json
+
+test-font-outline-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_outline_guest.x
+	python3 tests/kernel_font_outline_qemu.py
+
+$(BUILD)/kernel_font_heap.o: kernel/font_heap.c kernel/font_heap.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+.PHONY: test-font-heap test-font-heap-qemu
+test-font-heap: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_heap.py --installed
+
+verify: test-font-heap
+
+$(BUILD)/font_heap_guest.o: tests/font_heap_guest.c kernel/font_outline.h kernel/font_parse.h Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_heap_guest.elf: $(BUILD)/font_heap_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_heap_guest.map -o $@ $<
+
+$(BUILD)/font_heap_guest.x: $(BUILD)/font_heap_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_heap_guest.symbols.json
+
+test-font-heap-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_heap_guest.x
+	python3 tests/kernel_font_heap_qemu.py

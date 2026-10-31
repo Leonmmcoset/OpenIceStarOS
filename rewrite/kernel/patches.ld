@@ -34,6 +34,8 @@ PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
 PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
 PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
+PROVIDE(kernel_font_malloc_817590 = kernel_malloc);
+PROVIDE(kernel_font_free_8175a4 = kernel_free);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1133,6 +1135,26 @@ SECTIONS
     ASSERT(kernel_font_context_line_82e334 == 0x82e334 && SIZEOF(.font_context_line) <= 148, "font_context_line overflow")
     .font_context_curve 0x82e3c8 : { *kernel_font_context.o(.text.kernel_font_context_curve_82e3c8) }
     ASSERT(kernel_font_context_curve_82e3c8 == 0x82e3c8 && SIZEOF(.font_context_curve) <= 228, "font_context_curve overflow")
+    .font_close_shape 0x82d24a : { *kernel_font_outline.o(.text.kernel_font_close_shape_82d24a) }
+    ASSERT(kernel_font_close_shape_82d24a == 0x82d24a && SIZEOF(.font_close_shape) <= 316, "font_close_shape overflow")
+    .font_subroutine 0x82e4ac : { *kernel_font_outline.o(.text.kernel_font_subroutine_82e4ac) }
+    ASSERT(kernel_font_subroutine_82e4ac == 0x82e4ac && SIZEOF(.font_subroutine) <= 166, "font_subroutine overflow")
+    .font_cid_subrs 0x82e552 : { *kernel_font_outline.o(.text.kernel_font_cid_subrs_82e552) }
+    ASSERT(kernel_font_cid_subrs_82e552 == 0x82e552 && SIZEOF(.font_cid_subrs) <= 414, "font_cid_subrs overflow")
+    .font_bitmap_box_subpixel 0x8308d2 : { *kernel_font_outline.o(.text.kernel_font_bitmap_box_subpixel_8308d2) }
+    ASSERT(kernel_font_bitmap_box_subpixel_8308d2 == 0x8308d2 && SIZEOF(.font_bitmap_box_subpixel) <= 362, "font_bitmap_box_subpixel overflow")
+    .font_bitmap_box 0x830a3c : { *kernel_font_outline.o(.text.kernel_font_bitmap_box_830a3c) }
+    ASSERT(kernel_font_bitmap_box_830a3c == 0x830a3c && SIZEOF(.font_bitmap_box) <= 86, "font_bitmap_box overflow")
+    .font_codepoint_bitmap_box_subpixel 0x830a92 : { *kernel_font_outline.o(.text.kernel_font_codepoint_bitmap_box_subpixel_830a92) }
+    ASSERT(kernel_font_codepoint_bitmap_box_subpixel_830a92 == 0x830a92 && SIZEOF(.font_codepoint_bitmap_box_subpixel) <= 100, "font_codepoint_bitmap_box_subpixel overflow")
+    .font_codepoint_bitmap_box 0x830af6 : { *kernel_font_outline.o(.text.kernel_font_codepoint_bitmap_box_830af6) }
+    ASSERT(kernel_font_codepoint_bitmap_box_830af6 == 0x830af6 && SIZEOF(.font_codepoint_bitmap_box) <= 86, "font_codepoint_bitmap_box overflow")
+    .font_heap_alloc 0x830b4c : { *kernel_font_heap.o(.text.kernel_font_heap_alloc_830b4c) }
+    ASSERT(kernel_font_heap_alloc_830b4c == 0x830b4c && SIZEOF(.font_heap_alloc) <= 194, "font_heap_alloc overflow")
+    .font_heap_free 0x830c0e : { *kernel_font_heap.o(.text.kernel_font_heap_free_830c0e) }
+    ASSERT(kernel_font_heap_free_830c0e == 0x830c0e && SIZEOF(.font_heap_free) <= 26, "font_heap_free overflow")
+    .font_heap_cleanup 0x830c28 : { *kernel_font_heap.o(.text.kernel_font_heap_cleanup_830c28) }
+    ASSERT(kernel_font_heap_cleanup_830c28 == 0x830c28 && SIZEOF(.font_heap_cleanup) <= 50, "font_heap_cleanup overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
