@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 391 declared kernel intervals and
+original IceStarOS VHD. The current build installs 395 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5287,3 +5287,19 @@ TSS switching and all 391 installed intervals; ordinary boot does not invoke
 writeback. See [`recovery/FAT_METADATA.md`](recovery/FAT_METADATA.md).
 A full regression was not run for this checkpoint. The complete OS recovery
 remains unfinished.
+
+### FAT chain release and directory deletion (2026-10-31)
+
+Four entries at 0x827d4a, 0x827e6c, 0x827f58 and 0x827fe2 now run
+recovered C. Two release FAT chains; two mark root records deleted, invoke
+writeback, and preserve the signed lookup contract. Differential comparisons
+pass 472 scenarios / 1,416 executions, including the 39 original program
+paths and mutation/cycle/sentinel fixtures. Original and recovered kernels
+also run the same diagnostic X through CMD in QEMU: real ATA writes produce
+the same 18 changed bytes, with each complete disposable disk matching its
+independent expected image. Production boot verifies C CLOCK, CMD/cpuid,
+RAM/TSS switching and all 395 intervals. See
+[recovery/FAT_MUTATION.md](recovery/FAT_MUTATION.md) for behavior, evidence,
+commands and limits. The original ATA assembly, other file mutation paths,
+drivers, partial INIT/kernel, and 32 unrecovered program paths remain;
+a full regression and the complete OS recovery are still unfinished.

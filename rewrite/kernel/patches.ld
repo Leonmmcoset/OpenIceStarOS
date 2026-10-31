@@ -955,6 +955,14 @@ SECTIONS
     ASSERT(kernel_fat_write_sectors_827c72 == 0x827c72 && ADDR(.fat_write_sectors) + SIZEOF(.fat_write_sectors) <= 0x827cc3, "fat_write_sectors overflow")
     .fat_flush_metadata 0x827cc4 : { *kernel_fat_metadata.o(.text.kernel_fat_flush_metadata_827cc4) }
     ASSERT(kernel_fat_flush_metadata_827cc4 == 0x827cc4 && ADDR(.fat_flush_metadata) + SIZEOF(.fat_flush_metadata) <= 0x827d49, "fat_flush_metadata overflow")
+    .fat_release_root_chain 0x827d4a : { *kernel_fat_mutation.o(.text.kernel_fat_release_root_chain_827d4a) }
+    ASSERT(kernel_fat_release_root_chain_827d4a == 0x827d4a && ADDR(.fat_release_root_chain) + SIZEOF(.fat_release_root_chain) <= 0x827e6c, "fat_release_root_chain overflow")
+    .fat_release_record_chain 0x827e6c : { *kernel_fat_mutation.o(.text.kernel_fat_release_record_chain_827e6c) }
+    ASSERT(kernel_fat_release_record_chain_827e6c == 0x827e6c && ADDR(.fat_release_record_chain) + SIZEOF(.fat_release_record_chain) <= 0x827f58, "fat_release_record_chain overflow")
+    .fat_delete_root 0x827f58 : { *kernel_fat_mutation.o(.text.kernel_fat_delete_root_827f58) }
+    ASSERT(kernel_fat_delete_root_827f58 == 0x827f58 && ADDR(.fat_delete_root) + SIZEOF(.fat_delete_root) <= 0x827fe2, "fat_delete_root overflow")
+    .fat_delete_relative 0x827fe2 : { *kernel_fat_mutation.o(.text.kernel_fat_delete_relative_827fe2) }
+    ASSERT(kernel_fat_delete_relative_827fe2 == 0x827fe2 && ADDR(.fat_delete_relative) + SIZEOF(.fat_delete_relative) <= 0x828018, "fat_delete_relative overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }
     ASSERT(kernel_x_read_relative_826ade == 0x826ade && ADDR(.fat_relative_read) + SIZEOF(.fat_relative_read) <= 0x826c3a, "fat_relative_read overflow")
     .fat_relative_named 0x826c3a : { *kernel_fat_relative.o(.text.kernel_fat_read_relative_named_826c3a) }

@@ -1,0 +1,14 @@
+{
+  "image_sha256": "550d4a8b832058783de6205cb942a8345ce6bb063ad6d6dc2411fc2bac6e194a",
+  "kernel_sha256": "489694650c3acdb2a2ab10fdc902f6611a3f5c1f47dd8854db6cd2ab223837bc",
+  "original_vhd_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "installed_intervals": 395,
+  "exact_kernel_disk_check": "passed",
+  "exact_application_disk_check": "passed",
+  "ordinary_qemu_boot": "passed: CMD/cpuid, CLOCK, RAM/heap, timer/TSS, all 395 installed intervals",
+  "ordinary_qemu_log": "RAM probe detected 134217728 bytes; 59 live heap headers verified\nAdvancing timer and real TSS switches verified through suspended C scheduler stacks\nInput state: {\"pointer_initial\": [500, 372], \"pointer_cmd_icon\": [45, 282], \"cmd_code_candidates\": [\"0x44a9010\"], \"keyboard_queue_before\": [1, 1, 0, 2048], \"keyboard_queue_after\": [11, 11, 0, 2048], \"cmd_input\": \"cpuid\", \"cmd_cursor_before_return\": [9, 1], \"cmd_cursor_after_return\": [4, 3]}\nMouse position, relocated CMD, input text, queue consumption, and prompt return verified\nInspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked\nC CLOCK loaded; 24 relocations, face/labels, three changing frames, PS/2 close, task exit and CMD reuse verified\nQEMU snapshot boot captured; all fixed-address C patches match guest memory\nScreenshot: /root/IceStarOS-x86-Decompile/rewrite/build/boot_openicestaros.png\nDesktop appearance still requires visual inspection; this is not a full OS test\n",
+  "inventory_check": "passed: 5 rebuilt, 2 partial, 32 unrecovered program paths",
+  "original_logo_retained": true,
+  "full_make_verify_run": false,
+  "complete_os_recovery": false
+}

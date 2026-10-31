@@ -1,0 +1,18 @@
+{
+  "installed": true,
+  "scenarios": 1924,
+  "executions": 5772,
+  "writes": 1923,
+  "slots": {
+    "fat_flush_metadata": {
+      "compiled_bytes": 101,
+      "slot_bytes": 133
+    }
+  },
+  "seconds": 3.397,
+  "sha256": {
+    "kernel/fat_metadata.c": "9280eab3d932684f352697528bb4cbf58fe8a0421471ae609892ac3646148233",
+    "kernel/fat_metadata.h": "e193029badbe7210f66624852d0ebb4ac9c864b0b913c3bf2dcc77d82ac1e871",
+    "tests/kernel_fat_metadata.py": "45461026a6dcc135db27519c44a255b48558feb786edf460858a11be473b0db6"
+  }
+}

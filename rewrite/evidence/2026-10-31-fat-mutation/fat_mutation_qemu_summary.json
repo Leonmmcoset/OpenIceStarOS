@@ -1,0 +1,166 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "168b9d088683717aae40b49fe349214c8e08e1a2cdc925ba79e2a8a7a94ddce1",
+      "result_sha256": "3610e231e0cfe4b23e627627dfda072bd265586e607399814b8b9f5a2187bbe9",
+      "clusters": [
+        2117,
+        2119,
+        2121,
+        2123
+      ],
+      "report": [
+        1297437745,
+        4,
+        5,
+        2,
+        1,
+        2,
+        1,
+        4294967295,
+        4294967295,
+        64,
+        58853,
+        1
+      ],
+      "changed_offsets": [
+        17034,
+        17035,
+        17038,
+        17039,
+        17042,
+        17043,
+        17046,
+        17047,
+        25226,
+        25227,
+        25230,
+        25231,
+        25234,
+        25235,
+        25238,
+        25239,
+        29312,
+        29344
+      ],
+      "functions": {
+        "write_sectors": {
+          "entry": "0x827c72",
+          "entry_events": 3
+        },
+        "flush_metadata": {
+          "entry": "0x827cc4",
+          "entry_events": 3
+        },
+        "release_root_chain": {
+          "entry": "0x827d4a",
+          "entry_events": 1
+        },
+        "release_record_chain": {
+          "entry": "0x827e6c",
+          "entry_events": 1
+        },
+        "delete_root": {
+          "entry": "0x827f58",
+          "entry_events": 3
+        },
+        "delete_relative": {
+          "entry": "0x827fe2",
+          "entry_events": 2
+        },
+        "ata_write_sector": {
+          "entry": "0x828c18",
+          "entry_events": 247
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Two fixture files; complete disk equality. Temporary writable image only."
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "550d4a8b832058783de6205cb942a8345ce6bb063ad6d6dc2411fc2bac6e194a",
+      "seeded_sha256": "4b4bee218267579aa8d9fc6b996a765d19f9311186a414efb742c12d0cefb008",
+      "result_sha256": "548ab780b56f0b654c7e879883d768d50078e8979307c7cb9582aa03020ab516",
+      "clusters": [
+        2117,
+        2119,
+        2121,
+        2123
+      ],
+      "report": [
+        1297437745,
+        4,
+        5,
+        2,
+        1,
+        2,
+        1,
+        4294967295,
+        4294967295,
+        64,
+        58853,
+        1
+      ],
+      "changed_offsets": [
+        17034,
+        17035,
+        17038,
+        17039,
+        17042,
+        17043,
+        17046,
+        17047,
+        25226,
+        25227,
+        25230,
+        25231,
+        25234,
+        25235,
+        25238,
+        25239,
+        29312,
+        29344
+      ],
+      "functions": {
+        "write_sectors": {
+          "entry": "0x827c72",
+          "entry_events": 3
+        },
+        "flush_metadata": {
+          "entry": "0x827cc4",
+          "entry_events": 3
+        },
+        "release_root_chain": {
+          "entry": "0x827d4a",
+          "entry_events": 1
+        },
+        "release_record_chain": {
+          "entry": "0x827e6c",
+          "entry_events": 1
+        },
+        "delete_root": {
+          "entry": "0x827f58",
+          "entry_events": 3
+        },
+        "delete_relative": {
+          "entry": "0x827fe2",
+          "entry_events": 2
+        },
+        "ata_write_sector": {
+          "entry": "0x828c18",
+          "entry_events": 193
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Two fixture files; complete disk equality. Temporary writable image only."
+    }
+  ],
+  "installed_intervals": 395,
+  "complete_os_recovery": false
+}

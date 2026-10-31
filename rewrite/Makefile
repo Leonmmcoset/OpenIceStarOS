@@ -148,6 +148,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_fat_io.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_write_sectors.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_metadata.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_flush_metadata.bin
+KERNEL_OBJECTS += $(BUILD)/kernel_fat_mutation.o
+KERNEL_PATCHES += $(foreach name,fat_release_root_chain fat_release_record_chain fat_delete_root fat_delete_relative,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory_path.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_find_directory_path.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_alloc.o
@@ -203,6 +205,12 @@ test-fat-metadata: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_fat_metadata.py --installed
 
 verify: test-fat-metadata
+
+.PHONY: test-fat-mutation
+test-fat-mutation: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_fat_mutation.py --installed
+
+verify: test-fat-mutation
 
 .PHONY: test-fat-slots
 test-fat-slots: $(BUILD)/openicestaros_kernel.x
@@ -342,6 +350,9 @@ $(BUILD)/kernel_fat_io.o: kernel/fat_io.c kernel/fat_io.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_metadata.o: kernel/fat_metadata.c kernel/fat_metadata.h kernel/fat_io.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_fat_mutation.o: kernel/fat_mutation.c kernel/fat_mutation.h kernel/fat_metadata.h kernel/fat_directory.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_directory_path.o: kernel/fat_directory_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
@@ -1415,3 +1426,17 @@ test-jpeg-scan: $(BUILD)/openicestaros_kernel.x
 
 test-jpeg-scan-preview: $(BUILD)/openicestaros_kernel.x
 	python3 tests/kernel_jpeg_scan.py
+
+# Destructive filesystem checks use temporary disposable images only.
+$(BUILD)/fat_mutation_guest.o: tests/fat_mutation_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/fat_mutation_guest.elf: $(BUILD)/fat_mutation_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/fat_mutation_guest.map -o $@ $<
+
+$(BUILD)/fat_mutation_guest.x: $(BUILD)/fat_mutation_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/fat_mutation_guest.symbols.json
+
+.PHONY: test-fat-mutation-qemu
+test-fat-mutation-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_mutation_guest.x
+	python3 tests/kernel_fat_mutation_qemu.py
