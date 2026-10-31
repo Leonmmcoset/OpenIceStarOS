@@ -963,6 +963,10 @@ SECTIONS
     ASSERT(kernel_fat_delete_root_827f58 == 0x827f58 && ADDR(.fat_delete_root) + SIZEOF(.fat_delete_root) <= 0x827fe2, "fat_delete_root overflow")
     .fat_delete_relative 0x827fe2 : { *kernel_fat_mutation.o(.text.kernel_fat_delete_relative_827fe2) }
     ASSERT(kernel_fat_delete_relative_827fe2 == 0x827fe2 && ADDR(.fat_delete_relative) + SIZEOF(.fat_delete_relative) <= 0x828018, "fat_delete_relative overflow")
+    .fat_split_parent 0x828018 : { *kernel_fat_write.o(.text.kernel_fat_split_parent_828018) }
+    ASSERT(kernel_fat_split_parent_828018 == 0x828018 && ADDR(.fat_split_parent) + SIZEOF(.fat_split_parent) <= 0x8280e4, "fat_split_parent overflow")
+    .fat_write_root 0x82867e : { *kernel_fat_write.o(.text.kernel_fat_write_root_82867e) }
+    ASSERT(kernel_fat_write_root_82867e == 0x82867e && ADDR(.fat_write_root) + SIZEOF(.fat_write_root) <= 0x828b35, "fat_write_root overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }
     ASSERT(kernel_x_read_relative_826ade == 0x826ade && ADDR(.fat_relative_read) + SIZEOF(.fat_relative_read) <= 0x826c3a, "fat_relative_read overflow")
     .fat_relative_named 0x826c3a : { *kernel_fat_relative.o(.text.kernel_fat_read_relative_named_826c3a) }

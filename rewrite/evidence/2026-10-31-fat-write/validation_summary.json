@@ -1,0 +1,72 @@
+{
+  "installed_intervals_verified": 397,
+  "regressions": {
+    "fat_write_summary.json": {
+      "scenarios": 485,
+      "executions": 1455
+    },
+    "fat_mutation_summary.json": {
+      "scenarios": 472,
+      "executions": 1416
+    },
+    "fat_metadata_summary.json": {
+      "scenarios": 1924,
+      "executions": 5772
+    },
+    "fat_io_summary.json": {
+      "scenarios": 127,
+      "executions": 381
+    },
+    "fat_slots_summary.json": {
+      "scenarios": 208,
+      "executions": 624
+    },
+    "fat_path_summary.json": {
+      "scenarios": 758,
+      "executions": 2274
+    },
+    "fat_directory_summary.json": {
+      "scenarios": 7187,
+      "executions": 21561
+    },
+    "fat_files_summary.json": {
+      "scenarios": 2410,
+      "executions": 7230
+    },
+    "x_loader_installed_summary.json": {
+      "scenarios": 430,
+      "executions": 1290
+    }
+  },
+  "disk_and_inventory_checks": [
+    {
+      "command": "python3 tools/kernel_image.py verify ../IceStarOS_x86_32M.vhd build/OpenIceStarOS_c_init.vhd build/openicestaros_kernel.x kernel/patches.json build",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 tools/app_image.py verify build/OpenIceStarOS_c_init.vhd apps/images.json build build/OpenIceStarOS_c_apps.vhd",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 tools/binary_inventory.py --check",
+      "exit_code": 0
+    }
+  ],
+  "production_boot": {
+    "clock_launch_animation_close": true,
+    "cmd_cpuid_input": true,
+    "ram_bytes": 134217728,
+    "timer_tss_switching": true,
+    "installed_intervals_match": true,
+    "clock_frame0_visually_inspected": true
+  },
+  "full_verify_run": false,
+  "complete_os_recovery": false,
+  "sha256": {
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "50ec058c270f08a60e42ebb7954ab5c9f3eb74c2ab364df6e2a2c706a8f4993b",
+    "rewrite/build/openicestaros_kernel.x": "785bb042fa164a26232217d55ccf5482cdc47fdde85cf9a700f4159d66cd1c07",
+    "rewrite/kernel/patches.json": "dc7ebcf2d3e0ae8172b0b9f77930232b5a84af73ce32f674b83b46eff174247c",
+    "rewrite/kernel/patches.ld": "7f03bb3f7f02684d03694a3c1f5eec74bfadb83a79c0234ccfab70761fde2a44"
+  }
+}

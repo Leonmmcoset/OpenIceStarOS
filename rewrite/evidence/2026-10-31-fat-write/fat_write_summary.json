@@ -1,0 +1,24 @@
+{
+  "installed": true,
+  "scenarios": 485,
+  "executions": 1455,
+  "slots": {
+    "fat_split_parent": {
+      "compiled_bytes": 133,
+      "slot_bytes": 204
+    },
+    "fat_write_root": {
+      "compiled_bytes": 954,
+      "slot_bytes": 1207
+    }
+  },
+  "seconds": 6.139,
+  "original_kernel_sha256": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3",
+  "candidate_kernel_sha256": "785bb042fa164a26232217d55ccf5482cdc47fdde85cf9a700f4159d66cd1c07",
+  "scope": "Original filesystem/string helpers execute; only sector transfers are intercepted.",
+  "sha256": {
+    "kernel/fat_write.c": "c8b9a2f8893b4824144b36f16fc5d96a714d4dd18dc7d0bdc3c1c3d488c9d7ac",
+    "kernel/fat_write.h": "347e1ca6771fe96ff84527d9ff18bc86014e5b574dfcd8b859775bdebbaad23f",
+    "tests/kernel_fat_write.py": "fd1cf2f0896faf8f63a194624129617986ecce4174c94a8b3aa9e6400f3218c7"
+  }
+}

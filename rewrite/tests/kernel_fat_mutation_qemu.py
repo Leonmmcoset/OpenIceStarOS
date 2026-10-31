@@ -72,10 +72,13 @@ def fixture(source):
     return bytes(result), bytes(expected), clusters
 
 
-def boot(label, source_path):
+def boot(label, source_path, *, fixture_builder=fixture, suite='fat_mutation',
+         entries=ENTRIES, expected_report=(0x4d555431,4,5,2,1,2,1,0xffffffff,
+                                          0xffffffff,64,0xe5e5,1),
+         compact_changes=False):
     source = source_path.read_bytes()
-    seeded, expected, clusters = fixture(source)
-    output = BUILD/f'fat_mutation_qemu_{label}'
+    seeded, expected, clusters = fixture_builder(source)
+    output = BUILD/f'{suite}_qemu_{label}'
     output.mkdir(exist_ok=True)
     debug, trace = output/'debug.bin', output/'execution.trace'
     for p in (debug,trace):
@@ -90,7 +93,8 @@ def boot(label, source_path):
                 '-drive',f'file={image},format=raw','-boot','c','-display','none','-vga','std',
                 '-no-reboot','-serial','none','-monitor',f'unix:{monitor},server=on,wait=off',
                 '-debugcon',f'file:{debug}','-global','isa-debugcon.iobase=0xe9',
-                '-dfilter','0x827c72..0x828018,0x828c18..0x828c94','-D',str(trace)],
+                '-dfilter',','.join(f'{start:#x}..{end:#x}' for _,start,end in entries),
+                '-D',str(trace)],
                 stdout=log,stderr=subprocess.STDOUT)
             try:
                 deadline = time.monotonic()+10
@@ -121,9 +125,19 @@ def boot(label, source_path):
                     execute(f'pmemsave 0x800000 0x{len(Fat16(seeded).read_kernel()):x} "{memory}"')
                     loaded = memory.read_bytes()
                     kernel = Fat16(seeded).read_kernel()
-                    for _,start,end in ENTRIES:
+                    for _,start,end in entries:
                         require(loaded[start-0x800000:end-0x800000] ==
                                 kernel[start-0x800000:end-0x800000], 'guest kernel interval mismatch')
+                    execute(f'pmemsave 0x1a83a 0x8 "{output}/fat_pointers.memory"')
+                    fat_pointer = struct.unpack('<I',(output/'fat_pointers.memory').read_bytes()[:4])[0]
+                    disk = Fat16(seeded)
+                    bpb = disk.partition_lba*512
+                    metadata_start = bpb+word(seeded,bpb+14)*512
+                    metadata_bytes = seeded[bpb+16]*word(seeded,bpb+22)*512+len(disk.root)
+                    execute(f'pmemsave {fat_pointer:#x} {metadata_bytes:#x} "{output}/metadata_before.memory"')
+                    require((output/'metadata_before.memory').read_bytes() ==
+                            seeded[metadata_start:metadata_start+metadata_bytes],
+                            'cached FAT/root fixture differs before diagnostic')
                     execute('log exec,nochain')
                     execute('cont')
                     for line in ('cd icestar','color.x'):
@@ -139,7 +153,7 @@ def boot(label, source_path):
                         execute('sendkey ret 30')
                         time.sleep(1)
                     deadline = time.monotonic()+15
-                    while debug.stat().st_size < 48:
+                    while debug.stat().st_size < len(expected_report)*4:
                         require(process.poll() is None and time.monotonic()<deadline,'guest write test timed out')
                         time.sleep(0.1)
                     execute('stop')
@@ -158,15 +172,17 @@ def boot(label, source_path):
                     process.kill()
                     process.wait()
         actual = image.read_bytes()
-    report = struct.unpack('<12I',debug.read_bytes())
-    require(report == (0x4d555431,4,5,2,1,2,1,0xffffffff,0xffffffff,64,0xe5e5,1),
+    report = struct.unpack(f'<{len(expected_report)}I',debug.read_bytes())
+    require(report == expected_report,
             f'guest result mismatch: {report}')
     if actual != expected:
+        (output/'unexpected.vhd').write_bytes(actual)
+        (output/'expected.vhd').write_bytes(expected)
         offsets = [i for i,(a,b) in enumerate(zip(actual,expected)) if a != b]
         raise AssertionError(f'{label}: unexpected disk bytes: {offsets[:16]}')
     pcs = [int(m.group(1),16) for m in re.finditer(r'\[[0-9a-fA-F]+/([0-9a-fA-F]+)/',trace.read_text())]
     functions = {}
-    for name,start,end in ENTRIES:
+    for name,start,end in entries:
         hits = pcs.count(start)
         require(hits > 0 and any(start < pc < end for pc in pcs),f'entry/body not executed: {name}')
         functions[name] = dict(entry=hex(start),entry_events=hits)
@@ -174,9 +190,19 @@ def boot(label, source_path):
     require(source_path.read_bytes() == source,'input image was modified')
     evidence = dict(label=label,diagnostic_only=True,source_sha256=hashlib.sha256(source).hexdigest(),
         seeded_sha256=hashlib.sha256(seeded).hexdigest(),result_sha256=hashlib.sha256(actual).hexdigest(),
-        clusters=clusters,report=list(report),changed_offsets=changed,functions=functions,
+        clusters=clusters,report=list(report),functions=functions,
         disk_bytes_compared=len(actual),input='CMD via emulated PS/2; no guest-state injection',
-        scope='Two fixture files; complete disk equality. Temporary writable image only.')
+        scope='Fixture operations; complete disk equality. Temporary writable image only.')
+    if compact_changes:
+        ranges = []
+        for offset in changed:
+            if ranges and offset == ranges[-1][1]:
+                ranges[-1][1] += 1
+            else:
+                ranges.append([offset,offset+1])
+        evidence.update(changed_bytes=len(changed),changed_ranges=ranges)
+    else:
+        evidence['changed_offsets'] = changed
     (output/'summary.json').write_text(json.dumps(evidence,indent=2)+'\n')
     print(json.dumps(evidence),flush=True)
     return evidence
