@@ -978,6 +978,14 @@ SECTIONS
     ASSERT(kernel_x_header_relative_827826 == 0x827826 && ADDR(.fat_header_relative) + SIZEOF(.fat_header_relative) <= 0x8278f4, "fat_header_relative overflow")
     .fat_header_path 0x8278f4 : { *kernel_fat_files.o(.text.kernel_x_header_path_8278f4) }
     ASSERT(kernel_x_header_path_8278f4 == 0x8278f4 && ADDR(.fat_header_path) + SIZEOF(.fat_header_path) <= 0x82798c, "fat_header_path overflow")
+    .fat_root_empty 0x82798c : { *kernel_fat_slots.o(.text.kernel_fat_root_empty_82798c) }
+    ASSERT(kernel_fat_root_empty_82798c == 0x82798c && ADDR(.fat_root_empty) + SIZEOF(.fat_root_empty) <= 0x827a40, "fat_root_empty overflow")
+    .fat_directory_empty 0x827a40 : { *kernel_fat_slots.o(.text.kernel_fat_directory_empty_827a40) }
+    ASSERT(kernel_fat_directory_empty_827a40 == 0x827a40 && ADDR(.fat_directory_empty) + SIZEOF(.fat_directory_empty) <= 0x827ace, "fat_directory_empty overflow")
+    .fat_find_free_cluster 0x827ace : { *kernel_fat_slots.o(.text.kernel_fat_find_free_cluster_827ace) }
+    ASSERT(kernel_fat_find_free_cluster_827ace == 0x827ace && ADDR(.fat_find_free_cluster) + SIZEOF(.fat_find_free_cluster) <= 0x827b44, "fat_find_free_cluster overflow")
+    .fat_find_free_after 0x827b44 : { *kernel_fat_slots.o(.text.kernel_fat_find_free_after_827b44) }
+    ASSERT(kernel_fat_find_free_after_827b44 == 0x827b44 && ADDR(.fat_find_free_after) + SIZEOF(.fat_find_free_after) <= 0x827bba, "fat_find_free_after overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

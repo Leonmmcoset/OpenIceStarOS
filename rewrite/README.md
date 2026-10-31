@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 358 declared kernel intervals and
+original IceStarOS VHD. The current build installs 389 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5249,3 +5249,16 @@ parser/free-before-copy behavior, commands, evidence and screenshots. A full
 385-interval `make verify` was not run. Five apps are rebuilt; INIT/kernel
 remain partial and 32 program paths are unrecovered. The complete OS recovery
 remains unfinished.
+
+### FAT free-slot and cluster scans (2026-10-31)
+
+Four original-only FAT helpers now execute from recovered C at `0x82798c`,
+`0x827a40`, `0x827ace`, and `0x827b44`: root and supplied-directory unused or
+deleted-slot scans, followed by first-free-cluster scans from cluster 2 or
+after a supplied cluster. The original two-pass directory rule, live BPB
+entry bound, signed half-FAT limit, wrapping arithmetic, and `-1` exhaustion
+result are preserved. The installed differential suite passes 208 scenarios /
+624 executions across original x86, ordinary C, and fixed-address C. See
+[`recovery/FAT_SLOTS.md`](recovery/FAT_SLOTS.md). The kernel now has 389
+declared intervals; this is a focused recovery step and the complete OS
+rewrite remains unfinished.
