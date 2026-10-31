@@ -38,7 +38,7 @@ make -C rewrite build/openicestaros_kernel.x test-fat-slots
 make -C rewrite inventory-check
 ```
 
-The kernel now declares 389 replacement intervals. The four helpers are used
+The kernel now declares 390 replacement intervals. The four helpers are used
 by the original directory/file mutation paths; the production image keeps
 those callers at their original addresses while replacing only these four
 intervals. INIT, drivers, and most applications remain original or partial;

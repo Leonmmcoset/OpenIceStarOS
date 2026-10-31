@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 389 declared kernel intervals and
+original IceStarOS VHD. The current build installs 390 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5259,6 +5259,18 @@ after a supplied cluster. The original two-pass directory rule, live BPB
 entry bound, signed half-FAT limit, wrapping arithmetic, and `-1` exhaustion
 result are preserved. The installed differential suite passes 208 scenarios /
 624 executions across original x86, ordinary C, and fixed-address C. See
-[`recovery/FAT_SLOTS.md`](recovery/FAT_SLOTS.md). The kernel now has 389
+[`recovery/FAT_SLOTS.md`](recovery/FAT_SLOTS.md). The kernel now has 390
 declared intervals; this is a focused recovery step and the complete OS
 rewrite remains unfinished.
+
+### FAT contiguous-sector reader (2026-10-31)
+
+The contiguous reader at `0x827c72` is now recovered in `kernel/fat_io.c`.
+It preserves the original wrapped end calculation, unsigned loop condition,
+live bytes-per-sector stride, one-sector ATA call sequence, ignored hardware
+return value, and cdecl contract. `tests/kernel_fat_io.py` compares original
+x86, ordinary C, and fixed-address C across 127 scenarios and 381 executions;
+the installed run passes and the 50-byte body fits its 81-byte slot. See
+[`recovery/FAT_IO.md`](recovery/FAT_IO.md). The kernel now has 390 declared
+intervals; INIT, drivers, and most applications remain original or partial,
+so the complete OS rewrite remains unfinished.

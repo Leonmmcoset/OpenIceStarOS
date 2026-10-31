@@ -233,6 +233,7 @@
   {"name": "FAT first free cluster scan", "binary": "kernel.fat_find_free_cluster.bin", "start": "0x827ace", "end": "0x827b44"},
   {"name": "FAT free cluster scan after entry", "binary": "kernel.fat_find_free_after.bin", "start": "0x827b44", "end": "0x827bba"},
   {"name": "FAT uppercase 8.3 name formatter", "binary": "kernel.fat_name83.bin", "start": "0x827bba", "end": "0x827c72"},
+  {"name": "FAT contiguous sector reader", "binary": "kernel.fat_read_sectors.bin", "start": "0x827c72", "end": "0x827cc3"},
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},
   {"name": "SSE 64-byte block copy", "binary": "kernel.copy_sse64.bin", "start": "0x828eb1", "end": "0x828eeb", "exact": true},
