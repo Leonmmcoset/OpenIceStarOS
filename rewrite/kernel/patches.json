@@ -240,6 +240,7 @@
   {"name": "FAT root-record deletion and writeback", "binary": "kernel.fat_delete_root.bin", "start": "0x827f58", "end": "0x827fe2"},
   {"name": "FAT relative-name deletion wrapper", "binary": "kernel.fat_delete_relative.bin", "start": "0x827fe2", "end": "0x828018"},
   {"name": "FAT parent and filename path splitter", "binary": "kernel.fat_split_parent.bin", "start": "0x828018", "end": "0x8280e4"},
+  {"name": "FAT absolute-path file creation and overwrite", "binary": "kernel.fat_write_path.bin", "start": "0x8280e4", "end": "0x82867e"},
   {"name": "FAT root file creation and overwrite", "binary": "kernel.fat_write_root.bin", "start": "0x82867e", "end": "0x828b35"},
   {"name": "far task jump", "binary": "kernel.far_task_jump.bin", "start": "0x828d2b", "end": "0x828d30", "exact": true},
   {"name": "SSE 16-byte block copy", "binary": "kernel.copy_sse16.bin", "start": "0x828e8f", "end": "0x828eb1", "exact": true},

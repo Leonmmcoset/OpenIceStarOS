@@ -25,7 +25,8 @@ uint32_t kernel_fat_allocate_index_82711e(uint32_t directory, int32_t index)
     uint32_t record = directory + ((uint32_t)index << 5);
     uint32_t bytes = B(BPB + 13u) * W(BPB + 11u);
     uint32_t numerator = bytes + D(record + 28u) - 1u;
-    uint32_t clusters = numerator / (B(BPB + 13u) * W(BPB + 11u));
+    /* Directory attributes override the result only after the original DIV. */
+    volatile uint32_t clusters = numerator / (B(BPB + 13u) * W(BPB + 11u));
     if (B(record + 11u) & 16u) clusters = 1;
     uint32_t destination = kernel_allocate(B(BPB + 13u) * clusters * W(BPB + 11u));
     if (!destination) return 0;

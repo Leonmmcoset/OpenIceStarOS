@@ -1,5 +1,9 @@
 # FAT root-file creation and overwrite
 
+This document records the 397-interval checkpoint. The subsequent
+[absolute-path writer recovery](FAT_WRITE_PATH.md) extends the same module
+and its tests; the counts and evidence below describe the earlier checkpoint.
+
 Two original-only entries now execute recovered C in `kernel/fat_write.c`.
 Both retain their fixed entry addresses and cdecl ABI.
 
@@ -95,7 +99,7 @@ unchanged. Neither filesystem helpers nor disk I/O are intercepted here.
 Small summaries are retained in `../evidence/2026-10-31-fat-write/`.
 Full images, traces and dumps remain ignored in `build/`. No full
 `make verify` was run for this checkpoint. These fixtures do not establish
-arbitrary filesystem correctness. The absolute-path writer at 0x8280e4,
+arbitrary filesystem correctness. At that checkpoint the absolute-path writer at 0x8280e4,
 ATA entry assembly and other unrecovered paths still require original
 machine code. INIT/kernel remain partial; five applications are rebuilt and
 32 original program paths remain unrecovered. The original logo is retained.

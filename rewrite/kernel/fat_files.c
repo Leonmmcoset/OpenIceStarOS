@@ -52,7 +52,9 @@ static __attribute__((always_inline)) inline uint32_t read_chain(uint32_t record
 uint32_t kernel_fat_read_alloc_827454(uint32_t record)
 {
     uint32_t numerator = cluster_bytes() + D(record + 28u) - 1u;
-    uint32_t count = numerator / cluster_bytes();
+    /* The original divides before forcing directory allocations to one
+     * cluster; a zero cluster size must still raise the x86 divide fault. */
+    volatile uint32_t count = numerator / cluster_bytes();
     if (B(record + 11u) & 16u) count = 1;
     uint32_t sectors = B(BPB + 13u) * count;
     uint32_t destination = kernel_allocate(sectors * W(BPB + 11u));

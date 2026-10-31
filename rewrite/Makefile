@@ -151,7 +151,7 @@ KERNEL_PATCHES += $(BUILD)/kernel.fat_flush_metadata.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_mutation.o
 KERNEL_PATCHES += $(foreach name,fat_release_root_chain fat_release_record_chain fat_delete_root fat_delete_relative,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_write.o
-KERNEL_PATCHES += $(foreach name,fat_split_parent fat_write_root,$(BUILD)/kernel.$(name).bin)
+KERNEL_PATCHES += $(foreach name,fat_split_parent fat_write_path fat_write_root,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_directory_path.o
 KERNEL_PATCHES += $(BUILD)/kernel.fat_find_directory_path.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_fat_alloc.o
@@ -363,7 +363,7 @@ $(BUILD)/kernel_fat_metadata.o: kernel/fat_metadata.c kernel/fat_metadata.h kern
 $(BUILD)/kernel_fat_mutation.o: kernel/fat_mutation.c kernel/fat_mutation.h kernel/fat_metadata.h kernel/fat_directory.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
-$(BUILD)/kernel_fat_write.o: kernel/fat_write.c kernel/fat_write.h kernel/fat_directory.h kernel/fat_path.h kernel/fat_slots.h kernel/fat_mutation.h kernel/fat_metadata.h kernel/fat_io.h kernel/helpers.h kernel/string_extra.h Makefile | $(BUILD)
+$(BUILD)/kernel_fat_write.o: kernel/fat_write.c kernel/fat_write.h kernel/fat_directory.h kernel/fat_path.h kernel/fat_slots.h kernel/fat_mutation.h kernel/fat_metadata.h kernel/fat_io.h kernel/fat_files.h kernel/memory.h kernel/helpers.h kernel/string_extra.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_directory_path.o: kernel/fat_directory_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
@@ -1464,3 +1464,16 @@ $(BUILD)/fat_write_guest.x: $(BUILD)/fat_write_guest.elf tools/xformat.py
 .PHONY: test-fat-write-qemu
 test-fat-write-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_write_guest.x
 	python3 tests/kernel_fat_write_qemu.py
+
+$(BUILD)/fat_write_path_guest.o: tests/fat_write_path_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/fat_write_path_guest.elf: $(BUILD)/fat_write_path_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/fat_write_path_guest.map -o $@ $<
+
+$(BUILD)/fat_write_path_guest.x: $(BUILD)/fat_write_path_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/fat_write_path_guest.symbols.json
+
+.PHONY: test-fat-write-path-qemu
+test-fat-write-path-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/fat_write_path_guest.x
+	python3 tests/kernel_fat_write_path_qemu.py

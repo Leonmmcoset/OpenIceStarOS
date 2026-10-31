@@ -1,7 +1,7 @@
-"""Execute recovered FAT path splitter/root writer against the original x86.
+"""Execute recovered FAT path splitter/file writers against the original x86.
 
 The ordinary and fixed-address variants run real original filesystem/string
-helpers. Only disk transfers are intercepted. Installed runs use the complete
+helpers. Only allocation/free and disk transfers are intercepted. Installed runs use the complete
 production kernel for the fixed-address variant.
 """
 import argparse
@@ -25,6 +25,7 @@ from unicorn.x86_const import (UC_X86_REG_EAX, UC_X86_REG_EBX, UC_X86_REG_ECX,
 SLOTS = [
     ("fat_split_parent", "kernel_fat_split_parent_828018", 0x828018, 0x8280e4),
     ("fat_write_root", "kernel_fat_write_root_82867e", 0x82867e, 0x828b35),
+    ("fat_write_path", "kernel_fat_write_path_8280e4", 0x8280e4, 0x82867e),
 ]
 HELPERS = dict(kernel_string_length=0x82a45d, kernel_copy_string=0x82a32b,
     kernel_string_upper_82a531=0x82a531, kernel_x_find_relative_825c8e=0x825c8e,
@@ -33,9 +34,16 @@ HELPERS = dict(kernel_string_length=0x82a45d, kernel_copy_string=0x82a32b,
     kernel_fat_find_free_cluster_827ace=0x827ace,
     kernel_fat_find_free_after_827b44=0x827b44,
     kernel_fat_write_sectors_827c72=0x827c72,
-    kernel_fat_flush_metadata_827cc4=0x827cc4)
+    kernel_fat_flush_metadata_827cc4=0x827cc4,
+    kernel_fat_find_directory_path_825f48=0x825f48,
+    kernel_fat_read_alloc_827454=0x827454,
+    kernel_fat_directory_find_825d34=0x825d34,
+    kernel_fat_directory_empty_827a40=0x827a40,
+    kernel_fat_release_record_chain_827e6c=0x827e6c,
+    kernel_free_allocation=0x815978)
 BASE, BPB, NAME, SOURCE, FAT1, FAT2 = 0x800000, 0x520000, 0x600000, 0x610000, 0x500000, 0x540000
 PARENT, FILE, STACK, STOP = 0x601000, 0x602000, 0x40f000, 0x200000
+ARENA = 0x900000
 MASK = 0xffffffff
 SOURCE_BYTES = bytes((i*37 + (i>>8)*11) & 255 for i in range(0x60000))
 
@@ -93,6 +101,9 @@ class Machine:
         self.uc.mem_write(base, binary)
         self.uc.hook_add(UC_HOOK_CODE, self.finish, begin=STOP, end=STOP)
         self.uc.hook_add(UC_HOOK_CODE, self.write_sectors, begin=0x827c72, end=0x827c72)
+        for address in (0x815464,0x815978,0x8254ca):
+            self.uc.hook_add(UC_HOOK_CODE,self.boundary,begin=address,end=address)
+        self.uc.hook_add(UC_HOOK_CODE,self.release_entry,begin=0x827e6c,end=0x827e6c)
 
     def finish(self, uc, address, size, unused):
         self.done = True
@@ -104,6 +115,7 @@ class Machine:
         bps = word(uc.mem_read(BPB+11,2),0)
         payload = bytes(uc.mem_read(source,count*bps))
         self.writes.append((lba,source,count,hashlib.sha256(payload).hexdigest()))
+        self.trace.append(('write',self.writes[-1]))
         if len(self.writes) == 1 and self.case.get('mutate'):
             uc.mem_write(BPB+11,struct.pack('<H',256))
             uc.mem_write(BPB+13,b'\x02')
@@ -114,12 +126,72 @@ class Machine:
         uc.reg_write(UC_X86_REG_ESP,sp+4)
         uc.reg_write(UC_X86_REG_EIP,struct.unpack('<I',uc.mem_read(sp,4))[0])
 
+    def boundary(self,uc,address,size,unused):
+        sp = uc.reg_read(UC_X86_REG_ESP)
+        argc = 3 if address == 0x8254ca else 1
+        args = struct.unpack(f'<{argc}I',uc.mem_read(sp+4,argc*4))
+        result = 0x7351
+        if address == 0x815464:
+            self.allocations += 1
+            assert self.allocations <= 16
+            result = ARENA+(self.allocations-1)*0x10000
+            if self.allocations == self.case.get('fail_allocation'): result = 0
+            self.trace.append(('allocate',args,result))
+        elif address == 0x815978:
+            self.trace.append(('free',args))
+            if self.case.get('free_mutation'):
+                uc.mem_write(args[0]+26,struct.pack('<H',202))
+        else:
+            lba,count,destination = args
+            bps = word(uc.mem_read(BPB+11,2),0)
+            assert count <= 32 and ARENA <= destination <= ARENA+0x200000-count*bps,args
+            payload = b''.join(self.sectors.get((lba+i)&MASK,bytes(bps)) for i in range(count))
+            assert len(payload) == count*bps
+            uc.mem_write(destination,payload)
+            self.trace.append(('read',args,hashlib.sha256(payload).hexdigest()))
+        uc.reg_write(UC_X86_REG_EAX,result)
+        uc.reg_write(UC_X86_REG_ECX,0x11112222)
+        uc.reg_write(UC_X86_REG_EDX,0x33334444)
+        uc.reg_write(UC_X86_REG_ESP,sp+4)
+        uc.reg_write(UC_X86_REG_EIP,struct.unpack('<I',uc.mem_read(sp,4))[0])
+
+    def release_entry(self,uc,address,size,unused):
+        # Let the real release routine execute. Change geometry at this
+        # boundary to observe subsequent timestamp/size writes before DIV.
+        if self.case.get('release_zero') == 'bps': uc.mem_write(BPB+11,b'\0\0')
+        if self.case.get('release_zero') == 'spc': uc.mem_write(BPB+13,b'\0')
+
+    def path_fixture(self,case,root,directory,bps,spc,entries):
+        depth = case.get('depth',1)
+        folders = (b'DIR        ',b'SUB        ',b'THIRD      ',b'LAST       ')
+        assert 1 <= depth <= len(folders)
+        parent = bytearray(32)
+        parent[:11],parent[11] = folders[0],0x10
+        struct.pack_into('<H',parent,20,case.get('parent_high',0))
+        struct.pack_into('<H',parent,26,200)
+        self.uc.mem_write(root+32,bytes(parent))
+        # A non-directory parent must fail lookup before reading any clusters.
+        if case.get('parent_file'): self.uc.mem_write(root+32+11,b'\x20')
+        start = ((entries*32+bps-1)//bps if bps else 0)+1+case.get('fats',2)*case.get('fat_sectors',4)+case.get('partition',17)
+        self.sectors = {}
+        for level in range(depth):
+            block = directory if level == depth-1 else bytearray(bps*spc)
+            if level < depth-1:
+                parent[:11] = folders[level+1]
+                struct.pack_into('<H',parent,26,201+level)
+                block[:32] = parent
+            block = bytes(block).ljust(bps*spc,b'\0')
+            if bps:
+                for i in range(spc):
+                    self.sectors[(start+(198+level)*spc+i)&MASK] = block[i*bps:(i+1)*bps]
+
     def execute(self, function, case):
         uc = self.uc
-        self.case,self.done,self.writes = case,False,[]
+        self.case,self.done,self.writes,self.trace,self.allocations = case,False,[],[],0
         uc.mem_write(0,bytes(0x20000))
         uc.mem_write(0x500000,bytes(0x200000))
         uc.mem_write(STACK-0x4000,bytes(0x5000))
+        if function == 2: uc.mem_write(ARENA,b'\xa5'*0x200000)
         uc.mem_write(NAME,case.get('name',b'new.tst')+b'\0')
         uc.mem_write(PARENT,b'\xa5'*512)
         uc.mem_write(FILE,b'\x5a'*512)
@@ -147,7 +219,8 @@ class Machine:
                 struct.pack_into('<H',table,cluster*2,next_cluster)
             uc.mem_write(FAT1,bytes(table))
             uc.mem_write(FAT2,bytes(table))
-            directory = bytearray(b'FILLER  TST'+bytes([0x20])+bytes(20))*entries
+            records = max(entries,bps*spc//32) if function == 2 and not case.get('root_forward') else entries
+            directory = bytearray(b'FILLER  TST'+bytes([0x20])+bytes(20))*records
             mode = case.get('mode','new')
             index = case.get('index',3)
             root = BPB+(1+fats*sectors)*bps
@@ -161,7 +234,12 @@ class Machine:
                 struct.pack_into('<I',record,28,case.get('old_size',4096))
                 if mode == 'deleted': record[0] = 0xe5
                 directory[index*32:(index+1)*32] = record
-            uc.mem_write(root,bytes(directory))
+            if function == 2 and not case.get('root_forward'):
+                if bps:
+                    uc.mem_write(root,(b'FILLER  TST'+bytes([0x20])+bytes(20))*entries)
+                self.path_fixture(case,root,directory,bps,spc,entries)
+            elif bps:
+                uc.mem_write(root,bytes(directory))
             uc.mem_write(SOURCE,SOURCE_BYTES)
             args = (NAME,SOURCE,case.get('bytes',513))
         uc.mem_write(STACK,struct.pack('<6I',STOP,*args,0x13579bdf,0x2468ace0))
@@ -176,7 +254,7 @@ class Machine:
         except UcError as error:
             assert case.get('fault') and error.errno == UC_ERR_EXCEPTION,(self.label,case,error)
             fault = error.errno
-        assert bool(fault) == bool(case.get('fault'))
+        assert bool(fault) == bool(case.get('fault')), (self.label,case,'division fault mismatch')
         if not fault:
             assert self.done,(self.label,case,hex(uc.reg_read(UC_X86_REG_EIP)))
             assert uc.reg_read(UC_X86_REG_ESP) == STACK+4
@@ -193,11 +271,14 @@ class Machine:
             else:
                 assert bytes(uc.mem_read(PARENT,512)) == b'\xa5'*512
                 assert bytes(uc.mem_read(FILE,512)) == b'\x5a'*512
-        if function == 1 and not fault and not case.get('mutate'):
+        if function in (1,2) and not fault and not case.get('mutate'):
             expected_sectors = ((case.get('bytes',513)+case.get('bps',512)-1)&MASK)//case.get('bps',512)
             rejected = (case.get('mode') == 'full' or
                 (case.get('mode') == 'existing' and
-                 (case.get('index',3) == 0 or case.get('attributes',0x20) & 0x18)))
+                 ((case.get('index',3) == 0 and (function == 1 or case.get('root_forward'))) or
+                  case.get('attributes',0x20) & 0x18)))
+            if function == 2:
+                rejected = rejected or case.get('rejected') or bool(case.get('fail_allocation'))
             assert eax == (0 if rejected else expected_sectors), (self.label, case, eax, expected_sectors)
             if rejected:
                 assert not self.writes
@@ -206,8 +287,11 @@ class Machine:
                 data = [x for x in self.writes if SOURCE <= x[1] < SOURCE+len(SOURCE_BYTES)]
                 clusters = (expected_sectors+case.get('spc',4)-1)//case.get('spc',4)
                 assert len(data)==clusters,(self.label,case,len(data),clusters)
-        return (fault,eax,self.writes,hashlib.sha256(uc.mem_read(0,0x20000)).hexdigest(),
-                hashlib.sha256(uc.mem_read(0x500000,0x200000)).hexdigest())
+        result = (fault,eax,self.writes,hashlib.sha256(uc.mem_read(0,0x20000)).hexdigest(),
+                  hashlib.sha256(uc.mem_read(0x500000,0x200000)).hexdigest())
+        if function == 2:
+            result += (self.trace,hashlib.sha256(uc.mem_read(ARENA,0x200000)).hexdigest())
+        return result
 
 
 def make_cases():
@@ -240,6 +324,49 @@ def make_cases():
         cases.append((1,dict(bps=bps,spc=spc,fault=True)))
     cases.append((1,dict(mutate=True,bytes=4097)))
     cases.append((1,dict(partition=0xfffffff0,bytes=513)))
+    path = b'c:\\dir\\new.tst'
+    for mode in ('new','existing','deleted','full'):
+        for bps,spc in ((128,1),(128,4),(512,1),(512,4),(512,16),(1024,2)):
+            for size in (0,1,bps-1,bps,bps+1,bps*spc-1,bps*spc,bps*spc+1,bps*spc*2+1,
+                         0xfffffff0,0xffffffff):
+                cases.append((2,dict(name=path,mode=mode,bps=bps,spc=spc,bytes=size)))
+    for depth,name in enumerate((b'C:\\DIR\\NEW.TST',b'C:\\DIR\\SUB\\NEW.TST',
+            b'C:\\DIR\\SUB\\THIRD\\NEW.TST',b'C:\\DIR\\SUB\\THIRD\\LAST\\NEW.TST'),1):
+        for mode in ('new','existing','deleted','full'):
+            cases.append((2,dict(name=name,depth=depth,mode=mode,bytes=4097)))
+        for fail in range(1,depth+1):
+            cases.append((2,dict(name=name,depth=depth,fail_allocation=fail)))
+    for index in (0,1,7):
+        for mode in ('new','existing','deleted'):
+            cases.append((2,dict(name=path,mode=mode,index=index)))
+    for fats in (0,1,2,3):
+        for mode in ('new','existing','deleted'):
+            cases.append((2,dict(name=path,mode=mode,fats=fats,bytes=4097)))
+    for free in ([],[2],[2,3],[2,5],[2,127]):
+        cases.append((2,dict(name=path,free=free,bytes=4097)))
+    for attributes in (0x01,0x10,0x20,0xff):
+        cases.append((2,dict(name=path,mode='existing',attributes=attributes)))
+    for name in (b'',b'NEW.TST',b'\\NEW.TST',b'D:\\DIR\\NEW.TST',b'C:\\MISSING\\NEW.TST',
+                 b'C:\\DIR\\MISSING\\NEW.TST',b'C:/DIR/NEW.TST',b'C:\\abcdefghijklmnop.tst'):
+        cases.append((2,dict(name=name,rejected=True)))
+    for name in (b'c:\\dir\\New.Tst',b'C:\\DIR\\abcdefghi.xyz',b'C:\\DIR\\one.abcdef',
+                 b'C:\\DIR\\\x80\xff.tst',b'C:\\DIR\\NEW',b'C:\\DIR\\'):
+        cases.append((2,dict(name=name)))
+    for mode in ('new','existing','deleted','full'):
+        for size in (0,1,8193):
+            cases.append((2,dict(name=b'c:\\new.tst',root_forward=True,mode=mode,bytes=size)))
+    for bps,spc in ((0,4),(512,0),(0,0)):
+        cases.append((2,dict(name=path,bps=bps,spc=spc,fault=True)))
+    for high in (1,0xffff): cases.append((2,dict(name=path,parent_high=high)))
+    cases.append((2,dict(name=path,parent_file=True,rejected=True)))
+    cases.append((2,dict(name=path,mutate=True,bytes=4097)))
+    cases.append((2,dict(name=path,partition=0xfffffff0,bytes=513)))
+    cases.append((2,dict(name=b'C:\\DIR\\SUB\\NEW.TST',depth=2,free_mutation=True)))
+    for name in (b'NOSPLIT.TST',b'C:\\MISSING\\NEW.TST'):
+        cases.append((2,dict(name=name,bps=0,fault=True)))
+    for mode in ('existing','deleted'):
+        for divisor in ('bps','spc'):
+            cases.append((2,dict(name=path,mode=mode,release_zero=divisor,fault=True)))
     return cases
 
 
@@ -266,7 +393,7 @@ def main():
         seconds=round(time.monotonic()-started,3),
         original_kernel_sha256=hashlib.sha256(original).hexdigest(),
         candidate_kernel_sha256=hashlib.sha256(variants[1][1]).hexdigest(),
-        scope='Original filesystem/string helpers execute; only sector transfers are intercepted.',
+        scope='Original filesystem/string helpers execute; only allocation/free and sector transfers are intercepted.',
         sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in
                 ('kernel/fat_write.c','kernel/fat_write.h','tests/kernel_fat_write.py')})
     (BUILD/'fat_write_summary.json').write_text(json.dumps(summary,indent=2)+'\n')

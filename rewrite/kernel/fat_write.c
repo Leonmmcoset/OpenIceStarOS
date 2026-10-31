@@ -1,5 +1,5 @@
-/* FAT16 path splitting and root-file writing recovered from 0x828018 and
- * 0x82867e. Retain legacy unchecked buffers, wrap arithmetic, partial-cluster
+/* FAT16 path splitting and file writing recovered from 0x828018..0x828b35.
+ * Retain legacy unchecked buffers, wrap arithmetic, partial-cluster
  * over-writes and free-cluster failure behavior for binary compatibility. */
 #include "fat_write.h"
 #include "fat_directory.h"
@@ -8,6 +8,8 @@
 #include "fat_mutation.h"
 #include "fat_metadata.h"
 #include "fat_io.h"
+#include "fat_files.h"
+#include "memory.h"
 #include "helpers.h"
 #include "string_extra.h"
 
@@ -147,6 +149,86 @@ uint32_t kernel_fat_write_root_82867e(uint32_t name, uint32_t initial_source,
     }
     if (B(BPB + 16u)) W(fat1 + (uint32_t)cluster * 2u) = 0xffffu;
     if (B(BPB + 16u) > 1) mirror_chain(fat1, fat2, record_cluster(record));
+    (void)kernel_fat_flush_metadata_827cc4();
+    return sectors;
+}
+
+uint32_t kernel_fat_write_path_8280e4(uint32_t name, uint32_t initial_source,
+                                    uint32_t bytes)
+{
+    uint32_t fat1 = D(0x1a83au), fat2 = D(0x1a83eu);
+    /* The original divides before even rejecting a malformed path. */
+    volatile uint32_t start = data_lba();
+    /* Preserve the original adjacent buffers: an unchecked filename copy
+     * can reach parent, and the short-name formatter can reach filename. */
+    struct {
+        uint8_t short_name[16];
+        uint8_t filename[16];
+        uint8_t parent[256];
+    } local;
+    uint8_t directory_record[32];
+    uint32_t parent = (uint32_t)(uintptr_t)local.parent;
+    uint32_t filename = (uint32_t)(uintptr_t)local.filename;
+    uint32_t short_name = (uint32_t)(uintptr_t)local.short_name;
+    uint32_t descriptor = (uint32_t)(uintptr_t)directory_record;
+    if (!kernel_fat_split_parent_828018(name, parent, filename)) return 0;
+    (void)kernel_string_upper_82a531(parent);
+    (void)kernel_string_upper_82a531(filename);
+    if (B(parent) == 'C' && B(parent + 1u) == ':' && B(parent + 2u) == 0)
+        return kernel_fat_write_root_82867e(filename, initial_source, bytes);
+    if (kernel_fat_find_directory_path_825f48(parent, descriptor) <= 0) return 0;
+    uint32_t directory = kernel_fat_read_alloc_827454(descriptor);
+    if (!directory) return 0;
+    int32_t index = kernel_fat_directory_find_825d34(directory, filename);
+    uint32_t record;
+    if (index < 0) {
+        index = kernel_fat_directory_empty_827a40(directory);
+        if (index < 0) {
+            kernel_free_allocation(directory);
+            return 0;
+        }
+        record = directory + ((uint32_t)index << 5);
+        if (B(record) == 0xe5u)
+            (void)kernel_fat_release_record_chain_827e6c(record);
+        (void)kernel_fat_name83_827bba(filename, short_name);
+        stamp_record(record, short_name);
+        W(record + 26u) = (uint16_t)kernel_fat_find_free_cluster_827ace();
+        D(record + 28u) = bytes;
+    } else {
+        record = directory + ((uint32_t)index << 5);
+        (void)kernel_fat_release_record_chain_827e6c(record);
+        W(record + 22u) = 0x8eddu;
+        W(record + 24u) = 0x5836u;
+        D(record + 28u) = bytes;
+    }
+    /* Unlike the root entry, these divisions occur after record mutation. */
+    uint32_t sectors = (bytes + W(BPB + 11u) - 1u) / W(BPB + 11u);
+    uint32_t remaining = (sectors + B(BPB + 13u) - 1u) / B(BPB + 13u);
+    volatile uint32_t source = initial_source;
+    uint16_t cluster = record_cluster(record);
+    uint32_t lba = ((uint32_t)cluster - 2u) * B(BPB + 13u) + start;
+    if (remaining) {
+        uint32_t count = B(BPB + 13u) > sectors ? sectors : B(BPB + 13u);
+        kernel_fat_write_sectors_827c72(lba, source, count);
+        --remaining;
+    }
+    while (remaining) {
+        int32_t next = kernel_fat_find_free_after_827b44(cluster);
+        if (next != 0) {
+            W(fat1 + (uint32_t)cluster * 2u) = (uint16_t)next;
+            cluster = (uint16_t)next;
+            lba = ((uint32_t)cluster - 2u) * B(BPB + 13u) + start;
+            source += (uint32_t)B(BPB + 13u) * W(BPB + 11u);
+            kernel_fat_write_sectors_827c72(lba, source, B(BPB + 13u));
+        }
+        --remaining;
+    }
+    if (B(BPB + 16u)) W(fat1 + (uint32_t)cluster * 2u) = 0xffffu;
+    if (B(BPB + 16u) > 1) mirror_chain(fat1, fat2, record_cluster(record));
+    cluster = record_cluster(descriptor);
+    lba = ((uint32_t)cluster - 2u) * B(BPB + 13u) + start;
+    kernel_fat_write_sectors_827c72(lba, directory, B(BPB + 13u));
+    kernel_free_allocation(directory);
     (void)kernel_fat_flush_metadata_827cc4();
     return sectors;
 }

@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 397 declared kernel intervals and
+original IceStarOS VHD. The current build installs 398 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5319,3 +5319,19 @@ and all installed intervals. See [recovery/FAT_WRITE.md](recovery/FAT_WRITE.md)
 for preserved allocation/rounding behavior, commands, evidence and limits.
 The absolute-path writer still uses original code; a full regression and
 the complete OS recovery remain unfinished. The original logo is retained.
+
+### FAT absolute-path file writing (2026-10-31)
+
+The entry at 0x8280e4 now executes recovered C for nested-directory file
+creation/overwrite and root-path forwarding. It retains the distinct index
+zero and overwrite timestamp rules, writes back the directory, frees its
+buffer and flushes FAT/root metadata. The kernel now installs 398 intervals.
+The expanded write/split comparison passes 846 scenarios / 2,538 executions;
+the file-reader suite passes 2,422 / 7,266, including corrections to two
+directory readers whose compiler optimization had suppressed original
+divide faults. Original and recovered kernels also pass independent whole
+disk checks for nested writes and the existing root-write diagnostic.
+Production boot verifies C CLOCK, CMD/cpuid, RAM/TSS and all 398 intervals.
+See [recovery/FAT_WRITE_PATH.md](recovery/FAT_WRITE_PATH.md) for behavior,
+evidence and limits. No full regression was run; the complete OS recovery
+remains unfinished.

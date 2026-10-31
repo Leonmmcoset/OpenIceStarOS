@@ -965,6 +965,8 @@ SECTIONS
     ASSERT(kernel_fat_delete_relative_827fe2 == 0x827fe2 && ADDR(.fat_delete_relative) + SIZEOF(.fat_delete_relative) <= 0x828018, "fat_delete_relative overflow")
     .fat_split_parent 0x828018 : { *kernel_fat_write.o(.text.kernel_fat_split_parent_828018) }
     ASSERT(kernel_fat_split_parent_828018 == 0x828018 && ADDR(.fat_split_parent) + SIZEOF(.fat_split_parent) <= 0x8280e4, "fat_split_parent overflow")
+    .fat_write_path 0x8280e4 : { *kernel_fat_write.o(.text.kernel_fat_write_path_8280e4) }
+    ASSERT(kernel_fat_write_path_8280e4 == 0x8280e4 && ADDR(.fat_write_path) + SIZEOF(.fat_write_path) <= 0x82867e, "fat_write_path overflow")
     .fat_write_root 0x82867e : { *kernel_fat_write.o(.text.kernel_fat_write_root_82867e) }
     ASSERT(kernel_fat_write_root_82867e == 0x82867e && ADDR(.fat_write_root) + SIZEOF(.fat_write_root) <= 0x828b35, "fat_write_root overflow")
     .fat_relative_read 0x826ade : { *kernel_fat_relative.o(.text.kernel_x_read_relative_826ade) }

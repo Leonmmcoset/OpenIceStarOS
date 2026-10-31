@@ -1,0 +1,34 @@
+{
+  "pointer_initial": [
+    500,
+    372
+  ],
+  "pointer_cmd_icon": [
+    45,
+    282
+  ],
+  "cmd_code_candidates": [
+    "0x44a9810"
+  ],
+  "keyboard_queue_before": [
+    1,
+    1,
+    0,
+    2048
+  ],
+  "keyboard_queue_after": [
+    11,
+    11,
+    0,
+    2048
+  ],
+  "cmd_input": "cpuid",
+  "cmd_cursor_before_return": [
+    9,
+    1
+  ],
+  "cmd_cursor_after_return": [
+    4,
+    3
+  ]
+}

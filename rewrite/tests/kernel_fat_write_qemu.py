@@ -27,9 +27,9 @@ ENTRIES = [
 ]
 
 
-def fixture(source):
+def fixture(source, *, guest='fat_write_guest.x'):
     disk = Fat16(source)
-    seeded = bytearray(disk.replace_file((BUILD/'fat_write_guest.x').read_bytes(),
+    seeded = bytearray(disk.replace_file((BUILD/guest).read_bytes(),
                                          b'ICESTAR    ', b'COLOR   X  '))
     bpb = disk.partition_lba*512
     fat_start = bpb + word(source,bpb+14)*512

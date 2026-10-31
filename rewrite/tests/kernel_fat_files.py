@@ -376,6 +376,15 @@ def main():
                     fault=(function == 12 or (bps == 0 and allocation != 0)),
                     **({'expected_trace': []} if function == 12 else {})))
     cases.append(synthetic(12, index=-1, bps=0, spc=0, expected_return=0, expected_trace=[]))
+    # Directory attributes do not bypass the original pre-allocation DIV.
+    # Exercise the absolute writer's reader, its named wrapper, and the
+    # corresponding directory/index reader, before allocation can happen.
+    for function in (0,2,12):
+        for attributes in (0x10,0xff):
+            for bps,spc in ((0,1),(512,0)):
+                cases.append(synthetic(function,attributes=attributes,bps=bps,spc=spc,
+                    lookup=1,fault=True,expected_trace=(
+                        [['kernel_x_find_path_8263c0',[NAME,'record']]] if function == 2 else [])))
     for program in json.loads((ROOT / 'recovery/inventory.json').read_text())['programs']:
         names = tuple(n.encode('ascii') for n in program['short_names'])
         record = corpus_record(disk, names)

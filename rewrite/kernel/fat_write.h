@@ -6,4 +6,6 @@ uint32_t kernel_fat_split_parent_828018(uint32_t name, uint32_t parent,
                                       uint32_t filename);
 uint32_t kernel_fat_write_root_82867e(uint32_t name, uint32_t source,
                                     uint32_t bytes);
+uint32_t kernel_fat_write_path_8280e4(uint32_t name, uint32_t source,
+                                    uint32_t bytes);
 #endif
