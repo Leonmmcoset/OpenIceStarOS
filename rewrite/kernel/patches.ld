@@ -841,6 +841,8 @@ SECTIONS
     ASSERT(kernel_font_codepoint_svg_8308a0 == 0x8308a0 && SIZEOF(.font_codepoint_svg) <= 50, "font_codepoint_svg overflow")
     .font_cmap 0x82ca7c : { *kernel_font_cmap.o(.text.kernel_font_glyph_index_82ca7c) }
     ASSERT(kernel_font_glyph_index_82ca7c == 0x82ca7c && SIZEOF(.font_cmap) <= 1122, "font cmap overflow")
+    .font_init 0x82c3bc : { *kernel_font_init.o(.text.kernel_font_init_82c3bc) }
+    ASSERT(kernel_font_init_82c3bc == 0x82c3bc && SIZEOF(.font_init) <= 1728, "font initializer overflow")
     PROVIDE(kernel_font_charstring_82e6f0 = 0x82e6f0);
     .font_vertex 0x82cf10 : { *kernel_font_glyph.o(.text.kernel_font_vertex_82cf10) }
     ASSERT(kernel_font_vertex_82cf10 == 0x82cf10 && SIZEOF(.font_vertex) <= 64, "font_vertex overflow")

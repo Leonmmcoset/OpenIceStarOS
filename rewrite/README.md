@@ -5404,3 +5404,14 @@ leave complete temporary disks unchanged. Focused regressions and installers
 pass. See [recovery/FONT_GLYPH.md](recovery/FONT_GLYPH.md). The CFF Type-2
 interpreter and outline/rasterization paths still contain original code;
 full regression and complete OS recovery remain unfinished.
+
+### SFNT font initialization (2026-10-31)
+
+The complete initializer entry at 0x82c3bc now executes C for TrueType/CFF,
+CID dictionaries, local subroutines, table offsets and Unicode cmap selection.
+The kernel installs 456 intervals. Original x86, ordinary C and installed C
+agree in 300 scenarios / 900 executions. Original/C QEMU guests match
+independent Fira/CFF/CID and partial-failure reports with complete disks
+unchanged. CLOCK, RAM/TSS and all installed guest intervals pass. See
+[recovery/FONT_INIT.md](recovery/FONT_INIT.md). Full OS recovery remains
+unfinished; the outline interpreters and rasterizer still contain original code.

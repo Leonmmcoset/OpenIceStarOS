@@ -1,0 +1,428 @@
+{
+  "memory_limit": 134217728,
+  "page_count": 32768,
+  "page_size": 4096,
+  "heap_origin": "0x2000000",
+  "headers": [
+    {
+      "address": "0x2000000",
+      "next": "0x2026400",
+      "previous": "0x0",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2026400",
+      "next": "0x2028800",
+      "previous": "0x2000000",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2028800",
+      "next": "0x202ac00",
+      "previous": "0x2026400",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x202ac00",
+      "next": "0x204a800",
+      "previous": "0x2028800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x204a800",
+      "next": "0x204cc00",
+      "previous": "0x202ac00",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x204cc00",
+      "next": "0x2065000",
+      "previous": "0x204a800",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2065000",
+      "next": "0x2067400",
+      "previous": "0x204cc00",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2067400",
+      "next": "0x2069800",
+      "previous": "0x2065000",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2069800",
+      "next": "0x2253c00",
+      "previous": "0x2067400",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2253c00",
+      "next": "0x2256000",
+      "previous": "0x2069800",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2256000",
+      "next": "0x2258400",
+      "previous": "0x2253c00",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2258400",
+      "next": "0x2278800",
+      "previous": "0x2256000",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x2278800",
+      "next": "0x2279000",
+      "previous": "0x2258400",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2279000",
+      "next": "0x2279400",
+      "previous": "0x2278800",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x2279400",
+      "next": "0x3219800",
+      "previous": "0x2279000",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x3219800",
+      "next": "0x321a000",
+      "previous": "0x2279400",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x321a000",
+      "next": "0x321a400",
+      "previous": "0x3219800",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x321a400",
+      "next": "0x41ba800",
+      "previous": "0x321a000",
+      "used": 1,
+      "owner": 0
+    },
+    {
+      "address": "0x41ba800",
+      "next": "0x41bb000",
+      "previous": "0x321a400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x41bb000",
+      "next": "0x41bb400",
+      "previous": "0x41ba800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x41bb400",
+      "next": "0x433b800",
+      "previous": "0x41bb000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x433b800",
+      "next": "0x433c000",
+      "previous": "0x41bb400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x433c000",
+      "next": "0x433c400",
+      "previous": "0x433b800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x433c400",
+      "next": "0x438a800",
+      "previous": "0x433c000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x438a800",
+      "next": "0x438b000",
+      "previous": "0x433c400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x438b000",
+      "next": "0x438b400",
+      "previous": "0x438a800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x438b400",
+      "next": "0x4404000",
+      "previous": "0x438b000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4404000",
+      "next": "0x440c400",
+      "previous": "0x438b400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x440c400",
+      "next": "0x440e800",
+      "previous": "0x4404000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x440e800",
+      "next": "0x4410c00",
+      "previous": "0x440c400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4410c00",
+      "next": "0x4413000",
+      "previous": "0x440e800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4413000",
+      "next": "0x4415400",
+      "previous": "0x4410c00",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4415400",
+      "next": "0x4417800",
+      "previous": "0x4413000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4417800",
+      "next": "0x4419c00",
+      "previous": "0x4415400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4419c00",
+      "next": "0x441a400",
+      "previous": "0x4417800",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x441a400",
+      "next": "0x441ac00",
+      "previous": "0x4419c00",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x441ac00",
+      "next": "0x441d000",
+      "previous": "0x440e800",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x441d000",
+      "next": "0x441d400",
+      "previous": "0x441ac00",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x441d400",
+      "next": "0x441f800",
+      "previous": "0x441d000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x441f800",
+      "next": "0x4421c00",
+      "previous": "0x441d400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4421c00",
+      "next": "0x4424000",
+      "previous": "0x441f800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4424000",
+      "next": "0x4426400",
+      "previous": "0x4421c00",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4426400",
+      "next": "0x4427800",
+      "previous": "0x4424000",
+      "used": 0,
+      "owner": 0
+    },
+    {
+      "address": "0x4427800",
+      "next": "0x4433c00",
+      "previous": "0x441d800",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x4433c00",
+      "next": "0x4436000",
+      "previous": "0x4427800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4436000",
+      "next": "0x4442400",
+      "previous": "0x4433c00",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x4442400",
+      "next": "0x4452800",
+      "previous": "0x4436000",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x4452800",
+      "next": "0x445ec00",
+      "previous": "0x4442400",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x445ec00",
+      "next": "0x4469000",
+      "previous": "0x4452800",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x4469000",
+      "next": "0x446b400",
+      "previous": "0x445ec00",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x446b400",
+      "next": "0x446d800",
+      "previous": "0x4469000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x446d800",
+      "next": "0x446fc00",
+      "previous": "0x446b400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x446fc00",
+      "next": "0x4472000",
+      "previous": "0x446d800",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4472000",
+      "next": "0x4474400",
+      "previous": "0x446fc00",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4474400",
+      "next": "0x4476800",
+      "previous": "0x4472000",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4476800",
+      "next": "0x4478c00",
+      "previous": "0x4474400",
+      "used": 1,
+      "owner": 1
+    },
+    {
+      "address": "0x4478c00",
+      "next": "0x4489400",
+      "previous": "0x4476800",
+      "used": 0,
+      "owner": 0
+    },
+    {
+      "address": "0x4489400",
+      "next": "0x44af000",
+      "previous": "0x4473000",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x44af000",
+      "next": "0x44b9c00",
+      "previous": "0x4489400",
+      "used": 1,
+      "owner": 2
+    },
+    {
+      "address": "0x44b9c00",
+      "next": "0x0",
+      "previous": "0x44af000",
+      "used": 0,
+      "owner": 0
+    }
+  ]
+}

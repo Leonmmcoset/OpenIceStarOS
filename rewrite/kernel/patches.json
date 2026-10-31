@@ -319,6 +319,7 @@
   {"name": "font count", "binary": "kernel.font_count.bin", "start": "0x82c196", "end": "0x82c232"},
   {"name": "font cff subrs", "binary": "kernel.font_cff_subrs.bin", "start": "0x82c232", "end": "0x82c34c"},
   {"name": "font svg", "binary": "kernel.font_svg.bin", "start": "0x82c34c", "end": "0x82c3bc"},
+  {"name": "SFNT TrueType and CFF font initialization", "binary": "kernel.font_init.bin", "start": "0x82c3bc", "end": "0x82ca7c"},
   {"name": "font cmap glyph index lookup", "binary": "kernel.font_cmap.bin", "start": "0x82ca7c", "end": "0x82cede"},
   {"name": "font vertex", "binary": "kernel.font_vertex.bin", "start": "0x82cf10", "end": "0x82cf50"},
   {"name": "font glyph offset", "binary": "kernel.font_glyph_offset.bin", "start": "0x82cf50", "end": "0x82d062"},

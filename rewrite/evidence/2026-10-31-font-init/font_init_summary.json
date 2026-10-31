@@ -1,0 +1,26 @@
+{
+  "installed": true,
+  "scenarios": 300,
+  "executions": 900,
+  "slot": {
+    "compiled_bytes": 1114,
+    "slot_bytes": 1728
+  },
+  "boundary_scope": "All original/recovered CFF and SFNT helpers execute without interception",
+  "seconds": 0.967,
+  "checks": [
+    "partial output state",
+    "TrueType required/optional tables",
+    "Unicode cmap selection",
+    "CFF/CID/private subroutines",
+    "real Fira",
+    "caller arguments",
+    "callee-saved registers",
+    "all touched pages"
+  ],
+  "sha256": {
+    "kernel/font_init.c": "d7e22f25d24bae826f35feeb5667ed0b80a2b1be2863d1ff8a69bee75c92e2e9",
+    "kernel/font_init.h": "6ff52a9570795485460c141eb8df0e1a30c5265716f504d28d4aa8a97233c243",
+    "tests/kernel_font_init.py": "3d8f6e539fb9d1d9c06abfaa788d71d89d62272e0419d08de244d3957ca29baa"
+  }
+}
