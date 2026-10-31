@@ -138,6 +138,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_cmap.o
+KERNEL_PATCHES += $(BUILD)/kernel.font_cmap.bin
 KERNEL_OBJECTS += $(BUILD)/kernel_font_metrics.o
 KERNEL_PATCHES += $(foreach name,font_hmetrics font_vmetrics font_typo_metrics font_bounds font_scale_height font_scale_em font_svg_record font_glyph_svg font_codepoint_svg,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_parse.o
@@ -358,6 +360,9 @@ $(BUILD)/kernel_fat_directory.o: kernel/fat_directory.c kernel/fat_directory.h k
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_fat_path.o: kernel/fat_path.c kernel/fat_path.h kernel/fat_files.h kernel/memory.h kernel/memory_accel.h kernel/string_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+$(BUILD)/kernel_font_cmap.o: kernel/font_cmap.c kernel/font_cmap.h kernel/font_parse.h Makefile | $(BUILD)
 	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
 
 $(BUILD)/kernel_font_metrics.o: kernel/font_metrics.c kernel/font_metrics.h kernel/font_parse.h Makefile | $(BUILD)
@@ -1549,3 +1554,22 @@ $(BUILD)/font_metrics_guest.x: $(BUILD)/font_metrics_guest.elf tools/xformat.py
 .PHONY: test-font-metrics-qemu
 test-font-metrics-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_metrics_guest.x
 	python3 tests/kernel_font_metrics_qemu.py
+
+.PHONY: test-font-cmap
+test-font-cmap: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_cmap.py --installed
+
+verify: test-font-cmap
+
+$(BUILD)/font_cmap_guest.o: tests/font_cmap_guest.c | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_cmap_guest.elf: $(BUILD)/font_cmap_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_cmap_guest.map -o $@ $<
+
+$(BUILD)/font_cmap_guest.x: $(BUILD)/font_cmap_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_cmap_guest.symbols.json
+
+.PHONY: test-font-cmap-qemu
+test-font-cmap-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_cmap_guest.x
+	python3 tests/kernel_font_cmap_qemu.py

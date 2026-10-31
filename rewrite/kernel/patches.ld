@@ -821,7 +821,6 @@ SECTIONS
     ASSERT(kernel_font_cff_subrs_82c232 == 0x82c232 && SIZEOF(.font_cff_subrs) <= 282, "font_cff_subrs overflow")
     .font_svg 0x82c34c : { *kernel_font_parse.o(.text.kernel_font_svg_82c34c) }
     ASSERT(kernel_font_svg_82c34c == 0x82c34c && SIZEOF(.font_svg) <= 112, "font_svg overflow")
-PROVIDE(kernel_font_glyph_index_82ca7c = 0x82ca7c);
     .font_hmetrics 0x82f958 : { *kernel_font_metrics.o(.text.kernel_font_hmetrics_82f958) }
     ASSERT(kernel_font_hmetrics_82f958 == 0x82f958 && SIZEOF(.font_hmetrics) <= 248, "font_hmetrics overflow")
     .font_vmetrics 0x83054a : { *kernel_font_metrics.o(.text.kernel_font_vmetrics_83054a) }
@@ -840,6 +839,8 @@ PROVIDE(kernel_font_glyph_index_82ca7c = 0x82ca7c);
     ASSERT(kernel_font_glyph_svg_83081c == 0x83081c && SIZEOF(.font_glyph_svg) <= 132, "font_glyph_svg overflow")
     .font_codepoint_svg 0x8308a0 : { *kernel_font_metrics.o(.text.kernel_font_codepoint_svg_8308a0) }
     ASSERT(kernel_font_codepoint_svg_8308a0 == 0x8308a0 && SIZEOF(.font_codepoint_svg) <= 50, "font_codepoint_svg overflow")
+    .font_cmap 0x82ca7c : { *kernel_font_cmap.o(.text.kernel_font_glyph_index_82ca7c) }
+    ASSERT(kernel_font_glyph_index_82ca7c == 0x82ca7c && SIZEOF(.font_cmap) <= 1122, "font cmap overflow")
     .identity_paging 0x837448 : SUBALIGN(1) {
         *kernel_paging.o(.text.kernel_init_identity_paging)
         *kernel_paging.o(.text.build_identity_tables)

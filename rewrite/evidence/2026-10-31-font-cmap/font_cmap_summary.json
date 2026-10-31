@@ -1,0 +1,39 @@
+{
+  "installed": true,
+  "scenarios": 74763,
+  "executions": 224289,
+  "slots": {
+    "font_cmap": {
+      "compiled_bytes": 644,
+      "slot_bytes": 1122
+    }
+  },
+  "seconds": 137.211,
+  "boundary_scope": "No intercepted helpers",
+  "original_fira_maps": [
+    "0x3d98",
+    "0x9b22"
+  ],
+  "original_fira_selected_map": "0x9b22",
+  "selected_map_all_bmp_codepoints_checked": true,
+  "formats": [
+    0,
+    4,
+    6,
+    12,
+    13
+  ],
+  "checks": [
+    "independent table-derived glyph expectations",
+    "all touched data pages",
+    "returns",
+    "callee-saved registers",
+    "caller arguments",
+    "signed bounds and original range-offset semantics"
+  ],
+  "sha256": {
+    "kernel/font_cmap.c": "2c137fbfc1c3ee79e1dc76251ebf2a6f26fa96f1fae7ec2c3b27b026d40f9df9",
+    "kernel/font_cmap.h": "ee786c6d2b3e2ca79fd3ff48a3393b2f14a79a4ba25e09c14700a15f0f67c7b9",
+    "tests/kernel_font_cmap.py": "9e1ebca9376eb9dffef4b52b51f43fc05bf3cad2418e47056fb627f6532545ea"
+  }
+}

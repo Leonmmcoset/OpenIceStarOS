@@ -5380,3 +5380,14 @@ FAT/X-loader, installers, CLOCK, RAM/TSS and all 439 guest intervals pass.
 See [recovery/FONT_METRICS.md](recovery/FONT_METRICS.md). Full OS recovery and
 full regression remain unfinished; the glyph cmap and rasterizer are still
 original at this step.
+
+### Character-to-glyph lookup (2026-10-31)
+
+The cmap dispatcher at 0x82ca7c now executes C for formats 0/4/6/12/13,
+bringing the kernel to 440 intervals. Original x86, ordinary C and installed
+C agree in 74,763 scenarios / 224,289 executions, including every BMP code
+in the selected Fira map and original signed-bound read faults. Original/C
+QEMU guests also match independent real-font and synthetic-format results;
+complete temporary disks remain unchanged. Parser/metrics/FAT/X-loader
+regressions and installers pass. See [recovery/FONT_CMAP.md](recovery/FONT_CMAP.md).
+Full regression and complete OS recovery remain unfinished.
