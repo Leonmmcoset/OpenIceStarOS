@@ -1,0 +1,340 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "eacc79d45b358a20277e169db7b2ef09e245a074ee04709964b40a461ff8dd54",
+      "result_sha256": "eacc79d45b358a20277e169db7b2ef09e245a074ee04709964b40a461ff8dd54",
+      "clusters": [],
+      "report": [
+        1413830705,
+        1,
+        7,
+        1,
+        1,
+        2858,
+        14,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        128512,
+        4,
+        6,
+        4,
+        1,
+        4294967292,
+        2261653893,
+        4175090517,
+        2479926229,
+        2261653893,
+        2261653893,
+        0,
+        2261653893,
+        4175090517,
+        2479926229
+      ],
+      "functions": {
+        "font_name_prefix": {
+          "entry": "0x8365b2",
+          "entry_events": 11,
+          "interior_block_events": 396,
+          "decoded_body_instructions": 40
+        },
+        "font_name_equal": {
+          "entry": "0x83689a",
+          "entry_events": 6,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 20
+        },
+        "font_name_string": {
+          "entry": "0x8368d8",
+          "entry_events": 1,
+          "interior_block_events": 16,
+          "decoded_body_instructions": 101
+        },
+        "font_name_pair": {
+          "entry": "0x836a34",
+          "entry_events": 4,
+          "interior_block_events": 128,
+          "decoded_body_instructions": 175
+        },
+        "font_match": {
+          "entry": "0x836cc0",
+          "entry_events": 3,
+          "interior_block_events": 30,
+          "decoded_body_instructions": 43
+        },
+        "font_find_name": {
+          "entry": "0x836f08",
+          "entry_events": 2,
+          "interior_block_events": 10,
+          "decoded_body_instructions": 28
+        },
+        "font_find_name_api": {
+          "entry": "0x83700c",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 11
+        },
+        "font_name_equal_api": {
+          "entry": "0x83702e",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 13
+        },
+        "font_glyph_opaque": {
+          "entry": "0x829003",
+          "entry_events": 1,
+          "interior_block_events": 113,
+          "decoded_body_instructions": 95
+        },
+        "font_glyph_clip": {
+          "entry": "0x829133",
+          "entry_events": 1,
+          "interior_block_events": 67,
+          "decoded_body_instructions": 103
+        },
+        "font_glyph_alpha": {
+          "entry": "0x82927d",
+          "entry_events": 1,
+          "interior_block_events": 161,
+          "decoded_body_instructions": 111
+        },
+        "font_legacy_code": {
+          "entry": "0x8293e9",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 12
+        },
+        "font_string_legacy": {
+          "entry": "0x829485",
+          "entry_events": 5,
+          "interior_block_events": 10711,
+          "decoded_body_instructions": 273
+        },
+        "font_utf8_cont": {
+          "entry": "0x8296d7",
+          "entry_events": 4,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 14
+        },
+        "font_utf8_decode": {
+          "entry": "0x829707",
+          "entry_events": 3,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 106
+        },
+        "font_string_utf8": {
+          "entry": "0x829941",
+          "entry_events": 1,
+          "interior_block_events": 119,
+          "decoded_body_instructions": 124
+        },
+        "font_string_lines": {
+          "entry": "0x829b4d",
+          "entry_events": 1,
+          "interior_block_events": 124,
+          "decoded_body_instructions": 145
+        },
+        "font_string_legacy_clip": {
+          "entry": "0x829dd3",
+          "entry_events": 1,
+          "interior_block_events": 74,
+          "decoded_body_instructions": 143
+        },
+        "font_string_legacy_alpha": {
+          "entry": "0x82a03f",
+          "entry_events": 1,
+          "interior_block_events": 192,
+          "decoded_body_instructions": 155
+        },
+        "font_text_init": {
+          "entry": "0x82a2c5",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 24
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "618786f31580c868aa1a1134fe3dae53b523164955a9a28323bff664478510ae",
+      "seeded_sha256": "dd34688e7ba1e4ed586e207db3801809f859cd480278ffa1103f3b4443ba3149",
+      "result_sha256": "dd34688e7ba1e4ed586e207db3801809f859cd480278ffa1103f3b4443ba3149",
+      "clusters": [],
+      "report": [
+        1413830705,
+        1,
+        7,
+        1,
+        1,
+        2858,
+        14,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        128512,
+        4,
+        6,
+        4,
+        1,
+        4294967292,
+        2261653893,
+        4175090517,
+        2479926229,
+        2261653893,
+        2261653893,
+        0,
+        2261653893,
+        4175090517,
+        2479926229
+      ],
+      "functions": {
+        "font_name_prefix": {
+          "entry": "0x8365b2",
+          "entry_events": 11,
+          "interior_block_events": 473,
+          "decoded_body_instructions": 39
+        },
+        "font_name_equal": {
+          "entry": "0x83689a",
+          "entry_events": 6,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 19
+        },
+        "font_name_string": {
+          "entry": "0x8368d8",
+          "entry_events": 1,
+          "interior_block_events": 15,
+          "decoded_body_instructions": 77
+        },
+        "font_name_pair": {
+          "entry": "0x836a34",
+          "entry_events": 4,
+          "interior_block_events": 136,
+          "decoded_body_instructions": 163
+        },
+        "font_match": {
+          "entry": "0x836cc0",
+          "entry_events": 3,
+          "interior_block_events": 30,
+          "decoded_body_instructions": 51
+        },
+        "font_find_name": {
+          "entry": "0x836f08",
+          "entry_events": 2,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 30
+        },
+        "font_find_name_api": {
+          "entry": "0x83700c",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 7
+        },
+        "font_name_equal_api": {
+          "entry": "0x83702e",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 8
+        },
+        "font_glyph_opaque": {
+          "entry": "0x829003",
+          "entry_events": 1,
+          "interior_block_events": 114,
+          "decoded_body_instructions": 104
+        },
+        "font_glyph_clip": {
+          "entry": "0x829133",
+          "entry_events": 1,
+          "interior_block_events": 67,
+          "decoded_body_instructions": 113
+        },
+        "font_glyph_alpha": {
+          "entry": "0x82927d",
+          "entry_events": 1,
+          "interior_block_events": 161,
+          "decoded_body_instructions": 117
+        },
+        "font_legacy_code": {
+          "entry": "0x8293e9",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 11
+        },
+        "font_string_legacy": {
+          "entry": "0x829485",
+          "entry_events": 4,
+          "interior_block_events": 8258,
+          "decoded_body_instructions": 276
+        },
+        "font_utf8_cont": {
+          "entry": "0x8296d7",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 8
+        },
+        "font_utf8_decode": {
+          "entry": "0x829707",
+          "entry_events": 3,
+          "interior_block_events": 28,
+          "decoded_body_instructions": 105
+        },
+        "font_string_utf8": {
+          "entry": "0x829941",
+          "entry_events": 1,
+          "interior_block_events": 120,
+          "decoded_body_instructions": 134
+        },
+        "font_string_lines": {
+          "entry": "0x829b4d",
+          "entry_events": 1,
+          "interior_block_events": 124,
+          "decoded_body_instructions": 152
+        },
+        "font_string_legacy_clip": {
+          "entry": "0x829dd3",
+          "entry_events": 1,
+          "interior_block_events": 75,
+          "decoded_body_instructions": 159
+        },
+        "font_string_legacy_alpha": {
+          "entry": "0x82a03f",
+          "entry_events": 1,
+          "interior_block_events": 192,
+          "decoded_body_instructions": 162
+        },
+        "font_text_init": {
+          "entry": "0x82a2c5",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 20
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 570,
+  "complete_os_recovery": false,
+  "sha256": {
+    "tests/kernel_font_text_qemu.py": "a8fecaf2544464bf44498fa7c2d858c6dfcacb889ee1c2765d7f7cfbd468a38e",
+    "tests/font_text_guest.c": "69f70843b8c0364cbe0fe2d8dedad3d73ff8a0fbf40a0462bf8c7228ace44d43"
+  }
+}

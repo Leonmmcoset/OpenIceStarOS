@@ -5525,3 +5525,10 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 两个差分套件共 7,370 场景、22,110 次执行。真实 QEMU 验证 stored／fixed／dynamic
 三类压缩块、16／17／18 长度重复、完整 PNG 调用链，以及生产 COLOR 启动。
 详细行为和限制见 [INFLATE.md](recovery/INFLATE.md)。完整 OS 重写仍未完成。
+
+## 2026-11-01：字体名称与 TrueType 文本
+
+新增 20 个实际入口，替换区间 550 → 570：8 个字体名称／集合 API 与 12 个
+字形、编码和文本绘制函数。差分共 5,803 场景、17,409 次执行；QEMU 对全部
+20 个入口及函数体核验 Unicode、名称、尺寸与像素哈希，生产 COLOR 启动通过。
+行为、原版缺陷与覆盖限制见 [FONT_TEXT.md](recovery/FONT_TEXT.md)。完整 OS 未完成。

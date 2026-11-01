@@ -1,0 +1,66 @@
+{
+  "installed": true,
+  "functions": 8,
+  "scenarios": 2973,
+  "executions": 8919,
+  "slots": {
+    "font_name_prefix": {
+      "compiled_bytes": 460,
+      "slot_bytes": 744
+    },
+    "font_name_equal": {
+      "compiled_bytes": 44,
+      "slot_bytes": 62
+    },
+    "font_name_string": {
+      "compiled_bytes": 198,
+      "slot_bytes": 348
+    },
+    "font_name_pair": {
+      "compiled_bytes": 482,
+      "slot_bytes": 652
+    },
+    "font_match": {
+      "compiled_bytes": 257,
+      "slot_bytes": 584
+    },
+    "font_find_name": {
+      "compiled_bytes": 62,
+      "slot_bytes": 104
+    },
+    "font_find_name_api": {
+      "compiled_bytes": 19,
+      "slot_bytes": 34
+    },
+    "font_name_equal_api": {
+      "compiled_bytes": 22,
+      "slot_bytes": 42
+    }
+  },
+  "scenarios_by_function": {
+    "font_name_prefix": 650,
+    "font_name_equal": 622,
+    "font_name_string": 50,
+    "font_name_pair": 248,
+    "font_match": 259,
+    "font_find_name": 261,
+    "font_find_name_api": 261,
+    "font_name_equal_api": 622
+  },
+  "seconds": 5.527,
+  "checks": [
+    "UTF8 vs UTF16BE independent encodings",
+    "surrogate pairs and malformed units",
+    "caller argument mutation",
+    "name record pointers and lengths",
+    "adjacent family/subfamily selection",
+    "style matching and collection search",
+    "all touched pages and cdecl state"
+  ],
+  "sha256": {
+    "kernel/font_names.c": "81daddebe437fec7257e8993c221bda1570fdbb1da0f5079cd302f88bb2b3983",
+    "kernel/font_names.h": "9250169712933cae36194eeaaacc0e378ee457f9ff8d612da0746f4b74ab4315",
+    "tests/kernel_font_names.py": "e78c35a40f447b43bf4f44156d3dee0eac2c1ec6b6cf07c8afbe9d701ffb91e4",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

@@ -142,6 +142,10 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_names.o
+KERNEL_PATCHES += $(foreach name,font_name_prefix font_name_equal font_name_string font_name_pair font_match font_find_name font_find_name_api font_name_equal_api,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_text.o
+KERNEL_PATCHES += $(foreach name,font_glyph_opaque font_glyph_clip font_glyph_alpha font_legacy_code font_string_legacy font_utf8_cont font_utf8_decode font_string_utf8 font_string_lines font_string_legacy_clip font_string_legacy_alpha font_text_init,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
 KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
@@ -1879,3 +1883,33 @@ $(BUILD)/inflate_guest.x: $(BUILD)/inflate_guest.elf tools/xformat.py
 .PHONY: test-inflate-qemu
 test-inflate-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/inflate_guest.x
 	python3 tests/kernel_inflate_qemu.py
+
+$(BUILD)/kernel_font_names.o: kernel/font_names.c kernel/font_names.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-names
+test-font-names: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_names.py --installed
+
+verify: test-font-names
+
+$(BUILD)/kernel_font_text.o: kernel/font_text.c kernel/font_text.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-text
+test-font-text: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_text.py --installed
+
+verify: test-font-text
+
+$(BUILD)/font_text_guest.o: tests/font_text_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_text_guest.elf: $(BUILD)/font_text_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_text_guest.map -o $@ $<
+
+$(BUILD)/font_text_guest.x: $(BUILD)/font_text_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_text_guest.symbols.json
+
+test-font-text-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_text_guest.x
+	python3 tests/kernel_font_text_qemu.py

@@ -34,6 +34,7 @@ PROVIDE(kernel_bitmap_read_relative_827032 = 0x827032);
 PROVIDE(kernel_bitmap_free_815978 = kernel_free_allocation);
 PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
 PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
+PROVIDE(kernel_font_strlen_82a45d = kernel_string_length);
 PROVIDE(kernel_font_malloc_817590 = kernel_malloc);
 PROVIDE(kernel_font_free_8175a4 = kernel_free);
 PROVIDE(kernel_font_copy_dwords_817510 = kernel_rep_copy_dwords);
@@ -41,6 +42,15 @@ PROVIDE(kernel_font_driver_830f24 = 0x830f24);
 PROVIDE(kernel_font_clear_81752e = kernel_rep_fill_dwords);
 PROVIDE(kernel_font_filter_h_833292 = 0x833292);
 PROVIDE(kernel_font_filter_v_83357c = 0x83357c);
+PROVIDE(kernel_text_scale_8306ec = 0x8306ec);
+PROVIDE(kernel_text_bitmap_8329ec = 0x8329ec);
+PROVIDE(kernel_text_free_832530 = 0x832530);
+PROVIDE(kernel_text_blend_828f1b = 0x828f1b);
+PROVIDE(kernel_text_put_8374cf = 0x8374cf);
+PROVIDE(kernel_text_get_837939 = 0x837939);
+PROVIDE(kernel_text_fill_837545 = 0x837545);
+PROVIDE(kernel_text_offset_836fbc = 0x836fbc);
+PROVIDE(kernel_text_init_836fea = 0x836fea);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1316,6 +1326,46 @@ SECTIONS
     ASSERT(kernel_png_inflate_8390ed == 0x8390ed && SIZEOF(.png_inflate) <= 374, "png_inflate overflow")
     .png_zlib 0x839263 : { *kernel_inflate.o(.text.kernel_png_zlib_839263) }
     ASSERT(kernel_png_zlib_839263 == 0x839263 && SIZEOF(.png_zlib) <= 318, "png_zlib overflow")
+    .font_name_prefix 0x8365b2 : { *kernel_font_names.o(.text.kernel_font_name_prefix_8365b2) }
+    ASSERT(kernel_font_name_prefix_8365b2 == 0x8365b2 && SIZEOF(.font_name_prefix) <= 744, "font_name_prefix overflow")
+    .font_name_equal 0x83689a : { *kernel_font_names.o(.text.kernel_font_name_equal_83689a) }
+    ASSERT(kernel_font_name_equal_83689a == 0x83689a && SIZEOF(.font_name_equal) <= 62, "font_name_equal overflow")
+    .font_name_string 0x8368d8 : { *kernel_font_names.o(.text.kernel_font_name_string_8368d8) }
+    ASSERT(kernel_font_name_string_8368d8 == 0x8368d8 && SIZEOF(.font_name_string) <= 348, "font_name_string overflow")
+    .font_name_pair 0x836a34 : { *kernel_font_names.o(.text.kernel_font_name_pair_836a34) }
+    ASSERT(kernel_font_name_pair_836a34 == 0x836a34 && SIZEOF(.font_name_pair) <= 652, "font_name_pair overflow")
+    .font_match 0x836cc0 : { *kernel_font_names.o(.text.kernel_font_match_836cc0) }
+    ASSERT(kernel_font_match_836cc0 == 0x836cc0 && SIZEOF(.font_match) <= 584, "font_match overflow")
+    .font_find_name 0x836f08 : { *kernel_font_names.o(.text.kernel_font_find_name_836f08) }
+    ASSERT(kernel_font_find_name_836f08 == 0x836f08 && SIZEOF(.font_find_name) <= 104, "font_find_name overflow")
+    .font_find_name_api 0x83700c : { *kernel_font_names.o(.text.kernel_font_find_name_api_83700c) }
+    ASSERT(kernel_font_find_name_api_83700c == 0x83700c && SIZEOF(.font_find_name_api) <= 34, "font_find_name_api overflow")
+    .font_name_equal_api 0x83702e : { *kernel_font_names.o(.text.kernel_font_name_equal_api_83702e) }
+    ASSERT(kernel_font_name_equal_api_83702e == 0x83702e && SIZEOF(.font_name_equal_api) <= 42, "font_name_equal_api overflow")
+    .font_glyph_opaque 0x829003 : { *kernel_font_text.o(.text.kernel_font_glyph_opaque_829003) }
+    ASSERT(kernel_font_glyph_opaque_829003 == 0x829003 && SIZEOF(.font_glyph_opaque) <= 304, "font_glyph_opaque overflow")
+    .font_glyph_clip 0x829133 : { *kernel_font_text.o(.text.kernel_font_glyph_clip_829133) }
+    ASSERT(kernel_font_glyph_clip_829133 == 0x829133 && SIZEOF(.font_glyph_clip) <= 330, "font_glyph_clip overflow")
+    .font_glyph_alpha 0x82927d : { *kernel_font_text.o(.text.kernel_font_glyph_alpha_82927d) }
+    ASSERT(kernel_font_glyph_alpha_82927d == 0x82927d && SIZEOF(.font_glyph_alpha) <= 364, "font_glyph_alpha overflow")
+    .font_legacy_code 0x8293e9 : { *kernel_font_text.o(.text.kernel_font_legacy_code_8293e9) }
+    ASSERT(kernel_font_legacy_code_8293e9 == 0x8293e9 && SIZEOF(.font_legacy_code) <= 156, "font_legacy_code overflow")
+    .font_string_legacy 0x829485 : { *kernel_font_text.o(.text.kernel_font_string_legacy_829485) }
+    ASSERT(kernel_font_string_legacy_829485 == 0x829485 && SIZEOF(.font_string_legacy) <= 594, "font_string_legacy overflow")
+    .font_utf8_cont 0x8296d7 : { *kernel_font_text.o(.text.kernel_font_utf8_cont_8296d7) }
+    ASSERT(kernel_font_utf8_cont_8296d7 == 0x8296d7 && SIZEOF(.font_utf8_cont) <= 48, "font_utf8_cont overflow")
+    .font_utf8_decode 0x829707 : { *kernel_font_text.o(.text.kernel_font_utf8_decode_829707) }
+    ASSERT(kernel_font_utf8_decode_829707 == 0x829707 && SIZEOF(.font_utf8_decode) <= 570, "font_utf8_decode overflow")
+    .font_string_utf8 0x829941 : { *kernel_font_text.o(.text.kernel_font_string_utf8_829941) }
+    ASSERT(kernel_font_string_utf8_829941 == 0x829941 && SIZEOF(.font_string_utf8) <= 524, "font_string_utf8 overflow")
+    .font_string_lines 0x829b4d : { *kernel_font_text.o(.text.kernel_font_string_lines_829b4d) }
+    ASSERT(kernel_font_string_lines_829b4d == 0x829b4d && SIZEOF(.font_string_lines) <= 646, "font_string_lines overflow")
+    .font_string_legacy_clip 0x829dd3 : { *kernel_font_text.o(.text.kernel_font_string_legacy_clip_829dd3) }
+    ASSERT(kernel_font_string_legacy_clip_829dd3 == 0x829dd3 && SIZEOF(.font_string_legacy_clip) <= 620, "font_string_legacy_clip overflow")
+    .font_string_legacy_alpha 0x82a03f : { *kernel_font_text.o(.text.kernel_font_string_legacy_alpha_82a03f) }
+    ASSERT(kernel_font_string_legacy_alpha_82a03f == 0x82a03f && SIZEOF(.font_string_legacy_alpha) <= 646, "font_string_legacy_alpha overflow")
+    .font_text_init 0x82a2c5 : { *kernel_font_text.o(.text.kernel_font_text_init_82a2c5) }
+    ASSERT(kernel_font_text_init_82a2c5 == 0x82a2c5 && SIZEOF(.font_text_init) <= 102, "font_text_init overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
