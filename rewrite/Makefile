@@ -138,6 +138,8 @@ KERNEL_PATCHES := $(BUILD)/kernel.entry.bin $(BUILD)/kernel.bootstrap.bin \
 
 KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BUILD)/kernel_jpeg_$(module).o)
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
+KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_outline.o
 KERNEL_PATCHES += $(foreach name,font_close_shape font_subroutine font_cid_subrs font_bitmap_box_subpixel font_bitmap_box font_codepoint_bitmap_box_subpixel font_codepoint_bitmap_box,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_heap.o
@@ -1693,3 +1695,24 @@ $(BUILD)/font_heap_guest.x: $(BUILD)/font_heap_guest.elf tools/xformat.py
 
 test-font-heap-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_heap_guest.x
 	python3 tests/kernel_font_heap_qemu.py
+
+$(BUILD)/kernel_font_shape.o: kernel/font_shape.c kernel/font_shape.h kernel/font_outline.h kernel/font_glyph.h kernel/font_parse.h kernel/font_cmap.h kernel/math_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-shape test-font-shape-qemu
+test-font-shape: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_shape.py --installed
+
+verify: test-font-shape
+
+$(BUILD)/font_shape_guest.o: tests/font_shape_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_shape_guest.elf: $(BUILD)/font_shape_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_shape_guest.map -o $@ $<
+
+$(BUILD)/font_shape_guest.x: $(BUILD)/font_shape_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_shape_guest.symbols.json
+
+test-font-shape-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_shape_guest.x
+	python3 tests/kernel_font_shape_qemu.py

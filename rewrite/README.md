@@ -5432,6 +5432,16 @@ subroutine lookup, CID local subroutines, four bitmap-bound entries and three
 rasterizer arena functions. The kernel installs 472 intervals. See
 [outline and pixel bounds](recovery/FONT_OUTLINE.md) and
 [font object arenas](recovery/FONT_HEAP.md) for behavior, original/C/guest
-validation and limits. The Type-2 interpreter, full TrueType outline decoder
-and remaining rasterizer remain original. Five applications are still rebuilt;
+validation and limits. At this checkpoint the Type-2 interpreter, TrueType
+outline decoder and remaining rasterizer were still original. Five applications are still rebuilt;
 32 program paths remain unrecovered. The full OS rewrite is unfinished.
+
+Four shape entries now execute C in the 476-interval kernel: complete TrueType
+simple/compound outline decoding, CFF two-pass shape allocation, format dispatch
+and codepoint-to-shape dispatch. See [font shapes](recovery/FONT_SHAPE.md) for
+compressed coordinates, implied quadratic points, recursive transforms and
+the original compound-copy defect. Installed differentials cover every shipped
+Fira glyph, including original cyclic-heap failures; real QEMU guests compare
+vertex signatures against independent geometry. CFF bytecode interpretation
+and the remaining rasterizer still use original code. INIT/kernel are partial,
+five applications are rebuilt, and the complete OS rewrite remains unfinished.

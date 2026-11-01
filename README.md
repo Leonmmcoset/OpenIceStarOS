@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 472 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 476 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -26,6 +26,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | 固定地址内核源码与区间清单 | [rewrite/kernel/](rewrite/kernel/)、[patches.json](rewrite/kernel/patches.json) |
 | X 程序加载、重定位与任务启动 | [x_loader.c](rewrite/kernel/x_loader.c)、[kernel_x_loader.py](rewrite/tests/kernel_x_loader.py) |
 | 字体解析、CFF 绘图、轮廓边界与内存池 | [FONT_OUTLINE.md](rewrite/recovery/FONT_OUTLINE.md)、[FONT_HEAP.md](rewrite/recovery/FONT_HEAP.md) |
+| TrueType 简单／复合字形解码与形状分派 | [FONT_SHAPE.md](rewrite/recovery/FONT_SHAPE.md) |
 | 五个可重新编译的应用 | [rewrite/apps/](rewrite/apps/) |
 | 每个原始程序的恢复状态 | [INVENTORY.md](rewrite/recovery/INVENTORY.md) |
 | 实现细节、验证范围与阶段记录 | [rewrite/README.md](rewrite/README.md) |

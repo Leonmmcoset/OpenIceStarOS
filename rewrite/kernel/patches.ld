@@ -36,6 +36,7 @@ PROVIDE(kernel_fat_read_sector_828b44 = 0x828b44);
 PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
 PROVIDE(kernel_font_malloc_817590 = kernel_malloc);
 PROVIDE(kernel_font_free_8175a4 = kernel_free);
+PROVIDE(kernel_font_copy_dwords_817510 = kernel_rep_copy_dwords);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1137,6 +1138,14 @@ SECTIONS
     ASSERT(kernel_font_context_curve_82e3c8 == 0x82e3c8 && SIZEOF(.font_context_curve) <= 228, "font_context_curve overflow")
     .font_close_shape 0x82d24a : { *kernel_font_outline.o(.text.kernel_font_close_shape_82d24a) }
     ASSERT(kernel_font_close_shape_82d24a == 0x82d24a && SIZEOF(.font_close_shape) <= 316, "font_close_shape overflow")
+    .font_codepoint_shape 0x82cede : { *kernel_font_shape.o(.text.kernel_font_codepoint_shape_82cede) }
+    ASSERT(kernel_font_codepoint_shape_82cede == 0x82cede && SIZEOF(.font_codepoint_shape) <= 50, "font_codepoint_shape overflow")
+    .font_truetype_shape 0x82d386 : { *kernel_font_shape.o(.text.kernel_font_truetype_shape_82d386) }
+    ASSERT(kernel_font_truetype_shape_82d386 == 0x82d386 && SIZEOF(.font_truetype_shape) <= 3286, "font_truetype_shape overflow")
+    .font_cff_shape 0x82f756 : { *kernel_font_shape.o(.text.kernel_font_cff_shape_82f756) }
+    ASSERT(kernel_font_cff_shape_82f756 == 0x82f756 && SIZEOF(.font_cff_shape) <= 180, "font_cff_shape overflow")
+    .font_shape 0x82f90a : { *kernel_font_shape.o(.text.kernel_font_shape_82f90a) }
+    ASSERT(kernel_font_shape_82f90a == 0x82f90a && SIZEOF(.font_shape) <= 78, "font_shape overflow")
     .font_subroutine 0x82e4ac : { *kernel_font_outline.o(.text.kernel_font_subroutine_82e4ac) }
     ASSERT(kernel_font_subroutine_82e4ac == 0x82e4ac && SIZEOF(.font_subroutine) <= 166, "font_subroutine overflow")
     .font_cid_subrs 0x82e552 : { *kernel_font_outline.o(.text.kernel_font_cid_subrs_82e552) }
