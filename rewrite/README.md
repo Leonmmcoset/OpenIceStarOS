@@ -5511,3 +5511,10 @@ The scan driver, filters and Type-2 interpreter remain original. These focused
 checks are not full `make verify` for 517 intervals; its last complete run is
 456. INIT/kernel remain partial, five apps are rebuilt, 32 program paths remain
 unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
+
+## 2026-11-01：PNG 图像解码与生命周期
+
+新增 23 个 C 入口，内核替换区间 517 → 540。原始 x86／普通 C／固定地址 C
+通过 3,746 个场景、11,238 次执行；原版和新内核的真实 QEMU 诊断覆盖全部入口、
+像素与对象生命周期。保留原版 PNG 格式限制和解压边界行为。详细证据见
+[PNG.md](recovery/PNG.md)。此时底层十个 DEFLATE／zlib 入口仍待恢复；完整 OS 未完成。

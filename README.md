@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 517 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 540 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -23,6 +23,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | --- | --- |
 | C/汇编引导、VBE、GDT、保护模式、FAT16 | [rewrite/boot/](rewrite/boot/) |
 | INIT 启动与文件加载 | [rewrite/init/](rewrite/init/) |
+| PNG 解析、扫描线滤波和图像生命周期 | [PNG.md](rewrite/recovery/PNG.md) |
 | 固定地址内核源码与区间清单 | [rewrite/kernel/](rewrite/kernel/)、[patches.json](rewrite/kernel/patches.json) |
 | X 程序加载、重定位与任务启动 | [x_loader.c](rewrite/kernel/x_loader.c)、[kernel_x_loader.py](rewrite/tests/kernel_x_loader.py) |
 | 字体解析、CFF 绘图、轮廓边界与内存池 | [FONT_OUTLINE.md](rewrite/recovery/FONT_OUTLINE.md)、[FONT_HEAP.md](rewrite/recovery/FONT_HEAP.md) |

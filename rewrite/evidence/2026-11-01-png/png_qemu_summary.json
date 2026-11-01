@@ -1,0 +1,376 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "ef2ac4e50b76df7e347358b83f4f6eb7ac0d6bcd25f6adeb89662363c5eec717",
+      "result_sha256": "ef2ac4e50b76df7e347358b83f4f6eb7ac0d6bcd25f6adeb89662363c5eec717",
+      "clusters": [],
+      "report": [
+        1347307313,
+        1,
+        0,
+        3,
+        2,
+        32,
+        4,
+        8,
+        32,
+        3,
+        3,
+        0,
+        0,
+        0,
+        24,
+        3118827837,
+        0,
+        0,
+        0,
+        1,
+        0,
+        50,
+        2768371245,
+        160,
+        96,
+        173,
+        173,
+        0
+      ],
+      "functions": {
+        "png_paeth": {
+          "entry": "0x8393a1",
+          "entry_events": 17,
+          "interior_block_events": 146,
+          "decoded_body_instructions": 77
+        },
+        "png_scanline": {
+          "entry": "0x839459",
+          "entry_events": 7,
+          "interior_block_events": 124,
+          "decoded_body_instructions": 103
+        },
+        "png_unfilter": {
+          "entry": "0x8397dd",
+          "entry_events": 3,
+          "interior_block_events": 27,
+          "decoded_body_instructions": 59
+        },
+        "png_unpad": {
+          "entry": "0x839893",
+          "entry_events": 2,
+          "interior_block_events": 54,
+          "decoded_body_instructions": 99
+        },
+        "png_postprocess": {
+          "entry": "0x839991",
+          "entry_events": 2,
+          "interior_block_events": 12,
+          "decoded_body_instructions": 74
+        },
+        "png_format": {
+          "entry": "0x839a9f",
+          "entry_events": 2,
+          "interior_block_events": 12,
+          "decoded_body_instructions": 22
+        },
+        "png_release_input": {
+          "entry": "0x839be9",
+          "entry_events": 4,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 13
+        },
+        "png_header": {
+          "entry": "0x839c23",
+          "entry_events": 2,
+          "interior_block_events": 21,
+          "decoded_body_instructions": 181
+        },
+        "png_decode": {
+          "entry": "0x839f0d",
+          "entry_events": 1,
+          "interior_block_events": 43,
+          "decoded_body_instructions": 357
+        },
+        "png_create": {
+          "entry": "0x83a4c9",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 38
+        },
+        "png_from_memory": {
+          "entry": "0x83a579",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 19
+        },
+        "png_destroy": {
+          "entry": "0x83a5bb",
+          "entry_events": 2,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 17
+        },
+        "png_error": {
+          "entry": "0x83a5f1",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_error_line": {
+          "entry": "0x83a5fd",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_width": {
+          "entry": "0x83a609",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_height": {
+          "entry": "0x83a613",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_bpp": {
+          "entry": "0x83a61f",
+          "entry_events": 5,
+          "interior_block_events": 10,
+          "decoded_body_instructions": 16
+        },
+        "png_channels": {
+          "entry": "0x83a649",
+          "entry_events": 7,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 21
+        },
+        "png_depth": {
+          "entry": "0x83a6a3",
+          "entry_events": 7,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_padded_bpp": {
+          "entry": "0x83a6af",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 22
+        },
+        "png_pixel_format": {
+          "entry": "0x83a6eb",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_pixels": {
+          "entry": "0x83a6f7",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_size": {
+          "entry": "0x83a703",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "48d1ff35e128e6cff0bcc908c24268d6b0418acbfebef3241272f4c8d73d77ab",
+      "seeded_sha256": "245b51c7dcd1c0590eb9250900d5d90ee80d8192b180654b2e29ab834c8aed3d",
+      "result_sha256": "245b51c7dcd1c0590eb9250900d5d90ee80d8192b180654b2e29ab834c8aed3d",
+      "clusters": [],
+      "report": [
+        1347307313,
+        1,
+        0,
+        3,
+        2,
+        32,
+        4,
+        8,
+        32,
+        3,
+        3,
+        0,
+        0,
+        0,
+        24,
+        3118827837,
+        0,
+        0,
+        0,
+        1,
+        0,
+        50,
+        2768371245,
+        160,
+        96,
+        173,
+        173,
+        0
+      ],
+      "functions": {
+        "png_paeth": {
+          "entry": "0x8393a1",
+          "entry_events": 17,
+          "interior_block_events": 111,
+          "decoded_body_instructions": 56
+        },
+        "png_scanline": {
+          "entry": "0x839459",
+          "entry_events": 7,
+          "interior_block_events": 317,
+          "decoded_body_instructions": 99
+        },
+        "png_unfilter": {
+          "entry": "0x8397dd",
+          "entry_events": 3,
+          "interior_block_events": 27,
+          "decoded_body_instructions": 66
+        },
+        "png_unpad": {
+          "entry": "0x839893",
+          "entry_events": 2,
+          "interior_block_events": 58,
+          "decoded_body_instructions": 76
+        },
+        "png_postprocess": {
+          "entry": "0x839991",
+          "entry_events": 2,
+          "interior_block_events": 12,
+          "decoded_body_instructions": 73
+        },
+        "png_format": {
+          "entry": "0x839a9f",
+          "entry_events": 2,
+          "interior_block_events": 10,
+          "decoded_body_instructions": 25
+        },
+        "png_release_input": {
+          "entry": "0x839be9",
+          "entry_events": 4,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 13
+        },
+        "png_header": {
+          "entry": "0x839c23",
+          "entry_events": 2,
+          "interior_block_events": 19,
+          "decoded_body_instructions": 153
+        },
+        "png_decode": {
+          "entry": "0x839f0d",
+          "entry_events": 1,
+          "interior_block_events": 41,
+          "decoded_body_instructions": 308
+        },
+        "png_create": {
+          "entry": "0x83a4c9",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 21
+        },
+        "png_from_memory": {
+          "entry": "0x83a579",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 11
+        },
+        "png_destroy": {
+          "entry": "0x83a5bb",
+          "entry_events": 2,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 23
+        },
+        "png_error": {
+          "entry": "0x83a5f1",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_error_line": {
+          "entry": "0x83a5fd",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_width": {
+          "entry": "0x83a609",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_height": {
+          "entry": "0x83a613",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_bpp": {
+          "entry": "0x83a61f",
+          "entry_events": 5,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 9
+        },
+        "png_channels": {
+          "entry": "0x83a649",
+          "entry_events": 7,
+          "interior_block_events": 19,
+          "decoded_body_instructions": 26
+        },
+        "png_depth": {
+          "entry": "0x83a6a3",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_padded_bpp": {
+          "entry": "0x83a6af",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 12
+        },
+        "png_pixel_format": {
+          "entry": "0x83a6eb",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_pixels": {
+          "entry": "0x83a6f7",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        },
+        "png_size": {
+          "entry": "0x83a703",
+          "entry_events": 1,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 5
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 540,
+  "sha256": {
+    "tests/kernel_png_qemu.py": "257b6a96e5d313e791f5f7f76989afe96c146c3db43dc9af6614d72368e64d34",
+    "tests/png_guest.c": "8c4bbc985e2e76ce429061f6a906d4ef6db0f3428fc251b3e4f6a6ab48c6ab6e"
+  },
+  "complete_os_recovery": false
+}

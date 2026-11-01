@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_png.o
+KERNEL_PATCHES += $(foreach name,png_paeth png_scanline png_unfilter png_unpad png_postprocess png_format png_release_input png_header png_decode png_create png_from_memory png_destroy png_error png_error_line png_width png_height png_bpp png_channels png_depth png_padded_bpp png_pixel_format png_pixels png_size,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_bake.o
 KERNEL_PATCHES += $(foreach name,font_bake font_prefilter font_render_rects font_pack_ranges font_pack_range font_scaled_metrics font_bake_api font_offset_api font_count_api font_init_api,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_atlas.o
@@ -1831,3 +1833,25 @@ $(BUILD)/font_bake_guest.x: $(BUILD)/font_bake_guest.elf tools/xformat.py
 
 test-font-bake-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_bake_guest.x
 	python3 tests/kernel_font_bake_qemu.py
+
+$(BUILD)/kernel_png.o: kernel/png.c kernel/png.h kernel/memory.h kernel/memory_ops.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+.PHONY: test-png
+test-png: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_png.py --installed
+
+verify: test-png
+
+$(BUILD)/png_guest.o: tests/png_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/png_guest.elf: $(BUILD)/png_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/png_guest.map -o $@ $<
+
+$(BUILD)/png_guest.x: $(BUILD)/png_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/png_guest.symbols.json
+
+.PHONY: test-png-qemu
+test-png-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/png_guest.x
+	python3 tests/kernel_png_qemu.py

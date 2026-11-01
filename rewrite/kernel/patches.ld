@@ -1250,6 +1250,53 @@ SECTIONS
     ASSERT(kernel_font_count_api_836fd6 == 0x836fd6 && SIZEOF(.font_count_api) <= 20, "font_count_api overflow")
     .font_init_api 0x836fea : { *kernel_font_bake.o(.text.kernel_font_init_api_836fea) }
     ASSERT(kernel_font_init_api_836fea == 0x836fea && SIZEOF(.font_init_api) <= 34, "font_init_api overflow")
+    PROVIDE(kernel_png_zlib_839263 = 0x839263);
+    .png_paeth 0x8393a1 : { *kernel_png.o(.text.kernel_png_paeth_8393a1) }
+    ASSERT(kernel_png_paeth_8393a1 == 0x8393a1 && SIZEOF(.png_paeth) <= 184, "png_paeth overflow")
+    .png_scanline 0x839459 : { *kernel_png.o(.text.kernel_png_scanline_839459) }
+    ASSERT(kernel_png_scanline_839459 == 0x839459 && SIZEOF(.png_scanline) <= 900, "png_scanline overflow")
+    .png_unfilter 0x8397dd : { *kernel_png.o(.text.kernel_png_unfilter_8397dd) }
+    ASSERT(kernel_png_unfilter_8397dd == 0x8397dd && SIZEOF(.png_unfilter) <= 182, "png_unfilter overflow")
+    .png_unpad 0x839893 : { *kernel_png.o(.text.kernel_png_unpad_839893) }
+    ASSERT(kernel_png_unpad_839893 == 0x839893 && SIZEOF(.png_unpad) <= 254, "png_unpad overflow")
+    .png_postprocess 0x839991 : { *kernel_png.o(.text.kernel_png_postprocess_839991) }
+    ASSERT(kernel_png_postprocess_839991 == 0x839991 && SIZEOF(.png_postprocess) <= 270, "png_postprocess overflow")
+    .png_format 0x839a9f : { *kernel_png.o(.text.kernel_png_format_839a9f) }
+    ASSERT(kernel_png_format_839a9f == 0x839a9f && SIZEOF(.png_format) <= 330, "png_format overflow")
+    .png_release_input 0x839be9 : { *kernel_png.o(.text.kernel_png_release_input_839be9) }
+    ASSERT(kernel_png_release_input_839be9 == 0x839be9 && SIZEOF(.png_release_input) <= 58, "png_release_input overflow")
+    .png_header 0x839c23 : { *kernel_png.o(.text.kernel_png_header_839c23) }
+    ASSERT(kernel_png_header_839c23 == 0x839c23 && SIZEOF(.png_header) <= 746, "png_header overflow")
+    .png_decode 0x839f0d : { *kernel_png.o(.text.kernel_png_decode_839f0d) }
+    ASSERT(kernel_png_decode_839f0d == 0x839f0d && SIZEOF(.png_decode) <= 1468, "png_decode overflow")
+    .png_create 0x83a4c9 : { *kernel_png.o(.text.kernel_png_create_83a4c9) }
+    ASSERT(kernel_png_create_83a4c9 == 0x83a4c9 && SIZEOF(.png_create) <= 176, "png_create overflow")
+    .png_from_memory 0x83a579 : { *kernel_png.o(.text.kernel_png_from_memory_83a579) }
+    ASSERT(kernel_png_from_memory_83a579 == 0x83a579 && SIZEOF(.png_from_memory) <= 66, "png_from_memory overflow")
+    .png_destroy 0x83a5bb : { *kernel_png.o(.text.kernel_png_destroy_83a5bb) }
+    ASSERT(kernel_png_destroy_83a5bb == 0x83a5bb && SIZEOF(.png_destroy) <= 54, "png_destroy overflow")
+    .png_error 0x83a5f1 : { *kernel_png.o(.text.kernel_png_error_83a5f1) }
+    ASSERT(kernel_png_error_83a5f1 == 0x83a5f1 && SIZEOF(.png_error) <= 12, "png_error overflow")
+    .png_error_line 0x83a5fd : { *kernel_png.o(.text.kernel_png_error_line_83a5fd) }
+    ASSERT(kernel_png_error_line_83a5fd == 0x83a5fd && SIZEOF(.png_error_line) <= 12, "png_error_line overflow")
+    .png_width 0x83a609 : { *kernel_png.o(.text.kernel_png_width_83a609) }
+    ASSERT(kernel_png_width_83a609 == 0x83a609 && SIZEOF(.png_width) <= 10, "png_width overflow")
+    .png_height 0x83a613 : { *kernel_png.o(.text.kernel_png_height_83a613) }
+    ASSERT(kernel_png_height_83a613 == 0x83a613 && SIZEOF(.png_height) <= 12, "png_height overflow")
+    .png_bpp 0x83a61f : { *kernel_png.o(.text.kernel_png_bpp_83a61f) }
+    ASSERT(kernel_png_bpp_83a61f == 0x83a61f && SIZEOF(.png_bpp) <= 42, "png_bpp overflow")
+    .png_channels 0x83a649 : { *kernel_png.o(.text.kernel_png_channels_83a649) }
+    ASSERT(kernel_png_channels_83a649 == 0x83a649 && SIZEOF(.png_channels) <= 90, "png_channels overflow")
+    .png_depth 0x83a6a3 : { *kernel_png.o(.text.kernel_png_depth_83a6a3) }
+    ASSERT(kernel_png_depth_83a6a3 == 0x83a6a3 && SIZEOF(.png_depth) <= 12, "png_depth overflow")
+    .png_padded_bpp 0x83a6af : { *kernel_png.o(.text.kernel_png_padded_bpp_83a6af) }
+    ASSERT(kernel_png_padded_bpp_83a6af == 0x83a6af && SIZEOF(.png_padded_bpp) <= 60, "png_padded_bpp overflow")
+    .png_pixel_format 0x83a6eb : { *kernel_png.o(.text.kernel_png_pixel_format_83a6eb) }
+    ASSERT(kernel_png_pixel_format_83a6eb == 0x83a6eb && SIZEOF(.png_pixel_format) <= 12, "png_pixel_format overflow")
+    .png_pixels 0x83a6f7 : { *kernel_png.o(.text.kernel_png_pixels_83a6f7) }
+    ASSERT(kernel_png_pixels_83a6f7 == 0x83a6f7 && SIZEOF(.png_pixels) <= 12, "png_pixels overflow")
+    .png_size 0x83a703 : { *kernel_png.o(.text.kernel_png_size_83a703) }
+    ASSERT(kernel_png_size_83a703 == 0x83a703 && SIZEOF(.png_size) <= 12, "png_size overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

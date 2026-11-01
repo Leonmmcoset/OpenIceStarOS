@@ -29,11 +29,11 @@ SLOTS=[('font_close_shape','kernel_font_close_shape_82d24a',0x82d24a,0x82d386),
 AGGREGATE={1,2}
 
 
-def compile_variants(original,installed,module="outline",slots=SLOTS,tails=None):
+def compile_variants(original,installed,module="outline",slots=SLOTS,tails=None,source=None,bindings=None):
     obj=BUILD/f'kernel_font_{module}_preview.o'
-    run(['gcc',*FLAGS,'-fexcess-precision=fast','-c',f'kernel/font_{module}.c','-o',str(obj)])
+    run(['gcc',*FLAGS,'-fexcess-precision=fast','-c',source or f'kernel/font_{module}.c','-o',str(obj)])
     undefined=run(['nm','-u',str(obj)],capture_output=True,text=True).stdout.splitlines()
-    provides=''.join(f'PROVIDE({s} = 0x{s.rsplit("_",1)[1]});\n' for s in (line.split()[-1] for line in undefined))
+    provides=''.join(f'PROVIDE({s} = {(bindings or {}).get(s, "0x"+s.rsplit("_",1)[1])});\n' for s in (line.split()[-1] for line in undefined))
     outputs=[];sizes={}
     for fixed in (False,True):
         label='fixed' if fixed else 'ordinary';script,elf=BUILD/f'font_{module}_{label}.ld',BUILD/f'font_{module}_{label}.elf'

@@ -1,0 +1,13 @@
+{
+  "kernel/png.c": "07831c93d270ec805f8535bd9fa3e7380a08180c293c86bdc3ddb14c5b68f866",
+  "kernel/png.h": "747dc90ee988ac4498413a1a442cd96eee4d6f8daed6d5867ce9cd04869b5903",
+  "tests/kernel_png.py": "8d89973c37aa4ae16b86be8bceb9323637341d99bd45a50990454d6c1baf9ef6",
+  "tests/png_guest.c": "8c4bbc985e2e76ce429061f6a906d4ef6db0f3428fc251b3e4f6a6ab48c6ab6e",
+  "tests/kernel_png_qemu.py": "257b6a96e5d313e791f5f7f76989afe96c146c3db43dc9af6614d72368e64d34",
+  "tests/kernel_font_outline.py": "c71974cb2e8d59e9c3f2557490e824b4bda3149da6f1e131e26a177f714ae7d0",
+  "kernel/patches.json": "4069740abd974faf2eea654cb78cc37003ddff917029687a30e28da92ef79c75",
+  "kernel/patches.ld": "a080c49e40ab0f57fdb7948026e0a91294e9419a95e37cf0185ecc40f09316ad",
+  "Makefile": "cc4d4c697a6eccacf35bc0c5ebf80023cb6c7f0799d248b1e55f41aeaace193c",
+  "build/openicestaros_kernel.x": "9d1ce768b1e9c8b757f8ae596e6a399d77709c1ad7402451fe75ab5bfcad4a65",
+  "build/OpenIceStarOS_c_apps.vhd": "48d1ff35e128e6cff0bcc908c24268d6b0418acbfebef3241272f4c8d73d77ab"
+}

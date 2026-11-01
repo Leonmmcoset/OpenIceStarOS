@@ -1,0 +1,16 @@
+{
+  "kernel_intervals": 540,
+  "png_scenarios": 3746,
+  "png_executions": 11238,
+  "qemu_entries": 23,
+  "font_bake_scenarios": 1777,
+  "font_bake_checkpoints": 72,
+  "x_loader_scenarios": 430,
+  "inventory_checked": true,
+  "whole_kernel_disk_verified": true,
+  "whole_application_disk_verified": true,
+  "full_verify_run": false,
+  "last_full_verify_intervals": 456,
+  "complete_os_recovery": false,
+  "original_vhd_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+}
