@@ -1,0 +1,55 @@
+{
+  "installed": true,
+  "functions": 5,
+  "scenarios": 2959,
+  "executions": 8877,
+  "slots": {
+    "font_active": {
+      "compiled_bytes": 335,
+      "slot_bytes": 362
+    },
+    "font_fill_scanline": {
+      "compiled_bytes": 286,
+      "slot_bytes": 352
+    },
+    "font_edge_insertion": {
+      "compiled_bytes": 142,
+      "slot_bytes": 320
+    },
+    "font_edge_quicksort": {
+      "compiled_bytes": 509,
+      "slot_bytes": 984
+    },
+    "font_edge_sort": {
+      "compiled_bytes": 35,
+      "slot_bytes": 44
+    }
+  },
+  "scenarios_by_function": {
+    "font_active": 1908,
+    "font_fill_scanline": 643,
+    "font_edge_insertion": 136,
+    "font_edge_quicksort": 136,
+    "font_edge_sort": 136
+  },
+  "seconds": 8.486,
+  "checks": [
+    "real arena/malloc/floor helpers",
+    "all touched data/heap pages",
+    "independent interval-pixel intersections",
+    "independent active-edge coordinates",
+    "stable insertion order and complete edge permutations",
+    "quicksort 12/13 cutoff",
+    "both incoming stack alignments",
+    "six x87 controls",
+    "NaNs, infinities, signed zero",
+    "caller argument writeback",
+    "clipped/nonzero-winding coverage and byte wrap",
+    "output/edge aliases"
+  ],
+  "sha256": {
+    "kernel/font_scan.c": "e02a07c48569e8258118bb3b9df2e6c1a7ef024572ecc3a154e927e5109f7f01",
+    "kernel/font_scan.h": "3aab596e275df67a8e283107b388f8ecf0afbe5ce25a4865811d7bebf35e4867",
+    "tests/kernel_font_scan.py": "5fab88cfbe2fdd09f9bacb382d219b2e357789340edb3ce87dbf34dacd3fae3b"
+  }
+}

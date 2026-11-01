@@ -5457,3 +5457,16 @@ original. Production COLOR/input/RAM/TSS checks pass; the original logo is
 retained. INIT/kernel remain partial, five apps are rebuilt and 32 program paths
 remain unrecovered. These focused checks are not a full `make verify` for 481
 intervals; the complete OS rewrite remains unfinished.
+
+Four curve/flattening entries now execute C in the 485-interval kernel: raw point
+writing, quadratic subdivision, cubic subdivision and two-pass contour expansion.
+See [font curves and flattening](recovery/FONT_FLATTEN.md) for the cdecl float-word
+ABI, x87 spill boundaries, depth cutoff, aliases and allocation behavior. There
+are 7,041 original/ordinary/installed scenarios, including all 4,638 simple Fira
+outlines from an independent table parser. Original/C QEMU guests also check
+coordinates, contour lengths and all 128 bytes of actual raster output. The
+raster/edge drivers, higher raster entry and Type-2 interpreter remain original.
+Production CLOCK/input/RAM/TSS checks pass; the original logo remains. These
+focused checks are not a complete `make verify` for 485 intervals. INIT/kernel
+are partial, five apps are rebuilt, 32 program paths remain unrecovered, and
+the complete OS rewrite is unfinished.

@@ -71,8 +71,9 @@ take DWORD counts even though the bitmap width is also used as the visible
 pixel count. The QEMU rectangle uses width 8 and a 32-byte stride, checks the
 24 cleared/copied padding bytes of every row, and retains that observed
 behavior. This does not establish arbitrary-width or malformed-driver safety.
-The edge-building driver, curve flattening, Type-2 interpreter and the complete
-font renderer still require source recovery.
+The edge-building driver, Type-2 interpreter and complete font renderer still
+require source recovery. The subsequent 485-interval step recovers the curve
+subdivision and flattening entries; see [FONT_FLATTEN.md](FONT_FLATTEN.md).
 
 Evidence is in `../evidence/2026-11-01-font-scan/`: focused installed regressions,
 original/C QEMU results, whole-disk installation checks and production COLOR,

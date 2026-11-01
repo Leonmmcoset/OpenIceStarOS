@@ -1174,6 +1174,14 @@ SECTIONS
     ASSERT(kernel_font_edge_quicksort_831480 == 0x831480 && SIZEOF(.font_edge_quicksort) <= 984, "font_edge_quicksort overflow")
     .font_edge_sort 0x831858 : { *kernel_font_scan.o(.text.kernel_font_edge_sort_831858) }
     ASSERT(kernel_font_edge_sort_831858 == 0x831858 && SIZEOF(.font_edge_sort) <= 44, "font_edge_sort overflow")
+    .font_point 0x831ba8 : { *kernel_font_flatten.o(.text.kernel_font_point_831ba8) }
+    ASSERT(kernel_font_point_831ba8 == 0x831ba8 && SIZEOF(.font_point) <= 52, "font_point overflow")
+    .font_quadratic 0x831bdc : { *kernel_font_flatten.o(.text.kernel_font_quadratic_831bdc) }
+    ASSERT(kernel_font_quadratic_831bdc == 0x831bdc && SIZEOF(.font_quadratic) <= 392, "font_quadratic overflow")
+    .font_cubic 0x831d64 : { *kernel_font_flatten.o(.text.kernel_font_cubic_831d64) *kernel_font_flatten.o(.text.kernel_font_curve_endpoint) }
+    ASSERT(kernel_font_cubic_831d64 == 0x831d64 && SIZEOF(.font_cubic) <= 668, "font_cubic overflow")
+    .font_flatten 0x832000 : { *kernel_font_flatten.o(.text.kernel_font_flatten_832000) *kernel_font_flatten.o(.text.kernel_font_cubic_error) }
+    ASSERT(kernel_font_flatten_832000 == 0x832000 && SIZEOF(.font_flatten) <= 1100, "font_flatten overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

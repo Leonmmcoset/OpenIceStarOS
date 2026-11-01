@@ -29,7 +29,7 @@ SLOTS=[('font_close_shape','kernel_font_close_shape_82d24a',0x82d24a,0x82d386),
 AGGREGATE={1,2}
 
 
-def compile_variants(original,installed,module="outline",slots=SLOTS):
+def compile_variants(original,installed,module="outline",slots=SLOTS,tails=None):
     obj=BUILD/f'kernel_font_{module}_preview.o'
     run(['gcc',*FLAGS,'-fexcess-precision=fast','-c',f'kernel/font_{module}.c','-o',str(obj)])
     undefined=run(['nm','-u',str(obj)],capture_output=True,text=True).stdout.splitlines()
@@ -37,7 +37,8 @@ def compile_variants(original,installed,module="outline",slots=SLOTS):
     outputs=[];sizes={}
     for fixed in (False,True):
         label='fixed' if fixed else 'ordinary';script,elf=BUILD/f'font_{module}_{label}.ld',BUILD/f'font_{module}_{label}.elf'
-        sections='\n'.join(f'.{n} {s:#x} : {{ *(.text.{sym}) }}\n'
+        sections='\n'.join(f'.{n} {s:#x} : {{ *(.text.{sym}) '+
+            ''.join(f'*(.text.{tail}) ' for tail in (tails or {}).get(n,[]))+'}\n'+
             f'ASSERT({sym}=={s:#x} && SIZEOF(.{n})<={e-s}, "outline overflow")'
             for n,sym,s,e in slots) if fixed else '. = 0x300000; .text : { *(.text*) }'
         script.write_text(f'OUTPUT_FORMAT(elf32-i386)\nENTRY({slots[0][1]})\n'+provides+

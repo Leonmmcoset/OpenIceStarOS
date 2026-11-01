@@ -1,0 +1,2715 @@
+{
+  "installed": true,
+  "functions": 4,
+  "scenarios": 6917,
+  "executions": 20751,
+  "real_fira": {
+    "simple": 4638,
+    "compound": 884,
+    "empty": 43
+  },
+  "slots": {
+    "font_truetype_shape": {
+      "compiled_bytes": 1846,
+      "slot_bytes": 3286
+    },
+    "font_cff_shape": {
+      "compiled_bytes": 122,
+      "slot_bytes": 180
+    },
+    "font_shape": {
+      "compiled_bytes": 46,
+      "slot_bytes": 78
+    },
+    "font_codepoint_shape": {
+      "compiled_bytes": 31,
+      "slot_bytes": 50
+    }
+  },
+  "terminal_counts": {
+    "returned": 6622,
+    "cyclic_heap": 295
+  },
+  "original_failure_cases": [
+    {
+      "case": 1231,
+      "function": "font_shape",
+      "glyph_or_codepoint": 12,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1234,
+      "function": "font_shape",
+      "glyph_or_codepoint": 15,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1235,
+      "function": "font_shape",
+      "glyph_or_codepoint": 16,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1236,
+      "function": "font_shape",
+      "glyph_or_codepoint": 17,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1237,
+      "function": "font_shape",
+      "glyph_or_codepoint": 18,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1238,
+      "function": "font_shape",
+      "glyph_or_codepoint": 19,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1241,
+      "function": "font_shape",
+      "glyph_or_codepoint": 22,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1255,
+      "function": "font_shape",
+      "glyph_or_codepoint": 36,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1256,
+      "function": "font_shape",
+      "glyph_or_codepoint": 37,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1257,
+      "function": "font_shape",
+      "glyph_or_codepoint": 38,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1258,
+      "function": "font_shape",
+      "glyph_or_codepoint": 39,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1291,
+      "function": "font_shape",
+      "glyph_or_codepoint": 72,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1292,
+      "function": "font_shape",
+      "glyph_or_codepoint": 73,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1293,
+      "function": "font_shape",
+      "glyph_or_codepoint": 74,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1294,
+      "function": "font_shape",
+      "glyph_or_codepoint": 75,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1295,
+      "function": "font_shape",
+      "glyph_or_codepoint": 76,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1296,
+      "function": "font_shape",
+      "glyph_or_codepoint": 77,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1297,
+      "function": "font_shape",
+      "glyph_or_codepoint": 78,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1299,
+      "function": "font_shape",
+      "glyph_or_codepoint": 80,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1300,
+      "function": "font_shape",
+      "glyph_or_codepoint": 81,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1306,
+      "function": "font_shape",
+      "glyph_or_codepoint": 87,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1307,
+      "function": "font_shape",
+      "glyph_or_codepoint": 88,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1308,
+      "function": "font_shape",
+      "glyph_or_codepoint": 89,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1310,
+      "function": "font_shape",
+      "glyph_or_codepoint": 91,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1311,
+      "function": "font_shape",
+      "glyph_or_codepoint": 92,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1312,
+      "function": "font_shape",
+      "glyph_or_codepoint": 93,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1313,
+      "function": "font_shape",
+      "glyph_or_codepoint": 94,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1314,
+      "function": "font_shape",
+      "glyph_or_codepoint": 95,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1348,
+      "function": "font_shape",
+      "glyph_or_codepoint": 129,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1350,
+      "function": "font_shape",
+      "glyph_or_codepoint": 131,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1351,
+      "function": "font_shape",
+      "glyph_or_codepoint": 132,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1358,
+      "function": "font_shape",
+      "glyph_or_codepoint": 139,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1359,
+      "function": "font_shape",
+      "glyph_or_codepoint": 140,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1360,
+      "function": "font_shape",
+      "glyph_or_codepoint": 141,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1361,
+      "function": "font_shape",
+      "glyph_or_codepoint": 142,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1362,
+      "function": "font_shape",
+      "glyph_or_codepoint": 143,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1363,
+      "function": "font_shape",
+      "glyph_or_codepoint": 144,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1364,
+      "function": "font_shape",
+      "glyph_or_codepoint": 145,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1365,
+      "function": "font_shape",
+      "glyph_or_codepoint": 146,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1366,
+      "function": "font_shape",
+      "glyph_or_codepoint": 147,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1368,
+      "function": "font_shape",
+      "glyph_or_codepoint": 149,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1371,
+      "function": "font_shape",
+      "glyph_or_codepoint": 152,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1372,
+      "function": "font_shape",
+      "glyph_or_codepoint": 153,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1373,
+      "function": "font_shape",
+      "glyph_or_codepoint": 154,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1374,
+      "function": "font_shape",
+      "glyph_or_codepoint": 155,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1375,
+      "function": "font_shape",
+      "glyph_or_codepoint": 156,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1378,
+      "function": "font_shape",
+      "glyph_or_codepoint": 159,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1381,
+      "function": "font_shape",
+      "glyph_or_codepoint": 162,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1382,
+      "function": "font_shape",
+      "glyph_or_codepoint": 163,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1383,
+      "function": "font_shape",
+      "glyph_or_codepoint": 164,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1384,
+      "function": "font_shape",
+      "glyph_or_codepoint": 165,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1385,
+      "function": "font_shape",
+      "glyph_or_codepoint": 166,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1386,
+      "function": "font_shape",
+      "glyph_or_codepoint": 167,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1387,
+      "function": "font_shape",
+      "glyph_or_codepoint": 168,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1388,
+      "function": "font_shape",
+      "glyph_or_codepoint": 169,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1425,
+      "function": "font_shape",
+      "glyph_or_codepoint": 206,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1427,
+      "function": "font_shape",
+      "glyph_or_codepoint": 208,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1428,
+      "function": "font_shape",
+      "glyph_or_codepoint": 209,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1429,
+      "function": "font_shape",
+      "glyph_or_codepoint": 210,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1432,
+      "function": "font_shape",
+      "glyph_or_codepoint": 213,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1433,
+      "function": "font_shape",
+      "glyph_or_codepoint": 214,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1434,
+      "function": "font_shape",
+      "glyph_or_codepoint": 215,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1435,
+      "function": "font_shape",
+      "glyph_or_codepoint": 216,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1436,
+      "function": "font_shape",
+      "glyph_or_codepoint": 217,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1437,
+      "function": "font_shape",
+      "glyph_or_codepoint": 218,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1438,
+      "function": "font_shape",
+      "glyph_or_codepoint": 219,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1440,
+      "function": "font_shape",
+      "glyph_or_codepoint": 221,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1441,
+      "function": "font_shape",
+      "glyph_or_codepoint": 222,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1447,
+      "function": "font_shape",
+      "glyph_or_codepoint": 228,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1448,
+      "function": "font_shape",
+      "glyph_or_codepoint": 229,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1449,
+      "function": "font_shape",
+      "glyph_or_codepoint": 230,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1451,
+      "function": "font_shape",
+      "glyph_or_codepoint": 232,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1452,
+      "function": "font_shape",
+      "glyph_or_codepoint": 233,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1453,
+      "function": "font_shape",
+      "glyph_or_codepoint": 234,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1454,
+      "function": "font_shape",
+      "glyph_or_codepoint": 235,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1455,
+      "function": "font_shape",
+      "glyph_or_codepoint": 236,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1459,
+      "function": "font_shape",
+      "glyph_or_codepoint": 240,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1460,
+      "function": "font_shape",
+      "glyph_or_codepoint": 241,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1461,
+      "function": "font_shape",
+      "glyph_or_codepoint": 242,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1490,
+      "function": "font_shape",
+      "glyph_or_codepoint": 271,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1491,
+      "function": "font_shape",
+      "glyph_or_codepoint": 272,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1492,
+      "function": "font_shape",
+      "glyph_or_codepoint": 273,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1493,
+      "function": "font_shape",
+      "glyph_or_codepoint": 274,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1494,
+      "function": "font_shape",
+      "glyph_or_codepoint": 275,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1495,
+      "function": "font_shape",
+      "glyph_or_codepoint": 276,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1496,
+      "function": "font_shape",
+      "glyph_or_codepoint": 277,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1497,
+      "function": "font_shape",
+      "glyph_or_codepoint": 278,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1498,
+      "function": "font_shape",
+      "glyph_or_codepoint": 279,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1500,
+      "function": "font_shape",
+      "glyph_or_codepoint": 281,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1501,
+      "function": "font_shape",
+      "glyph_or_codepoint": 282,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1502,
+      "function": "font_shape",
+      "glyph_or_codepoint": 283,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1503,
+      "function": "font_shape",
+      "glyph_or_codepoint": 284,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1572,
+      "function": "font_shape",
+      "glyph_or_codepoint": 353,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1573,
+      "function": "font_shape",
+      "glyph_or_codepoint": 354,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1574,
+      "function": "font_shape",
+      "glyph_or_codepoint": 355,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1575,
+      "function": "font_shape",
+      "glyph_or_codepoint": 356,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1661,
+      "function": "font_shape",
+      "glyph_or_codepoint": 442,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1682,
+      "function": "font_shape",
+      "glyph_or_codepoint": 463,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1684,
+      "function": "font_shape",
+      "glyph_or_codepoint": 465,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1696,
+      "function": "font_shape",
+      "glyph_or_codepoint": 477,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1697,
+      "function": "font_shape",
+      "glyph_or_codepoint": 478,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1698,
+      "function": "font_shape",
+      "glyph_or_codepoint": 479,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1702,
+      "function": "font_shape",
+      "glyph_or_codepoint": 483,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1704,
+      "function": "font_shape",
+      "glyph_or_codepoint": 485,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1705,
+      "function": "font_shape",
+      "glyph_or_codepoint": 486,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1709,
+      "function": "font_shape",
+      "glyph_or_codepoint": 490,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1710,
+      "function": "font_shape",
+      "glyph_or_codepoint": 491,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1749,
+      "function": "font_shape",
+      "glyph_or_codepoint": 530,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1750,
+      "function": "font_shape",
+      "glyph_or_codepoint": 531,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1805,
+      "function": "font_shape",
+      "glyph_or_codepoint": 586,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1826,
+      "function": "font_shape",
+      "glyph_or_codepoint": 607,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1828,
+      "function": "font_shape",
+      "glyph_or_codepoint": 609,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1835,
+      "function": "font_shape",
+      "glyph_or_codepoint": 616,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1836,
+      "function": "font_shape",
+      "glyph_or_codepoint": 617,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1838,
+      "function": "font_shape",
+      "glyph_or_codepoint": 619,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1840,
+      "function": "font_shape",
+      "glyph_or_codepoint": 621,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1841,
+      "function": "font_shape",
+      "glyph_or_codepoint": 622,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1842,
+      "function": "font_shape",
+      "glyph_or_codepoint": 623,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1846,
+      "function": "font_shape",
+      "glyph_or_codepoint": 627,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1848,
+      "function": "font_shape",
+      "glyph_or_codepoint": 629,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1849,
+      "function": "font_shape",
+      "glyph_or_codepoint": 630,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1854,
+      "function": "font_shape",
+      "glyph_or_codepoint": 635,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1911,
+      "function": "font_shape",
+      "glyph_or_codepoint": 692,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1913,
+      "function": "font_shape",
+      "glyph_or_codepoint": 694,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1926,
+      "function": "font_shape",
+      "glyph_or_codepoint": 707,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1927,
+      "function": "font_shape",
+      "glyph_or_codepoint": 708,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1933,
+      "function": "font_shape",
+      "glyph_or_codepoint": 714,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1934,
+      "function": "font_shape",
+      "glyph_or_codepoint": 715,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1995,
+      "function": "font_shape",
+      "glyph_or_codepoint": 776,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1996,
+      "function": "font_shape",
+      "glyph_or_codepoint": 777,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1997,
+      "function": "font_shape",
+      "glyph_or_codepoint": 778,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1998,
+      "function": "font_shape",
+      "glyph_or_codepoint": 779,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 1999,
+      "function": "font_shape",
+      "glyph_or_codepoint": 780,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2000,
+      "function": "font_shape",
+      "glyph_or_codepoint": 781,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2001,
+      "function": "font_shape",
+      "glyph_or_codepoint": 782,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2002,
+      "function": "font_shape",
+      "glyph_or_codepoint": 783,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2003,
+      "function": "font_shape",
+      "glyph_or_codepoint": 784,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2012,
+      "function": "font_shape",
+      "glyph_or_codepoint": 793,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2013,
+      "function": "font_shape",
+      "glyph_or_codepoint": 794,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2014,
+      "function": "font_shape",
+      "glyph_or_codepoint": 795,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2015,
+      "function": "font_shape",
+      "glyph_or_codepoint": 796,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2016,
+      "function": "font_shape",
+      "glyph_or_codepoint": 797,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2017,
+      "function": "font_shape",
+      "glyph_or_codepoint": 798,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2018,
+      "function": "font_shape",
+      "glyph_or_codepoint": 799,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2019,
+      "function": "font_shape",
+      "glyph_or_codepoint": 800,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2020,
+      "function": "font_shape",
+      "glyph_or_codepoint": 801,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2021,
+      "function": "font_shape",
+      "glyph_or_codepoint": 802,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2022,
+      "function": "font_shape",
+      "glyph_or_codepoint": 803,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2023,
+      "function": "font_shape",
+      "glyph_or_codepoint": 804,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2024,
+      "function": "font_shape",
+      "glyph_or_codepoint": 805,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2025,
+      "function": "font_shape",
+      "glyph_or_codepoint": 806,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2026,
+      "function": "font_shape",
+      "glyph_or_codepoint": 807,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2027,
+      "function": "font_shape",
+      "glyph_or_codepoint": 808,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2028,
+      "function": "font_shape",
+      "glyph_or_codepoint": 809,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2029,
+      "function": "font_shape",
+      "glyph_or_codepoint": 810,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2030,
+      "function": "font_shape",
+      "glyph_or_codepoint": 811,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2059,
+      "function": "font_shape",
+      "glyph_or_codepoint": 840,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2060,
+      "function": "font_shape",
+      "glyph_or_codepoint": 841,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2061,
+      "function": "font_shape",
+      "glyph_or_codepoint": 842,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2062,
+      "function": "font_shape",
+      "glyph_or_codepoint": 843,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2063,
+      "function": "font_shape",
+      "glyph_or_codepoint": 844,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2064,
+      "function": "font_shape",
+      "glyph_or_codepoint": 845,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2065,
+      "function": "font_shape",
+      "glyph_or_codepoint": 846,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2066,
+      "function": "font_shape",
+      "glyph_or_codepoint": 847,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2071,
+      "function": "font_shape",
+      "glyph_or_codepoint": 852,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2072,
+      "function": "font_shape",
+      "glyph_or_codepoint": 853,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2091,
+      "function": "font_shape",
+      "glyph_or_codepoint": 872,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2092,
+      "function": "font_shape",
+      "glyph_or_codepoint": 873,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2093,
+      "function": "font_shape",
+      "glyph_or_codepoint": 874,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2094,
+      "function": "font_shape",
+      "glyph_or_codepoint": 875,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2095,
+      "function": "font_shape",
+      "glyph_or_codepoint": 876,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2096,
+      "function": "font_shape",
+      "glyph_or_codepoint": 877,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2097,
+      "function": "font_shape",
+      "glyph_or_codepoint": 878,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2098,
+      "function": "font_shape",
+      "glyph_or_codepoint": 879,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2099,
+      "function": "font_shape",
+      "glyph_or_codepoint": 880,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2100,
+      "function": "font_shape",
+      "glyph_or_codepoint": 881,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2101,
+      "function": "font_shape",
+      "glyph_or_codepoint": 882,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2102,
+      "function": "font_shape",
+      "glyph_or_codepoint": 883,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2103,
+      "function": "font_shape",
+      "glyph_or_codepoint": 884,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2104,
+      "function": "font_shape",
+      "glyph_or_codepoint": 885,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2105,
+      "function": "font_shape",
+      "glyph_or_codepoint": 886,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2106,
+      "function": "font_shape",
+      "glyph_or_codepoint": 887,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2107,
+      "function": "font_shape",
+      "glyph_or_codepoint": 888,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2108,
+      "function": "font_shape",
+      "glyph_or_codepoint": 889,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2109,
+      "function": "font_shape",
+      "glyph_or_codepoint": 890,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2110,
+      "function": "font_shape",
+      "glyph_or_codepoint": 891,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2111,
+      "function": "font_shape",
+      "glyph_or_codepoint": 892,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2112,
+      "function": "font_shape",
+      "glyph_or_codepoint": 893,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2113,
+      "function": "font_shape",
+      "glyph_or_codepoint": 894,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2114,
+      "function": "font_shape",
+      "glyph_or_codepoint": 895,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2115,
+      "function": "font_shape",
+      "glyph_or_codepoint": 896,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2116,
+      "function": "font_shape",
+      "glyph_or_codepoint": 897,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2117,
+      "function": "font_shape",
+      "glyph_or_codepoint": 898,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2118,
+      "function": "font_shape",
+      "glyph_or_codepoint": 899,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2119,
+      "function": "font_shape",
+      "glyph_or_codepoint": 900,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2120,
+      "function": "font_shape",
+      "glyph_or_codepoint": 901,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2121,
+      "function": "font_shape",
+      "glyph_or_codepoint": 902,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2122,
+      "function": "font_shape",
+      "glyph_or_codepoint": 903,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2123,
+      "function": "font_shape",
+      "glyph_or_codepoint": 904,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2124,
+      "function": "font_shape",
+      "glyph_or_codepoint": 905,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2125,
+      "function": "font_shape",
+      "glyph_or_codepoint": 906,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2126,
+      "function": "font_shape",
+      "glyph_or_codepoint": 907,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2127,
+      "function": "font_shape",
+      "glyph_or_codepoint": 908,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2128,
+      "function": "font_shape",
+      "glyph_or_codepoint": 909,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2129,
+      "function": "font_shape",
+      "glyph_or_codepoint": 910,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2130,
+      "function": "font_shape",
+      "glyph_or_codepoint": 911,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2131,
+      "function": "font_shape",
+      "glyph_or_codepoint": 912,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2132,
+      "function": "font_shape",
+      "glyph_or_codepoint": 913,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2133,
+      "function": "font_shape",
+      "glyph_or_codepoint": 914,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2134,
+      "function": "font_shape",
+      "glyph_or_codepoint": 915,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2135,
+      "function": "font_shape",
+      "glyph_or_codepoint": 916,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2136,
+      "function": "font_shape",
+      "glyph_or_codepoint": 917,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2137,
+      "function": "font_shape",
+      "glyph_or_codepoint": 918,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2138,
+      "function": "font_shape",
+      "glyph_or_codepoint": 919,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2139,
+      "function": "font_shape",
+      "glyph_or_codepoint": 920,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2140,
+      "function": "font_shape",
+      "glyph_or_codepoint": 921,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2141,
+      "function": "font_shape",
+      "glyph_or_codepoint": 922,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2142,
+      "function": "font_shape",
+      "glyph_or_codepoint": 923,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2143,
+      "function": "font_shape",
+      "glyph_or_codepoint": 924,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2144,
+      "function": "font_shape",
+      "glyph_or_codepoint": 925,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2145,
+      "function": "font_shape",
+      "glyph_or_codepoint": 926,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2146,
+      "function": "font_shape",
+      "glyph_or_codepoint": 927,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2163,
+      "function": "font_shape",
+      "glyph_or_codepoint": 944,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2164,
+      "function": "font_shape",
+      "glyph_or_codepoint": 945,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2165,
+      "function": "font_shape",
+      "glyph_or_codepoint": 946,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2166,
+      "function": "font_shape",
+      "glyph_or_codepoint": 947,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2167,
+      "function": "font_shape",
+      "glyph_or_codepoint": 948,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2168,
+      "function": "font_shape",
+      "glyph_or_codepoint": 949,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2169,
+      "function": "font_shape",
+      "glyph_or_codepoint": 950,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2170,
+      "function": "font_shape",
+      "glyph_or_codepoint": 951,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2171,
+      "function": "font_shape",
+      "glyph_or_codepoint": 952,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2172,
+      "function": "font_shape",
+      "glyph_or_codepoint": 953,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2173,
+      "function": "font_shape",
+      "glyph_or_codepoint": 954,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2174,
+      "function": "font_shape",
+      "glyph_or_codepoint": 955,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2175,
+      "function": "font_shape",
+      "glyph_or_codepoint": 956,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2176,
+      "function": "font_shape",
+      "glyph_or_codepoint": 957,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2177,
+      "function": "font_shape",
+      "glyph_or_codepoint": 958,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2178,
+      "function": "font_shape",
+      "glyph_or_codepoint": 959,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2179,
+      "function": "font_shape",
+      "glyph_or_codepoint": 960,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2180,
+      "function": "font_shape",
+      "glyph_or_codepoint": 961,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2181,
+      "function": "font_shape",
+      "glyph_or_codepoint": 962,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2182,
+      "function": "font_shape",
+      "glyph_or_codepoint": 963,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2183,
+      "function": "font_shape",
+      "glyph_or_codepoint": 964,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2184,
+      "function": "font_shape",
+      "glyph_or_codepoint": 965,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2185,
+      "function": "font_shape",
+      "glyph_or_codepoint": 966,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2189,
+      "function": "font_shape",
+      "glyph_or_codepoint": 970,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2190,
+      "function": "font_shape",
+      "glyph_or_codepoint": 971,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2191,
+      "function": "font_shape",
+      "glyph_or_codepoint": 972,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2192,
+      "function": "font_shape",
+      "glyph_or_codepoint": 973,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2193,
+      "function": "font_shape",
+      "glyph_or_codepoint": 974,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2194,
+      "function": "font_shape",
+      "glyph_or_codepoint": 975,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2195,
+      "function": "font_shape",
+      "glyph_or_codepoint": 976,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2196,
+      "function": "font_shape",
+      "glyph_or_codepoint": 977,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2197,
+      "function": "font_shape",
+      "glyph_or_codepoint": 978,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2198,
+      "function": "font_shape",
+      "glyph_or_codepoint": 979,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2199,
+      "function": "font_shape",
+      "glyph_or_codepoint": 980,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2200,
+      "function": "font_shape",
+      "glyph_or_codepoint": 981,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2201,
+      "function": "font_shape",
+      "glyph_or_codepoint": 982,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2202,
+      "function": "font_shape",
+      "glyph_or_codepoint": 983,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2203,
+      "function": "font_shape",
+      "glyph_or_codepoint": 984,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2204,
+      "function": "font_shape",
+      "glyph_or_codepoint": 985,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2205,
+      "function": "font_shape",
+      "glyph_or_codepoint": 986,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2206,
+      "function": "font_shape",
+      "glyph_or_codepoint": 987,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2207,
+      "function": "font_shape",
+      "glyph_or_codepoint": 988,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2208,
+      "function": "font_shape",
+      "glyph_or_codepoint": 989,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2209,
+      "function": "font_shape",
+      "glyph_or_codepoint": 990,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2210,
+      "function": "font_shape",
+      "glyph_or_codepoint": 991,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2211,
+      "function": "font_shape",
+      "glyph_or_codepoint": 992,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2344,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1125,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2345,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1126,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2349,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1130,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2434,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1215,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2435,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1216,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2437,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1218,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2535,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1316,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2560,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1341,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2564,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1345,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2565,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1346,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2567,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1348,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2568,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1349,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2570,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1351,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2571,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1352,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2572,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1353,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2573,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1354,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2584,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1365,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2637,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1418,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2640,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1421,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2641,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1422,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2642,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1423,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2643,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1424,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2644,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1425,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2645,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1426,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2646,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1427,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2648,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1429,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    },
+    {
+      "case": 2713,
+      "function": "font_shape",
+      "glyph_or_codepoint": 1494,
+      "terminal": [
+        "cyclic_heap",
+        33556480
+      ]
+    }
+  ],
+  "synthetic_only": false,
+  "scenarios_by_function": {
+    "font_truetype_shape": 284,
+    "font_cff_shape": 5,
+    "font_shape": 6210,
+    "font_codepoint_shape": 418
+  },
+  "seconds": 56.461,
+  "checks": [
+    "real nested calls and heap allocator",
+    "all touched pages including allocation slack and headers",
+    "all shipped Fira simple/compound/empty glyphs, including original failures",
+    "independent synthetic contour geometry",
+    "compressed/repeated flags",
+    "all component transform forms",
+    "six x87 controls",
+    "allocation failures",
+    "output/source/heap aliases",
+    "CFF two-pass output"
+  ],
+  "sha256": {
+    "kernel/font_shape.c": "873500d24487083595f42285ae45559c124fc8ff3f2034378cc83c020c086992",
+    "kernel/font_shape.h": "8c7a6aa070da418222d015ffb716d8d3c67ae502c5d4f4e7552105ac4e2af4d4",
+    "tests/kernel_font_shape.py": "c9c72f3aaf2792ba1bd57364804d568cb43df433384bf9804332cbd6f31df545"
+  }
+}

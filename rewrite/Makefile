@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_flatten.o
+KERNEL_PATCHES += $(foreach name,font_point font_quadratic font_cubic font_flatten,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_outline.o
 KERNEL_PATCHES += $(foreach name,font_close_shape font_subroutine font_cid_subrs font_bitmap_box_subpixel font_bitmap_box font_codepoint_bitmap_box_subpixel font_codepoint_bitmap_box,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_heap.o
@@ -1739,3 +1741,24 @@ $(BUILD)/font_scan_guest.x: $(BUILD)/font_scan_guest.elf tools/xformat.py
 
 test-font-scan-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_scan_guest.x
 	python3 tests/kernel_font_scan_qemu.py
+
+$(BUILD)/kernel_font_flatten.o: kernel/font_flatten.c kernel/font_flatten.h kernel/math_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-flatten test-font-flatten-qemu
+test-font-flatten: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_flatten.py --installed
+
+verify: test-font-flatten
+
+$(BUILD)/font_flatten_guest.o: tests/font_flatten_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_flatten_guest.elf: $(BUILD)/font_flatten_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_flatten_guest.map -o $@ $<
+
+$(BUILD)/font_flatten_guest.x: $(BUILD)/font_flatten_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_flatten_guest.symbols.json
+
+test-font-flatten-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_flatten_guest.x
+	python3 tests/kernel_font_flatten_qemu.py

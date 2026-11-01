@@ -1,0 +1,49 @@
+{
+  "source_commit_before_step": "eb2e24ae1432ace953b6c21bef50304bd40ee730",
+  "installed_intervals": 485,
+  "exact_instruction_intervals": 77,
+  "new_original_entries": 4,
+  "new_internal_c_helpers": 2,
+  "declared_kernel_slot_bytes": 120715,
+  "retained_original_payload_bytes": 129320,
+  "flatten_scenarios": 7041,
+  "flatten_executions": 21123,
+  "fira_simple_outlines": 4638,
+  "complete_os_recovery": false,
+  "full_verify_for_this_kernel": false,
+  "last_complete_full_verify_intervals": 456,
+  "recovery": {
+    "rebuilt_applications": 5,
+    "partial_programs": 2,
+    "unrecovered_program_paths": 32
+  },
+  "passed": [
+    "original/ordinary/installed curves and flattening differentials, all touched data/heap pages and caller words",
+    "all 4638 simple Fira outlines from an independent TrueType table parser",
+    "original/C QEMU raw endpoint words, curve coordinates, depth cutoff and two-contour expansion",
+    "original complete raster chain: all 128 output bytes including padding match independent expectations",
+    "execution traces cover four original/installed entries and bodies plus three unrecovered raster callers",
+    "entire disposable and source disks unchanged by diagnostic guest execution",
+    "installed scan/sort, shape, outline/bounds, heap, CFF context and X loader regressions",
+    "branding checks and live ASCII/UTF-16 residual scan; 85 compatibility references retained",
+    "kernel/application whole-disk installation and inventory checks",
+    "production CLOCK face/labels/three changing frames, PS2 close, task exit and CMD reuse",
+    "CMD/cpuid, cursor callbacks, 128 MiB RAM, timer/TSS and all 485 installed intervals in guest memory"
+  ],
+  "screenshots_visually_inspected": true,
+  "original_logo_retained": true,
+  "sha256": {
+    "rewrite/kernel/font_flatten.c": "7a09cbf9f295b5ad8dc9fef64b427e82b5f72656276b62bdbca230fe770646af",
+    "rewrite/kernel/font_flatten.h": "f7c8b4299ced8c6be049e4818d7c74fab056a4295da636ca62f93da1750f6a81",
+    "rewrite/tests/kernel_font_flatten.py": "f867c3300bd805ac09accb444058422017e1a7e7c675698078924de9ae3e6357",
+    "rewrite/tests/font_flatten_guest.c": "60764f8d800cc3877d508bf3b3a00ab8a3e9e056abf59554f35c903f1d6fb563",
+    "rewrite/tests/kernel_font_flatten_qemu.py": "88b4f539719acbda214fd76947c8d684f15265049d2ea30c64245aa253e8d2d3",
+    "rewrite/tests/kernel_font_outline.py": "17b05806979d05a1fddecfd9821a8d8036d9a6a21db5480839b78497fd80190d",
+    "rewrite/kernel/patches.json": "62bcacc97e86b25ba4b5978f7cfdfff4c46d1cb1f8e1bd33bb0bd42e392fbeaa",
+    "rewrite/kernel/patches.ld": "deac42940ead56c0f8bd6df3ea3e8d6e79b0007b787c3850d26d375c8da37e11",
+    "rewrite/Makefile": "fdd622e1c77c88ddd9edf2a31ee960f3e00bdd458a9b3227cbc9251bff42ce29",
+    "rewrite/build/openicestaros_kernel.x": "9ad97417f2f952562a1280cdfeba4b3d46f6d022e9796e83751cc59e80bde2d2",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "e67ae33f74bce5d8d1119dff9bb5ebaeea2a82fedf0e258046f276770328068f",
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

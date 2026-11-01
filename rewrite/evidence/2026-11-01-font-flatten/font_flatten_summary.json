@@ -1,0 +1,52 @@
+{
+  "installed": true,
+  "functions": 4,
+  "scenarios": 7041,
+  "executions": 21123,
+  "slots": {
+    "font_point": {
+      "compiled_bytes": 41,
+      "slot_bytes": 52
+    },
+    "font_quadratic": {
+      "compiled_bytes": 381,
+      "slot_bytes": 392
+    },
+    "font_cubic": {
+      "compiled_bytes": 579,
+      "slot_bytes": 668
+    },
+    "font_flatten": {
+      "compiled_bytes": 1058,
+      "slot_bytes": 1100
+    }
+  },
+  "scenarios_by_function": {
+    "font_point": 112,
+    "font_quadratic": 930,
+    "font_cubic": 770,
+    "font_flatten": 5229
+  },
+  "fira_simple_outlines": 4638,
+  "seconds": 92.016,
+  "checks": [
+    "real malloc/free/sqrt helpers",
+    "all touched data and heap pages",
+    "exact Bernstein quadratic endpoints",
+    "independent line contours and cubic midpoint",
+    "all simple Fira outlines from independent table parser",
+    "six x87 controls",
+    "both incoming stack alignments",
+    "raw signaling/quiet NaN endpoints",
+    "depth 16/17 cutoff",
+    "caller/data aliases",
+    "counter wrap",
+    "both allocation failures and free/merge"
+  ],
+  "sha256": {
+    "kernel/font_flatten.c": "7a09cbf9f295b5ad8dc9fef64b427e82b5f72656276b62bdbca230fe770646af",
+    "kernel/font_flatten.h": "f7c8b4299ced8c6be049e4818d7c74fab056a4295da636ca62f93da1750f6a81",
+    "tests/kernel_font_flatten.py": "f867c3300bd805ac09accb444058422017e1a7e7c675698078924de9ae3e6357",
+    "tests/kernel_font_outline.py": "17b05806979d05a1fddecfd9821a8d8036d9a6a21db5480839b78497fd80190d"
+  }
+}
