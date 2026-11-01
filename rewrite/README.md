@@ -5445,3 +5445,15 @@ Fira glyph, including original cyclic-heap failures; real QEMU guests compare
 vertex signatures against independent geometry. CFF bytecode interpretation
 and the remaining rasterizer still use original code. INIT/kernel are partial,
 five applications are rebuilt, and the complete OS rewrite remains unfinished.
+
+Five scan-conversion entries now execute C in the 481-interval kernel: active
+edge initialization, nonzero-winding scanline coverage, insertion sort, quicksort
+and the combined edge sort. See [font scan conversion](recovery/FONT_SCAN.md)
+for fixed-point/x87 behavior, live caller-area writes and validation. There are
+2,959 original/ordinary/installed scenarios; original/C QEMU guests also agree
+on actual raster-driver pixels against independent coverage expectations.
+The higher raster driver, curve flattening and CFF Type-2 interpreter remain
+original. Production COLOR/input/RAM/TSS checks pass; the original logo is
+retained. INIT/kernel remain partial, five apps are rebuilt and 32 program paths
+remain unrecovered. These focused checks are not a full `make verify` for 481
+intervals; the complete OS rewrite remains unfinished.

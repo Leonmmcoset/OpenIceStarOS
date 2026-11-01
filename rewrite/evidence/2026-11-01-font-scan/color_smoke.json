@@ -1,0 +1,48 @@
+{
+  "image": "/root/IceStarOS-x86-Decompile/rewrite/build/OpenIceStarOS_c_apps.vhd",
+  "cmd_base": "0x44ab010",
+  "working_directory": "c:\\ICESTAR",
+  "relocated_candidates": [
+    "0x4610c10"
+  ],
+  "relocations_verified": 7,
+  "state": {
+    "window_record": "0x442b410",
+    "surface": "0xa",
+    "unused": [
+      0,
+      0
+    ],
+    "close_callback": "0x4610c50"
+  },
+  "window": 7,
+  "task": 5,
+  "task_active_before_close": 2,
+  "palette_address": "0x1e1c0",
+  "screen_size": [
+    1024,
+    768
+  ],
+  "palette_checks": 600,
+  "palette_mismatches": [],
+  "pointer_close_button": [
+    887,
+    92
+  ],
+  "window_pool_after_close": "0x0",
+  "task_active_after_close": 0,
+  "pointer_cmd_taskbar": [
+    125,
+    754
+  ],
+  "cmd_cursor_after_close": [
+    [
+      11,
+      13
+    ],
+    [
+      11,
+      15
+    ]
+  ]
+}

@@ -1164,6 +1164,16 @@ SECTIONS
     ASSERT(kernel_font_heap_free_830c0e == 0x830c0e && SIZEOF(.font_heap_free) <= 26, "font_heap_free overflow")
     .font_heap_cleanup 0x830c28 : { *kernel_font_heap.o(.text.kernel_font_heap_cleanup_830c28) }
     ASSERT(kernel_font_heap_cleanup_830c28 == 0x830c28 && SIZEOF(.font_heap_cleanup) <= 50, "font_heap_cleanup overflow")
+    .font_active 0x830c5a : { *kernel_font_scan.o(.text.kernel_font_active_830c5a) }
+    ASSERT(kernel_font_active_830c5a == 0x830c5a && SIZEOF(.font_active) <= 362, "font_active overflow")
+    .font_fill_scanline 0x830dc4 : { *kernel_font_scan.o(.text.kernel_font_fill_scanline_830dc4) }
+    ASSERT(kernel_font_fill_scanline_830dc4 == 0x830dc4 && SIZEOF(.font_fill_scanline) <= 352, "font_fill_scanline overflow")
+    .font_edge_insertion 0x831340 : { *kernel_font_scan.o(.text.kernel_font_edge_insertion_831340) }
+    ASSERT(kernel_font_edge_insertion_831340 == 0x831340 && SIZEOF(.font_edge_insertion) <= 320, "font_edge_insertion overflow")
+    .font_edge_quicksort 0x831480 : { *kernel_font_scan.o(.text.kernel_font_edge_quicksort_831480) }
+    ASSERT(kernel_font_edge_quicksort_831480 == 0x831480 && SIZEOF(.font_edge_quicksort) <= 984, "font_edge_quicksort overflow")
+    .font_edge_sort 0x831858 : { *kernel_font_scan.o(.text.kernel_font_edge_sort_831858) }
+    ASSERT(kernel_font_edge_sort_831858 == 0x831858 && SIZEOF(.font_edge_sort) <= 44, "font_edge_sort overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

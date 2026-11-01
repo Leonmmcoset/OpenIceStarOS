@@ -140,6 +140,8 @@ KERNEL_OBJECTS += $(foreach module,scan basis transform block output decode,$(BU
 KERNEL_PATCHES += $(foreach name,info decode scan prepare symbol basis transform magnitude block expand mcu color image,$(BUILD)/kernel.jpeg_$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
+KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_outline.o
 KERNEL_PATCHES += $(foreach name,font_close_shape font_subroutine font_cid_subrs font_bitmap_box_subpixel font_bitmap_box font_codepoint_bitmap_box_subpixel font_codepoint_bitmap_box,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_heap.o
@@ -1716,3 +1718,24 @@ $(BUILD)/font_shape_guest.x: $(BUILD)/font_shape_guest.elf tools/xformat.py
 
 test-font-shape-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_shape_guest.x
 	python3 tests/kernel_font_shape_qemu.py
+
+$(BUILD)/kernel_font_scan.o: kernel/font_scan.c kernel/font_scan.h kernel/font_heap.h kernel/math_extra.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-scan test-font-scan-qemu
+test-font-scan: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_scan.py --installed
+
+verify: test-font-scan
+
+$(BUILD)/font_scan_guest.o: tests/font_scan_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_scan_guest.elf: $(BUILD)/font_scan_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_scan_guest.map -o $@ $<
+
+$(BUILD)/font_scan_guest.x: $(BUILD)/font_scan_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_scan_guest.symbols.json
+
+test-font-scan-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_scan_guest.x
+	python3 tests/kernel_font_scan_qemu.py
