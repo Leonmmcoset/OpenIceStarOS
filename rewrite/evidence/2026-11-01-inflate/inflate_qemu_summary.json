@@ -1,0 +1,238 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "43a186a9aae7ba5b1bb39393266a0bbff889bbfbe9e4167cae6067e574530def",
+      "result_sha256": "43a186a9aae7ba5b1bb39393266a0bbff889bbfbe9e4167cae6067e574530def",
+      "clusters": [],
+      "report": [
+        1145457713,
+        0,
+        0,
+        0,
+        3124198868,
+        165,
+        0,
+        0,
+        0,
+        3138898360,
+        165,
+        0,
+        0,
+        0,
+        798040229,
+        165,
+        4,
+        4,
+        520,
+        2166136261,
+        165,
+        1,
+        4,
+        976847037,
+        41,
+        2,
+        4,
+        5,
+        6,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "functions": {
+        "png_bit": {
+          "entry": "0x8380ef",
+          "entry_events": 274,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 20
+        },
+        "png_bits": {
+          "entry": "0x838123",
+          "entry_events": 29,
+          "interior_block_events": 431,
+          "decoded_body_instructions": 27
+        },
+        "png_tree_init": {
+          "entry": "0x83816d",
+          "entry_events": 6,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 12
+        },
+        "png_tree_build": {
+          "entry": "0x83818d",
+          "entry_events": 4,
+          "interior_block_events": 6623,
+          "decoded_body_instructions": 233
+        },
+        "png_symbol": {
+          "entry": "0x838519",
+          "entry_events": 31,
+          "interior_block_events": 524,
+          "decoded_body_instructions": 52
+        },
+        "png_dynamic": {
+          "entry": "0x8385df",
+          "entry_events": 1,
+          "interior_block_events": 1455,
+          "decoded_body_instructions": 282
+        },
+        "png_compressed": {
+          "entry": "0x838bc3",
+          "entry_events": 2,
+          "interior_block_events": 173,
+          "decoded_body_instructions": 200
+        },
+        "png_stored": {
+          "entry": "0x838faf",
+          "entry_events": 2,
+          "interior_block_events": 45,
+          "decoded_body_instructions": 101
+        },
+        "png_inflate": {
+          "entry": "0x8390ed",
+          "entry_events": 4,
+          "interior_block_events": 42,
+          "decoded_body_instructions": 98
+        },
+        "png_zlib": {
+          "entry": "0x839263",
+          "entry_events": 4,
+          "interior_block_events": 28,
+          "decoded_body_instructions": 66
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "6744c308a1a650333331670e262612d4d0a51567605ad814f2f70bf607d0e185",
+      "seeded_sha256": "59144d00fcf9405f86ab54afa698bd04f8be247653b5dc391e2b16ec6f3d6108",
+      "result_sha256": "59144d00fcf9405f86ab54afa698bd04f8be247653b5dc391e2b16ec6f3d6108",
+      "clusters": [],
+      "report": [
+        1145457713,
+        0,
+        0,
+        0,
+        3124198868,
+        165,
+        0,
+        0,
+        0,
+        3138898360,
+        165,
+        0,
+        0,
+        0,
+        798040229,
+        165,
+        4,
+        4,
+        520,
+        2166136261,
+        165,
+        1,
+        4,
+        976847037,
+        41,
+        2,
+        4,
+        5,
+        6,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "functions": {
+        "png_bit": {
+          "entry": "0x8380ef",
+          "entry_events": 274,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 21
+        },
+        "png_bits": {
+          "entry": "0x838123",
+          "entry_events": 29,
+          "interior_block_events": 431,
+          "decoded_body_instructions": 29
+        },
+        "png_tree_init": {
+          "entry": "0x83816d",
+          "entry_events": 6,
+          "interior_block_events": 0,
+          "decoded_body_instructions": 12
+        },
+        "png_tree_build": {
+          "entry": "0x83818d",
+          "entry_events": 4,
+          "interior_block_events": 6585,
+          "decoded_body_instructions": 199
+        },
+        "png_symbol": {
+          "entry": "0x838519",
+          "entry_events": 31,
+          "interior_block_events": 493,
+          "decoded_body_instructions": 46
+        },
+        "png_dynamic": {
+          "entry": "0x8385df",
+          "entry_events": 1,
+          "interior_block_events": 1430,
+          "decoded_body_instructions": 224
+        },
+        "png_compressed": {
+          "entry": "0x838bc3",
+          "entry_events": 2,
+          "interior_block_events": 146,
+          "decoded_body_instructions": 201
+        },
+        "png_stored": {
+          "entry": "0x838faf",
+          "entry_events": 2,
+          "interior_block_events": 46,
+          "decoded_body_instructions": 89
+        },
+        "png_inflate": {
+          "entry": "0x8390ed",
+          "entry_events": 4,
+          "interior_block_events": 37,
+          "decoded_body_instructions": 98
+        },
+        "png_zlib": {
+          "entry": "0x839263",
+          "entry_events": 4,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 50
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 550,
+  "sha256": {
+    "tests/kernel_inflate_qemu.py": "c8883163103e669e02361ecc7a9e2faaa04cf7c5abc3f056bdf2525ae5d9afc5",
+    "tests/inflate_guest.c": "468163e4de0e6f547c7e0ca10244dfdfd3e3450d8a82799ba4784ea6b6c71193"
+  },
+  "complete_os_recovery": false
+}

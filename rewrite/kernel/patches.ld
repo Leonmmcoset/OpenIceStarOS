@@ -1250,7 +1250,6 @@ SECTIONS
     ASSERT(kernel_font_count_api_836fd6 == 0x836fd6 && SIZEOF(.font_count_api) <= 20, "font_count_api overflow")
     .font_init_api 0x836fea : { *kernel_font_bake.o(.text.kernel_font_init_api_836fea) }
     ASSERT(kernel_font_init_api_836fea == 0x836fea && SIZEOF(.font_init_api) <= 34, "font_init_api overflow")
-    PROVIDE(kernel_png_zlib_839263 = 0x839263);
     .png_paeth 0x8393a1 : { *kernel_png.o(.text.kernel_png_paeth_8393a1) }
     ASSERT(kernel_png_paeth_8393a1 == 0x8393a1 && SIZEOF(.png_paeth) <= 184, "png_paeth overflow")
     .png_scanline 0x839459 : { *kernel_png.o(.text.kernel_png_scanline_839459) }
@@ -1297,6 +1296,26 @@ SECTIONS
     ASSERT(kernel_png_pixels_83a6f7 == 0x83a6f7 && SIZEOF(.png_pixels) <= 12, "png_pixels overflow")
     .png_size 0x83a703 : { *kernel_png.o(.text.kernel_png_size_83a703) }
     ASSERT(kernel_png_size_83a703 == 0x83a703 && SIZEOF(.png_size) <= 12, "png_size overflow")
+    .png_bit 0x8380ef : { *kernel_inflate.o(.text.kernel_png_bit_8380ef) }
+    ASSERT(kernel_png_bit_8380ef == 0x8380ef && SIZEOF(.png_bit) <= 52, "png_bit overflow")
+    .png_bits 0x838123 : { *kernel_inflate.o(.text.kernel_png_bits_838123) }
+    ASSERT(kernel_png_bits_838123 == 0x838123 && SIZEOF(.png_bits) <= 74, "png_bits overflow")
+    .png_tree_init 0x83816d : { *kernel_inflate.o(.text.kernel_png_tree_init_83816d) }
+    ASSERT(kernel_png_tree_init_83816d == 0x83816d && SIZEOF(.png_tree_init) <= 32, "png_tree_init overflow")
+    .png_tree_build 0x83818d : { *kernel_inflate.o(.text.kernel_png_tree_build_83818d) }
+    ASSERT(kernel_png_tree_build_83818d == 0x83818d && SIZEOF(.png_tree_build) <= 908, "png_tree_build overflow")
+    .png_symbol 0x838519 : { *kernel_inflate.o(.text.kernel_png_symbol_838519) }
+    ASSERT(kernel_png_symbol_838519 == 0x838519 && SIZEOF(.png_symbol) <= 198, "png_symbol overflow")
+    .png_dynamic 0x8385df : { *kernel_inflate.o(.text.kernel_png_dynamic_8385df) }
+    ASSERT(kernel_png_dynamic_8385df == 0x8385df && SIZEOF(.png_dynamic) <= 1508, "png_dynamic overflow")
+    .png_compressed 0x838bc3 : { *kernel_inflate.o(.text.kernel_png_compressed_838bc3) }
+    ASSERT(kernel_png_compressed_838bc3 == 0x838bc3 && SIZEOF(.png_compressed) <= 1004, "png_compressed overflow")
+    .png_stored 0x838faf : { *kernel_inflate.o(.text.kernel_png_stored_838faf) }
+    ASSERT(kernel_png_stored_838faf == 0x838faf && SIZEOF(.png_stored) <= 318, "png_stored overflow")
+    .png_inflate 0x8390ed : { *kernel_inflate.o(.text.kernel_png_inflate_8390ed) }
+    ASSERT(kernel_png_inflate_8390ed == 0x8390ed && SIZEOF(.png_inflate) <= 374, "png_inflate overflow")
+    .png_zlib 0x839263 : { *kernel_inflate.o(.text.kernel_png_zlib_839263) }
+    ASSERT(kernel_png_zlib_839263 == 0x839263 && SIZEOF(.png_zlib) <= 318, "png_zlib overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

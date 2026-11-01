@@ -5518,3 +5518,10 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 通过 3,746 个场景、11,238 次执行；原版和新内核的真实 QEMU 诊断覆盖全部入口、
 像素与对象生命周期。保留原版 PNG 格式限制和解压边界行为。详细证据见
 [PNG.md](recovery/PNG.md)。此时底层十个 DEFLATE／zlib 入口仍待恢复；完整 OS 未完成。
+
+## 2026-11-01：DEFLATE／zlib 解压链
+
+再恢复 10 个 C 入口，内核替换区间 540 → 550。本轮连同 PNG 累计新增 33 个入口；
+两个差分套件共 7,370 场景、22,110 次执行。真实 QEMU 验证 stored／fixed／dynamic
+三类压缩块、16／17／18 长度重复、完整 PNG 调用链，以及生产 COLOR 启动。
+详细行为和限制见 [INFLATE.md](recovery/INFLATE.md)。完整 OS 重写仍未完成。

@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
+KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
 KERNEL_PATCHES += $(foreach name,png_paeth png_scanline png_unfilter png_unpad png_postprocess png_format png_release_input png_header png_decode png_create png_from_memory png_destroy png_error png_error_line png_width png_height png_bpp png_channels png_depth png_padded_bpp png_pixel_format png_pixels png_size,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_bake.o
@@ -1855,3 +1857,25 @@ $(BUILD)/png_guest.x: $(BUILD)/png_guest.elf tools/xformat.py
 .PHONY: test-png-qemu
 test-png-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/png_guest.x
 	python3 tests/kernel_png_qemu.py
+
+$(BUILD)/kernel_inflate.o: kernel/inflate.c kernel/inflate.h kernel/memory_ops.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -c $< -o $@
+
+.PHONY: test-inflate
+test-inflate: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_inflate.py --installed
+
+verify: test-inflate
+
+$(BUILD)/inflate_guest.o: tests/inflate_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/inflate_guest.elf: $(BUILD)/inflate_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/inflate_guest.map -o $@ $<
+
+$(BUILD)/inflate_guest.x: $(BUILD)/inflate_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/inflate_guest.symbols.json
+
+.PHONY: test-inflate-qemu
+test-inflate-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/inflate_guest.x
+	python3 tests/kernel_inflate_qemu.py

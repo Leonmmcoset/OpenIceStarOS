@@ -1,0 +1,13 @@
+{
+  "kernel/inflate.c": "0e3988aa0719d792ed7923494d883e95e5a55802a59bd378aa9c08c297bff588",
+  "kernel/inflate.h": "67a76beacbeaa15a8c86787120a40f363e623eab3d8586d0980eaa98dce555fc",
+  "tests/kernel_inflate.py": "438f93dafb7ef29e53ba31ce7bcdde7630e3b96c933cb29d6ac21dd7bc319dd1",
+  "tests/inflate_guest.c": "468163e4de0e6f547c7e0ca10244dfdfd3e3450d8a82799ba4784ea6b6c71193",
+  "tests/kernel_inflate_qemu.py": "c8883163103e669e02361ecc7a9e2faaa04cf7c5abc3f056bdf2525ae5d9afc5",
+  "tests/kernel_png.py": "86004e19e65595aa7e1af6b05c2a3239c07ba862e8fb82e2afa3afb8b9f5f829",
+  "kernel/patches.json": "77dd32cd63595edbaa91e97651834ffbd94d4a72f314aa57b1e2cfbf0e9c1143",
+  "kernel/patches.ld": "5798b8070caf51dde2758df1e7922362e22ae7e0dfcd0d8a70ce2b2ee91f63d2",
+  "Makefile": "3c1fa7576db72f67174c03cb0ffe29c104573c1c0ef2c9063e1c16c4b52ec48b",
+  "build/openicestaros_kernel.x": "30743d93cf6baf3743d8b245d57060e24e764653db4206fad14d32d5db8d87f4",
+  "build/OpenIceStarOS_c_apps.vhd": "6744c308a1a650333331670e262612d4d0a51567605ad814f2f70bf607d0e185"
+}

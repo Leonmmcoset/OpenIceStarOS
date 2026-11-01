@@ -1,0 +1,31 @@
+{
+  "new_entries": 33,
+  "new_png_entries": 23,
+  "new_inflate_entries": 10,
+  "installed_intervals": 550,
+  "code_slot_bytes": 9760,
+  "native_scenarios": 7370,
+  "native_executions": 22110,
+  "full_verify_run": false,
+  "last_full_verify_intervals": 456,
+  "complete_os_recovery": false,
+  "rebuilt_apps": 5,
+  "unrecovered_program_paths": 32,
+  "original_logo_retained": true,
+  "original_vhd_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+  "checks": [
+    "installed PNG and DEFLATE native differential suites",
+    "original/recovered all33 entry bodies in real QEMU",
+    "stored/fixed/dynamic guest data with length-repeat16/17/18",
+    "complete disposable disk equality",
+    "kernel/app complete allowed-delta verification",
+    "128MiB RAM and60 live heap headers",
+    "real timer/TSS switches",
+    "PS2 mouse and CMD/cpuid/cursor",
+    "production C COLOR600 palette pixels/close/task exit/CMD reuse",
+    "font bake1777 return scenarios plus72 prefilter checkpoints",
+    "X loader430 scenarios",
+    "inventory check",
+    "screenshots inspected"
+  ]
+}

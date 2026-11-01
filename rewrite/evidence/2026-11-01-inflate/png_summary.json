@@ -1,0 +1,145 @@
+{
+  "installed": true,
+  "functions": 23,
+  "scenarios": 3746,
+  "executions": 11238,
+  "slots": {
+    "png_paeth": {
+      "compiled_bytes": 88,
+      "slot_bytes": 184
+    },
+    "png_scanline": {
+      "compiled_bytes": 327,
+      "slot_bytes": 900
+    },
+    "png_unfilter": {
+      "compiled_bytes": 157,
+      "slot_bytes": 182
+    },
+    "png_unpad": {
+      "compiled_bytes": 154,
+      "slot_bytes": 254
+    },
+    "png_postprocess": {
+      "compiled_bytes": 171,
+      "slot_bytes": 270
+    },
+    "png_format": {
+      "compiled_bytes": 262,
+      "slot_bytes": 330
+    },
+    "png_release_input": {
+      "compiled_bytes": 55,
+      "slot_bytes": 58
+    },
+    "png_header": {
+      "compiled_bytes": 531,
+      "slot_bytes": 746
+    },
+    "png_decode": {
+      "compiled_bytes": 1110,
+      "slot_bytes": 1468
+    },
+    "png_create": {
+      "compiled_bytes": 104,
+      "slot_bytes": 176
+    },
+    "png_from_memory": {
+      "compiled_bytes": 30,
+      "slot_bytes": 66
+    },
+    "png_destroy": {
+      "compiled_bytes": 48,
+      "slot_bytes": 54
+    },
+    "png_error": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_error_line": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_width": {
+      "compiled_bytes": 10,
+      "slot_bytes": 10
+    },
+    "png_height": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_bpp": {
+      "compiled_bytes": 23,
+      "slot_bytes": 42
+    },
+    "png_channels": {
+      "compiled_bytes": 70,
+      "slot_bytes": 90
+    },
+    "png_depth": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_padded_bpp": {
+      "compiled_bytes": 30,
+      "slot_bytes": 60
+    },
+    "png_pixel_format": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_pixels": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    },
+    "png_size": {
+      "compiled_bytes": 11,
+      "slot_bytes": 12
+    }
+  },
+  "scenarios_by_function": {
+    "png_paeth": 300,
+    "png_scanline": 1110,
+    "png_unfilter": 336,
+    "png_unpad": 72,
+    "png_postprocess": 720,
+    "png_format": 72,
+    "png_release_input": 6,
+    "png_header": 49,
+    "png_decode": 744,
+    "png_create": 5,
+    "png_from_memory": 5,
+    "png_destroy": 4,
+    "png_error": 5,
+    "png_error_line": 5,
+    "png_width": 5,
+    "png_height": 5,
+    "png_bpp": 72,
+    "png_channels": 72,
+    "png_depth": 72,
+    "png_padded_bpp": 72,
+    "png_pixel_format": 5,
+    "png_pixels": 5,
+    "png_size": 5
+  },
+  "seconds": 9.382,
+  "checks": [
+    "all five PNG row filters",
+    "12 original color/depth mappings",
+    "sub-byte row compaction",
+    "generated PNG/zlib stored/fixed/dynamic streams",
+    "spec-derived pixel bytes",
+    "real original/installed heap",
+    "header/chunk/state/errors",
+    "allocation failures",
+    "overlapping buffers",
+    "all touched data and heap pages",
+    "cdecl registers and stack"
+  ],
+  "sha256": {
+    "kernel/png.c": "07831c93d270ec805f8535bd9fa3e7380a08180c293c86bdc3ddb14c5b68f866",
+    "kernel/png.h": "747dc90ee988ac4498413a1a442cd96eee4d6f8daed6d5867ce9cd04869b5903",
+    "tests/kernel_png.py": "86004e19e65595aa7e1af6b05c2a3239c07ba862e8fb82e2afa3afb8b9f5f829",
+    "tests/kernel_font_outline.py": "c71974cb2e8d59e9c3f2557490e824b4bda3149da6f1e131e26a177f714ae7d0"
+  }
+}

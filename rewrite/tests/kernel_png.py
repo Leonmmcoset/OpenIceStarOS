@@ -16,7 +16,31 @@ from tests.kernel_font_outline import compile_variants,fixture,words
 from tests.kernel_font_heap import Machine as HeapMachine
 from tests.kernel_font_flatten import heap_setup
 BASE,DATA,BUFFER,OUTPUT,HEAP=0x800000,0x600000,0x500000,0x510000,0x2000000
-SLOTS=[('png_paeth', 'kernel_png_paeth_8393a1', 8623009, 8623193), ('png_scanline', 'kernel_png_scanline_839459', 8623193, 8624093), ('png_unfilter', 'kernel_png_unfilter_8397dd', 8624093, 8624275), ('png_unpad', 'kernel_png_unpad_839893', 8624275, 8624529), ('png_postprocess', 'kernel_png_postprocess_839991', 8624529, 8624799), ('png_format', 'kernel_png_format_839a9f', 8624799, 8625129), ('png_release_input', 'kernel_png_release_input_839be9', 8625129, 8625187), ('png_header', 'kernel_png_header_839c23', 8625187, 8625933), ('png_decode', 'kernel_png_decode_839f0d', 8625933, 8627401), ('png_create', 'kernel_png_create_83a4c9', 8627401, 8627577), ('png_from_memory', 'kernel_png_from_memory_83a579', 8627577, 8627643), ('png_destroy', 'kernel_png_destroy_83a5bb', 8627643, 8627697), ('png_error', 'kernel_png_error_83a5f1', 8627697, 8627709), ('png_error_line', 'kernel_png_error_line_83a5fd', 8627709, 8627721), ('png_width', 'kernel_png_width_83a609', 8627721, 8627731), ('png_height', 'kernel_png_height_83a613', 8627731, 8627743), ('png_bpp', 'kernel_png_bpp_83a61f', 8627743, 8627785), ('png_channels', 'kernel_png_channels_83a649', 8627785, 8627875), ('png_depth', 'kernel_png_depth_83a6a3', 8627875, 8627887), ('png_padded_bpp', 'kernel_png_padded_bpp_83a6af', 8627887, 8627947), ('png_pixel_format', 'kernel_png_pixel_format_83a6eb', 8627947, 8627959), ('png_pixels', 'kernel_png_pixels_83a6f7', 8627959, 8627971), ('png_size', 'kernel_png_size_83a703', 8627971, 8627983)]
+SLOTS=[
+    ('png_paeth', 'kernel_png_paeth_8393a1', 8623009, 8623193),
+    ('png_scanline', 'kernel_png_scanline_839459', 8623193, 8624093),
+    ('png_unfilter', 'kernel_png_unfilter_8397dd', 8624093, 8624275),
+    ('png_unpad', 'kernel_png_unpad_839893', 8624275, 8624529),
+    ('png_postprocess', 'kernel_png_postprocess_839991', 8624529, 8624799),
+    ('png_format', 'kernel_png_format_839a9f', 8624799, 8625129),
+    ('png_release_input', 'kernel_png_release_input_839be9', 8625129, 8625187),
+    ('png_header', 'kernel_png_header_839c23', 8625187, 8625933),
+    ('png_decode', 'kernel_png_decode_839f0d', 8625933, 8627401),
+    ('png_create', 'kernel_png_create_83a4c9', 8627401, 8627577),
+    ('png_from_memory', 'kernel_png_from_memory_83a579', 8627577, 8627643),
+    ('png_destroy', 'kernel_png_destroy_83a5bb', 8627643, 8627697),
+    ('png_error', 'kernel_png_error_83a5f1', 8627697, 8627709),
+    ('png_error_line', 'kernel_png_error_line_83a5fd', 8627709, 8627721),
+    ('png_width', 'kernel_png_width_83a609', 8627721, 8627731),
+    ('png_height', 'kernel_png_height_83a613', 8627731, 8627743),
+    ('png_bpp', 'kernel_png_bpp_83a61f', 8627743, 8627785),
+    ('png_channels', 'kernel_png_channels_83a649', 8627785, 8627875),
+    ('png_depth', 'kernel_png_depth_83a6a3', 8627875, 8627887),
+    ('png_padded_bpp', 'kernel_png_padded_bpp_83a6af', 8627887, 8627947),
+    ('png_pixel_format', 'kernel_png_pixel_format_83a6eb', 8627947, 8627959),
+    ('png_pixels', 'kernel_png_pixels_83a6f7', 8627959, 8627971),
+    ('png_size', 'kernel_png_size_83a703', 8627971, 8627983),
+]
 INDEX={n.removeprefix('png_'):i for i,(n,_,_,_) in enumerate(SLOTS)}
 class Machine(HeapMachine):
     returns={i for i,(n,_,_,_) in enumerate(SLOTS) if n.removeprefix('png_') not in
