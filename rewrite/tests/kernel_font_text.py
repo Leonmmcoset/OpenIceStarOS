@@ -75,6 +75,22 @@ def scenarios():
         if fn==8:
             for x,y,maxx,maxy,n in [(4,8,64,32,99),(4,8,8,32,99),(4,8,64,4,99),(4,8,64,32,0),(4,8,64,32,1),(4,8,64,32,-1)]:
                 cases.append(fixture(fn,[INFO,fbits(16),TEXT,2,x,y,maxx,maxy,0xffffff,0,1,8,n],[*base(),(TEXT,b'ABA\0')] ))
+    # Nonempty original double-byte strings execute the real legacy table.
+    for fn in (4,9,10):
+        for pair in (b'\xa1\xa1',b'\xb0\xa1'):
+            code=int.from_bytes(pair,'big')
+            offset=(((code-0xa100)>>8)*94+(code&0x5e))*12+8 if code<0xb000 else (((code-0xb000)>>8)*94+(code&255))*12+0x2024
+            args=[INFO,fbits(16),TEXT,2,4,8]+([7,5] if fn==9 else [])+[0xe15397]+([] if fn==10 else [0x173759])+[1]
+            cases.append(fixture(fn,args,[*base(),(0x1b1a8,words(MAP)),(MAP+offset,words(65)),(TEXT,pair+b'A\0')]))
+    # Transparent legacy text samples the desktop surface when colorkey hit.
+    fg,bg=0xe15397,0x112233
+    setup=base()+[(0x500000+12,words(SURFACE)),(SURFACE+40,words(0x5a5a5a5a)),(0x500000+8,words(SURFACE+128))]
+    desktop=bytearray(64);struct.pack_into('<I',desktop,0,PIXELS+0x3000);struct.pack_into('<II',desktop,12,64,32)
+    setup += [(SURFACE+128,bytes(desktop)),(PIXELS+0x3000,words(bg)*(64*32)),(TEXT,b'A\0')]
+    pixels=bytearray(b'\x5a'*8192);color=sum(((((fg>>shift)&255)*255+((bg>>shift)&255))//256)<<shift for shift in (0,8,16))
+    for y in range(4,8):
+        for x in range(5,11):struct.pack_into('<I',pixels,(y*64+x)*4,color)
+    cases.append(fixture(10,[INFO,fbits(16),TEXT,3,4,8,fg,1],setup,memory=[(PIXELS,bytes(pixels))]))
     # Independent rectangle coverage and channel blend oracle (glyph A).
     for depth in (8,32):
         pixels=bytearray(b'\x5a'*8192);fg,bg=0xe15397,0x173759

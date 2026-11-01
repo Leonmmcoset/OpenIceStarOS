@@ -146,6 +146,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_names.o
 KERNEL_PATCHES += $(foreach name,font_name_prefix font_name_equal font_name_string font_name_pair font_match font_find_name font_find_name_api font_name_equal_api,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_text.o
 KERNEL_PATCHES += $(foreach name,font_glyph_opaque font_glyph_clip font_glyph_alpha font_legacy_code font_string_legacy font_utf8_cont font_utf8_decode font_string_utf8 font_string_lines font_string_legacy_clip font_string_legacy_alpha font_text_init,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_window_services.o
+KERNEL_PATCHES += $(foreach name,ui_mailbox_put ui_mailbox_get ui_launch_path ui_launch_relative ui_frame ui_caption ui_title_hit ui_client_hit ui_surface_hit ui_find_hit ui_object_slot ui_delete ui_icon_file ui_icon_pointer ui_restore ui_hide ui_show ui_remove ui_event4 ui_event3 ui_move ui_event3b ui_event3c ui_redraw_all ui_minimize ui_close_api ui_dialog_click ui_double_border ui_image_slot ui_image_fill ui_image_release_api,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
 KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
@@ -1913,3 +1915,24 @@ $(BUILD)/font_text_guest.x: $(BUILD)/font_text_guest.elf tools/xformat.py
 
 test-font-text-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_text_guest.x
 	python3 tests/kernel_font_text_qemu.py
+
+$(BUILD)/kernel_window_services.o: kernel/window_services.c kernel/window_services.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-window-services
+test-window-services: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_window_services.py --installed
+
+verify: test-window-services
+
+$(BUILD)/window_services_guest.o: tests/window_services_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/window_services_guest.elf: $(BUILD)/window_services_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/window_services_guest.map -o $@ $<
+
+$(BUILD)/window_services_guest.x: $(BUILD)/window_services_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/window_services_guest.symbols.json
+
+test-window-services-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/window_services_guest.x
+	python3 tests/kernel_window_services_qemu.py

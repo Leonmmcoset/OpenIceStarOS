@@ -51,6 +51,29 @@ PROVIDE(kernel_text_get_837939 = 0x837939);
 PROVIDE(kernel_text_fill_837545 = 0x837545);
 PROVIDE(kernel_text_offset_836fbc = 0x836fbc);
 PROVIDE(kernel_text_init_836fea = 0x836fea);
+PROVIDE(kernel_ui_copy_82a32b = 0x82a32b);
+PROVIDE(kernel_ui_task_814688 = 0x814688);
+PROVIDE(kernel_ui_fill_837545 = 0x837545);
+PROVIDE(kernel_ui_outline_837589 = 0x837589);
+PROVIDE(kernel_ui_caption_a_806742 = 0x806742);
+PROVIDE(kernel_ui_caption_b_806228 = 0x806228);
+PROVIDE(kernel_ui_caption_c_805e84 = 0x805e84);
+PROVIDE(kernel_ui_surface_delete_81783e = 0x81783e);
+PROVIDE(kernel_ui_free_815978 = 0x815978);
+PROVIDE(kernel_ui_icon_path_827798 = 0x827798);
+PROVIDE(kernel_ui_icon_relative_826f38 = 0x826f38);
+PROVIDE(kernel_ui_surface_add_8179d6 = 0x8179d6);
+PROVIDE(kernel_ui_surface_order_817b32 = 0x817b32);
+PROVIDE(kernel_ui_refresh_81905e = 0x81905e);
+PROVIDE(kernel_ui_surface_remove_8178f0 = 0x8178f0);
+PROVIDE(kernel_ui_activate_8087e0 = 0x8087e0);
+PROVIDE(kernel_ui_deactivate_808b78 = 0x808b78);
+PROVIDE(kernel_ui_registry_add_81054e = 0x81054e);
+PROVIDE(kernel_ui_registry_remove_8105dc = 0x8105dc);
+PROVIDE(kernel_ui_move_refresh_8191d8 = 0x8191d8);
+PROVIDE(kernel_ui_redraw_8045f0 = 0x8045f0);
+PROVIDE(kernel_ui_close_81021c = 0x81021c);
+PROVIDE(kernel_ui_image_release_8125dc = 0x8125dc);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1366,6 +1389,68 @@ SECTIONS
     ASSERT(kernel_font_string_legacy_alpha_82a03f == 0x82a03f && SIZEOF(.font_string_legacy_alpha) <= 646, "font_string_legacy_alpha overflow")
     .font_text_init 0x82a2c5 : { *kernel_font_text.o(.text.kernel_font_text_init_82a2c5) }
     ASSERT(kernel_font_text_init_82a2c5 == 0x82a2c5 && SIZEOF(.font_text_init) <= 102, "font_text_init overflow")
+    .ui_mailbox_put 0x802e64 : { *kernel_window_services.o(.text.kernel_ui_mailbox_put_802e64) }
+    ASSERT(kernel_ui_mailbox_put_802e64 == 0x802e64 && SIZEOF(.ui_mailbox_put) <= 98, "ui_mailbox_put overflow")
+    .ui_mailbox_get 0x802ec6 : { *kernel_window_services.o(.text.kernel_ui_mailbox_get_802ec6) }
+    ASSERT(kernel_ui_mailbox_get_802ec6 == 0x802ec6 && SIZEOF(.ui_mailbox_get) <= 44, "ui_mailbox_get overflow")
+    .ui_launch_path 0x802ef2 : { *kernel_window_services.o(.text.kernel_ui_launch_path_802ef2) }
+    ASSERT(kernel_ui_launch_path_802ef2 == 0x802ef2 && SIZEOF(.ui_launch_path) <= 80, "ui_launch_path overflow")
+    .ui_launch_relative 0x802f42 : { *kernel_window_services.o(.text.kernel_ui_launch_relative_802f42) }
+    ASSERT(kernel_ui_launch_relative_802f42 == 0x802f42 && SIZEOF(.ui_launch_relative) <= 94, "ui_launch_relative overflow")
+    .ui_frame 0x807302 : { *kernel_window_services.o(.text.kernel_ui_frame_807302) }
+    ASSERT(kernel_ui_frame_807302 == 0x807302 && SIZEOF(.ui_frame) <= 574, "ui_frame overflow")
+    .ui_caption 0x807540 : { *kernel_window_services.o(.text.kernel_ui_caption_807540) }
+    ASSERT(kernel_ui_caption_807540 == 0x807540 && SIZEOF(.ui_caption) <= 238, "ui_caption overflow")
+    .ui_title_hit 0x80762e : { *kernel_window_services.o(.text.kernel_ui_title_hit_80762e) }
+    ASSERT(kernel_ui_title_hit_80762e == 0x80762e && SIZEOF(.ui_title_hit) <= 162, "ui_title_hit overflow")
+    .ui_client_hit 0x8076d0 : { *kernel_window_services.o(.text.kernel_ui_client_hit_8076d0) }
+    ASSERT(kernel_ui_client_hit_8076d0 == 0x8076d0 && SIZEOF(.ui_client_hit) <= 378, "ui_client_hit overflow")
+    .ui_surface_hit 0x80784a : { *kernel_window_services.o(.text.kernel_ui_surface_hit_80784a) }
+    ASSERT(kernel_ui_surface_hit_80784a == 0x80784a && SIZEOF(.ui_surface_hit) <= 168, "ui_surface_hit overflow")
+    .ui_find_hit 0x8078f2 : { *kernel_window_services.o(.text.kernel_ui_find_hit_8078f2) }
+    ASSERT(kernel_ui_find_hit_8078f2 == 0x8078f2 && SIZEOF(.ui_find_hit) <= 158, "ui_find_hit overflow")
+    .ui_object_slot 0x807990 : { *kernel_window_services.o(.text.kernel_ui_object_slot_807990) }
+    ASSERT(kernel_ui_object_slot_807990 == 0x807990 && SIZEOF(.ui_object_slot) <= 122, "ui_object_slot overflow")
+    .ui_delete 0x807f72 : { *kernel_window_services.o(.text.kernel_ui_delete_807f72) }
+    ASSERT(kernel_ui_delete_807f72 == 0x807f72 && SIZEOF(.ui_delete) <= 140, "ui_delete overflow")
+    .ui_icon_file 0x807ffe : { *kernel_window_services.o(.text.kernel_ui_icon_file_807ffe) }
+    ASSERT(kernel_ui_icon_file_807ffe == 0x807ffe && SIZEOF(.ui_icon_file) <= 146, "ui_icon_file overflow")
+    .ui_icon_pointer 0x808090 : { *kernel_window_services.o(.text.kernel_ui_icon_pointer_808090) }
+    ASSERT(kernel_ui_icon_pointer_808090 == 0x808090 && SIZEOF(.ui_icon_pointer) <= 90, "ui_icon_pointer overflow")
+    .ui_restore 0x8080ea : { *kernel_window_services.o(.text.kernel_ui_restore_8080ea) }
+    ASSERT(kernel_ui_restore_8080ea == 0x8080ea && SIZEOF(.ui_restore) <= 256, "ui_restore overflow")
+    .ui_hide 0x8081ea : { *kernel_window_services.o(.text.kernel_ui_hide_8081ea) }
+    ASSERT(kernel_ui_hide_8081ea == 0x8081ea && SIZEOF(.ui_hide) <= 220, "ui_hide overflow")
+    .ui_show 0x8082c6 : { *kernel_window_services.o(.text.kernel_ui_show_8082c6) }
+    ASSERT(kernel_ui_show_8082c6 == 0x8082c6 && SIZEOF(.ui_show) <= 178, "ui_show overflow")
+    .ui_remove 0x808378 : { *kernel_window_services.o(.text.kernel_ui_remove_808378) }
+    ASSERT(kernel_ui_remove_808378 == 0x808378 && SIZEOF(.ui_remove) <= 296, "ui_remove overflow")
+    .ui_event4 0x809e24 : { *kernel_window_services.o(.text.kernel_ui_event4_809e24) }
+    ASSERT(kernel_ui_event4_809e24 == 0x809e24 && SIZEOF(.ui_event4) <= 84, "ui_event4 overflow")
+    .ui_event3 0x80ac4e : { *kernel_window_services.o(.text.kernel_ui_event3_80ac4e) }
+    ASSERT(kernel_ui_event3_80ac4e == 0x80ac4e && SIZEOF(.ui_event3) <= 78, "ui_event3 overflow")
+    .ui_move 0x80ac9c : { *kernel_window_services.o(.text.kernel_ui_move_80ac9c) }
+    ASSERT(kernel_ui_move_80ac9c == 0x80ac9c && SIZEOF(.ui_move) <= 436, "ui_move overflow")
+    .ui_event3b 0x80ecba : { *kernel_window_services.o(.text.kernel_ui_event3b_80ecba) }
+    ASSERT(kernel_ui_event3b_80ecba == 0x80ecba && SIZEOF(.ui_event3b) <= 78, "ui_event3b overflow")
+    .ui_event3c 0x80ed08 : { *kernel_window_services.o(.text.kernel_ui_event3c_80ed08) }
+    ASSERT(kernel_ui_event3c_80ed08 == 0x80ed08 && SIZEOF(.ui_event3c) <= 78, "ui_event3c overflow")
+    .ui_redraw_all 0x80fb12 : { *kernel_window_services.o(.text.kernel_ui_redraw_all_80fb12) }
+    ASSERT(kernel_ui_redraw_all_80fb12 == 0x80fb12 && SIZEOF(.ui_redraw_all) <= 234, "ui_redraw_all overflow")
+    .ui_minimize 0x81002e : { *kernel_window_services.o(.text.kernel_ui_minimize_81002e) }
+    ASSERT(kernel_ui_minimize_81002e == 0x81002e && SIZEOF(.ui_minimize) <= 314, "ui_minimize overflow")
+    .ui_close_api 0x810168 : { *kernel_window_services.o(.text.kernel_ui_close_api_810168) }
+    ASSERT(kernel_ui_close_api_810168 == 0x810168 && SIZEOF(.ui_close_api) <= 20, "ui_close_api overflow")
+    .ui_dialog_click 0x811c46 : { *kernel_window_services.o(.text.kernel_ui_dialog_click_811c46) }
+    ASSERT(kernel_ui_dialog_click_811c46 == 0x811c46 && SIZEOF(.ui_dialog_click) <= 512, "ui_dialog_click overflow")
+    .ui_double_border 0x811e4c : { *kernel_window_services.o(.text.kernel_ui_double_border_811e4c) }
+    ASSERT(kernel_ui_double_border_811e4c == 0x811e4c && SIZEOF(.ui_double_border) <= 122, "ui_double_border overflow")
+    .ui_image_slot 0x81215a : { *kernel_window_services.o(.text.kernel_ui_image_slot_81215a) }
+    ASSERT(kernel_ui_image_slot_81215a == 0x81215a && SIZEOF(.ui_image_slot) <= 122, "ui_image_slot overflow")
+    .ui_image_fill 0x812748 : { *kernel_window_services.o(.text.kernel_ui_image_fill_812748) }
+    ASSERT(kernel_ui_image_fill_812748 == 0x812748 && SIZEOF(.ui_image_fill) <= 230, "ui_image_fill overflow")
+    .ui_image_release_api 0x812bfa : { *kernel_window_services.o(.text.kernel_ui_image_release_api_812bfa) }
+    ASSERT(kernel_ui_image_release_api_812bfa == 0x812bfa && SIZEOF(.ui_image_release_api) <= 20, "ui_image_release_api overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

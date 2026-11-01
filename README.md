@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 550 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 601 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -33,6 +33,8 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | 字体边构建、字形／码点位图分配与渲染 | [FONT_RENDER.md](rewrite/recovery/FONT_RENDER.md) |
 | 字体图集上下文、矩形排布与绘制坐标 | [FONT_ATLAS.md](rewrite/recovery/FONT_ATLAS.md) |
 | 字符烘焙、图集像素渲染、多范围打包与缩放度量 | [FONT_BAKE.md](rewrite/recovery/FONT_BAKE.md) |
+| 字体名称、Unicode、TrueType 文本绘制 | [FONT_TEXT.md](rewrite/recovery/FONT_TEXT.md) |
+| 窗口、事件回调与图像服务 | [WINDOW_SERVICES.md](rewrite/recovery/WINDOW_SERVICES.md) |
 | 五个可重新编译的应用 | [rewrite/apps/](rewrite/apps/) |
 | 每个原始程序的恢复状态 | [INVENTORY.md](rewrite/recovery/INVENTORY.md) |
 | 实现细节、验证范围与阶段记录 | [rewrite/README.md](rewrite/README.md) |
@@ -72,9 +74,10 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 `build/OpenIceStarOS_mbr_rebuilt.vhd`；OpenIceStarOS 的当前源码恢复与集成请使用
 `make -C rewrite ...`。Git 仓库位于根目录，每个验证后的步骤分别提交。
 
-最新的 472 区间版本已通过字体原版／C 差分、QEMU 来宾调用、整盘安装、
-CLOCK 动画／退出、内存及任务切换检查，证据与实际运行截图见
-[字体恢复验证记录](rewrite/evidence/2026-10-31-font-outline-heap/README.md)。
-最近一次完整 `make -C rewrite verify` 对应 456 区间版本，
+最新的 601 区间版本在本轮新增 51 个实际 C 入口，已通过原版／普通 C／固定
+地址 C 差分，以及覆盖新增函数体的真实 QEMU 诊断。生产 COLOR、输入、内存、
+任务切换、整盘安装和清单检查通过，证据与实际截图见
+[窗口与图像服务验证](rewrite/recovery/WINDOW_SERVICES.md)。完整 OS 仍未完成。
+最近一次完整 `make -C rewrite verify` 的已完成记录仍对应 456 区间，
 [全量回归记录](rewrite/evidence/2026-10-31-font-456-regression/README.md)
-与当前版本的专项验证分别保存。原 Logo 保持不变。
+与后续专项验证分别保存；601 区间的全量回归已启动，结果另行记录。原 Logo 保持不变。

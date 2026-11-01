@@ -1,0 +1,84 @@
+{
+  "installed": true,
+  "functions": 12,
+  "scenarios": 2837,
+  "executions": 8511,
+  "slots": {
+    "font_glyph_opaque": {
+      "compiled_bytes": 228,
+      "slot_bytes": 304
+    },
+    "font_glyph_clip": {
+      "compiled_bytes": 251,
+      "slot_bytes": 330
+    },
+    "font_glyph_alpha": {
+      "compiled_bytes": 275,
+      "slot_bytes": 364
+    },
+    "font_legacy_code": {
+      "compiled_bytes": 120,
+      "slot_bytes": 156
+    },
+    "font_string_legacy": {
+      "compiled_bytes": 489,
+      "slot_bytes": 594
+    },
+    "font_utf8_cont": {
+      "compiled_bytes": 22,
+      "slot_bytes": 48
+    },
+    "font_utf8_decode": {
+      "compiled_bytes": 233,
+      "slot_bytes": 570
+    },
+    "font_string_utf8": {
+      "compiled_bytes": 419,
+      "slot_bytes": 524
+    },
+    "font_string_lines": {
+      "compiled_bytes": 497,
+      "slot_bytes": 646
+    },
+    "font_string_legacy_clip": {
+      "compiled_bytes": 520,
+      "slot_bytes": 620
+    },
+    "font_string_legacy_alpha": {
+      "compiled_bytes": 541,
+      "slot_bytes": 646
+    },
+    "font_text_init": {
+      "compiled_bytes": 48,
+      "slot_bytes": 102
+    }
+  },
+  "scenarios_by_function": {
+    "font_glyph_opaque": 50,
+    "font_glyph_clip": 48,
+    "font_glyph_alpha": 48,
+    "font_legacy_code": 174,
+    "font_string_legacy": 38,
+    "font_utf8_cont": 1024,
+    "font_utf8_decode": 1238,
+    "font_string_utf8": 66,
+    "font_string_lines": 72,
+    "font_string_legacy_clip": 38,
+    "font_string_legacy_alpha": 39,
+    "font_text_init": 2
+  },
+  "seconds": 9.568,
+  "checks": [
+    "all UTF8 lead bytes and malformed/overlong sequences",
+    "legacy mapping formula",
+    "real glyph/heap/raster/pixel calls",
+    "nonempty opaque/clipped/alpha text and multiline wrap",
+    "all touched pages, output aliases and cdecl/x87 state"
+  ],
+  "sha256": {
+    "kernel/font_text.c": "58b92a006ffe33c586b542a4e6d90c0b143ecab2113671a9fde873fca7d080fd",
+    "kernel/font_text.h": "dcade39a1cbcd957dd560894233534f63efe68ead5bbde53c3fb424982bed268",
+    "tests/kernel_font_text.py": "6395be643d6aa123898d8702569e8f6ee88e56ac353b78745b296f56dd6e1467",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

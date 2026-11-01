@@ -5532,3 +5532,11 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 字形、编码和文本绘制函数。差分共 5,803 场景、17,409 次执行；QEMU 对全部
 20 个入口及函数体核验 Unicode、名称、尺寸与像素哈希，生产 COLOR 启动通过。
 行为、原版缺陷与覆盖限制见 [FONT_TEXT.md](recovery/FONT_TEXT.md)。完整 OS 未完成。
+
+## 2026-11-01：窗口、回调与图像服务
+
+再恢复 31 个实际 C 入口，替换区间 570 → 601；从本轮 550 区间基线累计
+新增 51 个，未重复计算之前的 PNG／inflate。三个当前套件共 8,080 场景、
+24,240 次执行。真实 QEMU 对全部 31 个窗口入口核验函数体、任务邮箱、
+回调、窗口生命周期和像素报告；生产 COLOR 通过。详见
+[WINDOW_SERVICES.md](recovery/WINDOW_SERVICES.md)。完整 OS 未完成。
