@@ -1,0 +1,246 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "9c0abceec9aa396d1fa6d8867558354e54d51c736b17f5437d932a83539ee2f5",
+      "result_sha256": "9c0abceec9aa396d1fa6d8867558354e54d51c736b17f5437d932a83539ee2f5",
+      "clusters": [],
+      "report": [
+        1380860977,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        2447643469,
+        2447643469,
+        2447643469,
+        2447643469
+      ],
+      "functions": {
+        "font_edges": {
+          "entry": "0x831884",
+          "entry_events": 40,
+          "interior_block_events": 5994,
+          "decoded_body_instructions": 304
+        },
+        "font_raster": {
+          "entry": "0x83244c",
+          "entry_events": 40,
+          "interior_block_events": 280,
+          "decoded_body_instructions": 66
+        },
+        "font_bitmap_free": {
+          "entry": "0x832530",
+          "entry_events": 36,
+          "interior_block_events": 36,
+          "decoded_body_instructions": 7
+        },
+        "font_get_glyph_subpixel": {
+          "entry": "0x832544",
+          "entry_events": 36,
+          "interior_block_events": 648,
+          "decoded_body_instructions": 124
+        },
+        "font_get_glyph": {
+          "entry": "0x832700",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 25
+        },
+        "font_make_glyph_subpixel": {
+          "entry": "0x832756",
+          "entry_events": 4,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 71
+        },
+        "font_make_glyph": {
+          "entry": "0x832852",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 25
+        },
+        "font_get_codepoint_subpixel": {
+          "entry": "0x8328a8",
+          "entry_events": 34,
+          "interior_block_events": 68,
+          "decoded_body_instructions": 30
+        },
+        "font_make_codepoint_subpixel": {
+          "entry": "0x83298a",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 29
+        },
+        "font_get_codepoint": {
+          "entry": "0x8329ec",
+          "entry_events": 33,
+          "interior_block_events": 33,
+          "decoded_body_instructions": 25
+        },
+        "font_make_codepoint": {
+          "entry": "0x832a42",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 25
+        },
+        "original_scan_driver": {
+          "entry": "0x830f24",
+          "entry_events": 40,
+          "interior_block_events": 59390,
+          "decoded_body_instructions": 409
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "9e32df572abae35c151e0c8c298bbbca7ffc5daac12f6e7ebe7ced0312594cd1",
+      "seeded_sha256": "d305211fe2d30aea2f0b6effa6a4479bed16d4171832184e43d1fe6421458f9b",
+      "result_sha256": "d305211fe2d30aea2f0b6effa6a4479bed16d4171832184e43d1fe6421458f9b",
+      "clusters": [],
+      "report": [
+        1380860977,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        1,
+        6,
+        4,
+        1,
+        4294967292,
+        2976318741,
+        2447643469,
+        2447643469,
+        2447643469,
+        2447643469
+      ],
+      "functions": {
+        "font_edges": {
+          "entry": "0x831884",
+          "entry_events": 40,
+          "interior_block_events": 5900,
+          "decoded_body_instructions": 296
+        },
+        "font_raster": {
+          "entry": "0x83244c",
+          "entry_events": 40,
+          "interior_block_events": 240,
+          "decoded_body_instructions": 75
+        },
+        "font_bitmap_free": {
+          "entry": "0x832530",
+          "entry_events": 36,
+          "interior_block_events": 36,
+          "decoded_body_instructions": 12
+        },
+        "font_get_glyph_subpixel": {
+          "entry": "0x832544",
+          "entry_events": 36,
+          "interior_block_events": 577,
+          "decoded_body_instructions": 152
+        },
+        "font_get_glyph": {
+          "entry": "0x832700",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 14
+        },
+        "font_make_glyph_subpixel": {
+          "entry": "0x832756",
+          "entry_events": 4,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 76
+        },
+        "font_make_glyph": {
+          "entry": "0x832852",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 15
+        },
+        "font_get_codepoint_subpixel": {
+          "entry": "0x8328a8",
+          "entry_events": 34,
+          "interior_block_events": 68,
+          "decoded_body_instructions": 72
+        },
+        "font_make_codepoint_subpixel": {
+          "entry": "0x83298a",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 40
+        },
+        "font_get_codepoint": {
+          "entry": "0x8329ec",
+          "entry_events": 33,
+          "interior_block_events": 33,
+          "decoded_body_instructions": 26
+        },
+        "font_make_codepoint": {
+          "entry": "0x832a42",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 15
+        },
+        "original_scan_driver": {
+          "entry": "0x830f24",
+          "entry_events": 40,
+          "interior_block_events": 64776,
+          "decoded_body_instructions": 399
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 496,
+  "sha256": {
+    "tests/kernel_font_render_qemu.py": "20fd76d160bb9f455b6ca45d0a563bb1eb5e56a0062b54cb204a863b6ec67115",
+    "tests/font_render_guest.c": "38ba566482247cfa57be20e69f2f97eec41ede646f98182ce91d610af6c1b48b"
+  },
+  "complete_os_recovery": false
+}

@@ -1,0 +1,38 @@
+{
+  "source_commit_before_step": "9455d42931fbe4bf3c19ab30ca431dc646eaf621",
+  "installed_intervals": 496,
+  "new_original_entries": 11,
+  "complete_os_recovery": false,
+  "full_verify_for_this_kernel": false,
+  "last_complete_full_verify_intervals": 456,
+  "scenarios": 2568,
+  "executions": 7704,
+  "recovery": {
+    "rebuilt_applications": 5,
+    "partial_programs": 2,
+    "unrecovered_program_paths": 32
+  },
+  "passed": [
+    "original/ordinary/installed bitmap and edge differential, real shape/heap/flatten/sort/scan calls",
+    "independent transformed edge multiset, rectangle pixels, padding, scale writeback",
+    "original/recovered QEMU reports and all eleven installed entry/body traces",
+    "installed flatten/scan/shape/outline/heap/context/X-loader regressions",
+    "branding and complete kernel/app installation change bounds; inventory",
+    "production COLOR: 600 pixels, close/task exit/CMD reuse; PS2/cpuid/cursor/RAM/TSS; all 496 guest intervals"
+  ],
+  "screenshots_visually_inspected": true,
+  "original_logo_retained": true,
+  "sha256": {
+    "rewrite/kernel/font_render.c": "1e152971a0565d3985d5b1d210737373e8ae20b94bab24170d551ce06d845573",
+    "rewrite/kernel/font_render.h": "f8b7ecb09fd380a6fc0fb5df7f9bece2f490fd9964415b43585db14322fa14a7",
+    "rewrite/tests/kernel_font_render.py": "a31e77c3ee926ff5abc6b5e1e9f69cf03361177da6cb83ceb5fb44cdfc65448a",
+    "rewrite/tests/font_render_guest.c": "38ba566482247cfa57be20e69f2f97eec41ede646f98182ce91d610af6c1b48b",
+    "rewrite/tests/kernel_font_render_qemu.py": "20fd76d160bb9f455b6ca45d0a563bb1eb5e56a0062b54cb204a863b6ec67115",
+    "rewrite/kernel/patches.json": "847ade119a92712620ad20d95399597192ba806b31165996818faef82cf35d75",
+    "rewrite/kernel/patches.ld": "8fe9639ad4a3052fc008f6861c151bd7c3f238bc53404b3e927460f2b206a596",
+    "rewrite/Makefile": "76533a9080293c5cbd8c972b9e05f795265d5c1e8f956912a954979ed915965b",
+    "rewrite/build/openicestaros_kernel.x": "6c6fac42301307c38ce037bdc9ba050b83706ba36ce71c99401765d42ee0b797",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "9e32df572abae35c151e0c8c298bbbca7ffc5daac12f6e7ebe7ced0312594cd1",
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

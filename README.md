@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 485 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 496 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -29,6 +29,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | TrueType 简单／复合字形解码与形状分派 | [FONT_SHAPE.md](rewrite/recovery/FONT_SHAPE.md) |
 | 字体活动边、扫描线覆盖与边排序 | [FONT_SCAN.md](rewrite/recovery/FONT_SCAN.md) |
 | 字体二次／三次曲线细分与两阶段轮廓展开 | [FONT_FLATTEN.md](rewrite/recovery/FONT_FLATTEN.md) |
+| 字体边构建、字形／码点位图分配与渲染 | [FONT_RENDER.md](rewrite/recovery/FONT_RENDER.md) |
 | 五个可重新编译的应用 | [rewrite/apps/](rewrite/apps/) |
 | 每个原始程序的恢复状态 | [INVENTORY.md](rewrite/recovery/INVENTORY.md) |
 | 实现细节、验证范围与阶段记录 | [rewrite/README.md](rewrite/README.md) |

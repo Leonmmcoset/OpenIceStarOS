@@ -1,0 +1,85 @@
+{
+  "installed": true,
+  "functions": 11,
+  "scenarios": 2568,
+  "executions": 7704,
+  "slots": {
+    "font_edges": {
+      "compiled_bytes": 500,
+      "slot_bytes": 804
+    },
+    "font_raster": {
+      "compiled_bytes": 192,
+      "slot_bytes": 228
+    },
+    "font_bitmap_free": {
+      "compiled_bytes": 14,
+      "slot_bytes": 20
+    },
+    "font_get_glyph_subpixel": {
+      "compiled_bytes": 361,
+      "slot_bytes": 444
+    },
+    "font_get_glyph": {
+      "compiled_bytes": 38,
+      "slot_bytes": 86
+    },
+    "font_make_glyph_subpixel": {
+      "compiled_bytes": 180,
+      "slot_bytes": 252
+    },
+    "font_make_glyph": {
+      "compiled_bytes": 41,
+      "slot_bytes": 86
+    },
+    "font_get_codepoint_subpixel": {
+      "compiled_bytes": 91,
+      "slot_bytes": 100
+    },
+    "font_make_codepoint_subpixel": {
+      "compiled_bytes": 94,
+      "slot_bytes": 98
+    },
+    "font_get_codepoint": {
+      "compiled_bytes": 38,
+      "slot_bytes": 86
+    },
+    "font_make_codepoint": {
+      "compiled_bytes": 41,
+      "slot_bytes": 86
+    }
+  },
+  "scenarios_by_function": {
+    "font_edges": 699,
+    "font_raster": 294,
+    "font_bitmap_free": 11,
+    "font_get_glyph_subpixel": 273,
+    "font_get_glyph": 262,
+    "font_make_glyph_subpixel": 251,
+    "font_make_glyph": 248,
+    "font_get_codepoint_subpixel": 141,
+    "font_make_codepoint_subpixel": 127,
+    "font_get_codepoint": 138,
+    "font_make_codepoint": 124
+  },
+  "real_simple_fira_glyphs": 124,
+  "seconds": 39.654,
+  "checks": [
+    "real malloc/free, glyph decoder, flatten, sort, scan and raster driver",
+    "all touched data/heap pages and caller words",
+    "independent oriented/transformed polygon edges",
+    "independent rectangle output including DWORD-width row padding",
+    "5/15 sample threshold at height 8",
+    "six x87 controls and both stack alignments",
+    "scale fallback writeback",
+    "null/aliased output pointers",
+    "empty glyphs, negative scales and signed count boundaries",
+    "allocation failures at each stage",
+    "real simple Fira glyph bitmap pipelines at bounded pixel scale"
+  ],
+  "sha256": {
+    "kernel/font_render.c": "1e152971a0565d3985d5b1d210737373e8ae20b94bab24170d551ce06d845573",
+    "kernel/font_render.h": "f8b7ecb09fd380a6fc0fb5df7f9bece2f490fd9964415b43585db14322fa14a7",
+    "tests/kernel_font_render.py": "a31e77c3ee926ff5abc6b5e1e9f69cf03361177da6cb83ceb5fb44cdfc65448a"
+  }
+}

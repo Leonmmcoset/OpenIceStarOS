@@ -37,6 +37,7 @@ PROVIDE(kernel_fat_write_sector_828c18 = 0x828c18);
 PROVIDE(kernel_font_malloc_817590 = kernel_malloc);
 PROVIDE(kernel_font_free_8175a4 = kernel_free);
 PROVIDE(kernel_font_copy_dwords_817510 = kernel_rep_copy_dwords);
+PROVIDE(kernel_font_driver_830f24 = 0x830f24);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1182,6 +1183,28 @@ SECTIONS
     ASSERT(kernel_font_cubic_831d64 == 0x831d64 && SIZEOF(.font_cubic) <= 668, "font_cubic overflow")
     .font_flatten 0x832000 : { *kernel_font_flatten.o(.text.kernel_font_flatten_832000) *kernel_font_flatten.o(.text.kernel_font_cubic_error) }
     ASSERT(kernel_font_flatten_832000 == 0x832000 && SIZEOF(.font_flatten) <= 1100, "font_flatten overflow")
+    .font_edges 0x831884 : { *kernel_font_render.o(.text.kernel_font_edges_831884) }
+    ASSERT(kernel_font_edges_831884 == 0x831884 && SIZEOF(.font_edges) <= 804, "font_edges overflow")
+    .font_raster 0x83244c : { *kernel_font_render.o(.text.kernel_font_raster_83244c) }
+    ASSERT(kernel_font_raster_83244c == 0x83244c && SIZEOF(.font_raster) <= 228, "font_raster overflow")
+    .font_bitmap_free 0x832530 : { *kernel_font_render.o(.text.kernel_font_bitmap_free_832530) }
+    ASSERT(kernel_font_bitmap_free_832530 == 0x832530 && SIZEOF(.font_bitmap_free) <= 20, "font_bitmap_free overflow")
+    .font_get_glyph_subpixel 0x832544 : { *kernel_font_render.o(.text.kernel_font_get_glyph_subpixel_832544) }
+    ASSERT(kernel_font_get_glyph_subpixel_832544 == 0x832544 && SIZEOF(.font_get_glyph_subpixel) <= 444, "font_get_glyph_subpixel overflow")
+    .font_get_glyph 0x832700 : { *kernel_font_render.o(.text.kernel_font_get_glyph_832700) }
+    ASSERT(kernel_font_get_glyph_832700 == 0x832700 && SIZEOF(.font_get_glyph) <= 86, "font_get_glyph overflow")
+    .font_make_glyph_subpixel 0x832756 : { *kernel_font_render.o(.text.kernel_font_make_glyph_subpixel_832756) }
+    ASSERT(kernel_font_make_glyph_subpixel_832756 == 0x832756 && SIZEOF(.font_make_glyph_subpixel) <= 252, "font_make_glyph_subpixel overflow")
+    .font_make_glyph 0x832852 : { *kernel_font_render.o(.text.kernel_font_make_glyph_832852) }
+    ASSERT(kernel_font_make_glyph_832852 == 0x832852 && SIZEOF(.font_make_glyph) <= 86, "font_make_glyph overflow")
+    .font_get_codepoint_subpixel 0x8328a8 : { *kernel_font_render.o(.text.kernel_font_get_codepoint_subpixel_8328a8) }
+    ASSERT(kernel_font_get_codepoint_subpixel_8328a8 == 0x8328a8 && SIZEOF(.font_get_codepoint_subpixel) <= 100, "font_get_codepoint_subpixel overflow")
+    .font_make_codepoint_subpixel 0x83298a : { *kernel_font_render.o(.text.kernel_font_make_codepoint_subpixel_83298a) }
+    ASSERT(kernel_font_make_codepoint_subpixel_83298a == 0x83298a && SIZEOF(.font_make_codepoint_subpixel) <= 98, "font_make_codepoint_subpixel overflow")
+    .font_get_codepoint 0x8329ec : { *kernel_font_render.o(.text.kernel_font_get_codepoint_8329ec) }
+    ASSERT(kernel_font_get_codepoint_8329ec == 0x8329ec && SIZEOF(.font_get_codepoint) <= 86, "font_get_codepoint overflow")
+    .font_make_codepoint 0x832a42 : { *kernel_font_render.o(.text.kernel_font_make_codepoint_832a42) }
+    ASSERT(kernel_font_make_codepoint_832a42 == 0x832a42 && SIZEOF(.font_make_codepoint) <= 86, "font_make_codepoint overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

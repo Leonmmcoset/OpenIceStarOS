@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_render.o
+KERNEL_PATCHES += $(foreach name,font_edges font_raster font_bitmap_free font_get_glyph_subpixel font_get_glyph font_make_glyph_subpixel font_make_glyph font_get_codepoint_subpixel font_make_codepoint_subpixel font_get_codepoint font_make_codepoint,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_flatten.o
 KERNEL_PATCHES += $(foreach name,font_point font_quadratic font_cubic font_flatten,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_outline.o
@@ -1762,3 +1764,24 @@ $(BUILD)/font_flatten_guest.x: $(BUILD)/font_flatten_guest.elf tools/xformat.py
 
 test-font-flatten-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_flatten_guest.x
 	python3 tests/kernel_font_flatten_qemu.py
+
+$(BUILD)/kernel_font_render.o: kernel/font_render.c kernel/font_render.h kernel/font_shape.h kernel/font_cmap.h kernel/font_scan.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-render test-font-render-qemu
+test-font-render: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_render.py --installed
+
+verify: test-font-render
+
+$(BUILD)/font_render_guest.o: tests/font_render_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_render_guest.elf: $(BUILD)/font_render_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_render_guest.map -o $@ $<
+
+$(BUILD)/font_render_guest.x: $(BUILD)/font_render_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_render_guest.symbols.json
+
+test-font-render-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_render_guest.x
+	python3 tests/kernel_font_render_qemu.py

@@ -5470,3 +5470,16 @@ Production CLOCK/input/RAM/TSS checks pass; the original logo remains. These
 focused checks are not a complete `make verify` for 485 intervals. INIT/kernel
 are partial, five apps are rebuilt, 32 program paths remain unrecovered, and
 the complete OS rewrite is unfinished.
+
+Eleven bitmap/rendering entries now execute C in the 496-interval kernel:
+contour edge construction, raster dispatch, bitmap release and eight glyph/
+codepoint bitmap APIs. See [font rendering](recovery/FONT_RENDER.md) for scale
+fallback writes to caller arguments, alias ordering and the retained original
+DWORD scanline behavior. There are 2,568 original/ordinary/installed scenarios;
+original/C QEMU guests independently check dimensions, offsets and bitmap bytes.
+All eleven installed bodies execute. Production COLOR/input/RAM/TSS checks pass.
+The scan driver, atlas packing, oversampling and Type-2 interpreter still use
+original code. These focused checks are not a complete `make verify` for 496
+intervals; the last full regression remains 456. INIT/kernel remain partial,
+five apps are rebuilt, 32 program paths remain unrecovered, and the complete
+OS rewrite is unfinished. The original logo is retained.
