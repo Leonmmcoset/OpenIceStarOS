@@ -5540,3 +5540,8 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 24,240 次执行。真实 QEMU 对全部 31 个窗口入口核验函数体、任务邮箱、
 回调、窗口生命周期和像素报告；生产 COLOR 通过。详见
 [WINDOW_SERVICES.md](recovery/WINDOW_SERVICES.md)。完整 OS 未完成。
+
+601 区间版本的完整 `make verify` 已以退出码 0 完成，覆盖到五个应用整盘安装与
+清单检查。完整日志、源码提交、镜像哈希与范围见
+[601 区间全量回归记录](evidence/2026-11-01-kernel-601-regression/README.md)。
+前面的 456 区间“最后全量”表述属于各批次当时的历史状态。

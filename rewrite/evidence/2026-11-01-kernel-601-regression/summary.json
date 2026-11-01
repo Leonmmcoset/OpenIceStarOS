@@ -1,0 +1,79 @@
+{
+  "source_commit": "7a76442844bcb5f4591c68d3ec92f47d93ae58b6",
+  "command": "make -C rewrite verify",
+  "exit_code": 0,
+  "result": "passed every recipe through final application whole-disk installers and inventory check",
+  "started_utc": "2026-11-01T08:44:06+00:00",
+  "completed_log_mtime_utc": "2026-11-01T09:17:58.590502+00:00",
+  "recorded_utc": "2026-11-01T09:20:27.618207+00:00",
+  "installed_intervals": 601,
+  "batch_baseline_intervals": 550,
+  "new_c_entries": 51,
+  "kernel_recovery": {
+    "state": "partial",
+    "sources": [
+      "kernel/patches.json",
+      "kernel/patches.ld",
+      "kernel/"
+    ],
+    "declared_intervals": 601,
+    "declared_slot_bytes": 152243,
+    "exact_instruction_intervals": 77,
+    "retained_payload_bytes": 97792,
+    "note": "Slot bytes include padding and exact hardware instructions; these are not semantic completion percentages."
+  },
+  "program_counts": {
+    "files": 67,
+    "directories": 11,
+    "program_paths": 39,
+    "unique_program_binaries": 37,
+    "roles": {
+      "application": 33,
+      "driver": 4,
+      "init": 1,
+      "kernel": 1
+    },
+    "recovery": {
+      "partial": 2,
+      "rebuilt": 5,
+      "unrecovered": 32
+    }
+  },
+  "focused_suites": [
+    {
+      "module": "font_names",
+      "functions": 8,
+      "scenarios": 2973,
+      "executions": 8919
+    },
+    {
+      "module": "font_text",
+      "functions": 12,
+      "scenarios": 2837,
+      "executions": 8511
+    },
+    {
+      "module": "window_services",
+      "functions": 31,
+      "scenarios": 2270,
+      "executions": 6810
+    }
+  ],
+  "sha256": {
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+    "rewrite/build/icestar.x": "9edc55ea50b889f86ec7b00a1305eada39c979221113f6d86e13fd2b31f99ae3",
+    "rewrite/build/openicestaros_kernel.x": "a127f5cf70b26ed0ce745fae92ac34d06c93e0bcd6a28cc93b4bea070e261c38",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "48a100bc139e07e400fbfd101dc9b7c272c1a6a835702ed73458e9d7cf2f1003",
+    "rewrite/kernel/patches.json": "cd5d2d36a38966d02a3d99506a4718cba952d32bbae61d35f0f2dfad77908044",
+    "rewrite/kernel/patches.ld": "0ab3c7d063f7272fe0471adf67fd8b1791f1498869e5fbbe194df30f9afbf7f0",
+    "rewrite/Makefile": "6a28fdab0cc91f54a5597d48e02b94f9d6588e394fdb42865bf10641805515e6",
+    "rewrite/evidence/2026-11-01-kernel-601-regression/make_verify.log": "bde6e45c848366ac1304fba904705bcb6d22957516741956ccf86a8b60358ead"
+  },
+  "tool_versions": {
+    "gcc": "gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+    "nasm": "NASM version 2.15.05",
+    "qemu": "QEMU emulator version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)",
+    "python": "Python 3.10.12"
+  },
+  "complete_os_recovery": false
+}

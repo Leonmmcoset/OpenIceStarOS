@@ -59,8 +59,10 @@ bytes before a first valid glyph and gap fill after a first failed bitmap
 allocation may consume indeterminate locals; C initializes these locals to zero
 and no equivalence is claimed for those undefined paths. The original raster
 DWORD overcopy and unimplemented filters/Type-2/scan driver remain separate
-limitations. Full `make verify` has not been rerun; the last full recorded run
-is 456 intervals. Five apps are rebuilt and 32 program paths remain unrecovered.
+limitations. At this batch's initial commit the last complete regression was
+456 intervals. The later [601-interval full regression](../evidence/2026-11-01-kernel-601-regression/README.md)
+passes with these entries installed. Five apps are rebuilt and 32 program
+paths remain unrecovered.
 
 | Entry | Address | Compiled / slot bytes |
 | --- | --- | --- |

@@ -78,6 +78,7 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 地址 C 差分，以及覆盖新增函数体的真实 QEMU 诊断。生产 COLOR、输入、内存、
 任务切换、整盘安装和清单检查通过，证据与实际截图见
 [窗口与图像服务验证](rewrite/recovery/WINDOW_SERVICES.md)。完整 OS 仍未完成。
-最近一次完整 `make -C rewrite verify` 的已完成记录仍对应 456 区间，
-[全量回归记录](rewrite/evidence/2026-10-31-font-456-regression/README.md)
-与后续专项验证分别保存；601 区间的全量回归已启动，结果另行记录。原 Logo 保持不变。
+601 区间版本的完整 `make -C rewrite verify` 已于 2026-11-01 以退出码 0 完成，
+覆盖到最终应用整盘安装与清单检查，详见
+[全量回归记录](rewrite/evidence/2026-11-01-kernel-601-regression/README.md)。
+专项 QEMU 证据另行保存；原 Logo 保持不变。

@@ -76,11 +76,12 @@ pass. Original VHD SHA-256 remains
 `2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599`.
 Evidence: `../evidence/2026-11-01-window-services/`.
 
-Full `make verify` was started for 601 intervals and its outcome will be
-recorded separately. At this batch's initial commit its last completed
-recorded run remains 456. This focused evidence is not a claim that the whole
-OS is recovered: INIT/kernel are partial, five apps are rebuilt, four driver
-paths and other apps remain original (32 unrecovered paths in total).
+Full `make verify` subsequently completed with exit code 0 for all 601
+intervals, through the final application installers and inventory check. See
+[the complete regression checkpoint](../evidence/2026-11-01-kernel-601-regression/README.md)
+for its exact source commit, full log, hashes and scope. This is not a claim
+that the whole OS is recovered: INIT/kernel are partial, five apps are rebuilt,
+four driver paths and other apps remain original (32 unrecovered paths in total).
 Arbitrary corrupt pointers, nonterminating loops, every possible asynchronous
 interleaving and full desktop event-handler logic remain outside coverage.
 
