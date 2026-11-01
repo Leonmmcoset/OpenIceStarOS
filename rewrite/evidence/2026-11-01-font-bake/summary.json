@@ -1,0 +1,44 @@
+{
+  "source_commit_before_step": "c8b70333a0ff485251d249998e386a69819fe9d6",
+  "installed_intervals": 517,
+  "exact_instruction_intervals": 77,
+  "new_original_entries": 10,
+  "declared_kernel_slot_bytes": 129239,
+  "retained_original_payload_bytes": 120796,
+  "full_return_scenarios": 1777,
+  "full_return_executions": 5331,
+  "filter_entry_checkpoints": 72,
+  "checkpoint_executions": 216,
+  "complete_os_recovery": false,
+  "full_verify_for_this_kernel": false,
+  "last_complete_full_verify_intervals": 456,
+  "recovery": {
+    "rebuilt_applications": 5,
+    "partial_programs": 2,
+    "unrecovered_program_paths": 32
+  },
+  "screenshots_visually_inspected": true,
+  "original_logo_retained": true,
+  "passed": [
+    "original/ordinary/installed baking and packed pixels/metadata/scaled metrics with actual nested helpers",
+    "independent row layout, early failures, every rectangle pixel and padding, metadata and live writes",
+    "72 real oversampling paths stopped BEFORE broken filter execution; pre-entry args/pages parity only",
+    "original/C QEMU full metadata/pixel reports and all ten entry/body traces; whole disks unchanged",
+    "installed atlas/render/flatten/scan/shape/outline/heap/context/metrics/parse/init/X-loader regressions",
+    "live branding scan with 85 compatibility references; complete kernel/app disk bounds; inventory",
+    "production COLOR 600 pixels, close/task exit/CMD reuse; input/cursor/RAM/TSS; all 517 installed intervals"
+  ],
+  "sha256": {
+    "rewrite/kernel/font_bake.c": "cc4e54b8fb5436a65b3b4497589ba191f466edb7898e0868d80898b1342832a5",
+    "rewrite/kernel/font_bake.h": "aa3d625f002779761cc6d3aab50e937fb87f59d5f5c53ef378f8815b36c87fec",
+    "rewrite/tests/kernel_font_bake.py": "cc4b1daedf6bdfc3657afddfc2518c2c0c88c2a380c9acffaa813b00f43def6d",
+    "rewrite/tests/font_bake_guest.c": "8d6fa42456f462e3daa40be6d897652426ccc1aab3eb7dceb8b73d11b6424b6d",
+    "rewrite/tests/kernel_font_bake_qemu.py": "8a33cd6209e4417a4b586f7cc5c02ccd422010d2a51b168a466451fd126f3e5c",
+    "rewrite/kernel/patches.json": "ec344a348cf4c58b4d221818f7b1a04ca176052c627876d63b8190e151d614bc",
+    "rewrite/kernel/patches.ld": "74df03fefbba1fec5de79999ee8313ca7273f09bc6291d3d63db3a35c7f2d7b3",
+    "rewrite/Makefile": "f047467678680c315a086e7f75dabf25bb45799ac6207a7a3c45e3151b029127",
+    "rewrite/build/openicestaros_kernel.x": "3310a99f5673f886374b2fae27af28730fe22531407538eaa05a766238ef1619",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "a6fcfe41ae9833b5b55dafc427d2cb4eef1a5a7844fbf5de4caa85b9d5a41a29",
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

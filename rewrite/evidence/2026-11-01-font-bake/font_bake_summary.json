@@ -1,0 +1,78 @@
+{
+  "filter_entry_checkpoints": 72,
+  "checkpoint_executions": 216,
+  "installed": true,
+  "functions": 10,
+  "scenarios": 1777,
+  "executions": 5331,
+  "slots": {
+    "font_bake": {
+      "compiled_bytes": 630,
+      "slot_bytes": 806
+    },
+    "font_prefilter": {
+      "compiled_bytes": 210,
+      "slot_bytes": 216
+    },
+    "font_render_rects": {
+      "compiled_bytes": 1212,
+      "slot_bytes": 1584
+    },
+    "font_pack_ranges": {
+      "compiled_bytes": 241,
+      "slot_bytes": 730
+    },
+    "font_pack_range": {
+      "compiled_bytes": 59,
+      "slot_bytes": 80
+    },
+    "font_scaled_metrics": {
+      "compiled_bytes": 181,
+      "slot_bytes": 208
+    },
+    "font_bake_api": {
+      "compiled_bytes": 37,
+      "slot_bytes": 76
+    },
+    "font_offset_api": {
+      "compiled_bytes": 16,
+      "slot_bytes": 26
+    },
+    "font_count_api": {
+      "compiled_bytes": 13,
+      "slot_bytes": 20
+    },
+    "font_init_api": {
+      "compiled_bytes": 19,
+      "slot_bytes": 34
+    }
+  },
+  "scenarios_by_function": {
+    "font_bake": 436,
+    "font_prefilter": 163,
+    "font_render_rects": 227,
+    "font_pack_ranges": 218,
+    "font_pack_range": 212,
+    "font_scaled_metrics": 71,
+    "font_bake_api": 436,
+    "font_offset_api": 7,
+    "font_count_api": 6,
+    "font_init_api": 1
+  },
+  "seconds": 17.373,
+  "checks": [
+    "real SFNT init, cmap, metrics, shape, heap, flatten, sort and raster calls; no stubs",
+    "independent baking layout, packed metadata and every pixel including DWORD padding",
+    "all touched data/heap pages, caller words, stack balance, callee saves and x87 control",
+    "six x87 controls, two stack alignments, boundaries, zero glyphs, missing glyph across ranges",
+    "allocation failures, rectangle failure flags, restored oversamples, overlapping outputs",
+    "sampled real Fira ASCII pipelines",
+    "real oversampling 2/3/4 paths stopped at actual broken filter entry, full pre-entry memory and arguments compared"
+  ],
+  "limitations": "Original filters remain: successful-return coverage uses oversampling 1 (or empty rectangles). Broken filter paths are not claimed equivalent after entry.",
+  "sha256": {
+    "kernel/font_bake.c": "cc4e54b8fb5436a65b3b4497589ba191f466edb7898e0868d80898b1342832a5",
+    "kernel/font_bake.h": "aa3d625f002779761cc6d3aab50e937fb87f59d5f5c53ef378f8815b36c87fec",
+    "tests/kernel_font_bake.py": "cc4b1daedf6bdfc3657afddfc2518c2c0c88c2a380c9acffaa813b00f43def6d"
+  }
+}

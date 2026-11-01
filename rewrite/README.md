@@ -5496,3 +5496,18 @@ interpreter remain original at this checkpoint. These focused checks are not
 a full `make verify` for 507 intervals; the last full run is 456. INIT/kernel
 remain partial, five apps are rebuilt, 32 program paths remain unrecovered,
 and the complete OS rewrite remains unfinished. The original logo remains.
+
+Ten font baking/range entries now execute C in the 517-interval kernel: baked
+character atlas pixels and metadata, prefilter dispatch, packed-rectangle
+rendering, range orchestration, one-range wrapper, scaled metrics and four
+public font APIs. See [font baking](recovery/FONT_BAKE.md) for row boundaries,
+missing-character cross-range behavior, original DWORD overcopy and validation.
+There are 1,777 full-return scenarios plus 72 actual filter-entry checkpoints
+against original/ordinary/installed C. Real original/C QEMU reports check all
+ten bodies, independent metadata and pixel-buffer hashes. Production COLOR/
+input/RAM/TSS checks pass. Original filters remain broken; tests stop before
+them on oversampling 2/3/4 paths and do not claim normal-return equivalence.
+The scan driver, filters and Type-2 interpreter remain original. These focused
+checks are not full `make verify` for 517 intervals; its last complete run is
+456. INIT/kernel remain partial, five apps are rebuilt, 32 program paths remain
+unrecovered, and the complete OS rewrite is unfinished. Original logo retained.

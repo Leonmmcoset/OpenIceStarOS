@@ -39,6 +39,8 @@ PROVIDE(kernel_font_free_8175a4 = kernel_free);
 PROVIDE(kernel_font_copy_dwords_817510 = kernel_rep_copy_dwords);
 PROVIDE(kernel_font_driver_830f24 = 0x830f24);
 PROVIDE(kernel_font_clear_81752e = kernel_rep_fill_dwords);
+PROVIDE(kernel_font_filter_h_833292 = 0x833292);
+PROVIDE(kernel_font_filter_v_83357c = 0x83357c);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1228,6 +1230,26 @@ SECTIONS
     ASSERT(kernel_font_pack_rects_8342c4 == 0x8342c4 && SIZEOF(.font_pack_rects) <= 36, "font_pack_rects overflow")
     .font_packed_quad 0x8346e2 : { *kernel_font_atlas.o(.text.kernel_font_packed_quad_8346e2) }
     ASSERT(kernel_font_packed_quad_8346e2 == 0x8346e2 && SIZEOF(.font_packed_quad) <= 426, "font_packed_quad overflow")
+    .font_bake 0x832a98 : { *kernel_font_bake.o(.text.kernel_font_bake_832a98) }
+    ASSERT(kernel_font_bake_832a98 == 0x832a98 && SIZEOF(.font_bake) <= 806, "font_bake overflow")
+    .font_prefilter 0x833bbc : { *kernel_font_bake.o(.text.kernel_font_prefilter_833bbc) }
+    ASSERT(kernel_font_prefilter_833bbc == 0x833bbc && SIZEOF(.font_prefilter) <= 216, "font_prefilter overflow")
+    .font_render_rects 0x833c94 : { *kernel_font_bake.o(.text.kernel_font_render_rects_833c94) }
+    ASSERT(kernel_font_render_rects_833c94 == 0x833c94 && SIZEOF(.font_render_rects) <= 1584, "font_render_rects overflow")
+    .font_pack_ranges 0x8342e8 : { *kernel_font_bake.o(.text.kernel_font_pack_ranges_8342e8) }
+    ASSERT(kernel_font_pack_ranges_8342e8 == 0x8342e8 && SIZEOF(.font_pack_ranges) <= 730, "font_pack_ranges overflow")
+    .font_pack_range 0x8345c2 : { *kernel_font_bake.o(.text.kernel_font_pack_range_8345c2) }
+    ASSERT(kernel_font_pack_range_8345c2 == 0x8345c2 && SIZEOF(.font_pack_range) <= 80, "font_pack_range overflow")
+    .font_scaled_metrics 0x834612 : { *kernel_font_bake.o(.text.kernel_font_scaled_metrics_834612) }
+    ASSERT(kernel_font_scaled_metrics_834612 == 0x834612 && SIZEOF(.font_scaled_metrics) <= 208, "font_scaled_metrics overflow")
+    .font_bake_api 0x836f70 : { *kernel_font_bake.o(.text.kernel_font_bake_api_836f70) }
+    ASSERT(kernel_font_bake_api_836f70 == 0x836f70 && SIZEOF(.font_bake_api) <= 76, "font_bake_api overflow")
+    .font_offset_api 0x836fbc : { *kernel_font_bake.o(.text.kernel_font_offset_api_836fbc) }
+    ASSERT(kernel_font_offset_api_836fbc == 0x836fbc && SIZEOF(.font_offset_api) <= 26, "font_offset_api overflow")
+    .font_count_api 0x836fd6 : { *kernel_font_bake.o(.text.kernel_font_count_api_836fd6) }
+    ASSERT(kernel_font_count_api_836fd6 == 0x836fd6 && SIZEOF(.font_count_api) <= 20, "font_count_api overflow")
+    .font_init_api 0x836fea : { *kernel_font_bake.o(.text.kernel_font_init_api_836fea) }
+    ASSERT(kernel_font_init_api_836fea == 0x836fea && SIZEOF(.font_init_api) <= 34, "font_init_api overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

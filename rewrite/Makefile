@@ -142,6 +142,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_font_shape.o
 KERNEL_PATCHES += $(foreach name,font_truetype_shape font_cff_shape font_shape font_codepoint_shape,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_scan.o
 KERNEL_PATCHES += $(foreach name,font_active font_fill_scanline font_edge_insertion font_edge_quicksort font_edge_sort,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_font_bake.o
+KERNEL_PATCHES += $(foreach name,font_bake font_prefilter font_render_rects font_pack_ranges font_pack_range font_scaled_metrics font_bake_api font_offset_api font_count_api font_init_api,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_atlas.o
 KERNEL_PATCHES += $(foreach name,font_baked_quad font_rect_init font_rect_pack font_pack_begin font_pack_end font_pack_oversample font_pack_skip font_oversample_shift font_gather_rects font_pack_rects font_packed_quad,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_font_render.o
@@ -1808,3 +1810,24 @@ $(BUILD)/font_atlas_guest.x: $(BUILD)/font_atlas_guest.elf tools/xformat.py
 
 test-font-atlas-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_atlas_guest.x
 	python3 tests/kernel_font_atlas_qemu.py
+
+$(BUILD)/kernel_font_bake.o: kernel/font_bake.c kernel/font_bake.h kernel/font_atlas.h kernel/font_init.h kernel/font_parse.h kernel/font_metrics.h kernel/font_cmap.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-font-bake test-font-bake-qemu
+test-font-bake: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_font_bake.py --installed
+
+verify: test-font-bake
+
+$(BUILD)/font_bake_guest.o: tests/font_bake_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/font_bake_guest.elf: $(BUILD)/font_bake_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/font_bake_guest.map -o $@ $<
+
+$(BUILD)/font_bake_guest.x: $(BUILD)/font_bake_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/font_bake_guest.symbols.json
+
+test-font-bake-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/font_bake_guest.x
+	python3 tests/kernel_font_bake_qemu.py
