@@ -5483,3 +5483,16 @@ original code. These focused checks are not a complete `make verify` for 496
 intervals; the last full regression remains 456. INIT/kernel remain partial,
 five apps are rebuilt, 32 program paths remain unrecovered, and the complete
 OS rewrite is unfinished. The original logo is retained.
+
+Eleven atlas entries now execute C in the 507-interval kernel: shelf rectangle
+packing, pack context lifecycle, oversample/skip flags, oversample shift, glyph
+rectangle gathering and baked/packed drawing quads. See [font atlas](recovery/FONT_ATLAS.md)
+for layouts, DWORD pixel clear, alias ordering and float stores. There are
+2,684 original/ordinary/installed scenarios; real original/C QEMU reports
+independently verify layout, missing-glyph behavior and all four quad modes,
+with all eleven entry/body traces. Normal CLOCK/input/RAM/TSS checks pass.
+Atlas pixel rendering, baking, scan driver, oversampling filters and the Type-2
+interpreter remain original at this checkpoint. These focused checks are not
+a full `make verify` for 507 intervals; the last full run is 456. INIT/kernel
+remain partial, five apps are rebuilt, 32 program paths remain unrecovered,
+and the complete OS rewrite remains unfinished. The original logo remains.

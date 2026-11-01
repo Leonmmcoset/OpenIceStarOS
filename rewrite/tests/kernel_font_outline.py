@@ -13,7 +13,7 @@ BUILD=ROOT/'build'
 sys.path[:0]=[str(ROOT),str(BUILD/'test-deps')]
 from tools.kernel_image import Fat16,ORIGINAL_SHA256
 from tests.kernel_x_loader import FLAGS,run
-from tests.kernel_font_cmap import (Machine as BaseMachine,words,STACK,STOP,START,CONTROL,MASK,SAVED,SENTINELS)
+from tests.kernel_font_cmap import (Machine as BaseMachine,words,STACK,STOP,START,CONTROL,MASK,SAVED,SENTINELS,F32,F80)
 from tests.kernel_font_context import fbits,vertex_bytes
 from tests.kernel_font_parse import index_data,encode
 from tests.kernel_font_glyph import real_info,font_info
@@ -66,6 +66,7 @@ def compile_variants(original,installed,module="outline",slots=SLOTS,tails=None)
 
 class Machine(BaseMachine):
     aggregates=AGGREGATE
+    floats=set()
     returns={0,1,2}
     mutable_caller={0,1}
     def execute(self,case):
@@ -79,7 +80,7 @@ class Machine(BaseMachine):
         uc.mem_write(CONTROL,struct.pack('<H',case.get('control',0x37f)))
         entry=self.entries[fn]
         uc.mem_write(START,b'\xdb\xe3\xd9\x2d'+struct.pack('<I',CONTROL)+b'\xe9'+struct.pack('<I',(entry-START-13)&MASK))
-        uc.mem_write(STOP,b'\x90'*12)
+        uc.mem_write(STOP,(b'\xd9\x15'+struct.pack('<I',F32)+b'\xdb\x3d'+struct.pack('<I',F80)) if fn in self.floats else b'\x90'*12)
         uc.ctl_remove_cache(START,START+16);uc.ctl_remove_cache(STOP,STOP+16)
         stack=struct.pack('<'+'I'*(len(arguments)+1),STOP,*arguments)
         uc.mem_write(STACK-0x4000,bytes(0x5000));uc.mem_write(stack_base,stack)
@@ -93,7 +94,8 @@ class Machine(BaseMachine):
         caller=bytes(uc.mem_read(stack_base+4,len(arguments)*4))
         if 'expected_caller' in case:assert caller==case['expected_caller'],(self.label,'caller',caller,case['expected_caller'])
         if fn not in self.mutable_caller and not case.get('caller_alias'):assert caller==stack[4:],'caller arguments changed'
-        result=uc.reg_read(UC_X86_REG_EAX) if fn in self.returns else None
+        result=(bytes(uc.mem_read(F32,4))+bytes(uc.mem_read(F80,10))) if fn in self.floats else (uc.reg_read(UC_X86_REG_EAX) if fn in self.returns else None)
+        if 'expected_float' in case:assert result[:4]==case['expected_float'],(self.label,result,case['expected_float'])
         if 'expected_return' in case:assert result==case['expected_return']&MASK,(self.label,result,case['expected_return'])
         for address,data in case.get('expected_memory',[]):
             actual=bytes(uc.mem_read(address,len(data)))

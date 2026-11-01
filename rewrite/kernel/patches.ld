@@ -38,6 +38,7 @@ PROVIDE(kernel_font_malloc_817590 = kernel_malloc);
 PROVIDE(kernel_font_free_8175a4 = kernel_free);
 PROVIDE(kernel_font_copy_dwords_817510 = kernel_rep_copy_dwords);
 PROVIDE(kernel_font_driver_830f24 = 0x830f24);
+PROVIDE(kernel_font_clear_81752e = kernel_rep_fill_dwords);
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1205,6 +1206,28 @@ SECTIONS
     ASSERT(kernel_font_get_codepoint_8329ec == 0x8329ec && SIZEOF(.font_get_codepoint) <= 86, "font_get_codepoint overflow")
     .font_make_codepoint 0x832a42 : { *kernel_font_render.o(.text.kernel_font_make_codepoint_832a42) }
     ASSERT(kernel_font_make_codepoint_832a42 == 0x832a42 && SIZEOF(.font_make_codepoint) <= 86, "font_make_codepoint overflow")
+    .font_baked_quad 0x832dbe : { *kernel_font_atlas.o(.text.kernel_font_baked_quad_832dbe) }
+    ASSERT(kernel_font_baked_quad_832dbe == 0x832dbe && SIZEOF(.font_baked_quad) <= 390, "font_baked_quad overflow")
+    .font_rect_init 0x832f44 : { *kernel_font_atlas.o(.text.kernel_font_rect_init_832f44) }
+    ASSERT(kernel_font_rect_init_832f44 == 0x832f44 && SIZEOF(.font_rect_init) <= 52, "font_rect_init overflow")
+    .font_rect_pack 0x832f78 : { *kernel_font_atlas.o(.text.kernel_font_rect_pack_832f78) }
+    ASSERT(kernel_font_rect_pack_832f78 == 0x832f78 && SIZEOF(.font_rect_pack) <= 382, "font_rect_pack overflow")
+    .font_pack_begin 0x8330f6 : { *kernel_font_atlas.o(.text.kernel_font_pack_begin_8330f6) }
+    ASSERT(kernel_font_pack_begin_8330f6 == 0x8330f6 && SIZEOF(.font_pack_begin) <= 326, "font_pack_begin overflow")
+    .font_pack_end 0x83323c : { *kernel_font_atlas.o(.text.kernel_font_pack_end_83323c) }
+    ASSERT(kernel_font_pack_end_83323c == 0x83323c && SIZEOF(.font_pack_end) <= 36, "font_pack_end overflow")
+    .font_pack_oversample 0x833260 : { *kernel_font_atlas.o(.text.kernel_font_pack_oversample_833260) }
+    ASSERT(kernel_font_pack_oversample_833260 == 0x833260 && SIZEOF(.font_pack_oversample) <= 36, "font_pack_oversample overflow")
+    .font_pack_skip 0x833284 : { *kernel_font_atlas.o(.text.kernel_font_pack_skip_833284) }
+    ASSERT(kernel_font_pack_skip_833284 == 0x833284 && SIZEOF(.font_pack_skip) <= 14, "font_pack_skip overflow")
+    .font_oversample_shift 0x8338c8 : { *kernel_font_atlas.o(.text.kernel_font_oversample_shift_8338c8) }
+    ASSERT(kernel_font_oversample_shift_8338c8 == 0x8338c8 && SIZEOF(.font_oversample_shift) <= 50, "font_oversample_shift overflow")
+    .font_gather_rects 0x8338fa : { *kernel_font_atlas.o(.text.kernel_font_gather_rects_8338fa) }
+    ASSERT(kernel_font_gather_rects_8338fa == 0x8338fa && SIZEOF(.font_gather_rects) <= 706, "font_gather_rects overflow")
+    .font_pack_rects 0x8342c4 : { *kernel_font_atlas.o(.text.kernel_font_pack_rects_8342c4) }
+    ASSERT(kernel_font_pack_rects_8342c4 == 0x8342c4 && SIZEOF(.font_pack_rects) <= 36, "font_pack_rects overflow")
+    .font_packed_quad 0x8346e2 : { *kernel_font_atlas.o(.text.kernel_font_packed_quad_8346e2) }
+    ASSERT(kernel_font_packed_quad_8346e2 == 0x8346e2 && SIZEOF(.font_packed_quad) <= 426, "font_packed_quad overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

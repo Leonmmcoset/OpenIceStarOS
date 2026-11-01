@@ -1,0 +1,99 @@
+make: Entering directory '/root/IceStarOS-x86-Decompile/rewrite'
+python3 tests/kernel_font_atlas.py --installed
+Compared 1000/2684 atlas scenarios
+Compared 2000/2684 atlas scenarios
+{
+  "installed": true,
+  "functions": 11,
+  "scenarios": 2684,
+  "executions": 8052,
+  "slots": {
+    "font_baked_quad": {
+      "compiled_bytes": 366,
+      "slot_bytes": 390
+    },
+    "font_rect_init": {
+      "compiled_bytes": 52,
+      "slot_bytes": 52
+    },
+    "font_rect_pack": {
+      "compiled_bytes": 246,
+      "slot_bytes": 382
+    },
+    "font_pack_begin": {
+      "compiled_bytes": 262,
+      "slot_bytes": 326
+    },
+    "font_pack_end": {
+      "compiled_bytes": 31,
+      "slot_bytes": 36
+    },
+    "font_pack_oversample": {
+      "compiled_bytes": 36,
+      "slot_bytes": 36
+    },
+    "font_pack_skip": {
+      "compiled_bytes": 14,
+      "slot_bytes": 14
+    },
+    "font_oversample_shift": {
+      "compiled_bytes": 46,
+      "slot_bytes": 50
+    },
+    "font_gather_rects": {
+      "compiled_bytes": 476,
+      "slot_bytes": 706
+    },
+    "font_pack_rects": {
+      "compiled_bytes": 26,
+      "slot_bytes": 36
+    },
+    "font_packed_quad": {
+      "compiled_bytes": 394,
+      "slot_bytes": 426
+    }
+  },
+  "scenarios_by_function": {
+    "font_baked_quad": 472,
+    "font_rect_init": 7,
+    "font_rect_pack": 380,
+    "font_pack_begin": 456,
+    "font_pack_end": 4,
+    "font_pack_oversample": 47,
+    "font_pack_skip": 5,
+    "font_oversample_shift": 78,
+    "font_gather_rects": 523,
+    "font_pack_rects": 240,
+    "font_packed_quad": 472
+  },
+  "seconds": 7.151,
+  "checks": [
+    "real malloc/free, floor, cmap, metrics and bounding boxes; no helper stubs",
+    "independent row layout, dimensions, quads/texture coordinates, pixel DWORD clearing",
+    "all touched heap/data pages, caller words, callee saves, stack balance, x87 control",
+    "six x87 precision/rounding controls, both stack alignments, raw32/raw80 shift results",
+    "zero/negative/wrapped dimensions; live aliases; missing glyph shared across ranges",
+    "allocation failures at each stage; stale pack-end fields; original logo retained"
+  ],
+  "sha256": {
+    "kernel/font_atlas.c": "1b69160d1c7197c42a051eed6c81ced103d47ebf4082e7c5c3039bb82055b8ee",
+    "kernel/font_atlas.h": "f0a612baa8b6645a133e9a29f5d24b01a33272c5c297186130a236152f4807dc",
+    "tests/kernel_font_atlas.py": "f6f9b789245c3dd6feeb900245c287f678284721fa0518d26a98396d7309ca86",
+    "tests/kernel_font_outline.py": "55c32d8b85f5fcd5a4e5fa985a4a06e7363cea3df651a57153f50b8c8d194183"
+  }
+}
+gcc -m32 -march=i386 -Os -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Wall -Wextra -Werror -fno-optimize-sibling-calls -c tests/font_atlas_guest.c -o build/font_atlas_guest.o
+ld -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=build/font_atlas_guest.map -o build/font_atlas_guest.elf build/font_atlas_guest.o
+python3 tools/xformat.py build/font_atlas_guest.elf build/font_atlas_guest.x --kind 0x0a --file-size 0x38b4 --metadata build/font_atlas_guest.symbols.json
+build/font_atlas_guest.x: 14516 bytes, 88 relocations, entry 0x58, BSS 0x1000+0x358c
+python3 tests/kernel_font_atlas_qemu.py
+Input state: {"pointer_initial": [500, 372], "pointer_cmd_icon": [45, 282], "cmd_code_candidates": ["0x44aa410"], "keyboard_queue_before": [1, 1, 0, 2048], "keyboard_queue_after": [11, 11, 0, 2048], "cmd_input": "cpuid", "cmd_cursor_before_return": [9, 1], "cmd_cursor_after_return": [4, 3]}
+Mouse position, relocated CMD, input text, queue consumption, and prompt return verified
+Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked
+{"label": "original", "diagnostic_only": true, "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599", "seeded_sha256": "711d68e0d8e6ba530cee8c41de4147f67c7d2c978fa090b7f05e9d5be6ad2968", "result_sha256": "711d68e0d8e6ba530cee8c41de4147f67c7d2c978fa090b7f05e9d5be6ad2968", "clusters": [], "report": [1096043569, 1, 77, 16, 12, 16, 1, 0, 165, 2, 3, 2, 3, 1, 0, 0, 3196059648, 3198855851, 3200253952, 7, 257, 257, 7, 5, 7, 5, 0, 0, 7, 5, 0, 0, 7, 5, 0, 0, 0, 0, 1, 7, 0, 1, 14, 0, 1, 0, 5, 1, 7, 5, 1, 7, 5, 1, 14, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1094189056, 3230662656, 1023410176, 1035993088, 1099694080, 1069547520, 1040187392, 1049624576, 1099825152, 3224371200, 1094713344, 3229614080, 1023410176, 1035993088, 1099956224, 1073741824, 1040187392, 1049624576, 1099825152, 3224371200, 1094189056, 3230138368, 1023410176, 1035993088, 1100742656, 3196059648, 1040187392, 1049624576, 1099825152, 3224371200, 1094713344, 3229614080, 1023410176, 1035993088, 1101004800, 0, 1040187392, 1049624576, 1099825152, 3224371200, 77, 16, 12, 16, 1, 1, 1], "functions": {"font_baked_quad": {"entry": "0x832dbe", "entry_events": 2, "interior_block_events": 7, "decoded_body_instructions": 157}, "font_rect_init": {"entry": "0x832f44", "entry_events": 1, "interior_block_events": 0, "decoded_body_instructions": 15}, "font_rect_pack": {"entry": "0x832f78", "entry_events": 1, "interior_block_events": 46, "decoded_body_instructions": 139}, "font_pack_begin": {"entry": "0x8330f6", "entry_events": 1, "interior_block_events": 8, "decoded_body_instructions": 83}, "font_pack_end": {"entry": "0x83323c", "entry_events": 1, "interior_block_events": 2, "decoded_body_instructions": 12}, "font_pack_oversample": {"entry": "0x833260", "entry_events": 3, "interior_block_events": 6, "decoded_body_instructions": 17}, "font_pack_skip": {"entry": "0x833284", "entry_events": 2, "interior_block_events": 0, "decoded_body_instructions": 6}, "font_oversample_shift": {"entry": "0x8338c8", "entry_events": 5, "interior_block_events": 7, "decoded_body_instructions": 27}, "font_gather_rects": {"entry": "0x8338fa", "entry_events": 1, "interior_block_events": 68, "decoded_body_instructions": 253}, "font_pack_rects": {"entry": "0x8342c4", "entry_events": 1, "interior_block_events": 1, "decoded_body_instructions": 12}, "font_packed_quad": {"entry": "0x8346e2", "entry_events": 2, "interior_block_events": 5, "decoded_body_instructions": 184}}, "disk_bytes_compared": 33554944, "input": "CMD via emulated PS/2; no guest-state injection", "scope": "Fixture operations; complete disk equality. Temporary writable image only.", "changed_bytes": 0, "changed_ranges": []}
+Input state: {"pointer_initial": [500, 372], "pointer_cmd_icon": [45, 282], "cmd_code_candidates": ["0x44a9010"], "keyboard_queue_before": [1, 1, 0, 2048], "keyboard_queue_after": [11, 11, 0, 2048], "cmd_input": "cpuid", "cmd_cursor_before_return": [9, 1], "cmd_cursor_after_return": [4, 3]}
+Mouse position, relocated CMD, input text, queue consumption, and prompt return verified
+Inspect openicestaros_input_cpuid.png for the command result; its text is not OCR-checked
+{"label": "recovered", "diagnostic_only": true, "source_sha256": "c896ca22c3bff162e9fe15951a89a43e8a7e1b70b2d7d056fb2e272677616242", "seeded_sha256": "ec8fa372825b766e3f1422c09a792c9a75f2f54b036efdd288e3b03f14467a90", "result_sha256": "ec8fa372825b766e3f1422c09a792c9a75f2f54b036efdd288e3b03f14467a90", "clusters": [], "report": [1096043569, 1, 77, 16, 12, 16, 1, 0, 165, 2, 3, 2, 3, 1, 0, 0, 3196059648, 3198855851, 3200253952, 7, 257, 257, 7, 5, 7, 5, 0, 0, 7, 5, 0, 0, 7, 5, 0, 0, 0, 0, 1, 7, 0, 1, 14, 0, 1, 0, 5, 1, 7, 5, 1, 7, 5, 1, 14, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1094189056, 3230662656, 1023410176, 1035993088, 1099694080, 1069547520, 1040187392, 1049624576, 1099825152, 3224371200, 1094713344, 3229614080, 1023410176, 1035993088, 1099956224, 1073741824, 1040187392, 1049624576, 1099825152, 3224371200, 1094189056, 3230138368, 1023410176, 1035993088, 1100742656, 3196059648, 1040187392, 1049624576, 1099825152, 3224371200, 1094713344, 3229614080, 1023410176, 1035993088, 1101004800, 0, 1040187392, 1049624576, 1099825152, 3224371200, 77, 16, 12, 16, 1, 1, 1], "functions": {"font_baked_quad": {"entry": "0x832dbe", "entry_events": 2, "interior_block_events": 7, "decoded_body_instructions": 151}, "font_rect_init": {"entry": "0x832f44", "entry_events": 1, "interior_block_events": 0, "decoded_body_instructions": 15}, "font_rect_pack": {"entry": "0x832f78", "entry_events": 1, "interior_block_events": 45, "decoded_body_instructions": 103}, "font_pack_begin": {"entry": "0x8330f6", "entry_events": 1, "interior_block_events": 8, "decoded_body_instructions": 87}, "font_pack_end": {"entry": "0x83323c", "entry_events": 1, "interior_block_events": 2, "decoded_body_instructions": 13}, "font_pack_oversample": {"entry": "0x833260", "entry_events": 3, "interior_block_events": 6, "decoded_body_instructions": 19}, "font_pack_skip": {"entry": "0x833284", "entry_events": 2, "interior_block_events": 0, "decoded_body_instructions": 6}, "font_oversample_shift": {"entry": "0x8338c8", "entry_events": 5, "interior_block_events": 10, "decoded_body_instructions": 26}, "font_gather_rects": {"entry": "0x8338fa", "entry_events": 1, "interior_block_events": 69, "decoded_body_instructions": 177}, "font_pack_rects": {"entry": "0x8342c4", "entry_events": 1, "interior_block_events": 1, "decoded_body_instructions": 10}, "font_packed_quad": {"entry": "0x8346e2", "entry_events": 2, "interior_block_events": 7, "decoded_body_instructions": 180}}, "disk_bytes_compared": 33554944, "input": "CMD via emulated PS/2; no guest-state injection", "scope": "Fixture operations; complete disk equality. Temporary writable image only.", "changed_bytes": 0, "changed_ranges": []}
+Eleven installed atlas entries match independent dimensions/layout/quads; whole disks unchanged.
+make: Leaving directory '/root/IceStarOS-x86-Decompile/rewrite'

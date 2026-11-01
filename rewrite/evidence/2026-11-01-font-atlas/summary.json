@@ -1,0 +1,41 @@
+{
+  "source_commit_before_step": "7ed105a30537655e132502223c631de80305a9cf",
+  "installed_intervals": 507,
+  "exact_instruction_intervals": 77,
+  "new_original_entries": 11,
+  "declared_kernel_slot_bytes": 125459,
+  "retained_original_payload_bytes": 124576,
+  "scenarios": 2684,
+  "executions": 8052,
+  "complete_os_recovery": false,
+  "full_verify_for_this_kernel": false,
+  "last_complete_full_verify_intervals": 456,
+  "recovery": {
+    "rebuilt_applications": 5,
+    "partial_programs": 2,
+    "unrecovered_program_paths": 32
+  },
+  "screenshots_visually_inspected": true,
+  "original_logo_retained": true,
+  "passed": [
+    "original/ordinary/installed atlas packing and quad differential with independent layout, geometry and pixel clear oracles",
+    "original/C QEMU complete independent reports, all eleven entry/body traces, entire disks unchanged",
+    "installed render/flatten/scan/shape/outline/heap/context/metrics/X-loader regressions",
+    "branding live scan with 85 compatibility references; kernel/app disk bounds; inventory",
+    "production CLOCK face, labels and three changing frames; close/task exit/CMD reuse; input/cursor/RAM/TSS; all 507 intervals"
+  ],
+  "sha256": {
+    "rewrite/kernel/font_atlas.c": "1b69160d1c7197c42a051eed6c81ced103d47ebf4082e7c5c3039bb82055b8ee",
+    "rewrite/kernel/font_atlas.h": "f0a612baa8b6645a133e9a29f5d24b01a33272c5c297186130a236152f4807dc",
+    "rewrite/tests/kernel_font_atlas.py": "f6f9b789245c3dd6feeb900245c287f678284721fa0518d26a98396d7309ca86",
+    "rewrite/tests/font_atlas_guest.c": "eba3a927acf629cb0c64093c23f500d93edaa8e624cbdd143380d267f00d317a",
+    "rewrite/tests/kernel_font_atlas_qemu.py": "262f8c12ae6497e146112a11b7a99b3a73bcd909b32cff651a10bf74457b5632",
+    "rewrite/tests/kernel_font_outline.py": "55c32d8b85f5fcd5a4e5fa985a4a06e7363cea3df651a57153f50b8c8d194183",
+    "rewrite/kernel/patches.json": "4ffde700e8c9ab4546d29b0ea7c62ee5dfee880457863e050195819de1a49f83",
+    "rewrite/kernel/patches.ld": "713cafb816bdc799fcda0254d23d801e517d270e9142cb3abfbb1823ef322a53",
+    "rewrite/Makefile": "bc0a6eba78ef7593e956590770a5b65d198e0e05bf16fe3736c7ab0d61b23728",
+    "rewrite/build/openicestaros_kernel.x": "01f82ac5e7d4d0a1b57064b070003fe8c886b0366cb34d3557cdd4a946b69066",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "c896ca22c3bff162e9fe15951a89a43e8a7e1b70b2d7d056fb2e272677616242",
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599"
+  }
+}

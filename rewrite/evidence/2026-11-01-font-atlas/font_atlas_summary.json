@@ -1,0 +1,80 @@
+{
+  "installed": true,
+  "functions": 11,
+  "scenarios": 2684,
+  "executions": 8052,
+  "slots": {
+    "font_baked_quad": {
+      "compiled_bytes": 366,
+      "slot_bytes": 390
+    },
+    "font_rect_init": {
+      "compiled_bytes": 52,
+      "slot_bytes": 52
+    },
+    "font_rect_pack": {
+      "compiled_bytes": 246,
+      "slot_bytes": 382
+    },
+    "font_pack_begin": {
+      "compiled_bytes": 262,
+      "slot_bytes": 326
+    },
+    "font_pack_end": {
+      "compiled_bytes": 31,
+      "slot_bytes": 36
+    },
+    "font_pack_oversample": {
+      "compiled_bytes": 36,
+      "slot_bytes": 36
+    },
+    "font_pack_skip": {
+      "compiled_bytes": 14,
+      "slot_bytes": 14
+    },
+    "font_oversample_shift": {
+      "compiled_bytes": 46,
+      "slot_bytes": 50
+    },
+    "font_gather_rects": {
+      "compiled_bytes": 476,
+      "slot_bytes": 706
+    },
+    "font_pack_rects": {
+      "compiled_bytes": 26,
+      "slot_bytes": 36
+    },
+    "font_packed_quad": {
+      "compiled_bytes": 394,
+      "slot_bytes": 426
+    }
+  },
+  "scenarios_by_function": {
+    "font_baked_quad": 472,
+    "font_rect_init": 7,
+    "font_rect_pack": 380,
+    "font_pack_begin": 456,
+    "font_pack_end": 4,
+    "font_pack_oversample": 47,
+    "font_pack_skip": 5,
+    "font_oversample_shift": 78,
+    "font_gather_rects": 523,
+    "font_pack_rects": 240,
+    "font_packed_quad": 472
+  },
+  "seconds": 7.151,
+  "checks": [
+    "real malloc/free, floor, cmap, metrics and bounding boxes; no helper stubs",
+    "independent row layout, dimensions, quads/texture coordinates, pixel DWORD clearing",
+    "all touched heap/data pages, caller words, callee saves, stack balance, x87 control",
+    "six x87 precision/rounding controls, both stack alignments, raw32/raw80 shift results",
+    "zero/negative/wrapped dimensions; live aliases; missing glyph shared across ranges",
+    "allocation failures at each stage; stale pack-end fields; original logo retained"
+  ],
+  "sha256": {
+    "kernel/font_atlas.c": "1b69160d1c7197c42a051eed6c81ced103d47ebf4082e7c5c3039bb82055b8ee",
+    "kernel/font_atlas.h": "f0a612baa8b6645a133e9a29f5d24b01a33272c5c297186130a236152f4807dc",
+    "tests/kernel_font_atlas.py": "f6f9b789245c3dd6feeb900245c287f678284721fa0518d26a98396d7309ca86",
+    "tests/kernel_font_outline.py": "55c32d8b85f5fcd5a4e5fa985a4a06e7363cea3df651a57153f50b8c8d194183"
+  }
+}
