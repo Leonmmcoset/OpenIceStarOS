@@ -82,3 +82,7 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 覆盖到最终应用整盘安装与清单检查，详见
 [全量回归记录](rewrite/evidence/2026-11-01-kernel-601-regression/README.md)。
 专项 QEMU 证据另行保存；原 Logo 保持不变。
+
+后续又恢复图像控件创建、释放、更换文件和绘制四个 C 函数，达到 605 个区间。
+专项差分与真实 FAT／PNG／BMP／JPEG／ICO 图像链、窗口邻近回归和生产启动通过，
+详见[图像控件恢复](rewrite/recovery/IMAGE_CONTROLS.md)。605 区间尚未重跑完整回归。

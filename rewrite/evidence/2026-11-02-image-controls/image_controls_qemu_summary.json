@@ -1,0 +1,181 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "3248fb1b13726aa222db48817f09d3de26a2032e718c96642b9ac249d664322a",
+      "result_sha256": "3248fb1b13726aa222db48817f09d3de26a2032e718c96642b9ac249d664322a",
+      "clusters": [
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "report": [
+        1229801265,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "functions": {
+        "image_create": {
+          "entry": "0x8121d4",
+          "entry_events": 4,
+          "interior_block_events": 105,
+          "decoded_body_instructions": 444
+        },
+        "image_release": {
+          "entry": "0x8125dc",
+          "entry_events": 4,
+          "interior_block_events": 54,
+          "decoded_body_instructions": 97
+        },
+        "image_file": {
+          "entry": "0x81282e",
+          "entry_events": 4,
+          "interior_block_events": 57,
+          "decoded_body_instructions": 113
+        },
+        "image_draw": {
+          "entry": "0x8129ca",
+          "entry_events": 6,
+          "interior_block_events": 19530,
+          "decoded_body_instructions": 206
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "8fa09cf0b89ec079c0d466038ef83d5ed76157b47c1c31f24033c0c0990de18a",
+      "seeded_sha256": "c8c87fa644f8d3c888979cf0e21082de4ef23647e2dd421e3e6f83c298b71e08",
+      "result_sha256": "c8c87fa644f8d3c888979cf0e21082de4ef23647e2dd421e3e6f83c298b71e08",
+      "clusters": [
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "report": [
+        1229801265,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "functions": {
+        "image_create": {
+          "entry": "0x8121d4",
+          "entry_events": 4,
+          "interior_block_events": 100,
+          "decoded_body_instructions": 386
+        },
+        "image_release": {
+          "entry": "0x8125dc",
+          "entry_events": 4,
+          "interior_block_events": 56,
+          "decoded_body_instructions": 92
+        },
+        "image_file": {
+          "entry": "0x81282e",
+          "entry_events": 4,
+          "interior_block_events": 58,
+          "decoded_body_instructions": 120
+        },
+        "image_draw": {
+          "entry": "0x8129ca",
+          "entry_events": 6,
+          "interior_block_events": 19523,
+          "decoded_body_instructions": 173
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 605,
+  "resources": {
+    "IMGTST  PNG": "4a48225b4255a58977a8ffdfd50974095b1ce7ba359efd35032d118ca6ecb73b",
+    "IMGTST  BMP": "698d1ea0f149586ac6ae2985d9ebeac529dbbe3b2925a34772170d10ddc15f30",
+    "IMGTST  JPG": "e8feecbf5e2bb99d2ef7b0f4be28b486456140ea82e8a205e0ff7dba2fe9b168",
+    "IMGTST  ICO": "b032c40780e836dfc74a3793e5848ede6e521eca72603d6031da93812b6d2eb6"
+  },
+  "checks": [
+    "real FAT reads and all four codecs",
+    "independent constant-color pixels (JPEG tolerance 1)",
+    "actual owner-tagged allocation, full-screen mode and child compaction",
+    "all four entry/body traces",
+    "complete disposable disks unchanged"
+  ],
+  "sha256": {
+    "tests/kernel_image_controls_qemu.py": "938076897b4b083163f0455955d96fd1800783e4e194940b306ca8d0e8650eee",
+    "tests/image_controls_guest.c": "796c0b5c9bddf90b7fffedfce1e5519b50e1766d9ae6df3d95ad753780189d2d"
+  },
+  "complete_os_recovery": false
+}

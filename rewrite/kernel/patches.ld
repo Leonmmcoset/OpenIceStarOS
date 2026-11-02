@@ -74,6 +74,23 @@ PROVIDE(kernel_ui_move_refresh_8191d8 = 0x8191d8);
 PROVIDE(kernel_ui_redraw_8045f0 = 0x8045f0);
 PROVIDE(kernel_ui_close_81021c = 0x81021c);
 PROVIDE(kernel_ui_image_release_8125dc = 0x8125dc);
+PROVIDE(kernel_image_alloc_8155ca = 0x8155ca);
+PROVIDE(kernel_image_bmp_820d66 = 0x820d66);
+PROVIDE(kernel_image_cli_81a242 = 0x81a242);
+PROVIDE(kernel_image_copy_82a32b = 0x82a32b);
+PROVIDE(kernel_image_flags_81a24a = 0x81a24a);
+PROVIDE(kernel_image_free_815978 = 0x815978);
+PROVIDE(kernel_image_ico_82af4c = 0x82af4c);
+PROVIDE(kernel_image_jpeg_8239a0 = 0x8239a0);
+PROVIDE(kernel_image_pixel32_81b2f4 = 0x81b2f4);
+PROVIDE(kernel_image_pixel8_81b26e = 0x81b26e);
+PROVIDE(kernel_image_png_824c70 = 0x824c70);
+PROVIDE(kernel_image_read_827454 = 0x827454);
+PROVIDE(kernel_image_record_8263c0 = 0x8263c0);
+PROVIDE(kernel_image_restore_81a24d = 0x81a24d);
+PROVIDE(kernel_image_slot_81215a = 0x81215a);
+PROVIDE(kernel_image_text_81f88a = 0x81f88a);
+
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1451,6 +1468,14 @@ SECTIONS
     ASSERT(kernel_ui_image_fill_812748 == 0x812748 && SIZEOF(.ui_image_fill) <= 230, "ui_image_fill overflow")
     .ui_image_release_api 0x812bfa : { *kernel_window_services.o(.text.kernel_ui_image_release_api_812bfa) }
     ASSERT(kernel_ui_image_release_api_812bfa == 0x812bfa && SIZEOF(.ui_image_release_api) <= 20, "ui_image_release_api overflow")
+    .image_create 0x8121d4 : { *kernel_image_controls.o(.text.kernel_image_create_8121d4) }
+    ASSERT(kernel_image_create_8121d4 == 0x8121d4 && SIZEOF(.image_create) <= 1032, "image_create overflow")
+    .image_release 0x8125dc : { *kernel_image_controls.o(.text.kernel_image_release_8125dc) }
+    ASSERT(kernel_image_release_8125dc == 0x8125dc && SIZEOF(.image_release) <= 364, "image_release overflow")
+    .image_file 0x81282e : { *kernel_image_controls.o(.text.kernel_image_file_81282e) }
+    ASSERT(kernel_image_file_81282e == 0x81282e && SIZEOF(.image_file) <= 412, "image_file overflow")
+    .image_draw 0x8129ca : { *kernel_image_controls.o(.text.kernel_image_draw_8129ca) }
+    ASSERT(kernel_image_draw_8129ca == 0x8129ca && SIZEOF(.image_draw) <= 560, "image_draw overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

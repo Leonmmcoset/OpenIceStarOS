@@ -5545,3 +5545,9 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 清单检查。完整日志、源码提交、镜像哈希与范围见
 [601 区间全量回归记录](evidence/2026-11-01-kernel-601-regression/README.md)。
 前面的 456 区间“最后全量”表述属于各批次当时的历史状态。
+
+2026-11-02 又恢复图像控件的创建、释放、更换文件和绘制四个实际函数，达到
+605 区间。原版／普通 C／固定地址 C 差分、真实 QEMU FAT／四种图像格式、
+窗口服务邻近回归和生产 COLOR 启动通过，详见
+[图像控件恢复](recovery/IMAGE_CONTROLS.md)。完整回归仍以 601 区间记录为准；
+完整 OS 重写未完成。

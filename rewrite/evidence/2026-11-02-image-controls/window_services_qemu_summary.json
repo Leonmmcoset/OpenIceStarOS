@@ -1,0 +1,518 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "0d7151065d6bccafab052af40710bb0c636a5a624526e27c9c5e69a791a2211e",
+      "result_sha256": "0d7151065d6bccafab052af40710bb0c636a5a624526e27c9c5e69a791a2211e",
+      "clusters": [],
+      "report": [
+        1464421937,
+        1,
+        1818845549,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        2549309921,
+        4066122021,
+        0,
+        1,
+        0,
+        4095,
+        11,
+        22,
+        33,
+        44,
+        55,
+        66,
+        77,
+        88,
+        99,
+        794737413,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        103,
+        84,
+        103,
+        84,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "functions": {
+        "ui_mailbox_put": {
+          "entry": "0x802e64",
+          "entry_events": 4,
+          "interior_block_events": 3088,
+          "decoded_body_instructions": 58
+        },
+        "ui_mailbox_get": {
+          "entry": "0x802ec6",
+          "entry_events": 4,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 26
+        },
+        "ui_launch_path": {
+          "entry": "0x802ef2",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 30
+        },
+        "ui_launch_relative": {
+          "entry": "0x802f42",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 15
+        },
+        "ui_frame": {
+          "entry": "0x807302",
+          "entry_events": 1,
+          "interior_block_events": 11,
+          "decoded_body_instructions": 178
+        },
+        "ui_caption": {
+          "entry": "0x807540",
+          "entry_events": 5,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 81
+        },
+        "ui_title_hit": {
+          "entry": "0x80762e",
+          "entry_events": 2,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 49
+        },
+        "ui_client_hit": {
+          "entry": "0x8076d0",
+          "entry_events": 2,
+          "interior_block_events": 8,
+          "decoded_body_instructions": 107
+        },
+        "ui_surface_hit": {
+          "entry": "0x80784a",
+          "entry_events": 10,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 100
+        },
+        "ui_find_hit": {
+          "entry": "0x8078f2",
+          "entry_events": 3,
+          "interior_block_events": 38,
+          "decoded_body_instructions": 88
+        },
+        "ui_object_slot": {
+          "entry": "0x807990",
+          "entry_events": 3,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 63
+        },
+        "ui_delete": {
+          "entry": "0x807f72",
+          "entry_events": 2,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 28
+        },
+        "ui_icon_file": {
+          "entry": "0x807ffe",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 31
+        },
+        "ui_icon_pointer": {
+          "entry": "0x808090",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 17
+        },
+        "ui_restore": {
+          "entry": "0x8080ea",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 68
+        },
+        "ui_hide": {
+          "entry": "0x8081ea",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 55
+        },
+        "ui_show": {
+          "entry": "0x8082c6",
+          "entry_events": 2,
+          "interior_block_events": 18,
+          "decoded_body_instructions": 82
+        },
+        "ui_remove": {
+          "entry": "0x808378",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 71
+        },
+        "ui_event4": {
+          "entry": "0x809e24",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 24
+        },
+        "ui_event3": {
+          "entry": "0x80ac4e",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 22
+        },
+        "ui_move": {
+          "entry": "0x80ac9c",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 108
+        },
+        "ui_event3b": {
+          "entry": "0x80ecba",
+          "entry_events": 20,
+          "interior_block_events": 40,
+          "decoded_body_instructions": 44
+        },
+        "ui_event3c": {
+          "entry": "0x80ed08",
+          "entry_events": 20,
+          "interior_block_events": 21,
+          "decoded_body_instructions": 35
+        },
+        "ui_redraw_all": {
+          "entry": "0x80fb12",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 41
+        },
+        "ui_minimize": {
+          "entry": "0x81002e",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 111
+        },
+        "ui_close_api": {
+          "entry": "0x810168",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 7
+        },
+        "ui_dialog_click": {
+          "entry": "0x811c46",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 54
+        },
+        "ui_double_border": {
+          "entry": "0x811e4c",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 40
+        },
+        "ui_image_slot": {
+          "entry": "0x81215a",
+          "entry_events": 2,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 45
+        },
+        "ui_image_fill": {
+          "entry": "0x812748",
+          "entry_events": 2,
+          "interior_block_events": 492,
+          "decoded_body_instructions": 104
+        },
+        "ui_image_release_api": {
+          "entry": "0x812bfa",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 7
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "8fa09cf0b89ec079c0d466038ef83d5ed76157b47c1c31f24033c0c0990de18a",
+      "seeded_sha256": "f142b65b920dbe1bef85e79f7890ee180e304edda2f5a948f45200ab22b2c426",
+      "result_sha256": "f142b65b920dbe1bef85e79f7890ee180e304edda2f5a948f45200ab22b2c426",
+      "clusters": [],
+      "report": [
+        1464421937,
+        1,
+        1818845549,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        2549309921,
+        4066122021,
+        0,
+        1,
+        0,
+        4095,
+        11,
+        22,
+        33,
+        44,
+        55,
+        66,
+        77,
+        88,
+        99,
+        794737413,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        103,
+        84,
+        103,
+        84,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "functions": {
+        "ui_mailbox_put": {
+          "entry": "0x802e64",
+          "entry_events": 4,
+          "interior_block_events": 2052,
+          "decoded_body_instructions": 44
+        },
+        "ui_mailbox_get": {
+          "entry": "0x802ec6",
+          "entry_events": 4,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 24
+        },
+        "ui_launch_path": {
+          "entry": "0x802ef2",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 30
+        },
+        "ui_launch_relative": {
+          "entry": "0x802f42",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 15
+        },
+        "ui_frame": {
+          "entry": "0x807302",
+          "entry_events": 1,
+          "interior_block_events": 11,
+          "decoded_body_instructions": 158
+        },
+        "ui_caption": {
+          "entry": "0x807540",
+          "entry_events": 5,
+          "interior_block_events": 19,
+          "decoded_body_instructions": 50
+        },
+        "ui_title_hit": {
+          "entry": "0x80762e",
+          "entry_events": 2,
+          "interior_block_events": 4,
+          "decoded_body_instructions": 48
+        },
+        "ui_client_hit": {
+          "entry": "0x8076d0",
+          "entry_events": 2,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 95
+        },
+        "ui_surface_hit": {
+          "entry": "0x80784a",
+          "entry_events": 10,
+          "interior_block_events": 24,
+          "decoded_body_instructions": 100
+        },
+        "ui_find_hit": {
+          "entry": "0x8078f2",
+          "entry_events": 3,
+          "interior_block_events": 32,
+          "decoded_body_instructions": 70
+        },
+        "ui_object_slot": {
+          "entry": "0x807990",
+          "entry_events": 3,
+          "interior_block_events": 29,
+          "decoded_body_instructions": 29
+        },
+        "ui_delete": {
+          "entry": "0x807f72",
+          "entry_events": 2,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 27
+        },
+        "ui_icon_file": {
+          "entry": "0x807ffe",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 25
+        },
+        "ui_icon_pointer": {
+          "entry": "0x808090",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 11
+        },
+        "ui_restore": {
+          "entry": "0x8080ea",
+          "entry_events": 1,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 57
+        },
+        "ui_hide": {
+          "entry": "0x8081ea",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 44
+        },
+        "ui_show": {
+          "entry": "0x8082c6",
+          "entry_events": 2,
+          "interior_block_events": 18,
+          "decoded_body_instructions": 45
+        },
+        "ui_remove": {
+          "entry": "0x808378",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 61
+        },
+        "ui_event4": {
+          "entry": "0x809e24",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 25
+        },
+        "ui_event3": {
+          "entry": "0x80ac4e",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 20
+        },
+        "ui_move": {
+          "entry": "0x80ac9c",
+          "entry_events": 1,
+          "interior_block_events": 3,
+          "decoded_body_instructions": 85
+        },
+        "ui_event3b": {
+          "entry": "0x80ecba",
+          "entry_events": 20,
+          "interior_block_events": 40,
+          "decoded_body_instructions": 40
+        },
+        "ui_event3c": {
+          "entry": "0x80ed08",
+          "entry_events": 20,
+          "interior_block_events": 21,
+          "decoded_body_instructions": 31
+        },
+        "ui_redraw_all": {
+          "entry": "0x80fb12",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 34
+        },
+        "ui_minimize": {
+          "entry": "0x81002e",
+          "entry_events": 1,
+          "interior_block_events": 6,
+          "decoded_body_instructions": 64
+        },
+        "ui_close_api": {
+          "entry": "0x810168",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 6
+        },
+        "ui_dialog_click": {
+          "entry": "0x811c46",
+          "entry_events": 1,
+          "interior_block_events": 7,
+          "decoded_body_instructions": 46
+        },
+        "ui_double_border": {
+          "entry": "0x811e4c",
+          "entry_events": 1,
+          "interior_block_events": 2,
+          "decoded_body_instructions": 44
+        },
+        "ui_image_slot": {
+          "entry": "0x81215a",
+          "entry_events": 2,
+          "interior_block_events": 5,
+          "decoded_body_instructions": 23
+        },
+        "ui_image_fill": {
+          "entry": "0x812748",
+          "entry_events": 2,
+          "interior_block_events": 492,
+          "decoded_body_instructions": 90
+        },
+        "ui_image_release_api": {
+          "entry": "0x812bfa",
+          "entry_events": 1,
+          "interior_block_events": 1,
+          "decoded_body_instructions": 6
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 605,
+  "complete_os_recovery": false,
+  "sha256": {
+    "tests/kernel_window_services_qemu.py": "b9a82f8f715f76f9a19c25b2f23494b41b014bcf8b283f918e79bfcf948e18b4",
+    "tests/window_services_guest.c": "0a03149b56d9ff80aba24feb85f223bc0a9292f6c6b521688c81347d9d3cf5a6"
+  }
+}

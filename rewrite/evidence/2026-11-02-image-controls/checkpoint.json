@@ -1,0 +1,14 @@
+{
+  "baseline_commit": "82d9ee5054bcd6f474040841dbe9cddb26ba2879",
+  "installed_intervals": 605,
+  "new_original_entries": 4,
+  "complete_os_recovery": false,
+  "last_complete_verify_intervals": 601,
+  "sha256": {
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+    "rewrite/build/openicestaros_kernel.x": "3ec46582256db98fc6982a54deac5372dcf767af55c26fb58990460ad46964d6",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "8fa09cf0b89ec079c0d466038ef83d5ed76157b47c1c31f24033c0c0990de18a",
+    "rewrite/kernel/patches.json": "91aa3365507ff68c197b9769de35608f1a234b372d528b140bdf1ccd41e84b69",
+    "rewrite/kernel/patches.ld": "58de9fb01cd78738b5d207e51d2d11148983a61982c789c46f441b1b86c87595"
+  }
+}
