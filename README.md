@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 601 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 607 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -35,6 +35,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | 字符烘焙、图集像素渲染、多范围打包与缩放度量 | [FONT_BAKE.md](rewrite/recovery/FONT_BAKE.md) |
 | 字体名称、Unicode、TrueType 文本绘制 | [FONT_TEXT.md](rewrite/recovery/FONT_TEXT.md) |
 | 窗口、事件回调与图像服务 | [WINDOW_SERVICES.md](rewrite/recovery/WINDOW_SERVICES.md) |
+| 窗口创建、关闭与图像控件生命周期 | [WINDOW_LIFECYCLE.md](rewrite/recovery/WINDOW_LIFECYCLE.md)、[IMAGE_CONTROLS.md](rewrite/recovery/IMAGE_CONTROLS.md) |
 | 五个可重新编译的应用 | [rewrite/apps/](rewrite/apps/) |
 | 每个原始程序的恢复状态 | [INVENTORY.md](rewrite/recovery/INVENTORY.md) |
 | 实现细节、验证范围与阶段记录 | [rewrite/README.md](rewrite/README.md) |
@@ -74,7 +75,7 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 `build/OpenIceStarOS_mbr_rebuilt.vhd`；OpenIceStarOS 的当前源码恢复与集成请使用
 `make -C rewrite ...`。Git 仓库位于根目录，每个验证后的步骤分别提交。
 
-最新的 601 区间版本在本轮新增 51 个实际 C 入口，已通过原版／普通 C／固定
+2026-11-01 的 601 区间版本累计新增 51 个实际 C 入口，已通过原版／普通 C／固定
 地址 C 差分，以及覆盖新增函数体的真实 QEMU 诊断。生产 COLOR、输入、内存、
 任务切换、整盘安装和清单检查通过，证据与实际截图见
 [窗口与图像服务验证](rewrite/recovery/WINDOW_SERVICES.md)。完整 OS 仍未完成。
@@ -85,4 +86,10 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 
 后续又恢复图像控件创建、释放、更换文件和绘制四个 C 函数，达到 605 个区间。
 专项差分与真实 FAT／PNG／BMP／JPEG／ICO 图像链、窗口邻近回归和生产启动通过，
-详见[图像控件恢复](rewrite/recovery/IMAGE_CONTROLS.md)。605 区间尚未重跑完整回归。
+详见[图像控件恢复](rewrite/recovery/IMAGE_CONTROLS.md)。
+
+随后恢复窗口创建和关闭两个主函数，达到 607 区间。本次两批共新增 6 个函数，
+2,024 个三版本差分场景通过；真实 QEMU 覆盖四种窗口样式、屏幕尺寸缓冲、
+关闭回调、完成通知及 31 个邻近入口，生产 CLOCK、整盘和清单检查通过。
+详见[窗口生命周期恢复](rewrite/recovery/WINDOW_LIFECYCLE.md)及其实际截图。
+607 区间仅完成上述专项与邻近回归，最后一次全量回归仍为 601 区间。完整 OS 未完成。

@@ -91,6 +91,22 @@ PROVIDE(kernel_image_restore_81a24d = 0x81a24d);
 PROVIDE(kernel_image_slot_81215a = 0x81215a);
 PROVIDE(kernel_image_text_81f88a = 0x81f88a);
 
+PROVIDE(kernel_window_activate_8087e0 = 0x8087e0);
+PROVIDE(kernel_window_alloc_8155ca = 0x8155ca);
+PROVIDE(kernel_window_cli_81a242 = 0x81a242);
+PROVIDE(kernel_window_copy_82a32b = 0x82a32b);
+PROVIDE(kernel_window_delete_807f72 = 0x807f72);
+PROVIDE(kernel_window_find_hit_8078f2 = 0x8078f2);
+PROVIDE(kernel_window_flags_81a24a = 0x81a24a);
+PROVIDE(kernel_window_free_815978 = 0x815978);
+PROVIDE(kernel_window_redraw_8045f0 = 0x8045f0);
+PROVIDE(kernel_window_refresh_81905e = 0x81905e);
+PROVIDE(kernel_window_remove_surface_8178f0 = 0x8178f0);
+PROVIDE(kernel_window_restore_81a24d = 0x81a24d);
+PROVIDE(kernel_window_slot_807990 = 0x807990);
+PROVIDE(kernel_window_surface_817626 = 0x817626);
+PROVIDE(kernel_window_unregister_8105dc = 0x8105dc);
+
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1476,6 +1492,10 @@ SECTIONS
     ASSERT(kernel_image_file_81282e == 0x81282e && SIZEOF(.image_file) <= 412, "image_file overflow")
     .image_draw 0x8129ca : { *kernel_image_controls.o(.text.kernel_image_draw_8129ca) }
     ASSERT(kernel_image_draw_8129ca == 0x8129ca && SIZEOF(.image_draw) <= 560, "image_draw overflow")
+    .window_create 0x807a0a : { *kernel_window_lifecycle.o(.text.kernel_window_create_807a0a) }
+    ASSERT(kernel_window_create_807a0a == 0x807a0a && SIZEOF(.window_create) <= 1384, "window_create overflow")
+    .window_close 0x81021c : { *kernel_window_lifecycle.o(.text.kernel_window_close_81021c) }
+    ASSERT(kernel_window_close_81021c == 0x81021c && SIZEOF(.window_close) <= 510, "window_close overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

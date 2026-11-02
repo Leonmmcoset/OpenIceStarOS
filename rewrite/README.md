@@ -5551,3 +5551,10 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 窗口服务邻近回归和生产 COLOR 启动通过，详见
 [图像控件恢复](recovery/IMAGE_CONTROLS.md)。完整回归仍以 601 区间记录为准；
 完整 OS 重写未完成。
+
+同日再恢复窗口创建和关闭两个主函数，达到 607 区间。新增 1,208 个三版本
+差分场景；实际 QEMU 验证四种样式、屏幕尺寸缓冲区、关闭回调与完成通知，
+并执行 31 个邻近服务。607 区间的图像控件真实解码、生产 CLOCK、整盘和清单
+检查通过。详见[窗口生命周期恢复](recovery/WINDOW_LIFECYCLE.md)。本次两批
+共新增 6 个实际函数、2,024 个差分场景；最后完整回归仍为 601 区间。
+INIT／内核仍部分恢复，32 个程序路径及全部四个驱动尚未重写；原 Logo 保持不变。

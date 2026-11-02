@@ -150,6 +150,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_window_services.o
 KERNEL_PATCHES += $(foreach name,ui_mailbox_put ui_mailbox_get ui_launch_path ui_launch_relative ui_frame ui_caption ui_title_hit ui_client_hit ui_surface_hit ui_find_hit ui_object_slot ui_delete ui_icon_file ui_icon_pointer ui_restore ui_hide ui_show ui_remove ui_event4 ui_event3 ui_move ui_event3b ui_event3c ui_redraw_all ui_minimize ui_close_api ui_dialog_click ui_double_border ui_image_slot ui_image_fill ui_image_release_api,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_image_controls.o
 KERNEL_PATCHES += $(foreach name,image_create image_release image_file image_draw,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_window_lifecycle.o
+KERNEL_PATCHES += $(foreach name,window_create window_close,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
 KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
@@ -1960,3 +1962,25 @@ $(BUILD)/image_controls_guest.x: $(BUILD)/image_controls_guest.elf tools/xformat
 .PHONY: test-image-controls-qemu
 test-image-controls-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/image_controls_guest.x
 	python3 tests/kernel_image_controls_qemu.py
+
+$(BUILD)/kernel_window_lifecycle.o: kernel/window_lifecycle.c kernel/window_lifecycle.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-window-lifecycle
+test-window-lifecycle: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_window_lifecycle.py --installed
+
+verify: test-window-lifecycle
+
+.PHONY: test-window-lifecycle-qemu
+test-window-lifecycle-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/window_lifecycle_guest.x
+	python3 tests/kernel_window_lifecycle_qemu.py
+
+$(BUILD)/window_lifecycle_guest.o: tests/window_lifecycle_guest.c tests/window_services_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/window_lifecycle_guest.elf: $(BUILD)/window_lifecycle_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/window_lifecycle_guest.map -o $@ $<
+
+$(BUILD)/window_lifecycle_guest.x: $(BUILD)/window_lifecycle_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/window_lifecycle_guest.symbols.json
