@@ -5558,3 +5558,8 @@ unrecovered, and the complete OS rewrite is unfinished. Original logo retained.
 检查通过。详见[窗口生命周期恢复](recovery/WINDOW_LIFECYCLE.md)。本次两批
 共新增 6 个实际函数、2,024 个差分场景；最后完整回归仍为 601 区间。
 INIT／内核仍部分恢复，32 个程序路径及全部四个驱动尚未重写；原 Logo 保持不变。
+
+2026-11-03 新增窗口置前、激活、失焦及标题栏按钮命中四个 C 函数，607 → 611
+区间。39,174 个原版／普通 C／固定地址 C 场景通过；真实 QEMU 核验图层排序、
+标题绘制、通知、回调及五类主题按钮，生产 COLOR 与邻近回归通过。详见
+[窗口焦点恢复](recovery/WINDOW_FOCUS.md)。最后完整回归仍为 601，完整 OS 未完成。

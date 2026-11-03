@@ -1,0 +1,36 @@
+{
+  "installed": true,
+  "functions": 2,
+  "scenarios": 1208,
+  "executions": 3624,
+  "slots": {
+    "window_create": {
+      "compiled_bytes": 986,
+      "slot_bytes": 1384
+    },
+    "window_close": {
+      "compiled_bytes": 405,
+      "slot_bytes": 510
+    }
+  },
+  "scenarios_by_function": {
+    "window_create": 715,
+    "window_close": 493
+  },
+  "seconds": 5.11,
+  "checks": [
+    "real owner heap and title copy",
+    "independent packed object/layout/geometry oracle",
+    "all theme styles, screen-sized backing mode, allocation and slot failures",
+    "exact surface/caption/activation/compositor/registry/delete/hit boundaries",
+    "callback argument-copy isolation and live object/counter changes",
+    "post-delete completion-word write and original CLI error paths",
+    "all touched memory/heap pages, caller arguments, cdecl registers and x87 control"
+  ],
+  "sha256": {
+    "kernel/window_lifecycle.c": "bb59199e818b6ad35fe4d42ca8d25f9c0b4d1680c63cdcf8f93354d7b9bac38b",
+    "kernel/window_lifecycle.h": "bc0812c49e510bbf92c85f96fee72901dd8fb61467cd771d7d19735301e26335",
+    "tests/kernel_window_lifecycle.py": "f35d84aeecc87594d743b252bd8850a0e286c1d46cce0554ff90b216b82ab5c7",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

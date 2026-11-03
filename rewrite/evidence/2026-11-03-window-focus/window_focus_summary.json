@@ -1,0 +1,44 @@
+{
+  "installed": true,
+  "functions": 4,
+  "scenarios": 39174,
+  "executions": 117522,
+  "slots": {
+    "window_raise": {
+      "compiled_bytes": 605,
+      "slot_bytes": 832
+    },
+    "window_activate": {
+      "compiled_bytes": 679,
+      "slot_bytes": 920
+    },
+    "window_deactivate": {
+      "compiled_bytes": 434,
+      "slot_bytes": 576
+    },
+    "window_button_hit": {
+      "compiled_bytes": 1213,
+      "slot_bytes": 2406
+    }
+  },
+  "scenarios_by_function": {
+    "window_raise": 333,
+    "window_activate": 333,
+    "window_deactivate": 364,
+    "window_button_hit": 38144
+  },
+  "seconds": 119.674,
+  "checks": [
+    "independent ordered stack/caption/refresh and notification oracles",
+    "unsigned z ordering, hidden/pinned/drag/cursor surfaces and reserved IDs",
+    "parent/current object state, repeated activation and live callback argument isolation",
+    "all theme classes and modes; strict button edges and signed wrapping",
+    "all touched memory, caller arguments, cdecl registers and x87 controls"
+  ],
+  "sha256": {
+    "kernel/window_focus.c": "bcc4770a7a825d9068bbe3ce9091d48a9a7c57d6fc6913b3e98e4a254a8c8675",
+    "kernel/window_focus.h": "942ce94dc2ab113b030b77e3c12640ea331add2fb127de6005c306e573f9d563",
+    "tests/kernel_window_focus.py": "5f7c6b29efd84d5923983b4f790fb61f1261aea250bd170c0d012bb844212018",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

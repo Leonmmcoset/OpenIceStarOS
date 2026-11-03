@@ -107,6 +107,12 @@ PROVIDE(kernel_window_slot_807990 = 0x807990);
 PROVIDE(kernel_window_surface_817626 = 0x817626);
 PROVIDE(kernel_window_unregister_8105dc = 0x8105dc);
 
+PROVIDE(kernel_focus_append_8179d6 = 0x8179d6);
+PROVIDE(kernel_focus_caption_807540 = 0x807540);
+PROVIDE(kernel_focus_front_817a3c = 0x817a3c);
+PROVIDE(kernel_focus_move_817b32 = 0x817b32);
+PROVIDE(kernel_focus_refresh_81905e = 0x81905e);
+
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1496,6 +1502,14 @@ SECTIONS
     ASSERT(kernel_window_create_807a0a == 0x807a0a && SIZEOF(.window_create) <= 1384, "window_create overflow")
     .window_close 0x81021c : { *kernel_window_lifecycle.o(.text.kernel_window_close_81021c) }
     ASSERT(kernel_window_close_81021c == 0x81021c && SIZEOF(.window_close) <= 510, "window_close overflow")
+    .window_raise 0x8084a0 : { *kernel_window_focus.o(.text.kernel_window_raise_8084a0) }
+    ASSERT(kernel_window_raise_8084a0 == 0x8084a0 && SIZEOF(.window_raise) <= 832, "window_raise overflow")
+    .window_activate 0x8087e0 : { *kernel_window_focus.o(.text.kernel_window_activate_8087e0) }
+    ASSERT(kernel_window_activate_8087e0 == 0x8087e0 && SIZEOF(.window_activate) <= 920, "window_activate overflow")
+    .window_deactivate 0x808b78 : { *kernel_window_focus.o(.text.kernel_window_deactivate_808b78) }
+    ASSERT(kernel_window_deactivate_808b78 == 0x808b78 && SIZEOF(.window_deactivate) <= 576, "window_deactivate overflow")
+    .window_button_hit 0x808db8 : { *kernel_window_focus.o(.text.kernel_window_button_hit_808db8) }
+    ASSERT(kernel_window_button_hit_808db8 == 0x808db8 && SIZEOF(.window_button_hit) <= 2406, "window_button_hit overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
