@@ -113,6 +113,11 @@ PROVIDE(kernel_focus_front_817a3c = 0x817a3c);
 PROVIDE(kernel_focus_move_817b32 = 0x817b32);
 PROVIDE(kernel_focus_refresh_81905e = 0x81905e);
 
+PROVIDE(kernel_geometry_free_815978 = 0x815978);
+PROVIDE(kernel_geometry_alloc_8155ca = 0x8155ca);
+PROVIDE(kernel_geometry_draw_8045f0 = 0x8045f0);
+PROVIDE(kernel_geometry_refresh_81905e = 0x81905e);
+
 SECTIONS
 {
     .entry 0x800040 : { *kernel_entry.o(.text.kernel_entry) }
@@ -1510,6 +1515,12 @@ SECTIONS
     ASSERT(kernel_window_deactivate_808b78 == 0x808b78 && SIZEOF(.window_deactivate) <= 576, "window_deactivate overflow")
     .window_button_hit 0x808db8 : { *kernel_window_focus.o(.text.kernel_window_button_hit_808db8) }
     ASSERT(kernel_window_button_hit_808db8 == 0x808db8 && SIZEOF(.window_button_hit) <= 2406, "window_button_hit overflow")
+    .window_maximize 0x80ed56 : { *kernel_window_geometry.o(.text.kernel_window_maximize_80ed56) }
+    ASSERT(kernel_window_maximize_80ed56 == 0x80ed56 && SIZEOF(.window_maximize) <= 1896, "window_maximize overflow")
+    .window_layout_all 0x80f4be : { *kernel_window_geometry.o(.text.kernel_window_layout_all_80f4be) }
+    ASSERT(kernel_window_layout_all_80f4be == 0x80f4be && SIZEOF(.window_layout_all) <= 1620, "window_layout_all overflow")
+    .window_unmaximize 0x80fbfc : { *kernel_window_geometry.o(.text.kernel_window_unmaximize_80fbfc) }
+    ASSERT(kernel_window_unmaximize_80fbfc == 0x80fbfc && SIZEOF(.window_unmaximize) <= 1074, "window_unmaximize overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

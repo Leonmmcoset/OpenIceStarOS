@@ -154,6 +154,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_window_lifecycle.o
 KERNEL_PATCHES += $(foreach name,window_create window_close,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_window_focus.o
 KERNEL_PATCHES += $(foreach name,window_raise window_activate window_deactivate window_button_hit,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_window_geometry.o
+KERNEL_PATCHES += $(foreach name,window_maximize window_layout_all window_unmaximize,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
 KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
@@ -2008,3 +2010,25 @@ $(BUILD)/window_focus_guest.elf: $(BUILD)/window_focus_guest.o tests/fat_mutatio
 
 $(BUILD)/window_focus_guest.x: $(BUILD)/window_focus_guest.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/window_focus_guest.symbols.json
+
+$(BUILD)/kernel_window_geometry.o: kernel/window_geometry.c kernel/window_geometry.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-window-geometry
+test-window-geometry: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_window_geometry.py --installed
+
+verify: test-window-geometry
+
+.PHONY: test-window-geometry-qemu
+test-window-geometry-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/window_geometry_guest.x
+	python3 tests/kernel_window_geometry_qemu.py
+
+$(BUILD)/window_geometry_guest.o: tests/window_geometry_guest.c tests/window_services_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/window_geometry_guest.elf: $(BUILD)/window_geometry_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/window_geometry_guest.map -o $@ $<
+
+$(BUILD)/window_geometry_guest.x: $(BUILD)/window_geometry_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/window_geometry_guest.symbols.json

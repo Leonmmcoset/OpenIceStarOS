@@ -1,0 +1,182 @@
+{
+  "installed": true,
+  "functions": 31,
+  "scenarios": 2270,
+  "executions": 6810,
+  "slots": {
+    "ui_mailbox_put": {
+      "compiled_bytes": 42,
+      "slot_bytes": 98
+    },
+    "ui_mailbox_get": {
+      "compiled_bytes": 32,
+      "slot_bytes": 44
+    },
+    "ui_launch_path": {
+      "compiled_bytes": 45,
+      "slot_bytes": 80
+    },
+    "ui_launch_relative": {
+      "compiled_bytes": 45,
+      "slot_bytes": 94
+    },
+    "ui_frame": {
+      "compiled_bytes": 387,
+      "slot_bytes": 574
+    },
+    "ui_caption": {
+      "compiled_bytes": 139,
+      "slot_bytes": 238
+    },
+    "ui_title_hit": {
+      "compiled_bytes": 146,
+      "slot_bytes": 162
+    },
+    "ui_client_hit": {
+      "compiled_bytes": 313,
+      "slot_bytes": 378
+    },
+    "ui_surface_hit": {
+      "compiled_bytes": 156,
+      "slot_bytes": 168
+    },
+    "ui_find_hit": {
+      "compiled_bytes": 96,
+      "slot_bytes": 158
+    },
+    "ui_object_slot": {
+      "compiled_bytes": 61,
+      "slot_bytes": 122
+    },
+    "ui_delete": {
+      "compiled_bytes": 118,
+      "slot_bytes": 140
+    },
+    "ui_icon_file": {
+      "compiled_bytes": 100,
+      "slot_bytes": 146
+    },
+    "ui_icon_pointer": {
+      "compiled_bytes": 58,
+      "slot_bytes": 90
+    },
+    "ui_restore": {
+      "compiled_bytes": 192,
+      "slot_bytes": 256
+    },
+    "ui_hide": {
+      "compiled_bytes": 154,
+      "slot_bytes": 220
+    },
+    "ui_show": {
+      "compiled_bytes": 143,
+      "slot_bytes": 178
+    },
+    "ui_remove": {
+      "compiled_bytes": 223,
+      "slot_bytes": 296
+    },
+    "ui_event4": {
+      "compiled_bytes": 64,
+      "slot_bytes": 84
+    },
+    "ui_event3": {
+      "compiled_bytes": 57,
+      "slot_bytes": 78
+    },
+    "ui_move": {
+      "compiled_bytes": 340,
+      "slot_bytes": 436
+    },
+    "ui_event3b": {
+      "compiled_bytes": 57,
+      "slot_bytes": 78
+    },
+    "ui_event3c": {
+      "compiled_bytes": 57,
+      "slot_bytes": 78
+    },
+    "ui_redraw_all": {
+      "compiled_bytes": 135,
+      "slot_bytes": 234
+    },
+    "ui_minimize": {
+      "compiled_bytes": 240,
+      "slot_bytes": 314
+    },
+    "ui_close_api": {
+      "compiled_bytes": 14,
+      "slot_bytes": 20
+    },
+    "ui_dialog_click": {
+      "compiled_bytes": 369,
+      "slot_bytes": 512
+    },
+    "ui_double_border": {
+      "compiled_bytes": 91,
+      "slot_bytes": 122
+    },
+    "ui_image_slot": {
+      "compiled_bytes": 65,
+      "slot_bytes": 122
+    },
+    "ui_image_fill": {
+      "compiled_bytes": 136,
+      "slot_bytes": 230
+    },
+    "ui_image_release_api": {
+      "compiled_bytes": 14,
+      "slot_bytes": 20
+    }
+  },
+  "scenarios_by_function": {
+    "ui_mailbox_put": 6,
+    "ui_mailbox_get": 20,
+    "ui_launch_path": 6,
+    "ui_launch_relative": 6,
+    "ui_frame": 8,
+    "ui_caption": 27,
+    "ui_title_hit": 528,
+    "ui_client_hit": 196,
+    "ui_surface_hit": 528,
+    "ui_find_hit": 18,
+    "ui_object_slot": 80,
+    "ui_delete": 7,
+    "ui_icon_file": 10,
+    "ui_icon_pointer": 6,
+    "ui_restore": 28,
+    "ui_hide": 28,
+    "ui_show": 20,
+    "ui_remove": 47,
+    "ui_event4": 4,
+    "ui_event3": 4,
+    "ui_move": 13,
+    "ui_event3b": 4,
+    "ui_event3c": 4,
+    "ui_redraw_all": 17,
+    "ui_minimize": 28,
+    "ui_close_api": 3,
+    "ui_dialog_click": 408,
+    "ui_double_border": 6,
+    "ui_image_slot": 80,
+    "ui_image_fill": 127,
+    "ui_image_release_api": 3
+  },
+  "seconds": 7.138,
+  "checks": [
+    "strict signed/wrapped title/client/surface hits",
+    "free slot search and topmost order",
+    "real strcpy mailbox",
+    "independent real 8/32bpp frame/border pixels",
+    "real image fill and metadata aliases",
+    "exact external boundary arguments and object state",
+    "callback caller-copy behavior",
+    "all touched pages, ABI and x87 control"
+  ],
+  "sha256": {
+    "kernel/window_services.c": "da92a2764a3256b8d3a5cf401ddedeaf38cd6e7b18b722464710551be97abf19",
+    "kernel/window_services.h": "e812d4bdc790078765bcb2a84bf28b2960fa9d2d83d729876f3d6d1bf5f835f0",
+    "tests/kernel_window_services.py": "50e6bda71ae4074d022bdb81290b372f771c6fe56fac778548ef7140f63d3184",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}
