@@ -1,7 +1,7 @@
 # OpenIceStarOS C rewrite
 
 This directory is the incomplete C source recovery for OpenIceStarOS, integrated into copies of the
-original IceStarOS VHD. The current build installs 472 declared kernel intervals and
+original IceStarOS VHD. The current build installs 617 declared kernel intervals and
 five rebuilt applications. It still requires unrecovered original components;
 the interval count is not a count of completely recovered operating-system
 modules. The chronological notes below record each source/integration and
@@ -5569,3 +5569,10 @@ INIT／内核仍部分恢复，32 个程序路径及全部四个驱动尚未重�
 生产 CLOCK、邻近回归和整盘检查通过。原版的有符号面积比较、截断除法、
 布局遍历中的实时状态与重复回调顺序均保留，详见
 [窗口尺寸恢复](recovery/WINDOW_GEOMETRY.md)。最后全量仍为 601，完整 OS 未完成。
+
+同日新增 PNG 的图层 ID、直接 surface 和文件路径绘制三个 C 函数，614 → 617
+区间；本轮从 607 区间累计恢复十个真实函数。344 场景／1,032 次执行通过，
+真实 FAT／PNG／DEFLATE／heap／像素 QEMU 的独立 25-DWORD 报告与整盘一致。
+专项保留原版 8 位 DWORD 透明判断，并验证全局像素服务与目标深度不一致时的
+行为。生产 COLOR、底层 PNG／DEFLATE、邻近窗口和图像服务回归通过，详见
+[PNG 绘制恢复](recovery/PNG_DRAW.md)。最后全量仍为 601，完整 OS 未完成。

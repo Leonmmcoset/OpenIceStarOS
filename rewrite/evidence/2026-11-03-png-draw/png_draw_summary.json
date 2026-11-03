@@ -1,0 +1,40 @@
+{
+  "installed": true,
+  "functions": 3,
+  "scenarios": 344,
+  "executions": 1032,
+  "slots": {
+    "png_surface_draw": {
+      "compiled_bytes": 368,
+      "slot_bytes": 444
+    },
+    "png_direct_draw": {
+      "compiled_bytes": 344,
+      "slot_bytes": 412
+    },
+    "png_file_draw": {
+      "compiled_bytes": 154,
+      "slot_bytes": 210
+    }
+  },
+  "scenarios_by_function": {
+    "png_surface_draw": 112,
+    "png_direct_draw": 106,
+    "png_file_draw": 126
+  },
+  "seconds": 4.592,
+  "checks": [
+    "actual PNG/DEFLATE, allocator, dithering and pixel writes without codec/pixel mocks",
+    "independent RGBA, alpha-zero versus DWORD transparency, clipping and 8-bit phase oracles",
+    "surface-ID/direct destinations, alternate PNG formats, errors and header-error cleanup",
+    "global video-mode dispatch versus per-target depth, including mismatched-depth pixel oracles",
+    "explicit absolute C-F/relative FAT lookup/read routes, signed lengths and zero reads",
+    "all touched heap/data pages, caller arguments, cdecl registers and x87 controls"
+  ],
+  "sha256": {
+    "kernel/png_draw.c": "e8dcf6335f7bb3e0a85ed487576bc26f71173947303051eb2e6f2f1919f3960d",
+    "kernel/png_draw.h": "e6667d03dc0730ffc06d41adb9c2595dec0200142d69b84ddc931d00d92b1ada",
+    "tests/kernel_png_draw.py": "ea0241bad035af7c9c58376fd4936881314dd4b8184ea0bb3db607eeb7b73ddf",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

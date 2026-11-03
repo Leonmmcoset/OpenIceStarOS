@@ -1,0 +1,78 @@
+{
+  "installed": true,
+  "functions": 10,
+  "scenarios": 3624,
+  "executions": 10872,
+  "slots": {
+    "png_bit": {
+      "compiled_bytes": 47,
+      "slot_bytes": 52
+    },
+    "png_bits": {
+      "compiled_bytes": 49,
+      "slot_bytes": 74
+    },
+    "png_tree_init": {
+      "compiled_bytes": 31,
+      "slot_bytes": 32
+    },
+    "png_tree_build": {
+      "compiled_bytes": 509,
+      "slot_bytes": 908
+    },
+    "png_symbol": {
+      "compiled_bytes": 142,
+      "slot_bytes": 198
+    },
+    "png_dynamic": {
+      "compiled_bytes": 813,
+      "slot_bytes": 1508
+    },
+    "png_compressed": {
+      "compiled_bytes": 650,
+      "slot_bytes": 1004
+    },
+    "png_stored": {
+      "compiled_bytes": 258,
+      "slot_bytes": 318
+    },
+    "png_inflate": {
+      "compiled_bytes": 273,
+      "slot_bytes": 374
+    },
+    "png_zlib": {
+      "compiled_bytes": 197,
+      "slot_bytes": 318
+    }
+  },
+  "scenarios_by_function": {
+    "png_bit": 64,
+    "png_bits": 896,
+    "png_tree_init": 9,
+    "png_tree_build": 20,
+    "png_symbol": 1423,
+    "png_dynamic": 17,
+    "png_compressed": 68,
+    "png_stored": 784,
+    "png_inflate": 99,
+    "png_zlib": 244
+  },
+  "seconds": 10.895,
+  "checks": [
+    "RFC canonical Huffman tree oracles",
+    "bit shifts wrap at32",
+    "explicit dynamic header",
+    "zlib-independent decompression bytes",
+    "stored/fixed/dynamic block paths",
+    "length/distance repeated copies",
+    "strict output limits and truncation",
+    "unaligned bit input",
+    "real nested helpers",
+    "all touched pages and cdecl state"
+  ],
+  "sha256": {
+    "kernel/inflate.c": "0e3988aa0719d792ed7923494d883e95e5a55802a59bd378aa9c08c297bff588",
+    "kernel/inflate.h": "67a76beacbeaa15a8c86787120a40f363e623eab3d8586d0980eaa98dce555fc",
+    "tests/kernel_inflate.py": "438f93dafb7ef29e53ba31ce7bcdde7630e3b96c933cb29d6ac21dd7bc319dd1"
+  }
+}

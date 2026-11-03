@@ -1,0 +1,45 @@
+{
+  "installed": true,
+  "functions": 4,
+  "scenarios": 816,
+  "executions": 2448,
+  "slots": {
+    "image_create": {
+      "compiled_bytes": 704,
+      "slot_bytes": 1032
+    },
+    "image_release": {
+      "compiled_bytes": 258,
+      "slot_bytes": 364
+    },
+    "image_file": {
+      "compiled_bytes": 312,
+      "slot_bytes": 412
+    },
+    "image_draw": {
+      "compiled_bytes": 372,
+      "slot_bytes": 560
+    }
+  },
+  "scenarios_by_function": {
+    "image_create": 256,
+    "image_release": 53,
+    "image_file": 41,
+    "image_draw": 466
+  },
+  "seconds": 3.37,
+  "checks": [
+    "real owner-tagged heap allocation/free and memcpy/strcpy",
+    "explicit flags/FAT lookup/read/decoder routing boundaries",
+    "failure leaks, child-list compaction and stale file metadata",
+    "real 8/32bpp pixels with independent final-buffer oracle",
+    "signed geometry, wrapped multiplication, depth mismatch, overlap and live metadata",
+    "all touched data/heap pages, caller arguments, cdecl registers and x87 control"
+  ],
+  "sha256": {
+    "kernel/image_controls.c": "7a3a97f82046c42b656e6bc07e1595b3bd92b309a0c0a6f4dce07b366153b4ff",
+    "kernel/image_controls.h": "7c2d15790f64cbbddff255e7adb7eafd0e6f12f64252c478729e3add2c5a65af",
+    "tests/kernel_image_controls.py": "6da8bfd171922ac270b2cd8114f758c5733292376212c65fb3fadf4663f20ea0",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

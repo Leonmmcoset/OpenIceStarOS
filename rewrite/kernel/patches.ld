@@ -1521,7 +1521,33 @@ SECTIONS
     ASSERT(kernel_window_layout_all_80f4be == 0x80f4be && SIZEOF(.window_layout_all) <= 1620, "window_layout_all overflow")
     .window_unmaximize 0x80fbfc : { *kernel_window_geometry.o(.text.kernel_window_unmaximize_80fbfc) }
     ASSERT(kernel_window_unmaximize_80fbfc == 0x80fbfc && SIZEOF(.window_unmaximize) <= 1074, "window_unmaximize overflow")
+    .png_surface_draw 0x824014 : { *kernel_png_draw.o(.text.kernel_png_surface_draw_824014) }
+    ASSERT(kernel_png_surface_draw_824014 == 0x824014 && SIZEOF(.png_surface_draw) <= 444, "png_surface_draw overflow")
+    .png_direct_draw 0x8241d0 : { *kernel_png_draw.o(.text.kernel_png_direct_draw_8241d0) }
+    ASSERT(kernel_png_direct_draw_8241d0 == 0x8241d0 && SIZEOF(.png_direct_draw) <= 412, "png_direct_draw overflow")
+    .png_file_draw 0x82436c : { *kernel_png_draw.o(.text.kernel_png_file_draw_82436c) }
+    ASSERT(kernel_png_file_draw_82436c == 0x82436c && SIZEOF(.png_file_draw) <= 210, "png_file_draw overflow")
     .unexpected : { *(.text* .rodata* .data* .bss* COMMON) }
     ASSERT(SIZEOF(.unexpected) == 0, "unexpected allocated kernel data")
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
 }
+
+/* PNG adapter calls retain the original ABI and dispatch addresses. */
+PROVIDE(kernel_png_draw_bpp_83a61f = 0x83a61f);
+PROVIDE(kernel_png_draw_decode_839f0d = 0x839f0d);
+PROVIDE(kernel_png_draw_destroy_83a5bb = 0x83a5bb);
+PROVIDE(kernel_png_draw_direct32_81b3c0 = 0x81b3c0);
+PROVIDE(kernel_png_draw_direct8_81b37c = 0x81b37c);
+PROVIDE(kernel_png_draw_error_83a5f1 = 0x83a5f1);
+PROVIDE(kernel_png_draw_free_815978 = 0x815978);
+PROVIDE(kernel_png_draw_height_83a613 = 0x83a613);
+PROVIDE(kernel_png_draw_length_826940 = 0x826940);
+PROVIDE(kernel_png_draw_lookup_8263c0 = 0x8263c0);
+PROVIDE(kernel_png_draw_memory_83a579 = 0x83a579);
+PROVIDE(kernel_png_draw_pixel_8374cf = 0x8374cf);
+PROVIDE(kernel_png_draw_pixels_83a6f7 = 0x83a6f7);
+PROVIDE(kernel_png_draw_quantize_81fd90 = 0x81fd90);
+PROVIDE(kernel_png_draw_read_827454 = 0x827454);
+PROVIDE(kernel_png_draw_read_relative_827032 = 0x827032);
+PROVIDE(kernel_png_draw_relative_825c8e = 0x825c8e);
+PROVIDE(kernel_png_draw_width_83a609 = 0x83a609);

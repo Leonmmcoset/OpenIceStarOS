@@ -1,0 +1,147 @@
+{
+  "cases": [
+    {
+      "label": "original",
+      "diagnostic_only": true,
+      "source_sha256": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+      "seeded_sha256": "e8844c353f86968d4664f8f3a8ac783b4f7deee41d4da69989cb048de24171ae",
+      "result_sha256": "e8844c353f86968d4664f8f3a8ac783b4f7deee41d4da69989cb048de24171ae",
+      "clusters": [
+        2117,
+        2118
+      ],
+      "report": [
+        1347307313,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "functions": {
+        "png_surface_draw": {
+          "entry": "0x824014",
+          "entry_events": 9,
+          "interior_block_events": 37461,
+          "decoded_body_instructions": 147
+        },
+        "png_direct_draw": {
+          "entry": "0x8241d0",
+          "entry_events": 6,
+          "interior_block_events": 294,
+          "decoded_body_instructions": 123
+        },
+        "png_file_draw": {
+          "entry": "0x82436c",
+          "entry_events": 7,
+          "interior_block_events": 58,
+          "decoded_body_instructions": 105
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    },
+    {
+      "label": "recovered",
+      "diagnostic_only": true,
+      "source_sha256": "70f17f9f0d05c67c1d901ce51411b779c7d8a771c4c8447276258429329cf14e",
+      "seeded_sha256": "9e14048d1922c7f144a9b563f1e28e9f31b2c825bc84a50c9f2826d349bf90f8",
+      "result_sha256": "9e14048d1922c7f144a9b563f1e28e9f31b2c825bc84a50c9f2826d349bf90f8",
+      "clusters": [
+        2117,
+        2118
+      ],
+      "report": [
+        1347307313,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "functions": {
+        "png_surface_draw": {
+          "entry": "0x824014",
+          "entry_events": 9,
+          "interior_block_events": 37461,
+          "decoded_body_instructions": 153
+        },
+        "png_direct_draw": {
+          "entry": "0x8241d0",
+          "entry_events": 6,
+          "interior_block_events": 294,
+          "decoded_body_instructions": 131
+        },
+        "png_file_draw": {
+          "entry": "0x82436c",
+          "entry_events": 7,
+          "interior_block_events": 54,
+          "decoded_body_instructions": 116
+        }
+      },
+      "disk_bytes_compared": 33554944,
+      "input": "CMD via emulated PS/2; no guest-state injection",
+      "scope": "Fixture operations; complete disk equality. Temporary writable image only.",
+      "changed_bytes": 0,
+      "changed_ranges": []
+    }
+  ],
+  "installed_intervals": 617,
+  "new_entries": 3,
+  "resources": {
+    "PNGTST  PNG": "5d15188ef1729275adc9a1bd49f1bc28ff79f091005dfeccf786e18e7d8f5ead",
+    "PNGVIEW PNG": "14efaf24dee76db05d7d74f5b7c81c26ef5e6470eedaad2b07abfe21ca19272d"
+  },
+  "checks": [
+    "real FAT lookup/read and actual PNG/DEFLATE/heap/pixel routines",
+    "independent full-buffer 8/32-bit transparency, clipping, dithering and sentinel checks",
+    "absolute file success and absolute/relative missing files",
+    "all three entry/body traces, visible real window and unchanged whole disposable disks"
+  ],
+  "complete_os_recovery": false,
+  "sha256": {
+    "tests/kernel_png_draw_qemu.py": "2642c2730e15566c6f7c8a94edb87ef2e36a2b0069f818e227ee3890dc35f3fb",
+    "tests/png_draw_guest.c": "50825cfd39034dfd5d244384b594b43ac6e8cec0b9178226c7f087546744579c"
+  }
+}

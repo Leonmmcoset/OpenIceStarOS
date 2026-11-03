@@ -1,0 +1,20 @@
+{
+  "baseline_commit": "8395ab57ec5c497b695de88568347f80970b3b29",
+  "installed_intervals": 617,
+  "new_original_entries": 3,
+  "turn_new_entries": 10,
+  "complete_os_recovery": false,
+  "last_complete_verify_intervals": 601,
+  "sha256": {
+    "IceStarOS_x86_32M.vhd": "2d5a7eef4b18012045e25d8263fc4d67e1b3b860d964defa6fac11a57cf52599",
+    "rewrite/build/openicestaros_kernel.x": "1665c46e4e0600e573df2c2963e95144aa84a10518a4175112e23222d3976cfd",
+    "rewrite/build/OpenIceStarOS_c_apps.vhd": "70f17f9f0d05c67c1d901ce51411b779c7d8a771c4c8447276258429329cf14e",
+    "rewrite/kernel/patches.json": "ef9e491b2ee39da0a576cfeb6ca8744bf79981b87328f3c82ec6b648ae6a3fc7",
+    "rewrite/kernel/patches.ld": "25cc6611732e2e5e90e0192af9cf947ba681bbe402976eb94e7749817922677c"
+  },
+  "previous_build_comparison": {
+    "other_614_intervals_and_disk_bytes_unchanged": true,
+    "restored_new_slots_kernel_sha256": "48957c986d7545e95a74a357898a3580605275211996f98dd82badacb90057fe",
+    "restored_new_slots_disk_sha256": "528a194d1d635fbcb18b1e3c82234d93cbbe7c4a49a009f149f75fae39e250be"
+  }
+}

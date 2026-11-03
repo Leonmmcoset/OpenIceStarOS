@@ -15,7 +15,7 @@
 
 **完整操作系统尚未恢复。** 当前可从源码编译三个引导阶段，第三阶段
 已移除对原始引导机器码的 `.incbin` 引用。INIT 和内核仍为部分恢复；
-内核有 614 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
+内核有 617 个已安装的源码替换区间。已恢复并编译五个应用：SNAKE、
 COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不同
 程序，仍包含未恢复的驱动和应用。区间数量不能当作完成比例。
 
@@ -24,6 +24,7 @@ COLOR、MOV、STARSCR、CLOCK。原盘共 39 个 `.X`/`.DX` 路径、37 个不�
 | C/汇编引导、VBE、GDT、保护模式、FAT16 | [rewrite/boot/](rewrite/boot/) |
 | INIT 启动与文件加载 | [rewrite/init/](rewrite/init/) |
 | PNG／DEFLATE 解码、滤波和图像生命周期 | [PNG.md](rewrite/recovery/PNG.md)、[INFLATE.md](rewrite/recovery/INFLATE.md) |
+| PNG 图层、直接像素及文件绘制 | [PNG_DRAW.md](rewrite/recovery/PNG_DRAW.md) |
 | 固定地址内核源码与区间清单 | [rewrite/kernel/](rewrite/kernel/)、[patches.json](rewrite/kernel/patches.json) |
 | X 程序加载、重定位与任务启动 | [x_loader.c](rewrite/kernel/x_loader.c)、[kernel_x_loader.py](rewrite/tests/kernel_x_loader.py) |
 | 字体解析、CFF 绘图、轮廓边界与内存池 | [FONT_OUTLINE.md](rewrite/recovery/FONT_OUTLINE.md)、[FONT_HEAP.md](rewrite/recovery/FONT_HEAP.md) |
@@ -102,3 +103,8 @@ CMD/TASKBAR 的显示文字补丁不代表这些程序已恢复为 C。
 同日再恢复最大化、全局窗口布局更新和还原三个函数，达到 614 区间。440 个
 三版本场景、真实 QEMU 六种任务栏布局、缓冲区扩容及回调、生产 CLOCK 和
 邻近回归通过，详见[窗口尺寸恢复](rewrite/recovery/WINDOW_GEOMETRY.md)。完整 OS 未完成。
+
+同日再恢复 PNG 按图层 ID、直接 surface 和文件路径绘制三个函数，达到 617 区间；
+本轮从 607 区间累计新增十个真实函数。344 个三版本差分场景、真实 FAT／PNG／
+DEFLATE／像素 QEMU、生产 COLOR、邻近回归与整盘检查通过，详见
+[PNG 绘制恢复](rewrite/recovery/PNG_DRAW.md)。最后全量仍为 601 区间，完整 OS 未完成。

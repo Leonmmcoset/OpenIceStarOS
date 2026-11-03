@@ -1,0 +1,39 @@
+{
+  "installed": true,
+  "functions": 3,
+  "scenarios": 440,
+  "executions": 1320,
+  "slots": {
+    "window_maximize": {
+      "compiled_bytes": 1256,
+      "slot_bytes": 1896
+    },
+    "window_layout_all": {
+      "compiled_bytes": 1048,
+      "slot_bytes": 1620
+    },
+    "window_unmaximize": {
+      "compiled_bytes": 732,
+      "slot_bytes": 1074
+    }
+  },
+  "scenarios_by_function": {
+    "window_maximize": 164,
+    "window_layout_all": 124,
+    "window_unmaximize": 152
+  },
+  "seconds": 1.767,
+  "checks": [
+    "actual owner-tagged allocator/free, growth/failure and signed wrapped sizing",
+    "independent six-way taskbar layout, saved geometry and client/title expectations",
+    "live frame/compositor call order, real callbacks and private callback arguments",
+    "live table count, signed slot pointers, state changes and duplicate callback quirk",
+    "all touched heap/data pages, caller arguments, cdecl registers and x87 controls"
+  ],
+  "sha256": {
+    "kernel/window_geometry.c": "615f12a3f382272036d61a16f0c1092565fea4c5634cff005a1b8fda9d3db1ed",
+    "kernel/window_geometry.h": "76d950924d2b3cc21257ebcfb8f2d31e2212a7c602d0330be5d279733ee0a3af",
+    "tests/kernel_window_geometry.py": "7962e79acf8644b33ea0cad53079b4b08fde1e3fb30889b659e5ac3e2548916c",
+    "tests/kernel_recovery_compare.py": "cf824eb00ec005a61e9a94942b1a7d90e40d98fa792ebbac35dbaff51d73a941"
+  }
+}

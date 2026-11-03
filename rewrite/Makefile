@@ -156,6 +156,8 @@ KERNEL_OBJECTS += $(BUILD)/kernel_window_focus.o
 KERNEL_PATCHES += $(foreach name,window_raise window_activate window_deactivate window_button_hit,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_window_geometry.o
 KERNEL_PATCHES += $(foreach name,window_maximize window_layout_all window_unmaximize,$(BUILD)/kernel.$(name).bin)
+KERNEL_OBJECTS += $(BUILD)/kernel_png_draw.o
+KERNEL_PATCHES += $(foreach name,png_surface_draw png_direct_draw png_file_draw,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_inflate.o
 KERNEL_PATCHES += $(foreach name,png_bit png_bits png_tree_init png_tree_build png_symbol png_dynamic png_compressed png_stored png_inflate png_zlib,$(BUILD)/kernel.$(name).bin)
 KERNEL_OBJECTS += $(BUILD)/kernel_png.o
@@ -2032,3 +2034,25 @@ $(BUILD)/window_geometry_guest.elf: $(BUILD)/window_geometry_guest.o tests/fat_m
 
 $(BUILD)/window_geometry_guest.x: $(BUILD)/window_geometry_guest.elf tools/xformat.py
 	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/window_geometry_guest.symbols.json
+
+$(BUILD)/kernel_png_draw.o: kernel/png_draw.c kernel/png_draw.h Makefile | $(BUILD)
+	$(CC) $(KERNEL_CFLAGS) -fno-optimize-sibling-calls -fno-delete-null-pointer-checks -mpreferred-stack-boundary=2 -fexcess-precision=fast -c $< -o $@
+
+.PHONY: test-png-draw
+test-png-draw: $(BUILD)/openicestaros_kernel.x
+	python3 tests/kernel_png_draw.py --installed
+
+verify: test-png-draw
+
+.PHONY: test-png-draw-qemu
+test-png-draw-qemu: $(BUILD)/OpenIceStarOS_c_apps.vhd $(BUILD)/png_draw_guest.x
+	python3 tests/kernel_png_draw_qemu.py
+
+$(BUILD)/png_draw_guest.o: tests/png_draw_guest.c Makefile | $(BUILD)
+	$(CC) $(APP_CFLAGS) -c $< -o $@
+
+$(BUILD)/png_draw_guest.elf: $(BUILD)/png_draw_guest.o tests/fat_mutation_guest.ld
+	$(LD) -m elf_i386 --emit-relocs -T tests/fat_mutation_guest.ld -Map=$(BUILD)/png_draw_guest.map -o $@ $<
+
+$(BUILD)/png_draw_guest.x: $(BUILD)/png_draw_guest.elf tools/xformat.py
+	python3 tools/xformat.py $< $@ --kind 0x0a --file-size 0x38b4 --metadata $(BUILD)/png_draw_guest.symbols.json
